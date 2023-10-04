@@ -310,7 +310,6 @@ export default defineComponent({
          // You can perform any other actions here when the group changes
       });
       watch(tab, (newValue, oldValue) => {
-        debugger
          if (tab.value == "done") {
             currentPic = 0;
             dataImagenes = allData.filter(
