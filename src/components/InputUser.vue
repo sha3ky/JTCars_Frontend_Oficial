@@ -1,12 +1,11 @@
 <template>
    <q-page style="display: flex; justify-content: center">
-      <div style="padding-top: 80px; text-align: right; width: 250px">
+      <div style="padding-top: 120px; text-align: right; width: 370px">
          <q-card class="my-card bg-secondary text-white" v-if="showLogin">
             <q-card-section>
                <div class="text-subtitle2">by Julian Raita</div>
             </q-card-section>
-
-            <q-input outlined v-model="correoInput" label="Correo" dense rounded>
+            <q-input  v-model="correoInput" label="Correo" dense style="padding: 30px">
                <template v-slot:label>
                   <div class="row items-center all-pointer-events">
                      <q-icon
@@ -20,12 +19,10 @@
             </q-input>
             <q-input
                type="password"
-               outlined
+               style="padding: 30px"
                v-model="contrasenaInput"
                label="Contraseña"
                dense
-               rounded
-
             >
                <template v-slot:label>
                   <div class="row items-center all-pointer-events">
