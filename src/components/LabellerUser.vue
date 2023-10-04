@@ -43,11 +43,11 @@
                      <div class="col">Choose a Label:</div>
                      <div class="col" style="display: flex">
                         <div style="display: flex; align-items: center">
-                           Whiteout Mask
+                           No Label
                         </div>
                         <q-toggle size="lg" v-model="shape" />
                         <div style="display: flex; align-items: center">
-                           With Mask
+                           With Label
                         </div>
                      </div>
                      <div class="col">Texto {{ textoLabel }}</div>
