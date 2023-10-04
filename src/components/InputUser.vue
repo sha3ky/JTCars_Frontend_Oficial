@@ -5,10 +5,11 @@
             <q-card-section>
                <div class="text-subtitle2">by Julian Raita</div>
             </q-card-section>
+            <q-separator dark />
             <q-input
                v-model="correoInput"
                label="Correo"
-               style="padding: 24px;font-size:20px"
+               style="padding: 24px; font-size: 20px"
             >
                <template v-slot:label>
                   <div class="row items-center all-pointer-events">
@@ -25,7 +26,7 @@
                type="password"
                v-model="contrasenaInput"
                label="Contraseña"
-               style="padding: 24px;font-size:20px"
+               style="padding: 24px; font-size: 20px"
             >
                <template v-slot:label>
                   <div class="row items-center all-pointer-events">
@@ -54,10 +55,10 @@
    </q-page>
 </template>
 
+<style></style>
 <script>
 import { defineComponent } from "vue";
-import axios from 'axios';
-
+import axios from "axios";
 
 // import { ref } from "vue";
 // import MainLayout from "src/layouts/MainLayout.vue";
@@ -71,22 +72,56 @@ export default defineComponent({
       return {
          correoInput: "", // Define correoInput data property
          contrasenaInput: "", // Define contrasenaInput data property
-         users: [],
+         // users: [],
          colorEmail: "red",
          colorPass: "red",
+         users: [
+            {
+               id: 7,
+               nombre: "Luigi",
+               apellido: "Bros",
+               admin: false,
+               correo: "luigi@gmail.com",
+               password: "1234",
+            },
+            {
+               id: 6,
+               nombre: "Mario",
+               apellido: "Bros",
+               admin: false,
+               correo: "mario@gmail.com",
+               password: "1234",
+            },
+            {
+               id: 5,
+               nombre: "Julian",
+               apellido: "Raita",
+               admin: true,
+               correo: "julian@gmail.com",
+               password: "1234",
+            },
+            {
+               id: 4,
+               nombre: "Jordi",
+               apellido: "Perez",
+               admin: true,
+               correo: "jordi@gmail.com",
+               password: "1234",
+            },
+         ],
       };
    },
    mounted() {
       // Make a GET request to your API endpoint
-      axios
-         .get("http://127.0.0.1:8000/usuarios/")
-         .then((response) => {
-            this.users = response.data;
-            console.log(this.users);
-         })
-         .catch((error) => {
-            console.error("Error fetching data:", error);
-         });
+      // axios
+      //    .get("http://127.0.0.1:8000/usuarios/")
+      //    .then((response) => {
+      //       this.users = response.data;
+      //       console.log("users", this.users);
+      //    })
+      //    .catch((error) => {
+      //       console.error("Error fetching data:", error);
+      //    });
    },
    methods: {
       comprobarUsuario() {
