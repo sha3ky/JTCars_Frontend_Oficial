@@ -82,6 +82,7 @@
 <script>
 import { defineComponent, watch, ref, onMounted } from "vue";
 import axios from "axios";
+import allDataBB from "./data.js";
 
 export default defineComponent({
    name: "LabbelerUser",
@@ -101,7 +102,40 @@ export default defineComponent({
       let currentPic = 0;
       let labelDetail = ref("");
       let textoLabel = ref("");
-      let allUsers = [];
+      let allUsers = [
+         {
+            id: 7,
+            nombre: "Luigi",
+            apellido: "Bros",
+            admin: false,
+            correo: "luigi@gmail.com",
+            password: "1234",
+         },
+         {
+            id: 6,
+            nombre: "Mario",
+            apellido: "Bros",
+            admin: false,
+            correo: "mario@gmail.com",
+            password: "1234",
+         },
+         {
+            id: 5,
+            nombre: "Julian",
+            apellido: "Raita",
+            admin: true,
+            correo: "julian@gmail.com",
+            password: "1234",
+         },
+         {
+            id: 4,
+            nombre: "Jordi",
+            apellido: "Perez",
+            admin: true,
+            correo: "jordi@gmail.com",
+            password: "1234",
+         },
+      ];
       let shape = ref(false);
 
       watch(
@@ -167,42 +201,43 @@ export default defineComponent({
             : "whiteout mask";
       }
       async function getAllData() {
-         axios
-            .get("http://127.0.0.1:8000/api/ImageTable/", {})
-            .then((response) => {
-               allData.value = response.data;
-               console.log("value array", allData);
-            })
-            .catch((error) => {
-               console.error("Error fetching data:", error);
-            });
+         allData.value = allDataBB;
+         //  axios
+         //     .get("http://127.0.0.1:8000/api/ImageTable/", {})
+         //     .then((response) => {
+         //        allData.value = response.data;
+         //        console.log("value array", allData);
+         //     })
+         //     .catch((error) => {
+         //        console.error("Error fetching data:", error);
+         //     });
       }
       async function getAllUsers() {
-         axios
-            .get("http://127.0.0.1:8000/usuarios/", {})
-            .then((response) => {
-               allUsers = response.data;
-               console.log("users array", allUsers);
-            })
-            .catch((error) => {
-               console.error("Error fetching data:", error);
-            });
+        //  axios
+        //     .get("http://127.0.0.1:8000/usuarios/", {})
+        //     .then((response) => {
+        //        allUsers = response.data;
+        //        console.log("users array", allUsers);
+        //     })
+        //     .catch((error) => {
+        //        console.error("Error fetching data:", error);
+        //     });
       }
       async function updateLabel(userId, pictureId, newLabel) {
-         const url = `http://127.0.0.1:8000/api/ImageTable/${pictureId}/`;
-         const data = {
-            user: userId, // Assuming the server expects this field; remove if not
-            label: newLabel.value ? 1 : 0,
-         };
-         try {
-            const response = await axios.put(url, data);
-            console.log("Update successful:", response.data);
-            // Optionally, refresh your data:
-            await getAllData();
-            insertValue();
-         } catch (error) {
-            console.error("Error updating data:", error);
-         }
+        //  const url = `http://127.0.0.1:8000/api/ImageTable/${pictureId}/`;
+        //  const data = {
+        //     user: userId, // Assuming the server expects this field; remove if not
+        //     label: newLabel.value ? 1 : 0,
+        //  };
+        //  try {
+        //     const response = await axios.put(url, data);
+        //     console.log("Update successful:", response.data);
+        //     // Optionally, refresh your data:
+        //     await getAllData();
+        //     insertValue();
+        //  } catch (error) {
+        //     console.error("Error updating data:", error);
+        //  }
       }
       function returnLogin() {
          this.$emit("show-login-updated", true);
