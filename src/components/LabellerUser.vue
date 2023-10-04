@@ -137,6 +137,7 @@ export default defineComponent({
          },
       ];
       let shape = ref(false);
+      let pastShape
 
       watch(
          () => props.showLogin,
@@ -160,10 +161,15 @@ export default defineComponent({
       });
       watch(shape, (newValue, oldValue) => {
          console.log("group changed from", oldValue, "to", newValue);
+         dataImagenes[currentPic] = {
+               ...dataImagenes[currentPic ], // Copy existing object properties
+               label: newValue
+         }
       });
       function leftPicture() {
          currentPic =
             (currentPic - 1 + dataImagenes.length) % dataImagenes.length;
+         shape.value = dataImagenes[currentPic].label;
          imageArray.value = dataImagenes[currentPic].imageBase64;
          labelDetail.value = comprobarMask(currentPic, dataImagenes);
          textoLabel.value = dataImagenes[currentPic].text;
@@ -171,16 +177,10 @@ export default defineComponent({
 
       function rightPicture() {
          currentPic = (currentPic + 1) % dataImagenes.length;
+         shape.value = dataImagenes[currentPic].label;
          imageArray.value = dataImagenes[currentPic].imageBase64;
          labelDetail.value = comprobarMask(currentPic, dataImagenes);
          textoLabel.value = dataImagenes[currentPic].text;
-         if (shape.value != "") {
-            updateLabel(
-               dataImagenes[currentPic].user,
-               dataImagenes[currentPic].id,
-               shape
-            );
-         }
       }
 
       function insertValue(items) {
@@ -213,31 +213,31 @@ export default defineComponent({
          //     });
       }
       async function getAllUsers() {
-        //  axios
-        //     .get("http://127.0.0.1:8000/usuarios/", {})
-        //     .then((response) => {
-        //        allUsers = response.data;
-        //        console.log("users array", allUsers);
-        //     })
-        //     .catch((error) => {
-        //        console.error("Error fetching data:", error);
-        //     });
+         //  axios
+         //     .get("http://127.0.0.1:8000/usuarios/", {})
+         //     .then((response) => {
+         //        allUsers = response.data;
+         //        console.log("users array", allUsers);
+         //     })
+         //     .catch((error) => {
+         //        console.error("Error fetching data:", error);
+         //     });
       }
       async function updateLabel(userId, pictureId, newLabel) {
-        //  const url = `http://127.0.0.1:8000/api/ImageTable/${pictureId}/`;
-        //  const data = {
-        //     user: userId, // Assuming the server expects this field; remove if not
-        //     label: newLabel.value ? 1 : 0,
-        //  };
-        //  try {
-        //     const response = await axios.put(url, data);
-        //     console.log("Update successful:", response.data);
-        //     // Optionally, refresh your data:
-        //     await getAllData();
-        //     insertValue();
-        //  } catch (error) {
-        //     console.error("Error updating data:", error);
-        //  }
+         //  const url = `http://127.0.0.1:8000/api/ImageTable/${pictureId}/`;
+         const data = {
+            user: userId, // Assuming the server expects this field; remove if not
+            label: newLabel.value ? 1 : 0,
+         };
+         try {
+            const response = await axios.put(url, data);
+            console.log("Update successful:", response.data);
+            // Optionally, refresh your data:
+            await getAllData();
+            insertValue();
+         } catch (error) {
+            console.error("Error updating data:", error);
+         }
       }
       function returnLogin() {
          this.$emit("show-login-updated", true);
