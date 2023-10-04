@@ -8,7 +8,7 @@
             <q-input
                v-model="correoInput"
                label="Correo"
-               style="padding: 24px"
+               style="padding: 24px;font-size:20px"
             >
                <template v-slot:label>
                   <div class="row items-center all-pointer-events">
@@ -25,7 +25,7 @@
                type="password"
                v-model="contrasenaInput"
                label="Contraseña"
-               style="padding: 24px"
+               style="padding: 24px;font-size:20px"
             >
                <template v-slot:label>
                   <div class="row items-center all-pointer-events">
