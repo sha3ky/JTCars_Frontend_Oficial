@@ -226,6 +226,8 @@
 <script>
 import { defineComponent, watch, ref } from "vue";
 import axios from "axios";
+import allDataBB from './data.js';
+console.log('dataObject',allDataBB)
 
 export default defineComponent({
    name: "AdminPart",
@@ -248,7 +250,40 @@ export default defineComponent({
       let currentPic = 0;
       let labelDetail = ref("");
       let textoLabel = ref("");
-      let allUsers = [];
+      let allUsers = [
+         {
+            id: 7,
+            nombre: "Luigi",
+            apellido: "Bros",
+            admin: false,
+            correo: "luigi@gmail.com",
+            password: "1234",
+         },
+         {
+            id: 6,
+            nombre: "Mario",
+            apellido: "Bros",
+            admin: false,
+            correo: "mario@gmail.com",
+            password: "1234",
+         },
+         {
+            id: 5,
+            nombre: "Julian",
+            apellido: "Raita",
+            admin: true,
+            correo: "julian@gmail.com",
+            password: "1234",
+         },
+         {
+            id: 4,
+            nombre: "Jordi",
+            apellido: "Perez",
+            admin: true,
+            correo: "jordi@gmail.com",
+            password: "1234",
+         },
+      ];
       // let imageArrayPending = [];
 
       // Watch the 'showLogin' prop for changes
@@ -275,6 +310,7 @@ export default defineComponent({
          // You can perform any other actions here when the group changes
       });
       watch(tab, (newValue, oldValue) => {
+        debugger
          if (tab.value == "done") {
             currentPic = 0;
             dataImagenes = allData.filter(
@@ -342,42 +378,43 @@ export default defineComponent({
       }
 
       async function uploadPicture() {
-         try {
-            const imageBlob = await imageUploaded(imagenBBDD.value);
-            const data = {
-               text: textName.value,
-               label: group.value[0] || "",
-               imageBase64: imageBlob,
-               user: props.userId,
-            };
-            const response = await axios.post(
-               "http://127.0.0.1:8000/api/ImageTable/",
-               data,
-               {
-                  headers: {
-                     "Content-Type": "application/json", // Set the content type
-                  },
-               }
-            );
-            console.log("Image uploaded successfully:", response.data);
-         } catch (error) {
-            console.error("Error uploading picture:", error);
-         }
+         //  try {
+         //     const imageBlob = await imageUploaded(imagenBBDD.value);
+         //     const data = {
+         //        text: textName.value,
+         //        label: group.value[0] || "",
+         //        imageBase64: imageBlob,
+         //        user: props.userId,
+         //     };
+         //     const response = await axios.post(
+         //        "http://127.0.0.1:8000/api/ImageTable/",
+         //        data,
+         //        {
+         //           headers: {
+         //              "Content-Type": "application/json", // Set the content type
+         //           },
+         //        }
+         //     );
+         //     console.log("Image uploaded successfully:", response.data);
+         //  } catch (error) {
+         //     console.error("Error uploading picture:", error);
+         //  }
          textName.value = "";
          group.value[0] = "";
          imagenBBDD.value = "";
-         getAllData();
+         //  getAllData();
       }
       async function getAllData() {
-         axios
-            .get("http://127.0.0.1:8000/api/ImageTable/", {})
-            .then((response) => {
-               allData = response.data;
-               console.log("todo el array", allData);
-            })
-            .catch((error) => {
-               console.error("Error fetching data:", error);
-            });
+        allData=allDataBB
+        //  axios
+        //     .get("http://127.0.0.1:8000/api/ImageTable/", {})
+        //     .then((response) => {
+        //        allData = response.data;
+        //        console.log("todo el array", allData);
+        //     })
+        //     .catch((error) => {
+        //        console.error("Error fetching data:", error);
+        //     });
       }
       getAllData();
 
