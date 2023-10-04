@@ -1,6 +1,6 @@
 <template>
-   <q-page class="display: flex; justify-content: center">
-      <div class="padding-top: 80px; text-align: right; width: 250px">
+   <q-page style="display: flex; justify-content: center">
+      <div style="padding-top: 80px; text-align: right; width: 250px">
          <q-card class="my-card bg-secondary text-white" v-if="showLogin">
             <q-card-section>
                <div class="text-subtitle2">by Julian Raita</div>
