@@ -325,15 +325,10 @@ export default defineComponent({
          // You can perform any other actions here when the group changes
       });
 
-      const options = [
-         {
-            label: "With Mask",
-            value: "1",
-         },
-         {
-            label: "Without Mask",
-            value: "0",
-         },
+       const options = [
+         { label: "with Mask", value: "1" },
+         { label: "without Mask", value: "0" },
+         { label: "No specified", value: '' },
       ];
 
       function leftPicture() {
@@ -399,7 +394,7 @@ export default defineComponent({
          //     console.error("Error uploading picture:", error);
          //  }
          textName.value = "";
-         group.value[0] = "";
+         group.value[0] = 1;
          imagenBBDD.value = "";
          //  getAllData();
       }
