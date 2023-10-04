@@ -54,16 +54,6 @@
    </q-page>
 </template>
 
-<style>
-.center {
-   border: 5px solid;
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   padding: 10px;
-}
-</style>
 <script>
 import { defineComponent } from "vue";
 import axios from 'axios';
