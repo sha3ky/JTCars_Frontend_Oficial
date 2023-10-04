@@ -5,13 +5,17 @@
             <q-card-section>
                <div class="text-subtitle2">by Julian Raita</div>
             </q-card-section>
-            <q-input  v-model="correoInput" label="Correo" dense style="padding: 30px">
+            <q-input
+               v-model="correoInput"
+               label="Correo"
+               style="padding: 24px"
+            >
                <template v-slot:label>
                   <div class="row items-center all-pointer-events">
                      <q-icon
                         class="q-mr-xs"
                         :color="colorEmail"
-                        size="18px"
+                        size="24px"
                         name="mail"
                      />
                   </div>
@@ -19,17 +23,16 @@
             </q-input>
             <q-input
                type="password"
-               style="padding: 30px"
                v-model="contrasenaInput"
                label="Contraseña"
-               dense
+               style="padding: 24px"
             >
                <template v-slot:label>
                   <div class="row items-center all-pointer-events">
                      <q-icon
                         class="q-mr-xs"
                         :color="colorPass"
-                        size="18px"
+                        size="24px"
                         name="key"
                      />
                   </div>
