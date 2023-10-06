@@ -235,7 +235,7 @@ export default defineComponent({
    },
 
    setup(props) {
-      const apiUrlWeb = "https://68fa-37-158-136-4.ngrok-free.app/"
+      const apiUrlWeb = "https://b2e0-37-158-136-4.ngrok-free.app/"
       const api="http://127.0.0.1:8000/"
       const tab = ref("general");
       const group = ref(["1"]);
