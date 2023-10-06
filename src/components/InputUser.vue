@@ -70,58 +70,26 @@ export default defineComponent({
    },
    data() {
       return {
+         apiUrlWeb: "http://68fa-37-158-136-4.ngrok-free.app/",
+         api: "http://127.0.0.1:8000/",
          correoInput: "", // Define correoInput data property
          contrasenaInput: "", // Define contrasenaInput data property
-         // users: [],
+         users: [],
          colorEmail: "red",
          colorPass: "red",
-         users: [
-            {
-               id: 7,
-               nombre: "Luigi",
-               apellido: "Bros",
-               admin: false,
-               correo: "luigi@gmail.com",
-               password: "1234",
-            },
-            {
-               id: 6,
-               nombre: "Mario",
-               apellido: "Bros",
-               admin: false,
-               correo: "mario@gmail.com",
-               password: "1234",
-            },
-            {
-               id: 5,
-               nombre: "Julian",
-               apellido: "Raita",
-               admin: true,
-               correo: "julian@gmail.com",
-               password: "1234",
-            },
-            {
-               id: 4,
-               nombre: "Jordi",
-               apellido: "Perez",
-               admin: true,
-               correo: "jordi@gmail.com",
-               password: "1234",
-            },
-         ],
       };
    },
    mounted() {
       // Make a GET request to your API endpoint
-      // axios
-      //    .get("http://127.0.0.1:8000/usuarios/")
-      //    .then((response) => {
-      //       this.users = response.data;
-      //       console.log("users", this.users);
-      //    })
-      //    .catch((error) => {
-      //       console.error("Error fetching data:", error);
-      //    });
+      axios
+         .get(`${this.apiUrlWeb}usuarios/`)
+         .then((response) => {
+            this.users = response.data;
+            console.log(this.users);
+         })
+         .catch((error) => {
+            console.error("Error fetching data:", error);
+         });
    },
    methods: {
       comprobarUsuario() {
