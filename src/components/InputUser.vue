@@ -79,19 +79,15 @@ export default defineComponent({
          colorPass: "red",
       };
    },
-   mounted() {
-      // Make a GET request to your API endpoint
-     console.log('link',this.apiUrlWeb)
-      axios
-         .get(`${this.apiUrlWeb}usuarios/`)
-         .then((response) => {
-            this.users = response.data;
-            console.log(this.users);
-         })
-         .catch((error) => {
-            console.error("Error fetching data:", error);
-         });
-   },
+ async mounted() {
+   try {
+      const response = await Be.get(`${this.apiUrlWeb}usuarios/`);
+      this.users = response.data;
+      console.log(this.users);
+   } catch (error) {
+      console.error("Error fetching data:", error);
+   }
+},
    methods: {
       comprobarUsuario() {
          let contrasena, usuario;
