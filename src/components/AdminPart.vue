@@ -368,7 +368,7 @@ export default defineComponent({
       }
       async function getAllData() {
          axios
-            .get(`${apiUrlWeb}api/ImageTable/?format=api`, {})
+            .get(`${apiUrlWeb}api/ImageTable/`, {})
             .then((response) => {
                allData = response.data;
                console.log("todo el array", allData);
@@ -381,7 +381,7 @@ export default defineComponent({
 
       async function getAllUsers() {
          axios
-            .get(`${apiUrlWeb}usuarios/?format=api`, {})
+            .get(`${apiUrlWeb}usuarios/`, {})
             .then((response) => {
                allUsers = response.data;
                console.log("todo el array", allUsers);
