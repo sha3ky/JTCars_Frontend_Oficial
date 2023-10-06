@@ -91,7 +91,7 @@ export default defineComponent({
       userIsAdmin: Boolean,
    },
    setup(props) {
-      const apiUrlWeb = "https://b2e0-37-158-136-4.ngrok-free.app/"
+      const apiUrlWeb = "https://f06d-37-158-136-4.ngrok-free.app/"
       const api="http://127.0.0.1:8000/"
       let imagenBBDD;
       const textName = ref("");
