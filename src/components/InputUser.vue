@@ -81,6 +81,7 @@ export default defineComponent({
    },
    mounted() {
       // Make a GET request to your API endpoint
+     console.log('link',this.apiUrlWeb)
       axios
          .get(`${this.apiUrlWeb}usuarios/`)
          .then((response) => {
