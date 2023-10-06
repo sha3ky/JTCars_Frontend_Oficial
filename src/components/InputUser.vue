@@ -84,43 +84,24 @@ export default defineComponent({
   await  this.fetchUserData();
 },
    methods: {
-    //  async fetchUserData() {
-    //   try {
-    //     console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
-    //     const response = await axios.get(`usuarios/`, {
-    //   headers: {
-    //     'Content-Type': 'application/json', // Set the Content-Type header
-    //     // 'ngrok-skip-browser-warning': '1231'
-    //   // 'access-control-allow-origin': '*',
-    //   // 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    //   // 'Access-Control-Allow-Methods': '*',
-    //   },
-    // });
-    //     this.users = response.data;
-    //     console.log("Data received:", this.users);
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //   }
-    // },
      async fetchUserData() {
-  try {
-    // Update the API URL to point to your Netlify serverless function
-    const netlifyFunctionUrl = 'https://https://master--grand-gingersnap-d4c895.netlify.app/.netlify/functions/proxy-api.js';
-
-    console.log("Fetching data from:", `${netlifyFunctionUrl}/usuarios/`);
-    
-    const response = await axios.get(`${netlifyFunctionUrl}/usuarios/`, {
+      try {
+        console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
+        const response = await axios.get(`usuarios/`, {
       headers: {
         'Content-Type': 'application/json', // Set the Content-Type header
+        'ngrok-skip-browser-warning': '1231'
+      'access-control-allow-origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Methods': '*',
       },
     });
-    
-    this.users = response.data;
-    console.log("Data received:", this.users);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-},
+        this.users = response.data;
+        console.log("Data received:", this.users);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    },
 
       comprobarUsuario() {
          let contrasena, usuario;
