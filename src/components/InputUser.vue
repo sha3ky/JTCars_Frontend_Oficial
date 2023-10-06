@@ -91,9 +91,9 @@ export default defineComponent({
       headers: {
         'Content-Type': 'application/json', // Set the Content-Type header
         // 'ngrok-skip-browser-warning': '1231'
-      'access-control-allow-origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Allow-Methods': '*',
+      // 'access-control-allow-origin': '*',
+      // 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      // 'Access-Control-Allow-Methods': '*',
       },
     });
         this.users = response.data;
