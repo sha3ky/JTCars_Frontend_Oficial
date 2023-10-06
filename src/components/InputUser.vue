@@ -87,7 +87,11 @@ export default defineComponent({
      async fetchUserData() {
       try {
         console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
-        const response = await axios.get(`usuarios/`);
+        const response = await axios.get(`usuarios/`, {
+      headers: {
+        'Content-Type': 'application/json', // Set the Content-Type header
+      },
+    });
         this.users = response.data;
         console.log("Data received:", this.users);
       } catch (error) {
