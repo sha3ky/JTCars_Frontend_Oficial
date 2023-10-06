@@ -59,6 +59,7 @@
 <script>
 import { defineComponent } from "vue";
 import axios from "axios";
+axios.defaults.baseURL = 'https://9b1d-37-158-136-4.ngrok-free.app'
 
 // import { ref } from "vue";
 // import MainLayout from "src/layouts/MainLayout.vue";
@@ -86,7 +87,7 @@ export default defineComponent({
      async fetchUserData() {
       try {
         console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
-        const response = await axios.get(`${this.apiUrlWeb}usuarios/`);
+        const response = await axios.get(`usuarios/`);
         this.users = response.data;
         console.log("Data received:", this.users);
       } catch (error) {
