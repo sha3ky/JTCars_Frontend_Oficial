@@ -226,8 +226,6 @@
 <script>
 import { defineComponent, watch, ref } from "vue";
 import axios from "axios";
-import allDataBB from './data.js';
-console.log('dataObject',allDataBB)
 
 export default defineComponent({
    name: "AdminPart",
@@ -237,6 +235,8 @@ export default defineComponent({
    },
 
    setup(props) {
+      const apiUrlWeb = "http://68fa-37-158-136-4.ngrok-free.app/"
+      const api="http://127.0.0.1:8000/"
       const tab = ref("general");
       const group = ref(["1"]);
       const textName = ref("");
@@ -250,39 +250,11 @@ export default defineComponent({
       let currentPic = 0;
       let labelDetail = ref("");
       let textoLabel = ref("");
-      let allUsers = [
-         {
-            id: 7,
-            nombre: "Luigi",
-            apellido: "Bros",
-            admin: false,
-            correo: "luigi@gmail.com",
-            password: "1234",
-         },
-         {
-            id: 6,
-            nombre: "Mario",
-            apellido: "Bros",
-            admin: false,
-            correo: "mario@gmail.com",
-            password: "1234",
-         },
-         {
-            id: 5,
-            nombre: "Julian",
-            apellido: "Raita",
-            admin: true,
-            correo: "julian@gmail.com",
-            password: "1234",
-         },
-         {
-            id: 4,
-            nombre: "Jordi",
-            apellido: "Perez",
-            admin: true,
-            correo: "jordi@gmail.com",
-            password: "1234",
-         },
+      let allUsers = [];
+      const options = [
+         { label: "with Mask", value: "1" },
+         { label: "without Mask", value: "0" },
+         { label: "No specified", value: '' },
       ];
       // let imageArrayPending = [];
 
@@ -297,6 +269,7 @@ export default defineComponent({
 
       // Watch the 'group' variable for changes
       watch(group, (newValue, oldValue) => {
+         debugger;
          group.value.shift();
          console.log("group changed from", oldValue, "to", newValue);
          // You can perform any other actions here when the group changes
@@ -315,21 +288,17 @@ export default defineComponent({
             dataImagenes = allData.filter(
                (item) => item.label === "0" || item.label === "1"
             );
-            insertValue(dataImagenes);
+            dataImagenes ? insertValue(dataImagenes) : "";
          } else if (tab.value == "pending") {
             currentPic = 0;
             dataImagenes = allData.filter((item) => item.label === "");
-            insertValue(dataImagenes);
+            dataImagenes ? insertValue(dataImagenes) : "";
          }
          console.log("group changed from", oldValue, "to", newValue);
          // You can perform any other actions here when the group changes
       });
 
-       const options = [
-         { label: "with Mask", value: "1" },
-         { label: "without Mask", value: "0" },
-         { label: "No specified", value: '' },
-      ];
+
 
       function leftPicture() {
          currentPic =
@@ -368,53 +337,52 @@ export default defineComponent({
             ? "sin label"
             : dataImagenes[currentPic].label * 1 == 1
             ? "with Mask"
-            : "whiteout mask";
+            : "whitout mask";
       }
 
       async function uploadPicture() {
-         //  try {
-         //     const imageBlob = await imageUploaded(imagenBBDD.value);
-         //     const data = {
-         //        text: textName.value,
-         //        label: group.value[0] || "",
-         //        imageBase64: imageBlob,
-         //        user: props.userId,
-         //     };
-         //     const response = await axios.post(
-         //        "http://127.0.0.1:8000/api/ImageTable/",
-         //        data,
-         //        {
-         //           headers: {
-         //              "Content-Type": "application/json", // Set the content type
-         //           },
-         //        }
-         //     );
-         //     console.log("Image uploaded successfully:", response.data);
-         //  } catch (error) {
-         //     console.error("Error uploading picture:", error);
-         //  }
+         try {
+            const imageBlob = await imageUploaded(imagenBBDD.value);
+            const data = {
+               text: textName.value,
+               label: group.value[0],
+               imageBase64: imageBlob,
+               user: props.userId,
+            };
+            const response = await axios.post(
+               `${apiUrlWeb}api/ImageTable/`,
+               data,
+               {
+                  headers: {
+                     "Content-Type": "application/json", // Set the content type
+                  },
+               }
+            );
+            console.log("Image uploaded successfully:", response.data);
+         } catch (error) {
+            console.error("Error uploading picture:", error);
+         }
          textName.value = "";
          group.value[0] = 1;
          imagenBBDD.value = "";
-         //  getAllData();
+         getAllData();
       }
       async function getAllData() {
-        allData=allDataBB
-        //  axios
-        //     .get("http://127.0.0.1:8000/api/ImageTable/", {})
-        //     .then((response) => {
-        //        allData = response.data;
-        //        console.log("todo el array", allData);
-        //     })
-        //     .catch((error) => {
-        //        console.error("Error fetching data:", error);
-        //     });
+         axios
+            .get(`${apiUrlWeb}api/ImageTable/`, {})
+            .then((response) => {
+               allData = response.data;
+               console.log("todo el array", allData);
+            })
+            .catch((error) => {
+               console.error("Error fetching data:", error);
+            });
       }
       getAllData();
 
       async function getAllUsers() {
          axios
-            .get("http://127.0.0.1:8000/usuarios/", {})
+            .get(`${apiUrlWeb}usuarios/`, {})
             .then((response) => {
                allUsers = response.data;
                console.log("todo el array", allUsers);
