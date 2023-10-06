@@ -90,7 +90,7 @@ export default defineComponent({
         const response = await axios.get(`usuarios/`, {
       headers: {
         'Content-Type': 'application/json', // Set the Content-Type header
-        'ngrok-skip-browser-warning', '1231'
+        'ngrok-skip-browser-warning': '1231'
       },
     });
         this.users = response.data;
