@@ -81,11 +81,11 @@ export default defineComponent({
    },
  async mounted() {
    try {
-      const response = await axios.get(`${this.apiUrlWeb}usuarios/`);
-      this.users = response.data;
-      console.log(this.users);
+      const response = await axios.get(`${this.apiUrlWeb}usuarios/`)
+      this.users = response.data
+      console.log(this.users)
    } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching data:", error)
    }
 },
    methods: {
