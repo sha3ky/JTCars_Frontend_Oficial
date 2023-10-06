@@ -269,7 +269,6 @@ export default defineComponent({
 
       // Watch the 'group' variable for changes
       watch(group, (newValue, oldValue) => {
-         debugger;
          group.value.shift();
          console.log("group changed from", oldValue, "to", newValue);
          // You can perform any other actions here when the group changes
