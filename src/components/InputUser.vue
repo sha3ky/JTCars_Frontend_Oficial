@@ -59,7 +59,7 @@
 <script>
 import { defineComponent } from "vue";
 import axios from "axios";
-axios.defaults.baseURL = 'https://9b1d-37-158-136-4.ngrok-free.app'
+axios.defaults.baseURL = 'https://5eb0-37-158-136-4.ngrok-free.app/'
 
 // import { ref } from "vue";
 // import MainLayout from "src/layouts/MainLayout.vue";
