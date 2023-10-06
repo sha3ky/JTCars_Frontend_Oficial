@@ -80,18 +80,21 @@ export default defineComponent({
       };
    },
  async mounted() {
-  this.fetchUserData();
+  await  this.fetchUserData();
 },
    methods: {
      async fetchUserData() {
-      try {
-        console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
-        const response = await axios.get(`${this.apiUrlWeb}usuarios/?format=api`);
-        this.users = response.data;
-        console.log("Data received:", this.users);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
+  
+  // Return a Promise from the function
+  return axios.get(`${this.apiUrlWeb}usuarios/?format=api`)
+    .then(response => {
+      this.users = response.data;
+      console.log("Data received:", this.users);
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+    });
     },
       comprobarUsuario() {
          let contrasena, usuario;
