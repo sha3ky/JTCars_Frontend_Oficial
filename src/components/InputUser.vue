@@ -81,7 +81,7 @@ export default defineComponent({
    },
  async mounted() {
    try {
-      const response = await get(`${this.apiUrlWeb}usuarios/`);
+      const response = await axios.get(`${this.apiUrlWeb}usuarios/`);
       this.users = response.data;
       console.log(this.users);
    } catch (error) {
