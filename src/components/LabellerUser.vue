@@ -188,7 +188,7 @@ export default defineComponent({
       async function getAllData() {
          try {
             const response = await axios.get(
-               `${apiUrlWeb}api/ImageTable/?format=api`,
+               `${apiUrlWeb}api/ImageTable/`,
                {}
             );
             let filtered = response.data;
@@ -200,7 +200,7 @@ export default defineComponent({
       }
       async function getAllUsers() {
          axios
-            .get(`${apiUrlWeb}usuarios/?format=api`, {})
+            .get(`${apiUrlWeb}usuarios/`, {})
             .then((response) => {
                allUsers = response.data;
                console.log("users array", allUsers);
