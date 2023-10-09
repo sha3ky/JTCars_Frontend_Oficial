@@ -200,7 +200,12 @@ export default defineComponent({
       }
       async function getAllUsers() {
          axios
-            .get(`${apiUrlWeb}usuarios/`, {})
+            .get(`${apiUrlWeb}usuarios/`, {
+              headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': '69420',
+              },
+            })
             .then((response) => {
                allUsers = response.data;
                console.log("users array", allUsers);
