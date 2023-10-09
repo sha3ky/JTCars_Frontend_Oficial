@@ -189,7 +189,12 @@ export default defineComponent({
          try {
             const response = await axios.get(
                `${apiUrlWeb}api/ImageTable/`,
-               {}
+               {
+                 headers: {
+                  'Content-Type': 'application/json',
+                  'ngrok-skip-browser-warning': '69420',
+                },
+               }
             );
             let filtered = response.data;
             allData.value = filtered.filter((item) => item.label === "");
