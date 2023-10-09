@@ -247,7 +247,7 @@ export default defineComponent({
       const imageArray = ref([]);
       let usuario = ref("");
       let allData = [];
-      let dataImagenes;
+      let dataImagenes=[];
       let currentPic = 0;
       let labelDetail = ref("");
       let textoLabel = ref("");
