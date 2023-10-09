@@ -323,6 +323,11 @@ function checkDataAndInsert(value) {
     }    
      
      function leftPicture() {
+
+       if (!dataImagenes[currentPic]) {
+           console.error('No data for currentPic', currentPic);
+           return;
+        }
          currentPic =
             (currentPic - 1 + dataImagenes.length) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
@@ -334,6 +339,11 @@ function checkDataAndInsert(value) {
       }
 
       function rightPicture() {
+
+        if (!dataImagenes[currentPic]) {
+         console.error('No data for currentPic', currentPic);
+         return;
+          }
          currentPic = (currentPic + 1) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
          labelDetail.value = comprobarMask(currentPic, dataImagenes);
