@@ -71,7 +71,7 @@ export default defineComponent({
    },
    data() {
       return {
-         apiUrlWeb: "https://c34e-37-158-131-89.ngrok-free.app/",
+         apiUrlWeb: "https://b2d4-37-158-131-89.ngrok-free.app/",
          api: "http://127.0.0.1:8000/",
          correoInput: "", // Define correoInput data property
          contrasenaInput: "", // Define contrasenaInput data property
