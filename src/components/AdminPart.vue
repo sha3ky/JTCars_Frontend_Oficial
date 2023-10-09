@@ -353,7 +353,8 @@ export default defineComponent({
                data,
                {
                   headers: {
-                     "Content-Type": "application/json", // Set the content type
+                     "Content-Type": "application/json", 
+                    "ngrok-skip-browser-warning": "69420",
                   },
                }
             );
@@ -367,29 +368,38 @@ export default defineComponent({
          getAllData();
       }
       async function getAllData() {
-         axios
-            .get(`${apiUrlWeb}api/ImageTable/`, {})
-            .then((response) => {
-               allData = response.data;
-               console.log("todo el array", allData);
-            })
-            .catch((error) => {
-               console.error("Error fetching data:", error);
-            });
-      }
+            try {
+              const response = await axios.get(`${apiUrlWeb}api/ImageTable/`, {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'ngrok-skip-browser-warning': '69420',
+                },
+              });
+          
+              const allData = response.data;
+              console.log('todo el array', allData);
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            }
+          }
       getAllData();
 
-      async function getAllUsers() {
-         axios
-            .get(`${apiUrlWeb}usuarios/`, {})
-            .then((response) => {
-               allUsers = response.data;
-               console.log("todo el array", allUsers);
-            })
-            .catch((error) => {
-               console.error("Error fetching data:", error);
-            });
-      }
+    async function getAllUsers() {
+        try {
+          const response = await axios.get(`${apiUrlWeb}usuarios/`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': '69420',
+            },
+          });
+      
+          const allUsers = response.data;
+          console.log('todo el array', allUsers);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    }
+
       getAllUsers();
 
       function downloadPicture() {
