@@ -7,7 +7,7 @@
          height: 55vh;
       "
    >
-      <div class="q-gutter-y-md" style="max-width: 600px">
+      <div class="q-gutter-y-md" style="max-width: 600px; padding: 5px">
          <q-card>
             <q-tabs
                v-model="tab"
