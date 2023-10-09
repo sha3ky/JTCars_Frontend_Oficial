@@ -188,7 +188,7 @@ export default defineComponent({
       async function getAllData() {
          try {
             const response = await axios.get(
-               `${apiUrlWeb}api/ImageTable/`,
+               `api/ImageTable/`,
                {
                  headers: {
                   'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ export default defineComponent({
       }
       async function getAllUsers() {
          axios
-            .get(`${apiUrlWeb}usuarios/`, {
+            .get(`usuarios/`, {
               headers: {
                 'Content-Type': 'application/json',
                 'ngrok-skip-browser-warning': '69420',
