@@ -84,47 +84,25 @@ export default defineComponent({
   await  this.fetchUserData();
 },
    methods: {
-    //  async fetchUserData() {
-    //   try {
-    //     console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
-    //     const response = await axios.get(`usuarios/`, {
-    //   headers: {
-    //   // 'Content-Type': 'application/json', // Set the Content-Type header
-    //   // 'ngrok-skip-browser-warning': '1231',
-    //   // 'access-control-allow-origin': '*',
-    //   // 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    //   // 'Access-Control-Allow-Methods': '*',
-    //   },
-    // });
-    //     this.users = response.data;
-    //     console.log("Data received:", this.users);
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //   }
-    // },
-      fetchUserData: function() {
-        var xhr = new XMLHttpRequest();
-        var apiUrlWeb = this.apiUrlWeb;  // Assuming this is defined in your context
-        xhr.open('GET', `${apiUrlWeb}usuarios/`, true);
-        // Uncomment below lines if you need to set any headers
-        // xhr.setRequestHeader('Content-Type', 'application/json');
-        // xhr.setRequestHeader('ngrok-skip-browser-warning', '1231');
-        // xhr.setRequestHeader('access-control-allow-origin', '*');
-        // xhr.setRequestHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        // xhr.setRequestHeader('Access-Control-Allow-Methods', '*');
-        xhr.onload = function() {
-            if (xhr.status >= 200 && xhr.status < 400) {
-                this.users = JSON.parse(xhr.responseText);
-                console.log("Data received:", this.users);
-            } else {
-                console.error("Error fetching data: Server returned status", xhr.status);
-            }
-        }.bind(this); // Binding the callback to the current context so that `this.users` refers to the correct scope
-        xhr.onerror = function() {
-            console.error("Network error occurred.");
-        };
-        xhr.send();
+     async fetchUserData() {
+      try {
+        console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
+        const response = await axios.get(`usuarios/`, {
+      headers: {
+       'Content-Type': 'application/json', 
+        "ngrok-skip-browser-warning": "69420",
+      // 'access-control-allow-origin': '*',
+      // 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      // 'Access-Control-Allow-Methods': '*',
+      },
+    });
+        this.users = response.data;
+        console.log("Data received:", this.users);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     },
+  
       comprobarUsuario() {
          let contrasena, usuario;
          usuario = this.users.filter(
