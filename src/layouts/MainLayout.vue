@@ -5,7 +5,7 @@
             <q-toolbar-title> Test FullStack con Quasar </q-toolbar-title>
          </q-toolbar>
       </q-header>
-      <q-page-container>
+      <q-page-container style="padding-top: 100px">
          <q-page v-if="showLogin == true">
             <router-view />
             <InputUser
@@ -20,7 +20,7 @@
                @show-login-updated="updateShowLogin"
                :show-login="showLogin"
                :user-id="userId"
-                @user-admin="updateAdmin"
+               @user-admin="updateAdmin"
             />
          </q-page>
          <q-page v-if="showLogin === false && userIsAdmin === false">
@@ -60,18 +60,14 @@ export default defineComponent({
          console.log(this.showLogin);
       },
       updateUserId(userId) {
-
          // Receive the 'userId' emitted from InputUser component
          this.userId = userId;
       },
       updateAdmin(value) {
-
          this.userIsAdmin = value;
       },
    },
-   mounted() {
-
-   },
+   mounted() {},
    components: {
       //EssentialLink,
       InputUser,

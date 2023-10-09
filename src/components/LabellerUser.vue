@@ -7,8 +7,8 @@
          height: 55vh;
       "
    >
-      <div class="q-gutter-y-md" style="min-width: 500px">
-         <q-card>
+      <div class="q-gutter-y-md" style="">
+         <q-card style="padding: 25px">
             <div class="row">
                <div class="col">
                   <div class="q-pa-md q-gutter-sm">
@@ -82,7 +82,7 @@
 <script>
 import { defineComponent, watch, ref, onMounted } from "vue";
 import axios from "axios";
-axios.defaults.baseURL = 'https://b2d4-37-158-131-89.ngrok-free.app/'
+axios.defaults.baseURL = "https://b2d4-37-158-131-89.ngrok-free.app/";
 export default defineComponent({
    name: "LabbelerUser",
    props: {
@@ -91,8 +91,8 @@ export default defineComponent({
       userIsAdmin: Boolean,
    },
    setup(props) {
-      const apiUrlWeb = "https://b2d4-37-158-131-89.ngrok-free.app/"
-      const api="http://127.0.0.1:8000/"
+      const apiUrlWeb = "https://b2d4-37-158-131-89.ngrok-free.app/";
+      const api = "http://127.0.0.1:8000/";
       let imagenBBDD;
       const textName = ref("");
       const previewUrl = ref("");
@@ -120,7 +120,7 @@ export default defineComponent({
       });
       watch(allData, (newValue, oldValue) => {
          console.log("group changed from", oldValue, "to", newValue);
-         if (allData.value.length !=0) {
+         if (allData.value.length != 0) {
             if (newValue.length != oldValue.length) {
                currentPic = 0;
                insertValue(allData.value);
@@ -149,6 +149,10 @@ export default defineComponent({
          textoLabel.value = "";
       }
       function leftPicture() {
+         if (!dataImagenes[currentPic]) {
+            console.error("No data for currentPic", currentPic);
+            return;
+         }
          currentPic =
             (currentPic - 1 + dataImagenes.length) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
@@ -157,6 +161,10 @@ export default defineComponent({
       }
 
       function rightPicture() {
+         if (!dataImagenes[currentPic]) {
+            console.error("No data for currentPic", currentPic);
+            return;
+         }
          currentPic = (currentPic + 1) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
          labelDetail.value = comprobarMask(currentPic, dataImagenes);
@@ -187,15 +195,12 @@ export default defineComponent({
       }
       async function getAllData() {
          try {
-            const response = await axios.get(
-               `api/ImageTable/`,
-               {
-                 headers: {
-                  'Content-Type': 'application/json',
-                  'ngrok-skip-browser-warning': '69420',
-                },
-               }
-            );
+            const response = await axios.get(`api/ImageTable/`, {
+               headers: {
+                  "Content-Type": "application/json",
+                  "ngrok-skip-browser-warning": "69420",
+               },
+            });
             let filtered = response.data;
             allData.value = filtered.filter((item) => item.label === "");
             console.log("value array", allData);
@@ -206,10 +211,10 @@ export default defineComponent({
       async function getAllUsers() {
          axios
             .get(`usuarios/`, {
-              headers: {
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': '69420',
-              },
+               headers: {
+                  "Content-Type": "application/json",
+                  "ngrok-skip-browser-warning": "69420",
+               },
             })
             .then((response) => {
                allUsers = response.data;

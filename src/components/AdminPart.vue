@@ -18,13 +18,13 @@
                align="justify"
                narrow-indicator
             >
-               <q-tab name="general" label="General" style="width: 200px" />
-               <q-tab name="done" label="Done" style="width: 200px" />
-               <q-tab name="pending" label="Pending" style="width: 200px" />
+               <q-tab name="general" label="General" style="" />
+               <q-tab name="done" label="Done" style="" />
+               <q-tab name="pending" label="Pending" style="" />
             </q-tabs>
             <q-separator />
 
-            <q-tab-panels v-model="tab" animated style="height: 317px">
+            <q-tab-panels v-model="tab" animated style="">
                <!-- general tab -->
                <q-tab-panel name="general">
                   <div class="text-h6">Labels:</div>
@@ -226,7 +226,7 @@
 <script>
 import { defineComponent, watch, ref } from "vue";
 import axios from "axios";
-axios.defaults.baseURL = 'https://b2d4-37-158-131-89.ngrok-free.app/'
+axios.defaults.baseURL = "https://b2d4-37-158-131-89.ngrok-free.app/";
 
 export default defineComponent({
    name: "AdminPart",
@@ -236,8 +236,8 @@ export default defineComponent({
    },
 
    setup(props) {
-      const apiUrlWeb = "https://b2d4-37-158-131-89.ngrok-free.app/"
-      const api="http://127.0.0.1:8000/"
+      const apiUrlWeb = "https://b2d4-37-158-131-89.ngrok-free.app/";
+      const api = "http://127.0.0.1:8000/";
       const tab = ref("general");
       const group = ref(["1"]);
       const textName = ref("");
@@ -247,7 +247,7 @@ export default defineComponent({
       const imageArray = ref([]);
       let usuario = ref("");
       let allData = [];
-      let dataImagenes=[];
+      let dataImagenes = [];
       let currentPic = 0;
       let labelDetail = ref("");
       let textoLabel = ref("");
@@ -255,7 +255,7 @@ export default defineComponent({
       const options = [
          { label: "with Mask", value: "1" },
          { label: "without Mask", value: "0" },
-         { label: "No specified", value: '' },
+         { label: "No specified", value: "" },
       ];
       // let imageArrayPending = [];
 
@@ -268,7 +268,6 @@ export default defineComponent({
          }
       );
 
-      
       watch(group, (newValue, oldValue) => {
          group.value.shift();
          console.log("group changed from", oldValue, "to", newValue);
@@ -281,42 +280,43 @@ export default defineComponent({
          console.log("group changed from", oldValue, "to", newValue);
          // You can perform any other actions here when the group changes
       });
-     
-     watch(tab, async (newValue, oldValue) => {
-    currentPic = 0;
-    checkDataAndInsert(newValue);
-    console.log("tab changed from", oldValue, "to", newValue);
-    });
 
+      watch(tab, async (newValue, oldValue) => {
+         currentPic = 0;
+         checkDataAndInsert(newValue);
+         console.log("tab changed from", oldValue, "to", newValue);
+      });
 
-    function checkDataAndInsert(value) {
-          if (allData.length === 0) {
-              // No data yet, check again after a delay
-              setTimeout(() => checkDataAndInsert(value), 2000);
-              return;
-          }
-      
-          if (value === "done") {
-              dataImagenes = allData.filter(item => item.label === "0" || item.label === "1");
-          } else if (value === "pending") {
-              dataImagenes = allData.filter(item => item.label === "");
-          }
-      
-          if (dataImagenes && dataImagenes.length > 0) {
-              insertValue(dataImagenes);
-          } else {
-              // No matching images, decide how you want to handle this scenario.
-            console.log('error')
-          }
-    }
+      function checkDataAndInsert(value) {
+         if (allData.length === 0) {
+            // No data yet, check again after a delay
+            setTimeout(() => checkDataAndInsert(value), 2000);
+            return;
+         }
 
-     
-     function leftPicture() {
+         if (value === "done") {
+            dataImagenes = allData.filter(
+               (item) => item.label === "0" || item.label === "1"
+            );
+         } else if (value === "pending") {
+            dataImagenes = allData.filter((item) => item.label === "");
+         }
 
-       if (!dataImagenes[currentPic]) {
-           console.error('No data for currentPic', currentPic);
-           return;
-        }
+         if (dataImagenes && dataImagenes.length > 0) {
+            insertValue(dataImagenes);
+         } else {
+            // No matching images, decide how you want to handle this scenario.
+            imageArray.value = [];
+            textoLabel.value = "";
+            usuario.value = "";
+         }
+      }
+
+      function leftPicture() {
+         if (!dataImagenes[currentPic]) {
+            console.error("No data for currentPic", currentPic);
+            return;
+         }
          currentPic =
             (currentPic - 1 + dataImagenes.length) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
@@ -328,11 +328,10 @@ export default defineComponent({
       }
 
       function rightPicture() {
-
-        if (!dataImagenes[currentPic]) {
-         console.error('No data for currentPic', currentPic);
-         return;
-          }
+         if (!dataImagenes[currentPic]) {
+            console.error("No data for currentPic", currentPic);
+            return;
+         }
          currentPic = (currentPic + 1) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
          labelDetail.value = comprobarMask(currentPic, dataImagenes);
@@ -370,16 +369,12 @@ export default defineComponent({
                imageBase64: imageBlob,
                user: props.userId,
             };
-            const response = await axios.post(
-               `api/ImageTable/`,
-               data,
-               {
-                  headers: {
-                     "Content-Type": "application/json", 
-                    "ngrok-skip-browser-warning": "69420",
-                  },
-               }
-            );
+            const response = await axios.post(`api/ImageTable/`, data, {
+               headers: {
+                  "Content-Type": "application/json",
+                  "ngrok-skip-browser-warning": "69420",
+               },
+            });
             console.log("Image uploaded successfully:", response.data);
          } catch (error) {
             console.error("Error uploading picture:", error);
@@ -390,38 +385,37 @@ export default defineComponent({
          getAllData();
       }
       async function getAllData() {
-            try {
-              const response = await axios.get(`api/ImageTable/`, {
-                headers: {
-                  'Content-Type': 'application/json',
-                  'ngrok-skip-browser-warning': '69420',
-                },
-              });
-          
-              const allData = response.data;
-              console.log('todo el array', allData);
-            } catch (error) {
-              console.error('Error fetching data:', error);
-            }
-          }
+         try {
+            const response = await axios.get(`api/ImageTable/`, {
+               headers: {
+                  "Content-Type": "application/json",
+                  "ngrok-skip-browser-warning": "69420",
+               },
+            });
+
+            allData = response.data;
+            console.log("array data", allData);
+         } catch (error) {
+            console.error("Error fetching data:", error);
+         }
+      }
       getAllData();
 
-    async function getAllUsers() {
-        try {
-          const response = await axios.get(`usuarios/`, {
-            headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': '69420',
-            },
-          });
-      
-          const allUsers = response.data;
-          console.log('todo el array', allUsers);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-    }
+      async function getAllUsers() {
+         try {
+            const response = await axios.get(`usuarios/`, {
+               headers: {
+                  "Content-Type": "application/json",
+                  "ngrok-skip-browser-warning": "69420",
+               },
+            });
 
+            allUsers = response.data;
+            console.log("array users", allUsers);
+         } catch (error) {
+            console.error("Error fetching data:", error);
+         }
+      }
       getAllUsers();
 
       function downloadPicture() {
