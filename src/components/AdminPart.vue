@@ -283,44 +283,33 @@ export default defineComponent({
       });
      
      watch(tab, async (newValue, oldValue) => {
-        if (tab.value == "done") {
-            currentPic = 0;
-            dataImagenes = allData.filter(
-                (item) => item.label === "0" || item.label === "1"
-            );
-            if (dataImagenes && dataImagenes.length) {
-                insertValue(dataImagenes);
-            } else {
-                setTimeout(() => checkDataAndInsert("done"), 2000);
-            }
-        } else if (tab.value == "pending") {
-            currentPic = 0;
-            dataImagenes = allData.filter((item) => item.label === "");
-            if (dataImagenes && dataImagenes.length) {
-                insertValue(dataImagenes);
-            } else {
-                setTimeout(() => checkDataAndInsert("pending"), 2000);
-            }
-        }
-        console.log("group changed from", oldValue, "to", newValue);
-        // You can perform any other actions here when the group changes
+    currentPic = 0;
+    checkDataAndInsert(newValue);
+    console.log("tab changed from", oldValue, "to", newValue);
     });
 
-function checkDataAndInsert(value) {
-          if (value == "done") {
-              dataImagenes = allData.filter(
-                  (item) => item.label === "0" || item.label === "1"
-              );
-          } else if (value == "pending") {
-              dataImagenes = allData.filter((item) => item.label === "");
+
+    function checkDataAndInsert(value) {
+          if (allData.length === 0) {
+              // No data yet, check again after a delay
+              setTimeout(() => checkDataAndInsert(value), 2000);
+              return;
           }
       
-          if (dataImagenes && dataImagenes.length) {
+          if (value === "done") {
+              dataImagenes = allData.filter(item => item.label === "0" || item.label === "1");
+          } else if (value === "pending") {
+              dataImagenes = allData.filter(item => item.label === "");
+          }
+      
+          if (dataImagenes && dataImagenes.length > 0) {
               insertValue(dataImagenes);
           } else {
-              setTimeout(() => checkDataAndInsert(value), 2000);
+              // No matching images, decide how you want to handle this scenario.
+            console.log('error')
           }
-    }    
+    }
+
      
      function leftPicture() {
 
