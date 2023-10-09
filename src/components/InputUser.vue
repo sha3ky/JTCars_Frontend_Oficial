@@ -89,11 +89,11 @@ export default defineComponent({
         console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
         const response = await axios.get(`usuarios/`, {
       headers: {
-        'Content-Type': 'application/json', // Set the Content-Type header
-        // 'ngrok-skip-browser-warning': '1231',
-      'access-control-allow-origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Allow-Methods': '*',
+      // 'Content-Type': 'application/json', // Set the Content-Type header
+      // 'ngrok-skip-browser-warning': '1231',
+      // 'access-control-allow-origin': '*',
+      // 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      // 'Access-Control-Allow-Methods': '*',
       },
     });
         this.users = response.data;
