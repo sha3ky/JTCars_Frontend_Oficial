@@ -350,7 +350,7 @@ export default defineComponent({
                user: props.userId,
             };
             const response = await axios.post(
-               `${apiUrlWeb}api/ImageTable/`,
+               `api/ImageTable/`,
                data,
                {
                   headers: {
