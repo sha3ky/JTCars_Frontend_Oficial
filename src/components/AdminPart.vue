@@ -226,6 +226,7 @@
 <script>
 import { defineComponent, watch, ref } from "vue";
 import axios from "axios";
+axios.defaults.baseURL = 'https://b2d4-37-158-131-89.ngrok-free.app/'
 
 export default defineComponent({
    name: "AdminPart",
