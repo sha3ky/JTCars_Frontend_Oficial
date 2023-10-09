@@ -268,11 +268,10 @@ export default defineComponent({
          }
       );
 
-      // Watch the 'group' variable for changes
+      
       watch(group, (newValue, oldValue) => {
          group.value.shift();
          console.log("group changed from", oldValue, "to", newValue);
-         // You can perform any other actions here when the group changes
       });
       watch(textName, (newValue, oldValue) => {
          console.log("group changed from", oldValue, "to", newValue);
@@ -282,25 +281,48 @@ export default defineComponent({
          console.log("group changed from", oldValue, "to", newValue);
          // You can perform any other actions here when the group changes
       });
-      watch(tab, (newValue, oldValue) => {
-         if (tab.value == "done") {
+     
+     watch(tab, async (newValue, oldValue) => {
+        if (tab.value == "done") {
             currentPic = 0;
             dataImagenes = allData.filter(
-               (item) => item.label === "0" || item.label === "1"
+                (item) => item.label === "0" || item.label === "1"
             );
-            dataImagenes ? insertValue(dataImagenes) : "";
-         } else if (tab.value == "pending") {
+            if (dataImagenes && dataImagenes.length) {
+                insertValue(dataImagenes);
+            } else {
+                setTimeout(() => checkDataAndInsert("done"), 2000);
+            }
+        } else if (tab.value == "pending") {
             currentPic = 0;
             dataImagenes = allData.filter((item) => item.label === "");
-            dataImagenes ? insertValue(dataImagenes) : "";
-         }
-         console.log("group changed from", oldValue, "to", newValue);
-         // You can perform any other actions here when the group changes
-      });
+            if (dataImagenes && dataImagenes.length) {
+                insertValue(dataImagenes);
+            } else {
+                setTimeout(() => checkDataAndInsert("pending"), 2000);
+            }
+        }
+        console.log("group changed from", oldValue, "to", newValue);
+        // You can perform any other actions here when the group changes
+    });
 
-
-
-      function leftPicture() {
+function checkDataAndInsert(value) {
+          if (value == "done") {
+              dataImagenes = allData.filter(
+                  (item) => item.label === "0" || item.label === "1"
+              );
+          } else if (value == "pending") {
+              dataImagenes = allData.filter((item) => item.label === "");
+          }
+      
+          if (dataImagenes && dataImagenes.length) {
+              insertValue(dataImagenes);
+          } else {
+              setTimeout(() => checkDataAndInsert(value), 2000);
+          }
+    }    
+     
+     function leftPicture() {
          currentPic =
             (currentPic - 1 + dataImagenes.length) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
