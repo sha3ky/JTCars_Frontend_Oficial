@@ -224,9 +224,12 @@
 </template>
 
 <script>
-import { defineComponent, watch, ref } from "vue";
+import { defineComponent, watch, ref, onMounted } from "vue";
 import axios from "axios";
-axios.defaults.baseURL = "https://b2d4-37-158-131-89.ngrok-free.app/";
+import apiLink from "../composable/apiLink";
+import fetchUserData from "../composable/users";
+import getAllData from "../composable/data";
+import comprobarmask from "../composable/comprobarmask";
 
 export default defineComponent({
    name: "AdminPart",
@@ -236,8 +239,7 @@ export default defineComponent({
    },
 
    setup(props) {
-      const apiUrlWeb = "https://b2d4-37-158-131-89.ngrok-free.app/";
-      const api = "http://127.0.0.1:8000/";
+      const link = apiLink;
       const tab = ref("general");
       const group = ref(["1"]);
       const textName = ref("");
@@ -246,66 +248,46 @@ export default defineComponent({
       let documentsCSV = "";
       const imageArray = ref([]);
       let usuario = ref("");
-      let allData = [];
       let dataImagenes = [];
       let currentPic = 0;
       let labelDetail = ref("");
       let textoLabel = ref("");
-      let allUsers = [];
+      const allUsers = ref([]);
+      const allData = ref([]);
       const options = [
          { label: "with Mask", value: "1" },
          { label: "without Mask", value: "0" },
          { label: "No specified", value: "" },
       ];
-      // let imageArrayPending = [];
 
-      // Watch the 'showLogin' prop for changes
-      watch(
-         () => props.showLogin,
-         (newValue, oldValue) => {
-            console.log("showLogin changed from", oldValue, "to", newValue);
-            // You can perform any other actions here when the prop changes
-         }
-      );
-
+      onMounted(async () => {
+         allUsers.value = await fetchUserData();
+         allData.value = await getAllData();
+      });
       watch(group, (newValue, oldValue) => {
          group.value.shift();
          console.log("group changed from", oldValue, "to", newValue);
       });
-      watch(textName, (newValue, oldValue) => {
-         console.log("group changed from", oldValue, "to", newValue);
-         // You can perform any other actions here when the group changes
-      });
-      watch(imagenBBDD, (newValue, oldValue) => {
-         console.log("group changed from", oldValue, "to", newValue);
-         // You can perform any other actions here when the group changes
-      });
-
       watch(tab, async (newValue, oldValue) => {
          currentPic = 0;
          checkDataAndInsert(newValue);
          console.log("tab changed from", oldValue, "to", newValue);
       });
-
       function checkDataAndInsert(value) {
-         if (allData.length === 0) {
-            // No data yet, check again after a delay
+         if (allData.value.length === 0) {
             setTimeout(() => checkDataAndInsert(value), 2000);
             return;
          }
-
          if (value === "done") {
-            dataImagenes = allData.filter(
+            dataImagenes = allData.value.filter(
                (item) => item.label === "0" || item.label === "1"
             );
          } else if (value === "pending") {
-            dataImagenes = allData.filter((item) => item.label === "");
+            dataImagenes = allData.value.filter((item) => item.label === "");
          }
-
          if (dataImagenes && dataImagenes.length > 0) {
             insertValue(dataImagenes);
          } else {
-            // No matching images, decide how you want to handle this scenario.
             imageArray.value = [];
             textoLabel.value = "";
             usuario.value = "";
@@ -314,50 +296,40 @@ export default defineComponent({
 
       function leftPicture() {
          if (!dataImagenes[currentPic]) {
-            console.error("No data for currentPic", currentPic);
+            console.error("No data for leftPic", currentPic);
             return;
          }
          currentPic =
             (currentPic - 1 + dataImagenes.length) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
-         labelDetail.value = comprobarMask(currentPic, dataImagenes);
+         labelDetail.value = comprobarmask(currentPic, dataImagenes);
          textoLabel.value = dataImagenes[currentPic].text;
-         usuario.value = allUsers.filter(
+         usuario.value = allUsers.value.filter(
             (item) => item.id == dataImagenes[currentPic].user
          )[0].nombre;
       }
 
       function rightPicture() {
          if (!dataImagenes[currentPic]) {
-            console.error("No data for currentPic", currentPic);
+            console.error("No data for rightPic", currentPic);
             return;
          }
          currentPic = (currentPic + 1) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
-         labelDetail.value = comprobarMask(currentPic, dataImagenes);
+         labelDetail.value = comprobarmask(currentPic, dataImagenes);
          textoLabel.value = dataImagenes[currentPic].text;
-         usuario.value = allUsers.filter(
+         usuario.value = allUsers.value.filter(
             (item) => item.id == dataImagenes[currentPic].user
          )[0].nombre;
       }
 
       function insertValue(items) {
-         //  const filteredData = allData.filter((item) => item.label === "1");
-         //  dataImagenes = allData;
          imageArray.value = items[0].imageBase64;
-         labelDetail.value = comprobarMask(currentPic, items);
+         labelDetail.value = comprobarmask(currentPic, items);
          textoLabel.value = items[0].text;
-         usuario.value = allUsers.filter(
+         usuario.value = allUsers.value.filter(
             (item) => item.id == items[currentPic].user
          )[0].nombre;
-      }
-
-      function comprobarMask(currentPic, dataImagenes) {
-         return dataImagenes[currentPic].label == ""
-            ? "sin label"
-            : dataImagenes[currentPic].label * 1 == 1
-            ? "with Mask"
-            : "whitout mask";
       }
 
       async function uploadPicture() {
@@ -369,10 +341,9 @@ export default defineComponent({
                imageBase64: imageBlob,
                user: props.userId,
             };
-            const response = await axios.post(`api/ImageTable/`, data, {
+            const response = await axios.post(`${link}api/ImageTable/`, data, {
                headers: {
                   "Content-Type": "application/json",
-                  "ngrok-skip-browser-warning": "69420",
                },
             });
             console.log("Image uploaded successfully:", response.data);
@@ -384,42 +355,11 @@ export default defineComponent({
          imagenBBDD.value = "";
          getAllData();
       }
-      async function getAllData() {
-         try {
-            const response = await axios.get(`api/ImageTable/`, {
-               headers: {
-                  "Content-Type": "application/json",
-                  "ngrok-skip-browser-warning": "69420",
-               },
-            });
-
-            allData = response.data;
-            console.log("array data", allData);
-         } catch (error) {
-            console.error("Error fetching data:", error);
-         }
-      }
-      getAllData();
-
-      async function getAllUsers() {
-         try {
-            const response = await axios.get(`usuarios/`, {
-               headers: {
-                  "Content-Type": "application/json",
-                  "ngrok-skip-browser-warning": "69420",
-               },
-            });
-
-            allUsers = response.data;
-            console.log("array users", allUsers);
-         } catch (error) {
-            console.error("Error fetching data:", error);
-         }
-      }
-      getAllUsers();
 
       function downloadPicture() {
-         const filteredData = allData.filter((item) => item.label === "1");
+         const filteredData = allData.value.filter(
+            (item) => item.label === "1"
+         );
          const newArray = filteredData.map(
             ({ imageBase64, ...keepAttrs }) => keepAttrs
          );
@@ -526,14 +466,13 @@ export default defineComponent({
          textName,
          imagenBBDD,
          previewUrl,
-         allData,
          imageArray,
          usuario,
          labelDetail,
          textoLabel,
-         allUsers,
          dataImagenes,
-
+         allUsers,
+         allData,
          //functions
          uploadPicture,
          downloadPicture,
@@ -542,10 +481,8 @@ export default defineComponent({
          exportToCsv,
          leftPicture,
          rightPicture,
-         getAllData,
          insertValue,
-         getAllUsers,
-         comprobarMask,
+         comprobarmask,
          returnLogin,
       };
    },

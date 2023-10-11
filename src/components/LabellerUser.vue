@@ -82,7 +82,12 @@
 <script>
 import { defineComponent, watch, ref, onMounted } from "vue";
 import axios from "axios";
-axios.defaults.baseURL = "https://b2d4-37-158-131-89.ngrok-free.app/";
+import apiLink from "../composable/apiLink";
+import fetchUserData from "../composable/users";
+import getAllData from "../composable/data";
+import comprobarmask from "../composable/comprobarmask";
+
+// axios.defaults.baseURL = "https://b2d4-37-158-131-89.ngrok-free.app/";
 export default defineComponent({
    name: "LabbelerUser",
    props: {
@@ -91,32 +96,25 @@ export default defineComponent({
       userIsAdmin: Boolean,
    },
    setup(props) {
-      const apiUrlWeb = "https://b2d4-37-158-131-89.ngrok-free.app/";
-      const api = "http://127.0.0.1:8000/";
+      // const apiUrlWeb = "https://b2d4-37-158-131-89.ngrok-free.app/";
+      const api = apiLink;
       let imagenBBDD;
       const textName = ref("");
       const previewUrl = ref("");
       const imageArray = ref("");
       let usuario = ref("");
-      let allData = ref([]);
       let dataImagenes;
       let currentPic = 0;
       let labelDetail = ref("");
       let textoLabel = ref("");
-      let allUsers = [];
       let shape = ref(false);
       let objToBBDD = {};
+      const allUsers = ref([]);
+      const allData = ref([]);
 
-      watch(
-         () => props.showLogin,
-         (newValue, oldValue) => {
-            console.log("showLogin changed from", oldValue, "to", newValue);
-            // You can perform any other actions here when the prop changes
-         }
-      );
       onMounted(async () => {
-         await getAllData();
-         await getAllUsers();
+         allUsers.value = await fetchUserData();
+         allData.value = await getAllData();
       });
       watch(allData, (newValue, oldValue) => {
          console.log("group changed from", oldValue, "to", newValue);
@@ -156,7 +154,7 @@ export default defineComponent({
          currentPic =
             (currentPic - 1 + dataImagenes.length) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
-         labelDetail.value = comprobarMask(currentPic, dataImagenes);
+         labelDetail.value = comprobarmask(currentPic, dataImagenes);
          textoLabel.value = dataImagenes[currentPic].text;
       }
 
@@ -167,7 +165,7 @@ export default defineComponent({
          }
          currentPic = (currentPic + 1) % dataImagenes.length;
          imageArray.value = dataImagenes[currentPic].imageBase64;
-         labelDetail.value = comprobarMask(currentPic, dataImagenes);
+         labelDetail.value = comprobarmask(currentPic, dataImagenes);
          textoLabel.value = dataImagenes[currentPic].text;
          shape.value = dataImagenes[currentPic].label;
          if (Object.keys(objToBBDD).length !== 0) {
@@ -180,50 +178,13 @@ export default defineComponent({
             dataImagenes = allData.value;
             shape.value = items[0].label;
             imageArray.value = items[0].imageBase64;
-            labelDetail.value = comprobarMask(currentPic, items);
+            labelDetail.value = comprobarmask(currentPic, items);
             textoLabel.value = items[0].text;
          } else {
             deleteAllfields();
          }
       }
-      function comprobarMask(currentPic, dataImagenes) {
-         return dataImagenes[currentPic].label == ""
-            ? "sin label"
-            : dataImagenes[currentPic].label * 1 == 1
-            ? "with Mask"
-            : "whiteout mask";
-      }
-      async function getAllData() {
-         try {
-            const response = await axios.get(`api/ImageTable/`, {
-               headers: {
-                  "Content-Type": "application/json",
-                  "ngrok-skip-browser-warning": "69420",
-               },
-            });
-            let filtered = response.data;
-            allData.value = filtered.filter((item) => item.label === "");
-            console.log("value array", allData);
-         } catch (error) {
-            console.error("Error fetching data:", error);
-         }
-      }
-      async function getAllUsers() {
-         axios
-            .get(`usuarios/`, {
-               headers: {
-                  "Content-Type": "application/json",
-                  "ngrok-skip-browser-warning": "69420",
-               },
-            })
-            .then((response) => {
-               allUsers = response.data;
-               console.log("users array", allUsers);
-            })
-            .catch((error) => {
-               console.error("Error fetching data:", error);
-            });
-      }
+
       async function updateLabel(userId, pictureId, newLabel) {
          const url = `${apiUrlWeb}api/ImageTable/${pictureId}/`;
          const data = {

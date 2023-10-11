@@ -55,14 +55,10 @@
    </q-page>
 </template>
 
-<style></style>
 <script>
 import { defineComponent } from "vue";
-import axios from "axios";
-axios.defaults.baseURL = 'https://b2d4-37-158-131-89.ngrok-free.app/'
-
-// import { ref } from "vue";
-// import MainLayout from "src/layouts/MainLayout.vue";
+import apiLink from "../composable/apiLink";
+import fetchUserData from "../composable/users";
 
 export default defineComponent({
    name: "InputUser",
@@ -71,38 +67,18 @@ export default defineComponent({
    },
    data() {
       return {
-         apiUrlWeb: "https://b2d4-37-158-131-89.ngrok-free.app/",
-         api: "http://127.0.0.1:8000/",
-         correoInput: "", // Define correoInput data property
-         contrasenaInput: "", // Define contrasenaInput data property
+         api: apiLink,
+         correoInput: "",
+         contrasenaInput: "",
          users: [],
          colorEmail: "red",
          colorPass: "red",
       };
    },
- async mounted() {
-  await  this.fetchUserData();
-},
+   async mounted() {
+      this.users = await fetchUserData();
+   },
    methods: {
-     async fetchUserData() {
-      try {
-        console.log("Fetching data from:", `${this.apiUrlWeb}usuarios/`);
-        const response = await axios.get(`usuarios/`, {
-      headers: {
-       'Content-Type': 'application/json', 
-        "ngrok-skip-browser-warning": "69420",
-      // 'access-control-allow-origin': '*',
-      // 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      // 'Access-Control-Allow-Methods': '*',
-      },
-    });
-        this.users = response.data;
-        console.log("Data received:", this.users);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    },
-  
       comprobarUsuario() {
          let contrasena, usuario;
          usuario = this.users.filter(
