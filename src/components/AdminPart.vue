@@ -7,7 +7,7 @@
          height: 55vh;
       "
    >
-      <div class="q-gutter-y-md" style="max-width: 600px; padding: 5px">
+      <div class="q-gutter-y-md" style="min-width: 50%; padding: 5px">
          <q-card>
             <q-tabs
                v-model="tab"
@@ -81,7 +81,7 @@
                            <p>Data:</p>
                         </div>
                      </div>
-                     <div class="col" style="max-width: 130px">
+                     <div class="col" style="min-width: 130px">
                         <div class="q-pa-lg">
                            <q-btn
                               color="primary"
@@ -91,7 +91,7 @@
                            </q-btn>
                         </div>
                      </div>
-                     <div class="col" style="max-width: 130px">
+                     <div class="col" style="min-width: 130px">
                         <div class="q-pa-lg">
                            <q-btn
                               color="green"
@@ -482,7 +482,6 @@ export default defineComponent({
          leftPicture,
          rightPicture,
          insertValue,
-         comprobarmask,
          returnLogin,
       };
    },

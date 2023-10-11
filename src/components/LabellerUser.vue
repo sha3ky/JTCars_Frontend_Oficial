@@ -7,7 +7,7 @@
          height: 55vh;
       "
    >
-      <div class="q-gutter-y-md" style="">
+      <div class="q-gutter-y-md" style="min-width: 50%">
          <q-card style="padding: 25px">
             <div class="row">
                <div class="col">
@@ -220,8 +220,6 @@ export default defineComponent({
          rightPicture,
          getAllData,
          insertValue,
-         getAllUsers,
-         comprobarMask,
          updateLabel,
          returnLogin,
       };
