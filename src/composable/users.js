@@ -8,6 +8,7 @@ const fetchUserData = async () => {
       const response = await axios.get(`${link}usuarios/`, {
          headers: {
             "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "69420",
          },
       });
       users = response.data;
