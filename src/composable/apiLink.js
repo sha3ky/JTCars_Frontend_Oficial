@@ -1,3 +1,3 @@
 //const apiLink = "http://127.0.0.1:8000/";
-const apiLink = "https://33e1-2-142-34-109.ngrok-free.app/";
+const apiLink = "https://b6d6-37-158-178-140.ngrok.io/";
 export default apiLink;
