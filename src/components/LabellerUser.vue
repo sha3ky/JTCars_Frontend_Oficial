@@ -116,17 +116,32 @@ export default defineComponent({
          allUsers.value = await fetchUserData();
          allData.value = await getAllData();
       });
-      watch(allData, (newValue, oldValue) => {
-         console.log("group changed from", oldValue, "to", newValue);
-         if (allData.value.length != 0) {
-            if (newValue.length != oldValue.length) {
-               currentPic = 0;
-               insertValue(allData.value);
-            }
-         } else {
-            deleteAllfields();
-         }
-      });
+     watch(allData, (newValue, oldValue) => {
+    console.log("group changed from", oldValue, "to", newValue);
+    currentPic = 0;
+    checkDataAndInsert(newValue, oldValue);
+
+    if (allData.value.length != 0) {
+        if (newValue.length != oldValue.length) {
+            // currentPic = 0; // This seems redundant since you already set it above.
+            // insertValue(allData.value); // Uncomment this if needed
+        }
+    } else {
+        deleteAllfields();
+    }
+});
+
+function checkDataAndInsert(newValue, oldValue) {
+    if (allData.value.length === 0) {
+        setTimeout(() => checkDataAndInsert(newValue, oldValue), 2000);
+        return;
+    } else {
+        if (newValue.length != oldValue.length) {
+            insertValue(allData.value);
+        }
+    }
+}
+
       watch(shape, (newValue, oldValue) => {
          if (newValue != "" && newValue != oldValue) {
             console.log("group changed from", oldValue, "to", newValue);

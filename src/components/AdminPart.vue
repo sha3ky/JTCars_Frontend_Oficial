@@ -59,7 +59,7 @@
                                  v-model="imagenBBDD"
                                  label="Upload"
                                  @change="previewImage"
-                              />
+                              ></q-file>
                            </div>
                         </div>
                         <div class="row">
