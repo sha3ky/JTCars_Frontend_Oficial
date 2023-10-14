@@ -8,7 +8,7 @@ const getAllData = async () => {
       const response = await axios.get(`${link}api/ImageTable/`, {
          headers: {
             "Content-Type": "application/json",
-            "ngrok-skip-browser-warning": "69420",
+            // "ngrok-skip-browser-warning": "69420",
          },
       });
 
@@ -21,5 +21,3 @@ const getAllData = async () => {
 };
 
 export default getAllData;
-
-
