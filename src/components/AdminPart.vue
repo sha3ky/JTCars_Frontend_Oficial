@@ -270,13 +270,13 @@ export default defineComponent({
       });
 
       watch(tab, async (newValue, oldValue) => {
-        debugger
+
          currentPic = 0;
          checkDataAndInsert(newValue);
          console.log("tab changed from", oldValue, "to", newValue);
       });
       function checkDataAndInsert(value) {
-        debugger
+
          if (allData.value.length === 0) {
             setTimeout(() => checkDataAndInsert(value), 2000);
             return;
@@ -336,7 +336,7 @@ export default defineComponent({
       }
 
       async function uploadPicture() {
-        debugger
+
          try {
             const imageBlob = await imageUploaded(imagenBBDD.value);
             const data = {

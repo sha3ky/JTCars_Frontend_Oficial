@@ -117,7 +117,7 @@ export default defineComponent({
          allData.value = await getAllData();
       });
       watch(allData, (newValue, oldValue) => {
-        debugger
+
          console.log("group changed from", oldValue, "to", newValue);
          dataImagenes = allData.value.filter((item) => item.label === "");
          if (dataImagenes.length != 0) {
@@ -132,7 +132,7 @@ export default defineComponent({
       });
 
       function checkDataAndInsert(newValue, oldValue) {
-        debugger
+
          if (dataImagenes.length === 0) {
             setTimeout(() => checkDataAndInsert(newValue, oldValue), 2000);
          } else if (newValue.length != oldValue.length) {
@@ -141,7 +141,7 @@ export default defineComponent({
       }
 
       watch(shape, (newValue, oldValue) => {
-        debugger
+
          if (newValue != "" && newValue != oldValue) {
             console.log("group changed from", oldValue, "to", newValue);
             objToBBDD = {};

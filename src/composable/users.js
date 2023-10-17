@@ -15,6 +15,7 @@ const fetchUserData = async () => {
       console.log("Data received:", users);
    } catch (error) {
       console.error("Error fetching data:", error);
+
    }
    return users;
 };
