@@ -1,2 +1,2 @@
-const apiLink = "http://127.0.0.1:8080/";
+const apiLink = "https://king-prawn-app-bd7ga.ondigitalocean.app/";
 export default apiLink;
