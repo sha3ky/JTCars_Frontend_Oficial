@@ -134,7 +134,7 @@ export default defineComponent({
       function checkDataAndInsert(newValue, oldValue) {
 
          if (dataImagenes.length === 0) {
-            setTimeout(() => checkDataAndInsert(newValue, oldValue), 2000);
+            setTimeout(() => checkDataAndInsert(newValue, oldValue), 5000);
          } else if (newValue.length != oldValue.length) {
             insertValue(dataImagenes);
          }

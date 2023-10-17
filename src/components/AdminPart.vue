@@ -278,7 +278,7 @@ export default defineComponent({
       function checkDataAndInsert(value) {
 
          if (allData.value.length === 0) {
-            setTimeout(() => checkDataAndInsert(value), 2000);
+            setTimeout(() => checkDataAndInsert(value), 5000);
             return;
          }
          if (value === "done") {
