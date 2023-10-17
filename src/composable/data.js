@@ -3,7 +3,7 @@ import apiLink from "../composable/apiLink";
 
 let allData;
 let link = apiLink;
-const getAllData = async () => {
+async function getAllData () {
    try {
       const response = await axios.get(`${link}api/ImageTable/`, {
          headers: {
@@ -18,6 +18,7 @@ const getAllData = async () => {
       console.error("Error fetching data:", error);
    }
    return allData;
-};
+  }
+
 
 export default getAllData;

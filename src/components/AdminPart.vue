@@ -268,12 +268,15 @@ export default defineComponent({
          group.value.shift();
          console.log("group changed from", oldValue, "to", newValue);
       });
+
       watch(tab, async (newValue, oldValue) => {
+        debugger
          currentPic = 0;
          checkDataAndInsert(newValue);
          console.log("tab changed from", oldValue, "to", newValue);
       });
       function checkDataAndInsert(value) {
+        debugger
          if (allData.value.length === 0) {
             setTimeout(() => checkDataAndInsert(value), 2000);
             return;
@@ -333,6 +336,7 @@ export default defineComponent({
       }
 
       async function uploadPicture() {
+        debugger
          try {
             const imageBlob = await imageUploaded(imagenBBDD.value);
             const data = {
@@ -353,7 +357,7 @@ export default defineComponent({
          textName.value = "";
          group.value[0] = 1;
          imagenBBDD.value = "";
-         getAllData();
+         allData.value=await getAllData();
       }
 
       function downloadPicture() {

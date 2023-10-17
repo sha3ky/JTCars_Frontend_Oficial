@@ -117,12 +117,13 @@ export default defineComponent({
          allData.value = await getAllData();
       });
       watch(allData, (newValue, oldValue) => {
+        debugger
          console.log("group changed from", oldValue, "to", newValue);
-
-         if (allData.value.length != 0) {
+         dataImagenes = allData.value.filter((item) => item.label === "");
+         if (dataImagenes.length != 0) {
             if (newValue.length != oldValue.length) {
                currentPic = 0;
-               insertValue(allData.value);
+               insertValue(dataImagenes);
             }
          } else {
             deleteAllfields();
@@ -131,14 +132,16 @@ export default defineComponent({
       });
 
       function checkDataAndInsert(newValue, oldValue) {
-         if (allData.value.length === 0) {
+        debugger
+         if (dataImagenes.length === 0) {
             setTimeout(() => checkDataAndInsert(newValue, oldValue), 2000);
          } else if (newValue.length != oldValue.length) {
-            insertValue(allData.value);
+            insertValue(dataImagenes);
          }
       }
 
       watch(shape, (newValue, oldValue) => {
+        debugger
          if (newValue != "" && newValue != oldValue) {
             console.log("group changed from", oldValue, "to", newValue);
             objToBBDD = {};
@@ -197,7 +200,7 @@ export default defineComponent({
       }
 
       async function updateLabel(userId, pictureId, newLabel) {
-         const url = `${apiUrlWeb}api/ImageTable/${pictureId}/`;
+         const url = `${api}api/ImageTable/${pictureId}/`;
          const data = {
             user: userId, // Assuming the server expects this field; remove if not
             label: newLabel ? 1 : 0,
