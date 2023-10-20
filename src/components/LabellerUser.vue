@@ -83,7 +83,7 @@
 import { defineComponent, watch, ref, onMounted } from "vue";
 import axios from "axios";
 import apiLink from "../composable/apiLink";
-import fetchUserData from "../composable/users";
+// import fetchUserData from "../composable/userInput";
 import getAllData from "../composable/data";
 import comprobarmask from "../composable/comprobarmask";
 
@@ -240,3 +240,4 @@ export default defineComponent({
    },
 });
 </script>
+../composable/usersInput
