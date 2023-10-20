@@ -26,19 +26,17 @@ import apiLink from "./apiLink";
 
 const link = apiLink;
 
-const insertUser = async (email, password) => {
+const insertUser = async (name,email, password) => {
   try {
-    const response = await axios.post(`${link}usuarios/`, {
-      nombre: "ion",
+    const response = await axios.post(`${link}auth/users/`, {
+      username: name, // Use the email as the username
+      email: email,
       password: password,
-      correo: email,
-      apellido: "luca",
-      admin: true,
     });
 
-    if (response.data && response.data.token) {
-      localStorage.setItem("token", response.data.token); // Store new token if provided
-      axios.defaults.headers.common["Authorization"] = "Token " + response.data.token; // Set default header for future axios requests
+    if (response.data && response.data.key) {
+      localStorage.setItem("token", response.data.key); // Store the user's authentication token
+      axios.defaults.headers.common["Authorization"] = `Token ${response.data.key}`; // Set default header for future axios requests
     }
 
     return response.data;
@@ -49,6 +47,7 @@ const insertUser = async (email, password) => {
 };
 
 export default insertUser;
+
 
 
 // import axios from "axios";

@@ -6,16 +6,28 @@
          </q-toolbar>
       </q-header>
       <q-page-container style="padding-top: 100px">
-         <q-page v-if="showLogin == true">
-            <router-view />
+         <div style="text-align: center">
+            <div>
+               <q-btn color="secondary" label="Register" @click="register" />
+
+               <q-btn color="primary" label="Ingresar" @click="ingresar" />
+            </div>
+            <div style="text-align: center; display: inline-block">
+               <InputUser :show-newUser="showNewUser" />
+               <loginUser :show-loginUser="showLoginUser" />
+            </div>
+         </div>
+
+         <!-- <q-page v-if="showLogin == true">
             <InputUser
                @show-login-updated="updateShowLogin"
                :show-login="showLogin"
                @user-id-updated="updateUserId"
                @user-admin="updateAdmin"
             />
-         </q-page>
-         <q-page v-if="showLogin === false && userIsAdmin === true">
+         </q-page> -->
+
+         <!-- <q-page v-if="showLogin === false && userIsAdmin === true">
             <AdminPart
                @show-login-updated="updateShowLogin"
                :show-login="showLogin"
@@ -30,7 +42,8 @@
                :user-id="userId"
                @user-admin="updateAdmin"
             />
-         </q-page>
+         </q-page> -->
+         <router-view />
       </q-page-container>
    </q-layout>
 </template>
@@ -38,6 +51,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
+import loginUser from "src/components/loginUser.vue";
 import AdminPart from "components/AdminPart.vue"; // Adjust the path as needed
 import LabellerUser from "components/LabellerUser.vue";
 
@@ -47,7 +61,8 @@ export default defineComponent({
    name: "MainLayout",
    data() {
       return {
-         showLogin: true,
+         showNewUser: false,
+         showLoginUser: false,
          userId: null,
          userIsAdmin: false,
 
@@ -55,24 +70,35 @@ export default defineComponent({
       };
    },
    methods: {
-      updateShowLogin(value) {
-         this.showLogin = value;
-         console.log(this.showLogin);
+      ingresar() {
+         debugger;
+         this.showLoginUser = true;
+         this.showNewUser = false;
       },
-      updateUserId(userId) {
-         // Receive the 'userId' emitted from InputUser component
-         this.userId = userId;
+      register() {
+         debugger;
+         this.showNewUser = true;
+         this.showLoginUser = false;
       },
-      updateAdmin(value) {
-         this.userIsAdmin = value;
-      },
+      // updateShowLogin(value) {
+      //    this.showLogin = value;
+      //    console.log(this.showLogin);
+      // },
+      // updateUserId(userId) {
+      //    // Receive the 'userId' emitted from InputUser component
+      //    this.userId = userId;
+      // },
+      // updateAdmin(value) {
+      //    this.userIsAdmin = value;
+      // },
    },
    mounted() {},
    components: {
       //EssentialLink,
       InputUser,
-      AdminPart,
-      LabellerUser,
+      loginUser,
+      // AdminPart,
+      // LabellerUser,
    },
 
    setup() {},

@@ -6,8 +6,24 @@
          </q-card-section>
          <q-separator dark />
          <q-input
-            v-model="correoInput"
-            label="Correo"
+            v-model="username"
+            label="nombre"
+            style="padding: 24px; font-size: 20px"
+         >
+            <template v-slot:label>
+               <div class="row items-center all-pointer-events">
+                  <q-icon
+                     class="q-mr-xs"
+                     :color="colorEmail"
+                     size="24px"
+                     name="mail"
+                  />
+               </div>
+            </template>
+         </q-input>
+         <q-input
+            v-model="emailInput"
+            label="email"
             style="padding: 24px; font-size: 20px"
          >
             <template v-slot:label>
@@ -65,8 +81,9 @@ export default defineComponent({
    data() {
       return {
          api: apiLink,
-         correoInput: "",
+         username: "",
          contrasenaInput: "",
+         emailInput:'',
          users: [],
          colorEmail: "red",
          colorPass: "red",
@@ -79,11 +96,12 @@ export default defineComponent({
       async handleLogin() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
-         const username = this.correoInput;
+         const username = this.username;
          const password = this.contrasenaInput;
+         const mail=this.emailInput
 
          // Call the login function
-         const result = await insertUser(username, password);
+         const result = await insertUser(username,mail, password);
 
          if (result) {
             console.log("usuario registrado");
