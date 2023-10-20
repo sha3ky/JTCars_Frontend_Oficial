@@ -27,6 +27,7 @@ import apiLink from "./apiLink";
 const link = apiLink;
 
 const insertUser = async (name,email, password) => {
+  debugger
   try {
     const response = await axios.post(`${link}auth/users/`, {
       username: name, // Use the email as the username

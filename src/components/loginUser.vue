@@ -1,27 +1,10 @@
 <template>
-   <div style="padding-top: 120px; text-align: right; width: 370px">
-      <q-card class="my-card bg-secondary text-white" v-if="showNewUser">
+   <div style="text-align: right; width: 370px">
+      <q-card class="my-card bg-primary text-red" v-if="showLoginUser">
          <q-card-section>
             <div class="text-subtitle2">by Julian Raita</div>
          </q-card-section>
          <q-separator dark />
-
-         <q-input
-            v-model="userName"
-            label="nombre"
-            style="padding: 24px; font-size: 20px"
-         >
-            <template v-slot:label>
-               <div class="row items-center all-pointer-events">
-                  <q-icon
-                     class="q-mr-xs"
-                     :color="colorEmail"
-                     size="24px"
-                     name="person"
-                  />
-               </div>
-            </template>
-         </q-input>
          <q-input
             v-model="correoInput"
             label="Correo"
@@ -60,9 +43,6 @@
             <q-btn glossy rounded color="deep-orange" @click="handleLogin" flat
                >Aceptar</q-btn
             >
-            <q-btn glossy rounded color="deep-orange" @click="handleLogOut" flat
-               >LogOut</q-btn
-            >
          </q-card-actions>
       </q-card>
    </div>
@@ -71,40 +51,40 @@
 <script>
 import { defineComponent } from "vue";
 import apiLink from "../composable/apiLink";
-import insertUser from "../composable/usersInput";
-import logout from "src/composable/logOut";
+import login from "../composable/loginUser";
 
 export default defineComponent({
-   name: "InputUser",
+   name: "loginUser",
    props: {
-      showNewUser: Boolean, // Define a prop to receive showLogin from parent
+      showLoginUser: Boolean, // Define a prop to receive showLogin from parent
    },
    data() {
       return {
          api: apiLink,
          correoInput: "",
          contrasenaInput: "",
-         userName:'',
          users: [],
          colorEmail: "red",
          colorPass: "red",
       };
    },
-   //  async mounted() {
-   //     this.users = await fetchUserData();
-   //  },
+   watch:{
+    showLoginUser:function(item){
+      debugger
+      item
+    }
+   },
    methods: {
       async handleLogin() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
-         const username = this.userName;
+         const email = this.correoInput;
          const password = this.contrasenaInput;
-         const email=this.correoInput
 
          // Call the login function
-         const result = await insertUser(username,email, password);
+         const result = await login(email, password);
 
-         if (result) {
+         if (result.success==true) {
             console.log("usuario registrado");
             // Login was successful
             // You can perform actions like redirecting to a dashboard or updating the UI here.
@@ -113,11 +93,19 @@ export default defineComponent({
             // Login failed, handle the error, e.g., show an error message.
          }
       },
-      handleLogOut(){
-        debugger
-        logout()
-      }
 
+
+//-----------------------------------------making calls to api
+
+
+//       const token = sessionStorage.getItem('token');
+// if (token) {
+//     axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+// }
+
+
+
+//------------------------------------------making calls to api
       // comprobarUsuario() {
       //    let contrasena, usuario;
       //    usuario = this.users.filter(
