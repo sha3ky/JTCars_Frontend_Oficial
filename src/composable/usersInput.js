@@ -26,29 +26,31 @@ import apiLink from "./apiLink";
 
 const link = apiLink;
 
-const insertUser = async (name,email, password) => {
-  debugger
-  try {
-    const response = await axios.post(`${link}auth/users/`, {
-      username: name, // Use the email as the username
-      email: email,
-      password: password,
-    });
+const insertUser = async (name, email, password) => {
+   debugger;
+   try {
+      // Send a POST request to register the user
+      const response = await axios.post(`${link}api/myview/`, {
+         name: name,  // Update to match the field names in the Django view
+         email: email,
+         password: password,
+      });
 
-    if (response.data && response.data.key) {
-      localStorage.setItem("token", response.data.key); // Store the user's authentication token
-      axios.defaults.headers.common["Authorization"] = `Token ${response.data.key}`; // Set default header for future axios requests
-    }
+      if (response.data && response.data.message === "User registered successfully") {
+         localStorage.setItem("token", response.data.key); // Store the user's authentication token
+         axios.defaults.headers.common[
+            "Authorization"
+         ] = `Token ${response.data.key}`; // Set default header for future axios requests
+      }
 
-    return response.data;
-  } catch (error) {
-    console.error("User creation error:", error);
-    return { error: "An error occurred while creating the user." };
-  }
+      return response.data;
+   } catch (error) {
+      console.error("User creation error:", error);
+      return { error: "An error occurred while creating the user." };
+   }
 };
 
 export default insertUser;
-
 
 
 // import axios from "axios";
