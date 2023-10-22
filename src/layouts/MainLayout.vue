@@ -90,11 +90,18 @@
          <q-img
             src="../../public/banner.png"
             class="q-mx-auto"
-              :max-width="400"
+            :max-width="400"
             :max-height="425"
             alt="Beny1 Logo"
          ></q-img>
-
+         <div>
+            <div style="padding: 25px;    background: #37474F;">
+               <p style="font-size:6vw;text-align: center;    text-align: center;
+    color: white;">
+                  Coches de segunda mano, vehículos de ocasión y kilómetro 0
+               </p>
+            </div>
+         </div>
 
          <div style="text-align: center; display: inline-block">
             <InputUser :show-newUser="showNewUser" />
