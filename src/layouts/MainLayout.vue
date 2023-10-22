@@ -2,38 +2,41 @@
    <q-layout view="lHh Lpr lFf">
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
-          <q-icon src="img:logoIconCar.png"/>
-            <q-btn flat round dense icon="menu" class="q-mr-sm">
-               <q-menu>
+            <q-btn flat round dense icon="menu" class="q-mr-sm" v-if="$q.screen.width < 600">
+               <q-menu transition-show="scale" transition-hide="scale">
                   <q-list style="min-width: 100px">
-                     <q-item clickable v-close-popup>
-                        <q-item-section>New tab</q-item-section>
+                     <q-item clickable>
+                        <q-item-section>Coches</q-item-section>
                      </q-item>
-                     <q-item clickable v-close-popup>
-                        <q-item-section>New incognito tab</q-item-section>
-                     </q-item>
-                     <q-separator />
-                     <q-item clickable v-close-popup>
-                        <q-item-section>Recent tabs</q-item-section>
-                     </q-item>
-                     <q-item clickable v-close-popup>
-                        <q-item-section>History</q-item-section>
-                     </q-item>
-                     <q-item clickable v-close-popup>
-                        <q-item-section>Downloads</q-item-section>
+                     <q-item clickable>
+                        <q-item-section>Ofertas</q-item-section>
                      </q-item>
                      <q-separator />
-                     <q-item clickable v-close-popup>
-                        <q-item-section>Settings</q-item-section>
-                     </q-item>
-                     <q-separator />
-                     <q-item clickable v-close-popup>
-                        <q-item-section>Help &amp; Feedback</q-item-section>
+                     <q-item clickable>
+                        <q-item-section>Contacto</q-item-section>
                      </q-item>
                   </q-list>
                </q-menu>
             </q-btn>
-            <q-separator vertical inset style="background: aliceblue;"/>
+            <q-img height="40px" width="40px" src="../../public/benysCarlogoPng.png"  v-if="$q.screen.width > 600">
+                  </q-img>
+            <q-separator vertical inset style="background: aliceblue"  v-if="$q.screen.width < 600"/>
+            <q-space></q-space>
+            <!-- reactividad -->
+            <template v-if="$q.screen.width > 600" >
+               <div>
+                  <div >
+                     <q-btn-toggle
+                        v-model="modelSelectedMenu"
+                        flat
+                        stretch
+                        toggle-color="white"
+                        :options="optionsMenu"
+                     ></q-btn-toggle>
+                  </div>
+               </div>
+            </template>
+             <!-- reactividad -->
             <q-space></q-space>
             <div>
                <q-btn
@@ -60,10 +63,21 @@
             />
          </q-toolbar>
       </q-header>
+      <q-footer elevated class="bg-blue-grey-9">
+        <q-toolbar>
+          <q-toolbar-title>Footer</q-toolbar-title>
+        </q-toolbar>
+      </q-footer>
 
-      <q-page-container style="min-height: 100vh;    text-align: center;">
-
-
+      <q-page-container style="min-height: 100vh; text-align: center">
+         <div class="q-pa-md">
+            <div class="q-col-gutter-md row items-start">
+               <div class="col-12">
+                  <q-img src="../../public/beny1logo.jpeg" >
+                  </q-img>
+               </div>
+            </div>
+         </div>
 
          <div style="text-align: center; display: inline-block">
             <InputUser :show-newUser="showNewUser" />
@@ -118,6 +132,12 @@ export default defineComponent({
          userId: null,
          userIsAdmin: false,
          white: ref(false),
+         modelSelectedMenu: ref("one"),
+         optionsMenu: [
+            { label: "Coches", value: "coches" },
+            { label: "Ofertas", value: "ofertas" },
+            { label: "Contacto", value: "contacto" },
+         ],
 
          // Initialize with your desired value
       };
