@@ -2,7 +2,14 @@
    <q-layout view="lHh Lpr lFf">
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
-            <q-btn flat round dense icon="menu" class="q-mr-sm" v-if="$q.screen.width < 600">
+            <q-btn
+               flat
+               round
+               dense
+               icon="menu"
+               class="q-mr-sm"
+               v-if="$q.screen.width < 600"
+            >
                <q-menu transition-show="scale" transition-hide="scale">
                   <q-list style="min-width: 100px">
                      <q-item clickable>
@@ -18,25 +25,35 @@
                   </q-list>
                </q-menu>
             </q-btn>
-            <q-img height="40px" width="40px" src="../../public/benysCarlogoPng.png"  v-if="$q.screen.width > 600">
-                  </q-img>
-            <q-separator vertical inset style="background: aliceblue"  v-if="$q.screen.width < 600"/>
+            <!-- <q-img
+               height="40px"
+               width="108px"
+               src="../../public/logoIconCar.png"
+               v-if="$q.screen.width > 600"
+            >
+            </q-img> -->
+            <q-separator
+               vertical
+               inset
+               style="background: aliceblue"
+               v-if="$q.screen.width < 600"
+            />
             <q-space></q-space>
             <!-- reactividad -->
-            <template v-if="$q.screen.width > 600" >
+            <template v-if="$q.screen.width > 600">
                <div>
-                  <div >
+                  <div>
                      <q-btn-toggle
                         v-model="modelSelectedMenu"
                         flat
                         stretch
-                        toggle-color="white"
+                        toggle-color="green-2"
                         :options="optionsMenu"
                      ></q-btn-toggle>
                   </div>
                </div>
             </template>
-             <!-- reactividad -->
+            <!-- reactividad -->
             <q-space></q-space>
             <div>
                <q-btn
@@ -64,20 +81,20 @@
          </q-toolbar>
       </q-header>
       <q-footer elevated class="bg-blue-grey-9">
-        <q-toolbar>
-          <q-toolbar-title>Footer</q-toolbar-title>
-        </q-toolbar>
+         <q-toolbar>
+            <q-toolbar-title>Footer</q-toolbar-title>
+         </q-toolbar>
       </q-footer>
 
       <q-page-container style="min-height: 100vh; text-align: center">
-         <div class="q-pa-md">
-            <div class="q-col-gutter-md row items-start">
-               <div class="col-12">
-                  <q-img src="../../public/beny1logo.jpeg" >
-                  </q-img>
-               </div>
-            </div>
-         </div>
+         <q-img
+            src="../../public/banner.png"
+            class="q-mx-auto"
+              :max-width="400"
+            :max-height="425"
+            alt="Beny1 Logo"
+         ></q-img>
+
 
          <div style="text-align: center; display: inline-block">
             <InputUser :show-newUser="showNewUser" />
@@ -132,7 +149,7 @@ export default defineComponent({
          userId: null,
          userIsAdmin: false,
          white: ref(false),
-         modelSelectedMenu: ref("one"),
+         modelSelectedMenu: ref("coches"),
          optionsMenu: [
             { label: "Coches", value: "coches" },
             { label: "Ofertas", value: "ofertas" },
