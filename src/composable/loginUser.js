@@ -64,13 +64,13 @@ import axios from "axios";
 import apiLink from "./apiLink";
 let link = apiLink;
 
-const login = async (email, password) => {
+const login = async (name, password) => {
   debugger;
   try {
-    console.log(email,password)
-    const response = await axios.post(`${link}api/token/`, {
+    console.log(name,password)
+    const response = await axios.post(`${link}api/loginUser/`, {
 
-        username: email,
+        username: name,
         password: password,
 
     });

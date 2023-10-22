@@ -30,7 +30,7 @@ const insertUser = async (name, email, password) => {
    debugger;
    try {
       // Send a POST request to register the user
-      const response = await axios.post(`${link}api/myview/`, {
+      const response = await axios.post(`${link}api/inputUser/`, {
          name: name,  // Update to match the field names in the Django view
          email: email,
          password: password,
