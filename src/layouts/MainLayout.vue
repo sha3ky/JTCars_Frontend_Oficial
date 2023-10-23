@@ -12,12 +12,19 @@
             >
                <q-menu transition-show="scale" transition-hide="scale">
                   <q-list style="min-width: 100px">
-                     <q-item clickable>
-                        <q-item-section>Coches</q-item-section>
-                     </q-item>
-                     <q-item clickable>
+                     <router-link to="/MainLayout">
+                        <q-item clickable>
+                           <q-item-section>Coches</q-item-section>
+                        </q-item>
+                     </router-link>
+                     <router-link to="/contacto">
+                        <q-item clickable>
+                           <q-item-section>Contacto</q-item-section>
+                        </q-item>
+                     </router-link>
+                     <!-- <q-item clickable>
                         <q-item-section>Ofertas</q-item-section>
-                     </q-item>
+                     </q-item> -->
                      <q-separator />
                      <q-item clickable>
                         <q-item-section>Contacto</q-item-section>
@@ -82,7 +89,9 @@
       </q-header>
       <q-footer elevated class="bg-blue-grey-9">
          <q-toolbar>
-            <q-toolbar-title style="text-align: center;">Made with love by Sha3ky's TEAM</q-toolbar-title>
+            <q-toolbar-title style="text-align: center"
+               >Made with love by Sha3ky's TEAM</q-toolbar-title
+            >
          </q-toolbar>
       </q-footer>
 
@@ -99,14 +108,6 @@
                >
                   Coches de segunda mano y vehículos de ocasión.
                </p>
-               <!-- <div>
-                  <q-img
-                     src="/benysCarlogoMetal.png"
-                     width="200"
-                     height="200"
-                     alt="Beny1 Logo"
-                  ></q-img>
-               </div> -->
             </div>
          </div>
          <q-img
@@ -127,7 +128,6 @@
                      bordered
                      class="my-card col-6"
                   >
-
                      <q-img :src="image">
                         <div
                            style="
@@ -136,16 +136,16 @@
                               display: contents;
                            "
                         >
-                        <div>
-                          <q-badge rounded color="red" label="DESCUENTO" />
-                          <q-badge rounded color="green" label="OFERTA" />
-                          <q-badge rounded color="blue" label="HIBRIDO" />
-                        </div>
+                           <div>
+                              <q-badge rounded color="red" label="DESCUENTO" />
+                              <q-badge rounded color="green" label="OFERTA" />
+                              <q-badge rounded color="blue" label="HIBRIDO" />
+                           </div>
                            <div
                               style="display: flex; justify-content: flex-end"
                            >
                               <q-img
-                                 height="6vw"
+                                 height="7vw"
                                  width="10vw"
                                  src="../../public/benysCarlogoMetal.png"
                               >
@@ -176,7 +176,7 @@
                         <q-btn
                            flat
                            color="secondary"
-                           label="Datos Adicionales"
+                           label="Más Datos"
                         />
 
                         <q-space />
@@ -239,8 +239,8 @@
          </q-page> -->
          <router-view />
          <q-dialog v-model="dialogVisible">
-            <MyCarousel />
             <!-- Include your custom carousel component here -->
+            <MyCarousel />
          </q-dialog>
       </q-page-container>
    </q-layout>
@@ -269,7 +269,7 @@ export default defineComponent({
          modelSelectedMenu: ref("coches"),
          optionsMenu: [
             { label: "Coches", value: "coches" },
-            { label: "Ofertas", value: "ofertas" },
+            // { label: "Ofertas", value: "ofertas" },
             { label: "Contacto", value: "contacto" },
          ],
          imageUrls: [
@@ -287,6 +287,12 @@ export default defineComponent({
          // Initialize with your desired value
       };
    },
+  //  watch: {
+  //     modelSelectedMenu: function (item) {
+  //        debugger;
+  //        item;
+  //     },
+   //},
    methods: {
       ingresar() {
          debugger;
