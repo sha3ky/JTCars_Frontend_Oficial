@@ -99,6 +99,12 @@ export default defineComponent({
         inputDialog:this.inputUserDialog,
       };
    },
+   watch:{
+    inputUserDialog:function(item){
+      debugger
+      item
+    }
+   },
    //  async mounted() {
    //     this.users = await fetchUserData();
    //  },
