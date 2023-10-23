@@ -68,7 +68,7 @@
                   flat
                   round
                   dense
-                  icon="img:userPlusGreen.png"
+                  icon="img:userplusGreen.png"
                   @click="ingresar"
                ></q-btn>
             </div>
@@ -88,20 +88,73 @@
 
       <q-page-container style="min-height: 100vh; text-align: center">
          <q-img
-            src="../../public/banner.png"
+            src="/banner.png"
             class="q-mx-auto"
             :max-width="400"
             :max-height="425"
             alt="Beny1 Logo"
+
          ></q-img>
          <div>
             <div style="padding: 25px;    background: #37474F;">
                <p style="font-size:6vw;text-align: center;    text-align: center;
     color: white;">
-                  Coches de segunda mano, vehículos de ocasión y kilómetro 0
+                  Coches de segunda mano y vehículos de ocasión.
                </p>
             </div>
          </div>
+
+         <div>
+            <div class="q-pa-md row items-start q-gutter-md" >
+              <div class="row">
+              <q-card
+                v-for="(image, index) in imageUrls"
+                :key="index"
+                style="padding: 10px;"
+                flat
+                bordered
+                class="my-card col-6"
+
+              >
+                <q-img :src="image" />
+
+                <q-card-section>
+                  <div class="text-overline text-orange-9">Overline</div>
+                  <div class="text-h5 q-mt-sm q-mb-xs">Title</div>
+                  <div class="text-caption text-grey">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </div>
+                </q-card-section>
+
+                <q-card-actions>
+                  <q-btn flat color="primary" label="Share"  @click="carouselFoto"/>
+                  <q-btn flat color="secondary" label="Book" />
+
+                  <q-space />
+
+                  <q-btn
+                    color="grey"
+                    round
+                    flat
+                    dense
+                    :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                    @click="expanded = !expanded"
+                  />
+                </q-card-actions>
+
+                <q-slide-transition>
+                  <div v-show="expanded">
+                    <q-separator />
+                    <q-card-section class="text-subtitle2">
+                      {{ lorem }}
+                    </q-card-section>
+                  </div>
+                </q-slide-transition>
+              </q-card>
+            </div>
+          </div>
+          </div>
+
 
          <div style="text-align: center; display: inline-block">
             <InputUser :show-newUser="showNewUser" />
@@ -140,6 +193,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
+
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
 import AdminPart from "components/AdminPart.vue"; // Adjust the path as needed
@@ -162,7 +216,19 @@ export default defineComponent({
             { label: "Ofertas", value: "ofertas" },
             { label: "Contacto", value: "contacto" },
          ],
-
+         imageUrls: [
+        "https://cdn.quasar.dev/img/parallax1.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax1.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax1.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg",
+        "https://cdn.quasar.dev/img/parallax1.jpg",
+        "https://cdn.quasar.dev/img/parallax2.jpg"
+      ],
+      expanded: false,
+      lorem:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
          // Initialize with your desired value
       };
    },
@@ -206,6 +272,21 @@ export default defineComponent({
       const $q = useQuasar();
       $q.dark.set(true); // or false or "auto"
       $q.dark.toggle(); // toggle
+
+
+      function carouselFoto () {
+      $q.dialog({
+        title: 'Alert',
+        message: 'Some message'
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    }
+    return { carouselFoto }
    },
 });
 </script>
