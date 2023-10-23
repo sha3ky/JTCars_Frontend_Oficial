@@ -8,6 +8,7 @@
 
 <script>
 export default {
+  name: "ContactoPage",
   // Your Vue component options go here
   data() {
     return {
