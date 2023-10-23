@@ -1,6 +1,9 @@
 <template>
-   <div style="padding-top: 120px; text-align: right; width: 370px">
-      <q-card class="my-card bg-secondary text-white" v-if="showNewUser">
+  <div class="q-pa-md q-gutter-sm">
+<q-dialog v-model="inputDialog">
+  <q-card>
+<div style="padding-top: 120px; text-align: right; width: 370px">
+      <q-card class="my-card bg-secondary text-white" >
          <q-card-section>
             <div class="text-subtitle2">by Julian Raita</div>
          </q-card-section>
@@ -66,8 +69,13 @@
          </q-card-actions>
       </q-card>
    </div>
+    <q-card-actions align="right">
+      <q-btn flat label="OK" color="primary" v-close-popup />
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+</div>
 </template>
-
 <script>
 import { defineComponent } from "vue";
 import apiLink from "../composable/apiLink";
@@ -77,7 +85,7 @@ import logout from "src/composable/logOut";
 export default defineComponent({
    name: "InputUser",
    props: {
-      showNewUser: Boolean, // Define a prop to receive showLogin from parent
+    inputUserDialog: Boolean // Define a prop to receive showLogin from parent
    },
    data() {
       return {
@@ -88,6 +96,7 @@ export default defineComponent({
          users: [],
          colorEmail: "red",
          colorPass: "red",
+        inputDialog:this.inputUserDialog,
       };
    },
    //  async mounted() {

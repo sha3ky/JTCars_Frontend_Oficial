@@ -45,7 +45,7 @@
                <div>
                   <div>
                      <router-link to="/">
-                        <q-btn class="glossy" style="color: #1AEE9F" clickable rounded="">
+                        <q-btn class="glossy" style="color: #1AEE9F" clickable rounded>
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
                      </router-link>
@@ -201,10 +201,12 @@
             </div>
          </div>
 
-         <div style="text-align: center; display: inline-block">
-            <InputUser :show-newUser="showNewUser" />
-            <loginUser :show-loginUser="showLoginUser" />
-         </div>
+         <template>
+          <div>
+            <InputUser :inputUserDialog="showInputUser" /> <!-- Use the correct prop name -->
+            <loginUser :inputUserDialog="showLoginUser" /> <!-- Use the correct prop name for loginUser -->
+          </div>
+        </template>
          <!-- <q-page v-if="showLogin == true">
            <InputUser
               @show-login-updated="updateShowLogin"
@@ -254,9 +256,9 @@ export default defineComponent({
    name: "PrincipalCoches",
    data() {
       return {
-         showNewUser: false,
-         showLoginUser: false,
-         userId: null,
+        showInputUser: false, // Initialize showInputUser to control InputUser component
+        showLoginUser: false,
+        userId: null,
          userIsAdmin: false,
          toggleDark: ref(false),
          modelSelectedMenu: ref("coches"),
@@ -290,12 +292,12 @@ export default defineComponent({
       ingresar() {
          debugger;
          this.showLoginUser = true;
-         this.showNewUser = false;
+         //this.showInputUser = false;
       },
       register() {
          debugger;
-         this.showNewUser = true;
-         this.showLoginUser = false;
+         this.showInputUser = true;
+         //this.showLoginUser = false;
       },
       toggleDarkMode() {
          const $q = this.$q;
