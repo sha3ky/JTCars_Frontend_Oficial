@@ -12,20 +12,17 @@
             >
                <q-menu transition-show="scale" transition-hide="scale">
                   <q-list style="min-width: 100px">
-                     <q-item clickable>
-                        <q-item-section>Coches</q-item-section>
-                     </q-item>
-
-                     <q-item clickable>
-                        <q-item-section>Contacto</q-item-section>
-                     </q-item>
-                     <!-- <q-item clickable>
-                       <q-item-section>Ofertas</q-item-section>
-                    </q-item> -->
+                     <router-link to="/">
+                        <q-item clickable>
+                           <q-item-section>Coches</q-item-section>
+                        </q-item>
+                     </router-link>
+                     <router-link to="/contacto">
+                        <q-item clickable>
+                           <q-item-section>Contacto</q-item-section>
+                        </q-item>
+                     </router-link>
                      <q-separator />
-                     <q-item clickable>
-                        <q-item-section>Contacto</q-item-section>
-                     </q-item>
                   </q-list>
                </q-menu>
             </q-btn>
@@ -47,13 +44,16 @@
             <template v-if="$q.screen.width > 600">
                <div>
                   <div>
-                     <q-btn-toggle
-                        v-model="modelSelectedMenu"
-                        flat
-                        stretch
-                        toggle-color="green-2"
-                        :options="optionsMenu"
-                     ></q-btn-toggle>
+                     <router-link to="/">
+                        <q-btn class="glossy" style="color: #1AEE9F" clickable rounded="">
+                           <q-item-section>Coches</q-item-section>
+                        </q-btn>
+                     </router-link>
+                     <router-link to="/contacto">
+                        <q-btn class="glossy" style="color: #1AEE9F;margin-left: 10px;" clickable rounded >
+                           <q-item-section>Contacto</q-item-section>
+                        </q-btn>
+                     </router-link>
                   </div>
                </div>
             </template>
@@ -242,7 +242,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
-
+import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
 import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as needed
@@ -280,12 +280,12 @@ export default defineComponent({
          // Initialize with your desired value
       };
    },
-    watch: {
-       modelSelectedMenu: function (item) {
-          debugger;
-          item;
-       },
-   },
+   //  watch: {
+   //     modelSelectedMenu: function (item) {
+   //        debugger;
+   //        item;
+   //     },
+   //},
    methods: {
       ingresar() {
          debugger;
