@@ -107,12 +107,12 @@
       </q-footer>
       <q-page-container style="min-height: 100vh; text-align: center">
          <q-img
-            src="/banner.png"
+            src="/banner1WebP.webp"
             class="q-mx-auto"
             :max-width="400"
             :max-height="225"
             alt="Beny1 Logo"
-            style="opacity: 0.7;"
+
 
          >
          </q-img>
