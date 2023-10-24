@@ -97,7 +97,11 @@
       <q-footer elevated class="bg-blue-grey-9">
          <q-toolbar>
             <q-toolbar-title style="text-align: center"
-               >Made with love by Sha3ky's TEAM</q-toolbar-title
+               >Made with
+               <span
+                  ><q-img src="/lovePng.png" width="50px" height="50px"></q-img
+               ></span>
+               by Sha3ky's TEAM</q-toolbar-title
             >
          </q-toolbar>
       </q-footer>
@@ -180,7 +184,12 @@
                            label="Más Fotos"
                            @click="carouselFoto"
                         />
-                        <q-btn flat color="secondary" label="Más Datos" />
+                        <q-btn
+                           flat
+                           color="secondary"
+                           label="Más Datos"
+                           @click="masDatos"
+                        />
 
                         <q-space />
 
@@ -242,6 +251,10 @@
               @user-admin="updateAdmin"
            />
         </q-page> -->
+         <MasInfoDatos
+            :masInfoDialog="showMasInfo"
+            @close-dialog-masinfo="handleDialogClose"
+         />
          <InputUser
             :inputUserDialog="showInputUser"
             @close-dialog-newuser="handleDialogClose"
@@ -262,13 +275,13 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, setTransitionHooks } from "vue";
 import { useQuasar } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
 import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as needed
-import LabellerUser from "components/LabellerUser.vue";
+import MasInfoDatos from "components/MasInfoDatos.vue";
 
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 
@@ -276,6 +289,7 @@ export default defineComponent({
    name: "PrincipalCoches",
    data() {
       return {
+         showMasInfo: false,
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
@@ -309,10 +323,15 @@ export default defineComponent({
    //     },
    //},
    methods: {
+      masDatos() {
+         debugger;
+         this.showMasInfo=true
+      },
       handleDialogClose() {
-        debugger
+         debugger;
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
-         this.showInputUser=false
+         this.showInputUser = false;
+         this.showMasInfo = false;
       },
       nuevoUsuario() {
          debugger;
@@ -346,6 +365,7 @@ export default defineComponent({
       InputUser,
       loginUser,
       MyCarousel,
+      MasInfoDatos,
       // AdminPart,
       // LabellerUser,
    },

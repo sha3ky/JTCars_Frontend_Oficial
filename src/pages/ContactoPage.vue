@@ -97,7 +97,7 @@
       <q-footer elevated class="bg-blue-grey-9">
          <q-toolbar>
             <q-toolbar-title style="text-align: center"
-               >Made with love by Sha3ky's TEAM</q-toolbar-title
+               >Made with <span><q-img  src="/lovePng.png" width="50px" height="50px"></q-img></span> by  Sha3ky's TEAM</q-toolbar-title
             >
          </q-toolbar>
       </q-footer>
@@ -108,7 +108,7 @@
             background-color: #37464e;
          "
       >
-         <div style="padding: 40px;">
+         <div style="padding: 40px">
             <div class="q-pa-md" style="display: flex; justify-content: center">
                <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
                   <q-input
@@ -130,7 +130,7 @@
                      bg-color="white"
                      filled
                      type="email"
-                     v-model="correo"
+                     v-model="email"
                      label="Tu Email *"
                      lazy-rules
                      :rules="[
@@ -147,12 +147,17 @@
                   />
 
                   <q-toggle
-                     v-model="accept"
+                     v-model="toggleAcept"
                      label="Acepto envio de novedades"
                   />
 
                   <div>
-                     <q-btn label="Aceptar" type="submit" glossy style="color: #1aee9f" />
+                     <q-btn
+                        label="Aceptar"
+                        type="aceptar"
+                        glossy
+                        style="color: #1aee9f"
+                     />
                      <q-btn
                         label="Reset"
                         type="reset"
@@ -201,15 +206,12 @@ import { useQuasar } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
-import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as needed
-import LabellerUser from "components/LabellerUser.vue";
-
-//import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
-
 export default defineComponent({
    name: "ContactoPage",
    data() {
       return {
+         //  correo: "",
+
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
@@ -262,38 +264,49 @@ export default defineComponent({
          const $q = this.$q;
          $q.dark.toggle();
       },
-      // updateShowLogin(value) {
-      //    this.showLogin = value;
-      //    console.log(this.showLogin);
-      // },
-      // updateUserId(userId) {
-      //    // Receive the 'userId' emitted from InputUser component
-      //    this.userId = userId;
-      // },
-      // updateAdmin(value) {
-      //    this.userIsAdmin = value;
-      // },
    },
    mounted() {},
    components: {
-      //EssentialLink,
       InputUser,
       loginUser,
-      //  MyCarousel,
-      // AdminPart,
-      // LabellerUser,
+
    },
 
    setup() {
+      const myForm = ref(null);
       const $q = useQuasar();
       $q.dark.set(true); // or false or "auto"
       $q.dark.toggle(); // toggle
-
+      const nombre = ref(null);
+      const email = ref(null);
+      const toggleAcept = ref(false);
       const dialogVisible = ref(false);
-      function carouselFoto() {
-         dialogVisible.value = true;
+
+      function onSubmit() {
+
+            $q.notify({
+               color: "green-4",
+               textColor: "white",
+               icon: "cloud_done",
+               message: "Gracias por subscribirte",
+            });
+
       }
-      return { carouselFoto, dialogVisible };
+      // to reset validations:
+      function onReset() {
+         nombre.value = null;
+         email.value = null;
+         toggleAcept.value = false;
+      }
+      return {
+         dialogVisible,
+         onReset,
+         onSubmit,
+         nombre,
+         email,
+         toggleAcept,
+         myForm,
+      };
    },
 });
 </script>
