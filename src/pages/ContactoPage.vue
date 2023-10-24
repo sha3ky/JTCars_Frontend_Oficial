@@ -199,6 +199,7 @@
                            type="aceptar"
                            glossy
                            style="color: #1aee9f"
+                           rounded
                         />
                         <q-btn
                            label="Reset"

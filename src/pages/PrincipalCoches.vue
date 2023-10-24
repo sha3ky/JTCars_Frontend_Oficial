@@ -115,6 +115,7 @@
                      text-align: center;
                      text-align: center;
                      color: white;
+                     margin: 0;
                   "
                >
                   Coches de segunda mano y vehículos de ocasión.
@@ -127,7 +128,7 @@
             :max-width="400"
             :max-height="425"
             alt="Beny1 Logo"
-            style="opacity: 0.7;"
+            style="opacity: 0.7"
          ></q-img>
          <div>
             <div class="q-pa-md row items-start q-gutter-md">
@@ -267,10 +268,12 @@
          />
          <!-- Use the correct prop name for loginUser -->
          <router-view />
-         <q-dialog v-model="dialogVisible">
-            <!-- Include your custom carousel component here -->
-            <MyCarousel />
-         </q-dialog>
+
+         <!-- Include your custom carousel component here -->
+         <MyCarousel
+            :carouseloDialog="showCarousel"
+            @close-dialog-carousel="handleDialogClose"
+         />
       </q-page-container>
    </q-layout>
 </template>
@@ -293,6 +296,7 @@ export default defineComponent({
          showMasInfo: false,
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
+         showCarousel: false,
          userId: null,
          userIsAdmin: false,
          toggleDark: ref(false),
@@ -324,15 +328,20 @@ export default defineComponent({
    //     },
    //},
    methods: {
+      carouselFoto() {
+         debugger;
+         this.showCarousel = true;
+      },
       masDatos() {
          debugger;
-         this.showMasInfo=true
+         this.showMasInfo = true;
       },
       handleDialogClose() {
          debugger;
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
          this.showInputUser = false;
          this.showMasInfo = false;
+         this.showCarousel = false;
       },
       nuevoUsuario() {
          debugger;
@@ -376,11 +385,8 @@ export default defineComponent({
       $q.dark.set(true); // or false or "auto"
       $q.dark.toggle(); // toggle
 
-      const dialogVisible = ref(false);
-      function carouselFoto() {
-         dialogVisible.value = true;
-      }
-      return { carouselFoto, dialogVisible };
+
+      return {  };
    },
 });
 </script>
