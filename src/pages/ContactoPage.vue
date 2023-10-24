@@ -1,22 +1,299 @@
 <template>
-  <!-- Your HTML template code goes here -->
-  <div>
-    <h1>Contact Us</h1>
-    <p>This is the Contact Page.</p>
-  </div>
+   <q-layout view="lHh Lpr lFf">
+      <q-header elevated>
+         <q-toolbar class="bg-blue-grey-9">
+            <q-btn
+               flat
+               round
+               dense
+               icon="menu"
+               class="q-mr-sm"
+               v-if="$q.screen.width < 600"
+            >
+               <q-menu transition-show="scale" transition-hide="scale">
+                  <q-list style="min-width: 100px">
+                     <router-link to="/">
+                        <q-item clickable>
+                           <q-item-section>Coches</q-item-section>
+                        </q-item>
+                     </router-link>
+                     <router-link to="/contacto">
+                        <q-item clickable>
+                           <q-item-section>Contacto</q-item-section>
+                        </q-item>
+                     </router-link>
+                     <q-separator />
+                  </q-list>
+               </q-menu>
+            </q-btn>
+            <q-img
+               height="70px"
+               width="108px"
+               src="/benysCarlogoMetal.png"
+               v-if="$q.screen.width > 600"
+            >
+            </q-img>
+            <q-separator
+               vertical
+               inset
+               style="background: aliceblue"
+               v-if="$q.screen.width < 600"
+            />
+            <q-space></q-space>
+            <!-- reactividad -->
+            <template v-if="$q.screen.width > 600">
+               <div>
+                  <div>
+                     <router-link to="/">
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f"
+                           clickable
+                           rounded
+                        >
+                           <q-item-section>Coches</q-item-section>
+                        </q-btn>
+                     </router-link>
+                     <router-link to="/contacto">
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f; margin-left: 10px"
+                           clickable
+                           rounded
+                        >
+                           <q-item-section>Contacto</q-item-section>
+                        </q-btn>
+                     </router-link>
+                  </div>
+               </div>
+            </template>
+            <!-- reactividad -->
+            <q-space></q-space>
+            <div>
+               <q-btn
+                  flat
+                  round
+                  dense
+                  icon="img:loginGreen.png"
+                  @click="loginearUsuario"
+                  style="width: 50px"
+               ></q-btn>
+               <q-btn
+                  flat
+                  round
+                  dense
+                  icon="img:userplusGreen.png"
+                  @click="nuevoUsuario"
+               ></q-btn>
+            </div>
+            <q-toggle
+               color="red"
+               dark
+               v-model="toggleDark"
+               @click="toggleDarkMode"
+            />
+         </q-toolbar>
+      </q-header>
+      <q-footer elevated class="bg-blue-grey-9">
+         <q-toolbar>
+            <q-toolbar-title style="text-align: center"
+               >Made with love by Sha3ky's TEAM</q-toolbar-title
+            >
+         </q-toolbar>
+      </q-footer>
+      <q-page-container
+         style="
+            min-height: 100vh;
+            text-align: center;
+            background-color: #37464e;
+         "
+      >
+         <div style="padding: 40px;">
+            <div class="q-pa-md" style="display: flex; justify-content: center">
+               <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+                  <q-input
+                     color="lime-11"
+                     bg-color="white"
+                     filled
+                     v-model="nombre"
+                     label="Tu nombre *"
+                     hint="Nombre y Apellido"
+                     lazy-rules
+                     :rules="[
+                        (val) =>
+                           (val && val.length > 0) || 'Please type something',
+                     ]"
+                  />
+
+                  <q-input
+                     color="lime-11"
+                     bg-color="white"
+                     filled
+                     type="email"
+                     v-model="correo"
+                     label="Tu Email *"
+                     lazy-rules
+                     :rules="[
+                        (val) => {
+                           if (!val) return 'Please type your email';
+                           const emailRegex =
+                              /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+                           return (
+                              emailRegex.test(val) ||
+                              'Please type a valid email address'
+                           );
+                        },
+                     ]"
+                  />
+
+                  <q-toggle
+                     v-model="accept"
+                     label="Acepto envio de novedades"
+                  />
+
+                  <div>
+                     <q-btn label="Aceptar" type="submit" glossy style="color: #1aee9f" />
+                     <q-btn
+                        label="Reset"
+                        type="reset"
+                        color="red"
+                        flat
+                        class="q-ml-sm"
+                     />
+                  </div>
+               </q-form>
+            </div>
+            <div>
+               <h3 style="margin: 10px; color: white">
+                  Estamos en Cubelles <br />
+                  Carrer Maestrat número 3
+               </h3>
+            </div>
+            <div style="display: flex; justify-content: center">
+               <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d909.7966577374251!2d1.6512922696582077!3d41.19919300728751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDExJzU3LjEiTiAxwrAzOScwNy4wIkU!5e1!3m2!1ses!2ses!4v1698127089612!5m2!1ses!2ses"
+                  width="800"
+                  height="650"
+                  style="border: 0"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+               ></iframe>
+            </div>
+         </div>
+         <InputUser
+            :inputUserDialog="showInputUser"
+            @close-dialog-newuser="handleDialogClose"
+         />
+
+         <loginUser
+            :loginUserDialog="showLoginUser"
+            @close-dialog-loginuser="handleDialogClose"
+         />
+         <router-view />
+      </q-page-container>
+   </q-layout>
 </template>
 
 <script>
-export default {
-  name: "ContactoPage",
-  // Your Vue component options go here
-  data() {
-    return {
-      // Your data properties go here
-    };
-  },
-  methods: {
-    // Your component methods go here
-  },
-};
+import { defineComponent, ref } from "vue";
+import { useQuasar } from "quasar";
+import { RouterView, RouterLink } from "vue-router";
+import InputUser from "components/InputUser.vue"; // Replace with the actual path
+import loginUser from "src/components/loginUser.vue";
+import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as needed
+import LabellerUser from "components/LabellerUser.vue";
+
+//import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
+
+export default defineComponent({
+   name: "ContactoPage",
+   data() {
+      return {
+         showInputUser: false, // Initialize showInputUser to control InputUser component
+         showLoginUser: false,
+         userId: null,
+         userIsAdmin: false,
+         toggleDark: ref(false),
+         modelSelectedMenu: ref("coches"),
+         optionsMenu: [
+            { label: "Coches", value: "coches" },
+            // { label: "Ofertas", value: "ofertas" },
+            { label: "Contacto", value: "contacto" },
+         ],
+         imageUrls: [
+            "https://cdn.quasar.dev/img/parallax1.jpg",
+            "https://cdn.quasar.dev/img/parallax2.jpg",
+            "https://cdn.quasar.dev/img/parallax1.jpg",
+            "https://cdn.quasar.dev/img/parallax2.jpg",
+            "https://cdn.quasar.dev/img/parallax1.jpg",
+            "https://cdn.quasar.dev/img/parallax2.jpg",
+            "https://cdn.quasar.dev/img/parallax1.jpg",
+            "https://cdn.quasar.dev/img/parallax2.jpg",
+         ],
+         expanded: false,
+         lorem: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+         // Initialize with your desired value
+      };
+   },
+   //  watch: {
+   //     modelSelectedMenu: function (item) {
+   //        debugger;
+   //        item;
+   //     },
+   //},
+   methods: {
+      handleDialogClose() {
+         debugger;
+         this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
+         this.showInputUser = false;
+      },
+      nuevoUsuario() {
+         debugger;
+         this.showInputUser = true;
+         //this.showLoginUser = false;
+      },
+      loginearUsuario() {
+         debugger;
+         this.showLoginUser = true;
+         //this.showInputUser = false;
+      },
+      toggleDarkMode() {
+         const $q = this.$q;
+         $q.dark.toggle();
+      },
+      // updateShowLogin(value) {
+      //    this.showLogin = value;
+      //    console.log(this.showLogin);
+      // },
+      // updateUserId(userId) {
+      //    // Receive the 'userId' emitted from InputUser component
+      //    this.userId = userId;
+      // },
+      // updateAdmin(value) {
+      //    this.userIsAdmin = value;
+      // },
+   },
+   mounted() {},
+   components: {
+      //EssentialLink,
+      InputUser,
+      loginUser,
+      //  MyCarousel,
+      // AdminPart,
+      // LabellerUser,
+   },
+
+   setup() {
+      const $q = useQuasar();
+      $q.dark.set(true); // or false or "auto"
+      $q.dark.toggle(); // toggle
+
+      const dialogVisible = ref(false);
+      function carouselFoto() {
+         dialogVisible.value = true;
+      }
+      return { carouselFoto, dialogVisible };
+   },
+});
 </script>

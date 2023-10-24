@@ -1,50 +1,57 @@
 <template>
    <div style="text-align: right; width: 370px">
-      <q-card class="my-card bg-primary text-red" v-if="showLoginUser">
-         <q-card-section>
-            <div class="text-subtitle2">by Julian Raita</div>
-         </q-card-section>
-         <q-separator dark />
-         <q-input
-            v-model="correoInput"
-            label="Correo"
-            style="padding: 24px; font-size: 20px"
-         >
-            <template v-slot:label>
-               <div class="row items-center all-pointer-events">
-                  <q-icon
-                     class="q-mr-xs"
-                     :color="colorEmail"
-                     size="24px"
-                     name="mail"
-                  />
-               </div>
-            </template>
-         </q-input>
-         <q-input
-            type="password"
-            v-model="contrasenaInput"
-            label="Contraseña"
-            style="padding: 24px; font-size: 20px"
-         >
-            <template v-slot:label>
-               <div class="row items-center all-pointer-events">
-                  <q-icon
-                     class="q-mr-xs"
-                     :color="colorPass"
-                     size="24px"
-                     name="key"
-                  />
-               </div>
-            </template>
-         </q-input>
-         <q-separator dark />
-         <q-card-actions style="justify-content: flex-end">
-            <q-btn glossy rounded color="deep-orange" @click="handleLogin" flat
-               >Aceptar</q-btn
+      <q-dialog v-model="loginDialog" @hide="closeDialog">
+         <q-card class="my-card blue-grey-2 text-red">
+            <q-card-section>
+               <div class="text-subtitle2">Login Usuario</div>
+            </q-card-section>
+            <q-separator dark />
+            <q-input
+               v-model="correoInput"
+               label="Correo"
+               style="padding: 24px; font-size: 20px"
             >
-         </q-card-actions>
-      </q-card>
+               <template v-slot:label>
+                  <div class="row items-center all-pointer-events">
+                     <q-icon
+                        class="q-mr-xs"
+                        :color="colorEmail"
+                        size="24px"
+                        name="mail"
+                     />
+                  </div>
+               </template>
+            </q-input>
+            <q-input
+               type="password"
+               v-model="contrasenaInput"
+               label="Contraseña"
+               style="padding: 24px; font-size: 20px"
+            >
+               <template v-slot:label>
+                  <div class="row items-center all-pointer-events">
+                     <q-icon
+                        class="q-mr-xs"
+                        :color="colorPass"
+                        size="24px"
+                        name="key"
+                     />
+                  </div>
+               </template>
+            </q-input>
+            <q-separator dark />
+            <q-card-actions style="justify-content: flex-end">
+               <q-btn
+                  glossy
+                  rounded
+                  color="deep-orange"
+                  @click="handleLogin"
+                  flat
+                  >Aceptar</q-btn
+               >
+            </q-card-actions>
+         </q-card>
+      </q-dialog>
    </div>
 </template>
 
@@ -56,7 +63,7 @@ import login from "../composable/loginUser";
 export default defineComponent({
    name: "loginUser",
    props: {
-      showLoginUser: Boolean, // Define a prop to receive showLogin from parent
+      loginUserDialog: Boolean, // Define a prop to receive showLogin from parent
    },
    data() {
       return {
@@ -66,15 +73,18 @@ export default defineComponent({
          users: [],
          colorEmail: "red",
          colorPass: "red",
+         loginDialog: false,
       };
    },
-   watch:{
-    showLoginUser:function(item){
-      debugger
-      item
-    }
+   watch: {
+      loginUserDialog: function (item) {
+         this.loginDialog = item;
+      },
    },
    methods: {
+      closeDialog() {
+         this.$emit("close-dialog-loginuser"); // Emit an event to notify the parent component
+      },
       async handleLogin() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
@@ -84,7 +94,7 @@ export default defineComponent({
          // Call the login function
          const result = await login(email, password);
 
-         if (result.success==true) {
+         if (result.success == true) {
             console.log("usuario registrado");
             // Login was successful
             // You can perform actions like redirecting to a dashboard or updating the UI here.
@@ -94,18 +104,14 @@ export default defineComponent({
          }
       },
 
+      //-----------------------------------------making calls to api
 
-//-----------------------------------------making calls to api
+      //       const token = sessionStorage.getItem('token');
+      // if (token) {
+      //     axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+      // }
 
-
-//       const token = sessionStorage.getItem('token');
-// if (token) {
-//     axios.defaults.headers.common['Authorization'] = `Token ${token}`;
-// }
-
-
-
-//------------------------------------------making calls to api
+      //------------------------------------------making calls to api
       // comprobarUsuario() {
       //    let contrasena, usuario;
       //    usuario = this.users.filter(

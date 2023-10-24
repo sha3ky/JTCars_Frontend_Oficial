@@ -45,12 +45,22 @@
                <div>
                   <div>
                      <router-link to="/">
-                        <q-btn class="glossy" style="color: #1AEE9F" clickable rounded>
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f"
+                           clickable
+                           rounded
+                        >
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
                      </router-link>
                      <router-link to="/contacto">
-                        <q-btn class="glossy" style="color: #1AEE9F;margin-left: 10px;" clickable rounded >
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f; margin-left: 10px"
+                           clickable
+                           rounded
+                        >
                            <q-item-section>Contacto</q-item-section>
                         </q-btn>
                      </router-link>
@@ -65,7 +75,7 @@
                   round
                   dense
                   icon="img:loginGreen.png"
-                  @click="register"
+                  @click="loginearUsuario"
                   style="width: 50px"
                ></q-btn>
                <q-btn
@@ -73,7 +83,7 @@
                   round
                   dense
                   icon="img:userplusGreen.png"
-                  @click="ingresar"
+                  @click="nuevoUsuario"
                ></q-btn>
             </div>
             <q-toggle
@@ -201,12 +211,12 @@
             </div>
          </div>
 
-         <template>
+         <!-- <template>
           <div>
-            <InputUser :inputUserDialog="showInputUser" /> <!-- Use the correct prop name -->
-            <loginUser :inputUserDialog="showLoginUser" /> <!-- Use the correct prop name for loginUser -->
+
           </div>
-        </template>
+        </template> -->
+
          <!-- <q-page v-if="showLogin == true">
            <InputUser
               @show-login-updated="updateShowLogin"
@@ -232,6 +242,16 @@
               @user-admin="updateAdmin"
            />
         </q-page> -->
+         <InputUser
+            :inputUserDialog="showInputUser"
+            @close-dialog-newuser="handleDialogClose"
+         />
+         <!-- Use the correct prop name -->
+         <loginUser
+            :loginUserDialog="showLoginUser"
+            @close-dialog-loginuser="handleDialogClose"
+         />
+         <!-- Use the correct prop name for loginUser -->
          <router-view />
          <q-dialog v-model="dialogVisible">
             <!-- Include your custom carousel component here -->
@@ -256,9 +276,9 @@ export default defineComponent({
    name: "PrincipalCoches",
    data() {
       return {
-        showInputUser: false, // Initialize showInputUser to control InputUser component
-        showLoginUser: false,
-        userId: null,
+         showInputUser: false, // Initialize showInputUser to control InputUser component
+         showLoginUser: false,
+         userId: null,
          userIsAdmin: false,
          toggleDark: ref(false),
          modelSelectedMenu: ref("coches"),
@@ -289,15 +309,20 @@ export default defineComponent({
    //     },
    //},
    methods: {
-      ingresar() {
-         debugger;
-         this.showLoginUser = true;
-         //this.showInputUser = false;
+      handleDialogClose() {
+        debugger
+         this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
+         this.showInputUser=false
       },
-      register() {
+      nuevoUsuario() {
          debugger;
          this.showInputUser = true;
          //this.showLoginUser = false;
+      },
+      loginearUsuario() {
+         debugger;
+         this.showLoginUser = true;
+         //this.showInputUser = false;
       },
       toggleDarkMode() {
          const $q = this.$q;

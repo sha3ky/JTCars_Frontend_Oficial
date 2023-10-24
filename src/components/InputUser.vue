@@ -1,80 +1,89 @@
 <template>
-  <div class="q-pa-md q-gutter-sm">
-<q-dialog v-model="inputDialog">
-  <q-card>
-<div style="padding-top: 120px; text-align: right; width: 370px">
-      <q-card class="my-card bg-secondary text-white" >
-         <q-card-section>
-            <div class="text-subtitle2">by Julian Raita</div>
-         </q-card-section>
-         <q-separator dark />
+   <div style="text-align: right; width: 370px">
+      <q-dialog v-model="inputDialog" @hide="closeDialog">
+         <q-card>
+            <q-card class="my-card blue-grey-2 text-red">
+               <q-card-section>
+                  <div class="text-subtitle2">Registrar Nuevo Usuario</div>
+               </q-card-section>
+               <q-separator dark />
 
-         <q-input
-            v-model="userName"
-            label="nombre"
-            style="padding: 24px; font-size: 20px"
-         >
-            <template v-slot:label>
-               <div class="row items-center all-pointer-events">
-                  <q-icon
-                     class="q-mr-xs"
-                     :color="colorEmail"
-                     size="24px"
-                     name="person"
-                  />
-               </div>
-            </template>
-         </q-input>
-         <q-input
-            v-model="correoInput"
-            label="Correo"
-            style="padding: 24px; font-size: 20px"
-         >
-            <template v-slot:label>
-               <div class="row items-center all-pointer-events">
-                  <q-icon
-                     class="q-mr-xs"
-                     :color="colorEmail"
-                     size="24px"
-                     name="mail"
-                  />
-               </div>
-            </template>
-         </q-input>
-         <q-input
-            type="password"
-            v-model="contrasenaInput"
-            label="Contraseña"
-            style="padding: 24px; font-size: 20px"
-         >
-            <template v-slot:label>
-               <div class="row items-center all-pointer-events">
-                  <q-icon
-                     class="q-mr-xs"
-                     :color="colorPass"
-                     size="24px"
-                     name="key"
-                  />
-               </div>
-            </template>
-         </q-input>
-         <q-separator dark />
-         <q-card-actions style="justify-content: flex-end">
-            <q-btn glossy rounded color="deep-orange" @click="handleLogin" flat
-               >Aceptar</q-btn
-            >
-            <q-btn glossy rounded color="deep-orange" @click="handleLogOut" flat
-               >LogOut</q-btn
-            >
-         </q-card-actions>
-      </q-card>
+               <q-input
+                  v-model="userName"
+                  label="nombre"
+                  style="padding: 24px; font-size: 20px"
+               >
+                  <template v-slot:label>
+                     <div class="row items-center all-pointer-events">
+                        <q-icon
+                           class="q-mr-xs"
+                           :color="colorEmail"
+                           size="24px"
+                           name="person"
+                        />
+                     </div>
+                  </template>
+               </q-input>
+               <q-input
+                  v-model="correoInput"
+                  label="Correo"
+                  style="padding: 24px; font-size: 20px"
+               >
+                  <template v-slot:label>
+                     <div class="row items-center all-pointer-events">
+                        <q-icon
+                           class="q-mr-xs"
+                           :color="colorEmail"
+                           size="24px"
+                           name="mail"
+                        />
+                     </div>
+                  </template>
+               </q-input>
+               <q-input
+                  type="password"
+                  v-model="contrasenaInput"
+                  label="Contraseña"
+                  style="padding: 24px; font-size: 20px"
+               >
+                  <template v-slot:label>
+                     <div class="row items-center all-pointer-events">
+                        <q-icon
+                           class="q-mr-xs"
+                           :color="colorPass"
+                           size="24px"
+                           name="key"
+                        />
+                     </div>
+                  </template>
+               </q-input>
+               <q-separator dark />
+               <q-card-actions style="justify-content: flex-end">
+                  <q-btn
+                     glossy
+                     rounded
+                     color="deep-orange"
+                     @click="handleLogin"
+                     flat
+                     >Aceptar</q-btn
+                  >
+                  <q-btn
+                     glossy
+                     rounded
+                     color="deep-orange"
+                     @click="handleLogOut"
+                     flat
+                     >LogOut</q-btn
+                  >
+               </q-card-actions>
+            </q-card>
+
+            <!-- <q-card-actions align="right">
+               <q-btn flat label="OK" color="primary" v-close-popup />
+            </q-card-actions> -->
+         </q-card>
+      </q-dialog>
    </div>
-    <q-card-actions align="right">
-      <q-btn flat label="OK" color="primary" v-close-popup />
-    </q-card-actions>
-  </q-card>
-</q-dialog>
-</div>
 </template>
 <script>
 import { defineComponent } from "vue";
@@ -85,39 +94,40 @@ import logout from "src/composable/logOut";
 export default defineComponent({
    name: "InputUser",
    props: {
-    inputUserDialog: Boolean // Define a prop to receive showLogin from parent
+      inputUserDialog: Boolean, // Define a prop to receive showLogin from parent
    },
    data() {
       return {
          api: apiLink,
          correoInput: "",
          contrasenaInput: "",
-         userName:'',
+         userName: "",
          users: [],
          colorEmail: "red",
          colorPass: "red",
-        inputDialog:this.inputUserDialog,
+         inputDialog: false,
       };
    },
-   watch:{
-    inputUserDialog:function(item){
-      debugger
-      item
-    }
+   watch: {
+      inputUserDialog: function (item) {
+         debugger;
+         this.inputDialog = item;
+      },
    },
-   //  async mounted() {
-   //     this.users = await fetchUserData();
-   //  },
    methods: {
+      closeDialog() {
+         debugger;
+         this.$emit("close-dialog-newuser"); // Emit an event to notify the parent component
+      },
       async handleLogin() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
          const username = this.userName;
          const password = this.contrasenaInput;
-         const email=this.correoInput
+         const email = this.correoInput;
 
          // Call the login function
-         const result = await insertUser(username,email, password);
+         const result = await insertUser(username, email, password);
 
          if (result) {
             console.log("usuario registrado");
@@ -128,10 +138,10 @@ export default defineComponent({
             // Login failed, handle the error, e.g., show an error message.
          }
       },
-      handleLogOut(){
-        debugger
-        logout()
-      }
+      handleLogOut() {
+         debugger;
+         logout();
+      },
 
       // comprobarUsuario() {
       //    let contrasena, usuario;
@@ -162,4 +172,3 @@ export default defineComponent({
    },
 });
 </script>
-
