@@ -2,23 +2,18 @@
    <div style="width: 100%">
       <q-dialog v-model="masInfo" @hide="closeDialog">
          <q-card style="overflow-y: hidden">
-            <div style="display: flex">
+            <div style="display: flex;justify-content: center;background-color: #37474F;">
                <div>
-                  <h3 style="margin: 0; padding: 20px">
-                      Historial PDF
-                  </h3>
+                  <h3 style="margin: 0; padding: 20px;color:white">Historial</h3>
                </div>
-               <div style="align-items: center; display: flex">
-                  <q-btn glossy rounded color="red" @click="closeDialog" flat
+               <div style="align-items: center;display: flex;justify-content: flex-end;">
+                  <q-btn glossy rounded   style="color: #1aee9f" @click="closeDialog" flat
                      >Cerrar</q-btn
                   >
                </div>
             </div>
 
-            <q-card
-               class="my-card blue-grey-2 text-red"
-               style="display: flex; justify-content: center"
-            >
+            <q-card class="my-card blue-grey-2 text-red">
                <div class="pdf-container" style="width: 500px">
                   <iframe
                      class="pdf-iframe"

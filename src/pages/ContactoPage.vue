@@ -97,84 +97,135 @@
       <q-footer elevated class="bg-blue-grey-9">
          <q-toolbar>
             <q-toolbar-title style="text-align: center"
-               >Made with <span><q-img  src="/lovePng.png" width="50px" height="50px"></q-img></span> by  Sha3ky's TEAM</q-toolbar-title
+               >Made with
+               <span
+                  ><q-img src="/lovePng.png" width="50px" height="50px"></q-img
+               ></span>
+               by Sha3ky's TEAM</q-toolbar-title
             >
          </q-toolbar>
       </q-footer>
-      <q-page-container
-         style="
-            min-height: 100vh;
-            text-align: center;
-            background-color: #37464e;
-         "
-      >
+      <q-page-container style="min-height: 100vh; text-align: center">
+         <q-img
+            src="/banner.png"
+            class="q-mx-auto"
+            :max-width="400"
+            :max-height="225"
+            alt="Beny1 Logo"
+            style="opacity: 0.7;"
+
+         >
+         </q-img>
          <div style="padding: 40px">
-            <div class="q-pa-md" style="display: flex; justify-content: center">
-               <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-                  <q-input
-                     color="lime-11"
-                     bg-color="white"
-                     filled
-                     v-model="nombre"
-                     label="Tu nombre *"
-                     hint="Nombre y Apellido"
-                     lazy-rules
-                     :rules="[
-                        (val) =>
-                           (val && val.length > 0) || 'Please type something',
-                     ]"
-                  />
-
-                  <q-input
-                     color="lime-11"
-                     bg-color="white"
-                     filled
-                     type="email"
-                     v-model="email"
-                     label="Tu Email *"
-                     lazy-rules
-                     :rules="[
-                        (val) => {
-                           if (!val) return 'Please type your email';
-                           const emailRegex =
-                              /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-                           return (
-                              emailRegex.test(val) ||
-                              'Please type a valid email address'
-                           );
-                        },
-                     ]"
-                  />
-
-                  <q-toggle
-                     v-model="toggleAcept"
-                     label="Acepto envio de novedades"
-                  />
-
-                  <div>
-                     <q-btn
-                        label="Aceptar"
-                        type="aceptar"
-                        glossy
-                        style="color: #1aee9f"
-                     />
-                     <q-btn
-                        label="Reset"
-                        type="reset"
-                        color="red"
-                        flat
-                        class="q-ml-sm"
-                     />
-                  </div>
-               </q-form>
+            <div>
+               <h2 style="margin: 10px">
+                  Contacta con nosotros y serás el primero <br />
+                  en enterarte las las novedades
+               </h2>
             </div>
             <div>
-               <h3 style="margin: 10px; color: white">
+               <div
+                  class="q-pa-md"
+                  style="
+                     display: flex;
+                     justify-content: center;
+                     border: 2px solid #787575;
+                     padding: 20px;
+                  "
+               >
+                  <q-form
+                     @submit="onSubmit"
+                     @reset="onReset"
+                     class="q-gutter-md"
+                  >
+                     <q-input
+                        outlined
+                        v-model="nombre"
+                        label="Tu nombre *"
+                        hint="Nombre y Apellido"
+                        lazy-rules
+                        :rules="[
+                           (val) =>
+                              (val && val.length > 0) ||
+                              'Por favor introduce el nombre',
+                        ]"
+                     />
+
+                     <q-input
+                        outlined
+                        type="email"
+                        v-model="email"
+                        label="Tu Email *"
+                        lazy-rules
+                        :rules="[
+                           (val) => {
+                              if (!val) return 'Por favor introduce tu email';
+                              const emailRegex =
+                                 /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+                              return (
+                                 emailRegex.test(val) ||
+                                 'Este email no es válido'
+                              );
+                           },
+                        ]"
+                     />
+                     <q-input
+                        outlined
+                        type="tel"
+                        v-model="mobileNumber"
+                        label="Tu Número de Teléfono"
+                        lazy-rules
+                        :rules="[
+                           (val) => {
+                              if (!val) return 'Por favor un número válido ';
+                              const phoneNumberRegex = /^[0-9]*$/; // Regular expression to match only numbers
+                              if (phoneNumberRegex.test(val)) {
+                                 return true; // It's a valid phone number
+                              }
+                              return 'Este número no es valido';
+                           },
+                        ]"
+                        class="q-mb-md md:q-mb-0"
+                     />
+
+                     <q-toggle
+                        v-model="toggleAcept"
+                        label="Acepto envio de novedades"
+                     />
+
+                     <div>
+                        <q-btn
+                           label="Aceptar"
+                           type="aceptar"
+                           glossy
+                           style="color: #1aee9f"
+                        />
+                        <q-btn
+                           label="Reset"
+                           type="reset"
+                           color="red"
+                           flat
+                           class="q-ml-sm"
+                        />
+                     </div>
+                  </q-form>
+               </div>
+            </div>
+
+            <div>
+               <h2 style="margin: 10px">
                   Estamos en Cubelles <br />
                   Carrer Maestrat número 3
-               </h3>
+               </h2>
             </div>
-            <div style="display: flex; justify-content: center">
+            <div
+               style="
+                  display: flex;
+                  justify-content: center;
+                  border: 2px solid #787575;
+                  padding: 20px;
+               "
+            >
                <iframe
                   src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d909.7966577374251!2d1.6512922696582077!3d41.19919300728751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDExJzU3LjEiTiAxwrAzOScwNy4wIkU!5e1!3m2!1ses!2ses!4v1698127089612!5m2!1ses!2ses"
                   width="800"
@@ -269,7 +320,6 @@ export default defineComponent({
    components: {
       InputUser,
       loginUser,
-
    },
 
    setup() {
@@ -279,18 +329,17 @@ export default defineComponent({
       $q.dark.toggle(); // toggle
       const nombre = ref(null);
       const email = ref(null);
+      const mobileNumber = ref(null);
       const toggleAcept = ref(false);
       const dialogVisible = ref(false);
 
       function onSubmit() {
-
-            $q.notify({
-               color: "green-4",
-               textColor: "white",
-               icon: "cloud_done",
-               message: "Gracias por subscribirte",
-            });
-
+         $q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "cloud_done",
+            message: "Gracias por subscribirte",
+         });
       }
       // to reset validations:
       function onReset() {
@@ -306,6 +355,7 @@ export default defineComponent({
          email,
          toggleAcept,
          myForm,
+         mobileNumber,
       };
    },
 });

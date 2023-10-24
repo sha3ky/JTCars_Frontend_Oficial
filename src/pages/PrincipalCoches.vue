@@ -127,6 +127,7 @@
             :max-width="400"
             :max-height="425"
             alt="Beny1 Logo"
+            style="opacity: 0.7;"
          ></q-img>
          <div>
             <div class="q-pa-md row items-start q-gutter-md">
