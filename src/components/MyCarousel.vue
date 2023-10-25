@@ -12,7 +12,7 @@
                <div style="width: 85%; text-align: center;margin-top: 10px;">
                   <p>hello</p>
                </div>
-               <div>
+               <div style="margin-right: 10px;">
                   <q-btn
                      glossy
                      style="color: #1aee9f; background: #37474f"

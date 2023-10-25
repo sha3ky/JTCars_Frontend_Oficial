@@ -1,5 +1,5 @@
 <template>
-   <q-layout view="lHh Lpr lFf">
+   <q-layout view="lHh Lpr lFf" class='body--dark'>
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
             <q-btn
@@ -251,7 +251,14 @@
       </q-page-container>
    </q-layout>
 </template>
-
+<style>
+/* .body--{
+  background-color: beige;
+} */
+body.body--dark {
+  background: #0c0c0c
+}
+</style>
 <script>
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
