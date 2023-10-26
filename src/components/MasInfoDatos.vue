@@ -2,12 +2,31 @@
    <div style="width: 100%">
       <q-dialog v-model="masInfo" @hide="closeDialog">
          <q-card style="overflow-y: hidden">
-            <div style="display: flex;justify-content: center;background-color: #37474F;">
+            <div
+               style="
+                  display: flex;
+                  justify-content: center;
+                  background-color: #37474f;
+               "
+            >
                <div>
-                  <h3 style="margin: 0; padding: 20px;color:white">Historial</h3>
+                  <h3 style="margin: 0; padding: 20px; color: white">
+                     Historial
+                  </h3>
                </div>
-               <div style="align-items: center;display: flex;justify-content: flex-end;">
-                  <q-btn glossy rounded   style="color: #1aee9f" @click="closeDialog" flat
+               <div
+                  style="
+                     align-items: center;
+                     display: flex;
+                     justify-content: flex-end;
+                  "
+               >
+                  <q-btn
+                     glossy
+                     rounded
+                     style="color: #1aee9f"
+                     @click="closeDialog"
+                     flat
                      >Cerrar</q-btn
                   >
                </div>
@@ -17,7 +36,7 @@
                <div class="pdf-container" style="width: 500px">
                   <iframe
                      class="pdf-iframe"
-                     src="/pdf/7131DWS.pdf"
+                     :src="'data:application/pdf;base64,' + pdfFile"
                      title="PDF-file"
                      allowfullscreen
                   ></iframe>
@@ -60,16 +79,23 @@
 export default {
    props: {
       masInfoDialog: Boolean, // Define a prop to receive showLogin from the parent
+      pdfDatos: String,
    },
    data() {
       return {
          masInfo: false,
+         pdfFile:''
       };
    },
    watch: {
       masInfoDialog: function (item) {
          debugger;
          this.masInfo = item;
+      },
+      pdfDatos: function (item) {
+         if(item){
+          this.pdfFile=this.pdfDatos
+         }
       },
    },
    methods: {
@@ -80,3 +106,20 @@ export default {
    },
 };
 </script>
+<!-- // Select your file input element
+const fileInput = document.getElementById('yourFileInputId');
+
+fileInput.addEventListener('change', function() {
+  const file = fileInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      const base64String = event.target.result.split(',')[1];
+      // Now, base64String contains the base64 representation of the PDF file.
+      console.log(base64String);
+    };
+
+    reader.readAsDataURL(file);
+  }
+}); -->

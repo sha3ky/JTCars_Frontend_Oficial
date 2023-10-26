@@ -112,11 +112,9 @@
             :max-width="400"
             :max-height="225"
             alt="Beny1 Logo"
-
-
          >
          </q-img>
-         <div style="padding: 40px">
+         <div style="padding: 20px">
             <div>
                <h2 style="margin: 10px">
                   Contacta con nosotros y serás el primero <br />
@@ -224,7 +222,7 @@
                   display: flex;
                   justify-content: center;
                   border: 2px solid #787575;
-                  padding: 20px;
+                  padding: 10px;
                "
             >
                <iframe

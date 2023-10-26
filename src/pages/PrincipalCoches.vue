@@ -143,95 +143,86 @@
             >
                <q-card style="" flat bordered>
                   <!-- <q-col cols="6"> -->
-                     <q-img
-                        :src="getBase64Image(item)"
-                        class="responsive-image"
+                  <q-img :src="getBase64Image(item)" class="responsive-image">
+                     <div
+                        style="
+                           display: flex;
+                           justify-content: flex-end;
+                           display: contents;
+                        "
                      >
-                        <div
-                           style="
-                              display: flex;
-                              justify-content: flex-end;
-                              display: contents;
-                           "
-                        >
-                           <div>
-                              <q-badge rounded color="red" label="DESCUENTO" />
-                              <q-badge rounded color="green" label="OFERTA" />
-                              <q-badge rounded color="blue" label="HIBRIDO" />
-                           </div>
-                           <div
-                              style="display: flex; justify-content: flex-end"
-                           >
-                              <q-img
-                                 height="7vw"
-                                 width="10vw"
-                                 src="/benysCarlogoMetal.png"
-                              >
-                              </q-img>
-                           </div>
-                        </div>
-                     </q-img>
-
-                     <q-card-section>
-                        <div
-                           class="text-overline text-orange-9"
-                           style="line-height: 1px"
-                        >
-                           Precio
-                        </div>
-                        <div
-                           class="text-h5 q-mt-sm q-mb-xs"
-                           style="margin: 3px"
-                        >
-                           2500<span>€</span>
-                        </div>
                         <div>
-                           <div class="text-caption text-grey">
-                              <div>Año de fabricación: 1998</div>
-                              <div>Kilómetros: 220000</div>
-                              <div>Etiqueta: C</div>
-                           </div>
+                           <q-badge rounded color="red" label="DESCUENTO" />
+                           <q-badge rounded color="green" label="OFERTA" />
+                           <q-badge rounded color="blue" label="HIBRIDO" />
                         </div>
-                     </q-card-section>
-
-                     <q-card-actions>
-                        <q-btn
-                           flat
-                           color="primary"
-                           label="Más Fotos"
-                           @click="carouselFoto(index)"
-                        />
-                        <q-btn
-                           flat
-                           color="secondary"
-                           label="Más Datos"
-                           @click="masDatos"
-                        />
-
-                        <q-space />
-
-                        <q-btn
-                           color="grey"
-                           round
-                           flat
-                           dense
-                           :icon="
-                              expanded
-                                 ? 'keyboard_arrow_up'
-                                 : 'keyboard_arrow_down'
-                           "
-                           @click="expanded = !expanded"
-                        />
-                     </q-card-actions>
-
-                     <q-slide-transition>
-                        <div v-show="expanded">
-                           <q-separator />
-                           <q-card-section class="text-subtitle2">
-                              {{ lorem }}
-                           </q-card-section>
+                        <div style="display: flex; justify-content: flex-end">
+                           <q-img
+                              height="7vw"
+                              width="10vw"
+                              src="/benysCarlogoMetal.png"
+                           >
+                           </q-img>
                         </div>
-                     </q-slide-transition>
+                     </div>
+                  </q-img>
+
+                  <q-card-section>
+                     <div
+                        class="text-overline text-orange-9"
+                        style="line-height: 1px"
+                     >
+                        Precio
+                     </div>
+                     <div class="text-h5 q-mt-sm q-mb-xs" style="margin: 3px">
+                        2500<span>€</span>
+                     </div>
+                     <div>
+                        <div class="text-caption text-grey">
+                           <div>Año de fabricación: 1998</div>
+                           <div>Kilómetros: 220000</div>
+                           <div>Etiqueta: C</div>
+                        </div>
+                     </div>
+                  </q-card-section>
+
+                  <q-card-actions>
+                     <q-btn
+                        flat
+                        color="primary"
+                        label="Más Fotos"
+                        @click="carouselFoto(index)"
+                     />
+                     <q-btn
+                        flat
+                        color="secondary"
+                        label="Más Datos"
+                        @click="masDatos(index)"
+                     />
+
+                     <q-space />
+
+                     <!-- <q-btn
+                        color="grey"
+                        round
+                        flat
+                        dense
+                        :icon="
+                           expandedArrow
+                              ? 'keyboard_arrow_up'
+                              : 'keyboard_arrow_down'
+                        "
+                        @click="expanded(index)"
+                     /> -->
+                  </q-card-actions>
+                  <q-card-section class="text-subtitle2">
+                     <q-card
+                        v-for="(itemDescripcion, index) in arrayDescripciones"
+                        :key="index"
+                     >
+                        {{ itemDescripcion }}
+                     </q-card>
+                  </q-card-section>
                   <!-- </q-col> -->
                </q-card>
             </div>
@@ -287,6 +278,7 @@
          <MasInfoDatos
             :masInfoDialog="showMasInfo"
             @close-dialog-masinfo="handleDialogClose"
+            :pdf-datos="pdfDatos"
          />
          <InputUser
             :inputUserDialog="showInputUser"
@@ -303,7 +295,7 @@
          <MyCarousel
             :carouseloDialog="showCarousel"
             @close-dialog-carousel="handleDialogClose"
-            :arrayData="arrayDatos"
+            :array-datos="arrayDatos"
          />
       </q-page-container>
    </q-layout>
@@ -331,6 +323,7 @@ export default defineComponent({
    name: "PrincipalCoches",
    data() {
       return {
+         pdfDatos: "",
          allData: [],
          arrayDatos: [],
          showMasInfo: false,
@@ -347,24 +340,16 @@ export default defineComponent({
             { label: "Contacto", value: "contacto" },
          ],
          imagenPrincipal: [],
-         expanded: false,
-         lorem: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-         // Initialize with your desired value
+         expandedArrow: false,
+         arrayDescripciones: [],
       };
    },
 
-   //  watch: {
-   //     modelSelectedMenu: function (item) {
-   //        debugger;
-   //        item;
-   //     },
-   //},
-
    methods: {
-      repartirImg() {
-         debugger;
+      repartirData() {
          this.allData.forEach((element) => {
             this.imagenPrincipal.push(element.imagen1);
+            this.arrayDescripciones.push(element.descripcion);
          });
       },
       getBase64Image(image) {
@@ -372,12 +357,14 @@ export default defineComponent({
       },
       carouselFoto(index) {
          debugger;
-         index;
          this.showCarousel = true;
          this.arrayDatos = this.allData[index];
       },
-      masDatos() {
-         this.showMasInfo = true;
+      masDatos(index) {
+         this.pdfDatos = this.allData[index].pdf;
+         if (this.pdfDatos) {
+            this.showMasInfo = true;
+         }
       },
       handleDialogClose() {
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
@@ -413,7 +400,7 @@ export default defineComponent({
       this.allData = await getAllData();
       console.log(this.allData);
       if (this.allData !== 0) {
-         this.repartirImg(this.allData);
+         this.repartirData(this.allData);
       }
    },
    components: {
@@ -425,7 +412,6 @@ export default defineComponent({
 
    setup() {
       const $q = useQuasar();
-      const allData = [];
       // const imagenPrincipal = ref([]);
       $q.dark.set(true); // or false or "auto"
       $q.dark.toggle(); // toggle
@@ -434,10 +420,10 @@ export default defineComponent({
       //    allData.value = await getAllData();
       //    console.log(allData.value);
       //    if (allData.value !== 0) {
-      //       repartirImg(allData.value);
+      //       repartirData(allData.value);
       //    }
       // });
-      // function repartirImg() {
+      // function repartirData() {
       //    debugger;
       //    allData.value.forEach((element) => {
       //       imagenPrincipal.value.push(element.imagen1);

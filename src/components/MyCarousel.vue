@@ -10,7 +10,16 @@
                "
             >
                <div style="width: 85%; text-align: center; margin-top: 10px">
-                  <p>hello</p>
+                  <p
+                     style="
+                        font-size: x-large;
+                        font-style: italic;
+                        margin-left: 30px;
+                        text-transform: capitalize;
+                     "
+                  >
+                     {{ marca }}
+                  </p>
                </div>
                <div style="margin-right: 10px">
                   <q-btn
@@ -30,13 +39,23 @@
                v-model="slide"
                v-model:fullscreen="fullscreen"
                infinite
+               control-type="regular"
+               control-color="red"
             >
                <q-carousel-slide
-                  v-for="(image, index) in arrayData"
+                  v-for="(image, index) in imagenes"
                   :key="index"
                   :name="index + 1"
-                  :img-src="getBase64Image(image)"
-               />
+               >
+                  <div
+                     class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+                  >
+                     <q-img
+                        class="rounded-borders full-height"
+                        :src="getBase64Image(image)"
+                     />
+                  </div>
+               </q-carousel-slide>
 
                <template v-slot:control>
                   <q-carousel-control
@@ -65,35 +84,38 @@ import { ref } from "vue";
 export default {
    props: {
       carouseloDialog: Boolean, // Define a prop to receive showLogin from the parent
-      arrayDatos: Array,
+      arrayDatos: Object,
    },
    data() {
       return {
          carousel: false,
          imagenes: [],
+         marca: "",
       };
    },
    watch: {
       carouseloDialog: function (item) {
-         debugger;
          this.carousel = item;
       },
-      arrayData: function (item) {
-         debugger;
-         if (this.arrayData !== 0) {
-            this.repartirImg(this.arrayData);
+      arrayDatos: function (item) {
+         if (this.arrayDatos !== 0) {
+            this.repartirImg(this.arrayDatos);
          }
       },
    },
    methods: {
       repartirImg(array) {
-         debugger;
-         array.forEach((element) => {
-            this.imagenes.push(element.imagen1);
-         });
+         this.marca = array.marca + " " + array.modelo;
+         this.imagenes = [];
+         for (let img = 1; img <= 8; img++) {
+            const propertyName = "imagen" + img;
+            if (array[propertyName]) {
+               this.imagenes.push(array[propertyName]);
+            }
+         }
       },
       getBase64Image(image) {
-         return `data:image/jpeg;base64,${image}`;
+         return `data:image/jpeg;base64, ${image}`;
       },
       closeDialog() {
          this.carousel = false; // Close the dialog
