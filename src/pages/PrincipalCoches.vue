@@ -108,10 +108,19 @@
 
       <q-page-container style="min-height: 100vh; text-align: center">
          <div>
+            <div>
+               <q-img
+                  src="/banner2WebP.webp"
+                  class="q-mx-auto"
+                  :max-width="400"
+                  :max-height="425"
+                  alt="Beny1 Logo"
+               ></q-img>
+            </div>
             <div style="padding: 25px; background: #37474f">
                <p
                   style="
-                     font-size: 5vw;
+                     font-size: 4vw;
                      text-align: center;
                      text-align: center;
                      color: white;
@@ -122,25 +131,22 @@
                </p>
             </div>
          </div>
-         <q-img
-            src="/banner2WebP.webp"
-            class="q-mx-auto"
-            :max-width="400"
-            :max-height="425"
-            alt="Beny1 Logo"
-         ></q-img>
-         <div>
-            <div class="q-pa-md row items-start q-gutter-md">
-               <div class="row">
-                  <q-card
-                     v-for="(image, index) in imageUrls"
-                     :key="index"
-                     style="padding: 10px"
-                     flat
-                     bordered
-                     class="my-card col-6"
-                  >
-                     <q-img :src="image">
+
+         <div
+            class="q-pa-md row items-start q-gutter-md"
+            style="justify-content: space-around"
+         >
+            <div
+               class="col-5"
+               v-for="(item, index) in imagenPrincipal"
+               :key="index"
+            >
+               <q-card style="" flat bordered>
+                  <!-- <q-col cols="6"> -->
+                     <q-img
+                        :src="getBase64Image(item)"
+                        class="responsive-image"
+                     >
                         <div
                            style="
                               display: flex;
@@ -167,8 +173,18 @@
                      </q-img>
 
                      <q-card-section>
-                        <div class="text-overline text-orange-9">Precio</div>
-                        <div class="text-h5 q-mt-sm q-mb-xs">2500$</div>
+                        <div
+                           class="text-overline text-orange-9"
+                           style="line-height: 1px"
+                        >
+                           Precio
+                        </div>
+                        <div
+                           class="text-h5 q-mt-sm q-mb-xs"
+                           style="margin: 3px"
+                        >
+                           2500<span>€</span>
+                        </div>
                         <div>
                            <div class="text-caption text-grey">
                               <div>Año de fabricación: 1998</div>
@@ -183,7 +199,7 @@
                            flat
                            color="primary"
                            label="Más Fotos"
-                           @click="carouselFoto"
+                           @click="carouselFoto(index)"
                         />
                         <q-btn
                            flat
@@ -216,10 +232,26 @@
                            </q-card-section>
                         </div>
                      </q-slide-transition>
-                  </q-card>
-               </div>
+                  <!-- </q-col> -->
+               </q-card>
             </div>
          </div>
+
+         <!-- <div class="q-pa-md row items-start q-gutter-md">
+
+            <q-card
+               v-for="(image, index) in imagenPrincipal"
+               :key="index"
+               style="padding: 10px"
+               flat
+               bordered
+            >
+               <q-col cols="6">
+
+               </q-col>
+            </q-card>
+
+         </div> -->
 
          <!-- <template>
           <div>
@@ -267,24 +299,31 @@
          />
          <!-- Use the correct prop name for loginUser -->
          <router-view />
-
          <!-- Include your custom carousel component here -->
          <MyCarousel
             :carouseloDialog="showCarousel"
             @close-dialog-carousel="handleDialogClose"
+            :arrayData="arrayDatos"
          />
       </q-page-container>
    </q-layout>
 </template>
-
+<style>
+.responsive-image {
+   height: 250px; /* Set a fixed height for the images */
+   width: 100%; /* Ensure the image takes up the entire space */
+   object-fit: cover; /* Preserve the aspect ratio and cover the entire space */
+}
+</style>
 <script>
-import { defineComponent, ref, setTransitionHooks } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
 import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as needed
 import MasInfoDatos from "components/MasInfoDatos.vue";
+import getAllData from "src/composable/loadAllData";
 
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 
@@ -292,6 +331,8 @@ export default defineComponent({
    name: "PrincipalCoches",
    data() {
       return {
+         allData: [],
+         arrayDatos: [],
          showMasInfo: false,
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
@@ -305,52 +346,50 @@ export default defineComponent({
             // { label: "Ofertas", value: "ofertas" },
             { label: "Contacto", value: "contacto" },
          ],
-         imageUrls: [
-            "https://cdn.quasar.dev/img/parallax1.jpg",
-            "https://cdn.quasar.dev/img/parallax2.jpg",
-            "https://cdn.quasar.dev/img/parallax1.jpg",
-            "https://cdn.quasar.dev/img/parallax2.jpg",
-            "https://cdn.quasar.dev/img/parallax1.jpg",
-            "https://cdn.quasar.dev/img/parallax2.jpg",
-            "https://cdn.quasar.dev/img/parallax1.jpg",
-            "https://cdn.quasar.dev/img/parallax2.jpg",
-         ],
+         imagenPrincipal: [],
          expanded: false,
          lorem: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
          // Initialize with your desired value
       };
    },
+
    //  watch: {
    //     modelSelectedMenu: function (item) {
    //        debugger;
    //        item;
    //     },
    //},
+
    methods: {
-      carouselFoto() {
+      repartirImg() {
          debugger;
+         this.allData.forEach((element) => {
+            this.imagenPrincipal.push(element.imagen1);
+         });
+      },
+      getBase64Image(image) {
+         return `data:image/jpeg;base64,${image}`;
+      },
+      carouselFoto(index) {
+         debugger;
+         index;
          this.showCarousel = true;
+         this.arrayDatos = this.allData[index];
       },
       masDatos() {
-         debugger;
          this.showMasInfo = true;
       },
       handleDialogClose() {
-         debugger;
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
          this.showInputUser = false;
          this.showMasInfo = false;
          this.showCarousel = false;
       },
       nuevoUsuario() {
-         debugger;
          this.showInputUser = true;
-         //this.showLoginUser = false;
       },
       loginearUsuario() {
-         debugger;
          this.showLoginUser = true;
-         //this.showInputUser = false;
       },
       toggleDarkMode() {
          const $q = this.$q;
@@ -368,24 +407,47 @@ export default defineComponent({
       //    this.userIsAdmin = value;
       // },
    },
-   mounted() {},
+   async mounted() {
+      debugger;
+      // Use an async function to fetch data and assign it to allData
+      this.allData = await getAllData();
+      console.log(this.allData);
+      if (this.allData !== 0) {
+         this.repartirImg(this.allData);
+      }
+   },
    components: {
-      //EssentialLink,
       InputUser,
       loginUser,
       MyCarousel,
       MasInfoDatos,
-      // AdminPart,
-      // LabellerUser,
    },
 
    setup() {
       const $q = useQuasar();
+      const allData = [];
+      // const imagenPrincipal = ref([]);
       $q.dark.set(true); // or false or "auto"
       $q.dark.toggle(); // toggle
+      // onMounted(async () => {
+      //    // Use an async function to fetch data and assign it to allData
+      //    allData.value = await getAllData();
+      //    console.log(allData.value);
+      //    if (allData.value !== 0) {
+      //       repartirImg(allData.value);
+      //    }
+      // });
+      // function repartirImg() {
+      //    debugger;
+      //    allData.value.forEach((element) => {
+      //       imagenPrincipal.value.push(element.imagen1);
+      //    });
+      // }
+      // function getBase64Image(image) {
+      //    return `data:image/jpeg;base64,${image}`;
+      // }
 
-
-      return {  };
+      return {};
    },
 });
 </script>

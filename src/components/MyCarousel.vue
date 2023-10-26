@@ -9,10 +9,10 @@
                   align-items: center;
                "
             >
-               <div style="width: 85%; text-align: center;margin-top: 10px;">
+               <div style="width: 85%; text-align: center; margin-top: 10px">
                   <p>hello</p>
                </div>
-               <div style="margin-right: 10px;">
+               <div style="margin-right: 10px">
                   <q-btn
                      glossy
                      style="color: #1aee9f; background: #37474f"
@@ -26,43 +26,34 @@
             <q-carousel
                swipeable
                animated
-               v-model="slide"
-               thumbnails
-               infinite
                arrows
+               v-model="slide"
+               v-model:fullscreen="fullscreen"
+               infinite
             >
                <q-carousel-slide
-                  :name="1"
-                  img-src="https://cdn.quasar.dev/img/mountains.jpg"
+                  v-for="(image, index) in arrayData"
+                  :key="index"
+                  :name="index + 1"
+                  :img-src="getBase64Image(image)"
                />
-               <q-carousel-slide
-                  :name="2"
-                  img-src="https://cdn.quasar.dev/img/parallax1.jpg"
-               />
-               <q-carousel-slide
-                  :name="3"
-                  img-src="https://cdn.quasar.dev/img/parallax2.jpg"
-               />
-               <q-carousel-slide
-                  :name="4"
-                  img-src="https://cdn.quasar.dev/img/quasar.jpg"
-               />
-               <q-carousel-slide
-                  :name="5"
-                  img-src="https://cdn.quasar.dev/img/parallax1.jpg"
-               />
-               <q-carousel-slide
-                  :name="6"
-                  img-src="https://cdn.quasar.dev/img/parallax2.jpg"
-               />
-               <q-carousel-slide
-                  :name="7"
-                  img-src="https://cdn.quasar.dev/img/quasar.jpg"
-               />
-               <q-carousel-slide
-                  :name="8"
-                  img-src="https://cdn.quasar.dev/img/mountains.jpg"
-               />
+
+               <template v-slot:control>
+                  <q-carousel-control
+                     position="bottom-right"
+                     :offset="[18, 18]"
+                  >
+                     <q-btn
+                        push
+                        round
+                        dense
+                        color="white"
+                        text-color="primary"
+                        :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                        @click="fullscreen = !fullscreen"
+                     />
+                  </q-carousel-control>
+               </template>
             </q-carousel>
          </q-card>
       </q-dialog>
@@ -70,14 +61,16 @@
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
    props: {
       carouseloDialog: Boolean, // Define a prop to receive showLogin from the parent
+      arrayDatos: Array,
    },
    data() {
       return {
-         slide: 1,
          carousel: false,
+         imagenes: [],
       };
    },
    watch: {
@@ -85,12 +78,33 @@ export default {
          debugger;
          this.carousel = item;
       },
+      arrayData: function (item) {
+         debugger;
+         if (this.arrayData !== 0) {
+            this.repartirImg(this.arrayData);
+         }
+      },
    },
    methods: {
+      repartirImg(array) {
+         debugger;
+         array.forEach((element) => {
+            this.imagenes.push(element.imagen1);
+         });
+      },
+      getBase64Image(image) {
+         return `data:image/jpeg;base64,${image}`;
+      },
       closeDialog() {
          this.carousel = false; // Close the dialog
          this.$emit("close-dialog-carousel"); // Emit an event to notify the parent component
       },
+   },
+   setup() {
+      return {
+         slide: ref(1),
+         fullscreen: ref(false),
+      };
    },
 };
 </script>

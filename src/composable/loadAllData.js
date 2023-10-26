@@ -1,11 +1,12 @@
 import axios from "axios";
-import apiLink from "../composable/apiLink";
+import apiLink from "./apiLink";
 
 let allData;
 let link = apiLink;
 async function getAllData () {
+  debugger
    try {
-      const response = await axios.get(`${link}api/ImageTable/`, {
+      const response = await axios.get(`${link}api/getcoches/`, {
          headers: {
             "Content-Type": "application/json",
             // "ngrok-skip-browser-warning": "69420",
