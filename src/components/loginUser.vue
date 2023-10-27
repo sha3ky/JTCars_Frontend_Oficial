@@ -59,7 +59,7 @@
 import { defineComponent } from "vue";
 import apiLink from "../composable/apiLink";
 import login from "../composable/loginUser";
-
+import { Notify } from "quasar";
 export default defineComponent({
    name: "loginUser",
    props: {
