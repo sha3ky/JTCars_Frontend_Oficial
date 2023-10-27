@@ -152,9 +152,9 @@
                         "
                      >
                         <div>
-                           <q-badge rounded color="red" label="DESCUENTO" />
-                           <q-badge rounded color="green" label="OFERTA" />
-                           <q-badge rounded color="blue" label="HIBRIDO" />
+                           <q-badge rounded color="red" :label="promocion[index]" />
+                           <!-- <q-badge rounded color="green" label="OFERTA" />
+                           <q-badge rounded color="blue" label="HIBRIDO" /> -->
                         </div>
                         <div style="display: flex; justify-content: flex-end">
                            <q-img
@@ -179,14 +179,15 @@
                      </div>
                      <div>
                         <div class="text-caption text-grey">
-                           <div>Año de fabricación: {{ anoCoche[index] }}</div>
-                           <div>Kilómetros: {{ kmCoche[index] }}</div>
-                           <div>Etiqueta: {{ etiquetas[index] }}</div>
+                           <div>Año de fabricación: <span><b>{{anoCoche[index]}}</b></span></div>
+                           <div>Kilómetros: <span> <b>{{ kmCoche[index] }}</b></span></div>
+                           <div>Etiqueta: <span><b>{{ etiquetas[index] }}</b></span></div>
+                           <div>Combustible: <span><b>{{combustible[index] }}</b></span></div>
                         </div>
                      </div>
                   </q-card-section>
 
-                  <q-card-actions style="    display: block;">
+                  <q-card-actions style="display: block;padding: 0;">
                      <q-btn
                         flat
                         color="primary"
@@ -340,6 +341,8 @@ export default defineComponent({
          anoCoche: [],
          kmCoche: [],
          etiquetas: [],
+         combustible:[],
+         promocion:[]
       };
    },
 
@@ -351,6 +354,8 @@ export default defineComponent({
             this.anoCoche.push(element.ano);
             this.kmCoche.push(element.km);
             this.etiquetas.push(element.etiqueta);
+            this.promocion.push(element.promocion)
+            this.combustible.push(element.combustible)
          });
       },
       getBase64Image(image) {
