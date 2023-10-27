@@ -359,10 +359,8 @@ export default defineComponent({
             this.precios.push(element.precio)
             this.marcas.push(element.marca)
             this.modelos.push(element.modelo)
-            this.colores.push(element.color)
-
+            this.colores.push(element.colorBanner)
          });
-
       },
       getBase64Image(image) {
          return `data:image/jpeg;base64,${image}`;
