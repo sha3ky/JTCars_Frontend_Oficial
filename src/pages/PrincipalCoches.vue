@@ -69,7 +69,7 @@
             </template>
             <!-- reactividad -->
             <q-space></q-space>
-            <div>
+            <div >
                <q-btn
                   flat
                   round
@@ -179,14 +179,14 @@
                      </div>
                      <div>
                         <div class="text-caption text-grey">
-                           <div>Año de fabricación: 1998</div>
-                           <div>Kilómetros: 220000</div>
-                           <div>Etiqueta: C</div>
+                           <div>Año de fabricación: {{ anoCoche[index] }}</div>
+                           <div>Kilómetros: {{ kmCoche[index] }}</div>
+                           <div>Etiqueta: {{ etiquetas[index] }}</div>
                         </div>
                      </div>
                   </q-card-section>
 
-                  <q-card-actions>
+                  <q-card-actions style="    display: block;">
                      <q-btn
                         flat
                         color="primary"
@@ -216,12 +216,7 @@
                      /> -->
                   </q-card-actions>
                   <q-card-section class="text-subtitle2">
-                     <q-card
-                        v-for="(itemDescripcion, index) in arrayDescripciones"
-                        :key="index"
-                     >
-                        {{ itemDescripcion }}
-                     </q-card>
+                     {{ arrayDescripciones[index] }}
                   </q-card-section>
                   <!-- </q-col> -->
                </q-card>
@@ -342,6 +337,9 @@ export default defineComponent({
          imagenPrincipal: [],
          expandedArrow: false,
          arrayDescripciones: [],
+         anoCoche: [],
+         kmCoche: [],
+         etiquetas: [],
       };
    },
 
@@ -350,6 +348,9 @@ export default defineComponent({
          this.allData.forEach((element) => {
             this.imagenPrincipal.push(element.imagen1);
             this.arrayDescripciones.push(element.descripcion);
+            this.anoCoche.push(element.ano);
+            this.kmCoche.push(element.km);
+            this.etiquetas.push(element.etiqueta);
          });
       },
       getBase64Image(image) {
