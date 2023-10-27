@@ -60,8 +60,12 @@
 // };
 
 //
+
+import store from "../store";
+
 import axios from "axios";
 import apiLink from "./apiLink";
+
 let link = apiLink;
 
 const login = async (name, password) => {
@@ -81,6 +85,8 @@ const login = async (name, password) => {
       sessionStorage.setItem("access_token", response.data.access);
       sessionStorage.setItem('refresh_token', response.data.refresh)
       axios.defaults.headers.common["Authorization"] = response.data.access;
+
+      store.dispatch("login", response.data.access); ///vuex Stores Nuevo
       return  true
     } else {
       console.log("Invalid credentials")

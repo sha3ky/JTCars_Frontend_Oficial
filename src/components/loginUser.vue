@@ -64,7 +64,7 @@ export default defineComponent({
    name: "loginUser",
    props: {
       loginUserDialog: Boolean, // Define a prop to receive showLogin from parent
-      usuarioLogineado:String
+      // usuarioLogineado:String /// forma paleto de enviar el usuario logineado de uno a otro
    },
    data() {
       return {
@@ -99,7 +99,7 @@ export default defineComponent({
                type: "positive",
                message: "Usuario logineado correctamente.",
             });
-            this.$emit("update-usuario-logineado", username);
+            this.$emit("update-usuario-logineado", username); /// forma paleto de enviar el usuario logineado de uno a otro
          } else {
             console.log("usuario no logineado");
             Notify.create({

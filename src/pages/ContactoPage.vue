@@ -1,5 +1,5 @@
 <template>
-   <q-layout view="lHh Lpr lFf" class='body--dark'>
+   <q-layout view="lHh Lpr lFf">
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
             <q-btn
@@ -39,6 +39,7 @@
                style="background: aliceblue"
                v-if="$q.screen.width < 600"
             />
+
             <q-space></q-space>
             <!-- reactividad -->
             <template v-if="$q.screen.width > 600">
@@ -64,27 +65,52 @@
                            <q-item-section>Contacto</q-item-section>
                         </q-btn>
                      </router-link>
+
+                     <!-- test -->
+                     <!-- <template v-if="usuarioLogineado">
+                       <router-link to="/extra">
+                          <q-btn
+                             class="glossy"
+                             style="color: #1aee9f; margin-left: 10px"
+                             clickable
+                             rounded
+                          >
+                             <q-item-section>Extra</q-item-section>
+                          </q-btn>
+                       </router-link>
+                    </template> -->
+                     <!-- test -->
                   </div>
                </div>
             </template>
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <q-btn
-                  flat
-                  round
-                  dense
-                  icon="img:loginGreen.png"
-                  @click="loginearUsuario"
-                  style="width: 50px"
-               ></q-btn>
-               <q-btn
-                  flat
-                  round
-                  dense
-                  icon="img:userplusGreen.png"
-                  @click="nuevoUsuario"
-               ></q-btn>
+               <div v-if="!usuarioLogineado">
+                  <q-btn
+                     flat
+                     round
+                     dense
+                     icon="img:loginGreen.png"
+                     @click="loginearUsuario"
+                     style="width: 50px"
+                  ></q-btn>
+                  <q-btn
+                     flat
+                     round
+                     dense
+                     icon="img:userplusGreen.png"
+                     @click="nuevoUsuario"
+                  ></q-btn>
+               </div>
+               <div v-if="usuarioLogineado">
+                  <div>
+                     {{ usuarioLogineado }}
+                  </div>
+                  <div>
+                     <q-btn flat round dense @click="logOut">Exit</q-btn>
+                  </div>
+               </div>
             </div>
             <q-toggle
                color="red"
@@ -244,6 +270,8 @@
          <loginUser
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
+            @update-usuario-logineado="updateUsuarioLogineado"
+            :usuarioLogineado="usuarioLogineado"
          />
          <router-view />
       </q-page-container>
@@ -254,7 +282,7 @@
   background-color: beige;
 } */
 body.body--dark {
-  background: #0c0c0c
+   background: #0c0c0c;
 }
 </style>
 <script>
@@ -268,40 +296,26 @@ export default defineComponent({
    data() {
       return {
          //  correo: "",
-
+         usuarioLogineado: "",
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
          userIsAdmin: false,
          toggleDark: ref(false),
          modelSelectedMenu: ref("coches"),
-         optionsMenu: [
-            { label: "Coches", value: "coches" },
-            // { label: "Ofertas", value: "ofertas" },
-            { label: "Contacto", value: "contacto" },
-         ],
-         imageUrls: [
-            "https://cdn.quasar.dev/img/parallax1.jpg",
-            "https://cdn.quasar.dev/img/parallax2.jpg",
-            "https://cdn.quasar.dev/img/parallax1.jpg",
-            "https://cdn.quasar.dev/img/parallax2.jpg",
-            "https://cdn.quasar.dev/img/parallax1.jpg",
-            "https://cdn.quasar.dev/img/parallax2.jpg",
-            "https://cdn.quasar.dev/img/parallax1.jpg",
-            "https://cdn.quasar.dev/img/parallax2.jpg",
-         ],
-         expanded: false,
-         lorem: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-         // Initialize with your desired value
       };
    },
-   //  watch: {
-   //     modelSelectedMenu: function (item) {
-   //        debugger;
-   //        item;
-   //     },
-   //},
+   watch: {
+    usuarioLogineado: function (newValue, oldValue) {
+         debugger;
+         // Your logic here
+      },
+   },
    methods: {
+      updateUsuarioLogineado(username) {
+         debugger;
+         this.usuarioLogineado = username;
+      },
       handleDialogClose() {
          debugger;
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed

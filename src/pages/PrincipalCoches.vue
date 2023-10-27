@@ -65,13 +65,30 @@
                            <q-item-section>Contacto</q-item-section>
                         </q-btn>
                      </router-link>
+
+                     <!-- test -->
+                     <!-- <template v-if="usuarioLogineado">
+                        <router-link to="/extra">
+                           <q-btn
+                              class="glossy"
+                              style="color: #1aee9f; margin-left: 10px"
+                              clickable
+                              rounded
+                           >
+                              <q-item-section>Extra</q-item-section>
+                           </q-btn>
+                        </router-link>
+                     </template> -->
+                     <!-- test -->
+
                   </div>
                </div>
             </template>
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <div v-if="!usuarioLogineado">
+              <!-- v-if="!usuarioLogineado" -->
+               <div >
                   <q-btn
                      flat
                      round
@@ -88,9 +105,10 @@
                      @click="nuevoUsuario"
                   ></q-btn>
                </div>
-               <div v-if="usuarioLogineado">
+               <!-- v-if="usuarioLogineado" -->
+               <div >
                   <div>
-                     {{ usuarioLogineado }}
+                     {{ texto }}
                   </div>
                   <div>
                      <q-btn flat round dense @click="logOut">Exit</q-btn>
@@ -313,14 +331,14 @@
             :inputUserDialog="showInputUser"
             @close-dialog-newuser="handleDialogClose"
          />
-         <!-- Use the correct prop name -->
+
          <loginUser
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
             @update-usuario-logineado="updateUsuarioLogineado"
-            :usuarioLogineado="usuarioLogineado"
+
          />
-         <!-- Use the correct prop name for loginUser -->
+         <!-- :usuarioLogineado="usuarioLogineado" -->
          <router-view />
          <!-- Include your custom carousel component here -->
          <MyCarousel
@@ -434,10 +452,13 @@ export default defineComponent({
          const $q = this.$q;
          $q.dark.toggle();
       },
-      updateUsuarioLogineado(username) {
-         debugger;
-         this.usuarioLogineado = username;
-      },
+// ------------------------------------------------------------------------------------------------------------------
+      // forma paleto de mantener el usuario logineado a traves de todos los componentes y paginas
+      // updateUsuarioLogineado(username) {
+      //    debugger;
+      //    this.usuarioLogineado = username;
+      // },
+// ------------------------------------------------------------------------------------------------------------------
       async logOut() {
          debugger;
          const result = await logout();
@@ -452,7 +473,7 @@ export default defineComponent({
                message: "Error al des-loginear al usuario.",
             });
          }
-         this.usuarioLogineado = "";
+        //  this.usuarioLogineado = "";
       },
       // deleteStorage() {
       //   debugger
