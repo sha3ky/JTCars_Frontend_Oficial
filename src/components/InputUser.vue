@@ -63,7 +63,7 @@
                      glossy
                      rounded
                      color="deep-orange"
-                     @click="handleLogin"
+                     @click="handleInput"
                      flat
                      >Aceptar</q-btn
                   >
@@ -90,7 +90,7 @@ import { defineComponent } from "vue";
 import apiLink from "../composable/apiLink";
 import insertUser from "../composable/usersInput";
 import logout from "src/composable/logOut";
-
+import { Notify } from "quasar";
 export default defineComponent({
    name: "InputUser",
    props: {
@@ -119,7 +119,7 @@ export default defineComponent({
          debugger;
          this.$emit("close-dialog-newuser"); // Emit an event to notify the parent component
       },
-      async handleLogin() {
+      async handleInput() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
          const username = this.userName;
@@ -131,12 +131,22 @@ export default defineComponent({
 
          if (result) {
             console.log("usuario registrado");
-            // Login was successful
-            // You can perform actions like redirecting to a dashboard or updating the UI here.
+            Notify.create({
+               type: "positive",
+               message: "Usuario registrado correctamente.",
+            });
          } else {
             console.log("usuario no registrado");
-            // Login failed, handle the error, e.g., show an error message.
+            Notify.create({
+               type: "negative",
+               message: "Error al registrar el usuario.",
+            });
          }
+
+         this.inputDialog = false;
+         this.userName = "";
+         this.contrasenaInput = "";
+         this.correoInput = "";
       },
       handleLogOut() {
          debugger;

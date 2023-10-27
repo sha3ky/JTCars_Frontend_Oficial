@@ -7,7 +7,7 @@
             </q-card-section>
             <q-separator dark />
             <q-input
-               v-model="correoInput"
+               v-model="userName"
                label="Correo"
                style="padding: 24px; font-size: 20px"
             >
@@ -68,7 +68,7 @@ export default defineComponent({
    data() {
       return {
          api: apiLink,
-         correoInput: "",
+         userName: "",
          contrasenaInput: "",
          users: [],
          colorEmail: "red",
@@ -88,20 +88,27 @@ export default defineComponent({
       async handleLogin() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
-         const email = this.correoInput;
+         const email = this.userName;
          const password = this.contrasenaInput;
 
          // Call the login function
          const result = await login(email, password);
 
          if (result.success == true) {
-            console.log("usuario registrado");
-            // Login was successful
-            // You can perform actions like redirecting to a dashboard or updating the UI here.
+            console.log("usuario logineado");
+            Notify.create({
+               type: "positive",
+               message: "Usuario logineado correctamente.",
+            });
          } else {
-            console.log("usuario no registrado");
-            // Login failed, handle the error, e.g., show an error message.
+            console.log("usuario no logineado");
+            Notify.create({
+               type: "negative",
+               message: "Error al loginear.",
+            });
          }
+         this.userName = "";
+         this.contrasenaInput = "";
       },
 
       //-----------------------------------------making calls to api
@@ -116,7 +123,7 @@ export default defineComponent({
       //    let contrasena, usuario;
       //    usuario = this.users.filter(
       //       (item) =>
-      //          item.correo.toLowerCase() === this.correoInput.toLowerCase()
+      //          item.correo.toLowerCase() === this.userName.toLowerCase()
       //    )[0];
       //    if (usuario) {
       //       this.colorEmail = usuario ? "green" : "red";
@@ -141,4 +148,3 @@ export default defineComponent({
    },
 });
 </script>
-../composable/usersInput
