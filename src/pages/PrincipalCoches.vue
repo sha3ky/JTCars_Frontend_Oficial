@@ -69,22 +69,32 @@
             </template>
             <!-- reactividad -->
             <q-space></q-space>
-            <div >
-               <q-btn
-                  flat
-                  round
-                  dense
-                  icon="img:loginGreen.png"
-                  @click="loginearUsuario"
-                  style="width: 50px"
-               ></q-btn>
-               <q-btn
-                  flat
-                  round
-                  dense
-                  icon="img:userplusGreen.png"
-                  @click="nuevoUsuario"
-               ></q-btn>
+            <div>
+               <div v-if="!usuarioLogineado">
+                  <q-btn
+                     flat
+                     round
+                     dense
+                     icon="img:loginGreen.png"
+                     @click="loginearUsuario"
+                     style="width: 50px"
+                  ></q-btn>
+                  <q-btn
+                     flat
+                     round
+                     dense
+                     icon="img:userplusGreen.png"
+                     @click="nuevoUsuario"
+                  ></q-btn>
+               </div>
+               <div v-if="usuarioLogineado">
+                  <div>
+                     {{ usuarioLogineado }}
+                  </div>
+                  <div>
+                     <q-btn flat round dense @click="logOut">Exit</q-btn>
+                  </div>
+               </div>
             </div>
             <q-toggle
                color="red"
@@ -140,15 +150,21 @@
                v-for="(item, index) in imagenPrincipal"
                :key="index"
             >
-               <q-card style="padding: 0;" flat bordered>
+               <q-card style="padding: 0" flat bordered>
                   <q-img :src="getBase64Image(item)" class="responsive-image">
                      <div
                         style="
                            display: flex;
                            justify-content: flex-end;
-                           display: contents;">
+                           display: contents;
+                        "
+                     >
                         <div>
-                           <q-badge rounded :color="colores[index]" :label="promocion[index]" ></q-badge>
+                           <q-badge
+                              rounded
+                              :color="colores[index]"
+                              :label="promocion[index]"
+                           ></q-badge>
                            <!-- <q-badge rounded color="green" label="OFERTA" />
                            <q-badge rounded color="blue" label="HIBRIDO" /> -->
                         </div>
@@ -162,9 +178,9 @@
                         </div>
                      </div>
                   </q-img>
-                  <q-card-section style="padding: 0;">
-                     <div style="padding: 5px;text-transform:uppercase;">
-                        {{ marcas[index] }}  {{ modelos[index] }}
+                  <q-card-section style="padding: 0">
+                     <div style="padding: 5px; text-transform: uppercase">
+                        {{ marcas[index] }} {{ modelos[index] }}
                      </div>
                      <div
                         class="text-overline text-orange-9"
@@ -178,14 +194,34 @@
                      </div>
                      <div>
                         <div class="text-caption text-grey">
-                           <div>Año de fabricación: <span><b>{{anoCoche[index]}}</b></span></div>
-                           <div>Kilómetros: <span> <b>{{ kmCoche[index] }}</b></span></div>
-                           <div>Etiqueta: <span><b>{{ etiquetas[index] }}</b></span></div>
-                           <div>Combustible: <span><b>{{combustible[index] }}</b></span></div>
+                           <div>
+                              Año de fabricación:
+                              <span
+                                 ><b>{{ anoCoche[index] }}</b></span
+                              >
+                           </div>
+                           <div>
+                              Kilómetros:
+                              <span>
+                                 <b>{{ kmCoche[index] }}</b></span
+                              >
+                           </div>
+                           <div>
+                              Etiqueta:
+                              <span
+                                 ><b>{{ etiquetas[index] }}</b></span
+                              >
+                           </div>
+                           <div>
+                              Combustible:
+                              <span
+                                 ><b>{{ combustible[index] }}</b></span
+                              >
+                           </div>
                         </div>
                      </div>
                   </q-card-section>
-                  <q-card-actions style="display: block;padding: 0;">
+                  <q-card-actions style="display: block; padding: 0">
                      <q-btn
                         flat
                         color="primary"
@@ -212,8 +248,8 @@
                         @click="expanded(index)"
                      /> -->
                   </q-card-actions>
-                  <q-card-section class="text-subtitle2" style="padding: 0;">
-                 {{ arrayDescripciones[index] }}
+                  <q-card-section class="text-subtitle2" style="padding: 0">
+                     {{ arrayDescripciones[index] }}
                   </q-card-section>
                   <!-- </q-col> -->
                </q-card>
@@ -280,6 +316,8 @@
          <loginUser
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
+            @update-usuario-logineado="updateUsuarioLogineado"
+            :usuarioLogineado="usuarioLogineado"
          />
          <!-- Use the correct prop name for loginUser -->
          <router-view />
@@ -308,6 +346,7 @@ import loginUser from "src/components/loginUser.vue";
 import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as needed
 import MasInfoDatos from "components/MasInfoDatos.vue";
 import getAllData from "src/composable/loadAllData";
+import logout from "src/composable/logOut";
 
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 
@@ -337,12 +376,13 @@ export default defineComponent({
          anoCoche: [],
          kmCoche: [],
          etiquetas: [],
-         combustible:[],
-         promocion:[],
-         precios:[],
-         marcas:[],
-         modelos:[],
-         colores:[]
+         combustible: [],
+         promocion: [],
+         precios: [],
+         marcas: [],
+         modelos: [],
+         colores: [],
+         usuarioLogineado: "",
       };
    },
 
@@ -354,12 +394,12 @@ export default defineComponent({
             this.anoCoche.push(element.ano);
             this.kmCoche.push(element.km);
             this.etiquetas.push(element.etiqueta);
-            this.promocion.push(element.promocion)
-            this.combustible.push(element.combustible)
-            this.precios.push(element.precio)
-            this.marcas.push(element.marca)
-            this.modelos.push(element.modelo)
-            this.colores.push(element.colorBanner)
+            this.promocion.push(element.promocion);
+            this.combustible.push(element.combustible);
+            this.precios.push(element.precio);
+            this.marcas.push(element.marca);
+            this.modelos.push(element.modelo);
+            this.colores.push(element.colorBanner);
          });
       },
       getBase64Image(image) {
@@ -392,17 +432,16 @@ export default defineComponent({
          const $q = this.$q;
          $q.dark.toggle();
       },
-      // updateShowLogin(value) {
-      //    this.showLogin = value;
-      //    console.log(this.showLogin);
-      // },
-      // updateUserId(userId) {
-      //    // Receive the 'userId' emitted from InputUser component
-      //    this.userId = userId;
-      // },
-      // updateAdmin(value) {
-      //    this.userIsAdmin = value;
-      // },
+      updateUsuarioLogineado(username) {
+         debugger;
+         this.usuarioLogineado = username;
+      },
+      async logOut() {
+         debugger;
+         const authToken = sessionStorage.token;
+         await logout(authToken);
+      },
+
    },
    async mounted() {
       debugger;

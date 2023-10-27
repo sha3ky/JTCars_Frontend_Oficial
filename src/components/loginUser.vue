@@ -64,6 +64,7 @@ export default defineComponent({
    name: "loginUser",
    props: {
       loginUserDialog: Boolean, // Define a prop to receive showLogin from parent
+      usuarioLogineado:String
    },
    data() {
       return {
@@ -88,18 +89,19 @@ export default defineComponent({
       async handleLogin() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
-         const email = this.userName;
+         const username= this.userName;
          const password = this.contrasenaInput;
-
          // Call the login function
-         const result = await login(email, password);
+         const result = await login(username, password);
 
          if (result.success == true) {
             console.log("usuario logineado");
+
             Notify.create({
                type: "positive",
                message: "Usuario logineado correctamente.",
             });
+            this.$emit("update-usuario-logineado", username);
          } else {
             console.log("usuario no logineado");
             Notify.create({
@@ -109,6 +111,7 @@ export default defineComponent({
          }
          this.userName = "";
          this.contrasenaInput = "";
+         this.loginDialog =false
       },
 
       //-----------------------------------------making calls to api

@@ -42,6 +42,7 @@ import axios from "axios";
 import apiLink from "./apiLink";
 
 const logout = async (token) => {
+  debugger
   try {
     await axios.post(`${apiLink}usuarios/logout/`, { token });
 

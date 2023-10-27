@@ -77,9 +77,9 @@ const login = async (name, password) => {
 
     console.log(response); // Log the response for debugging
 
-    if (response.data && response.data.token) {
-      sessionStorage.setItem("token", response.data.token);
-      axios.defaults.headers.common["Authorization"] = "Token " + response.data.token;
+    if (response.status==200 && response.data.access) {
+      sessionStorage.setItem("token", response.data.access);
+      axios.defaults.headers.common["Authorization"] = response.data.access;
       return { success: true };
     } else {
       return { success: false, message: "Invalid credentials" };
