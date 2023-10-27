@@ -438,7 +438,7 @@ export default defineComponent({
       },
       async logOut() {
          debugger;
-         const authToken = sessionStorage.token;
+         const authToken = sessionStorage.tokServ;
          await logout(authToken);
       },
 

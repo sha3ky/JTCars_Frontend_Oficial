@@ -79,6 +79,7 @@ const login = async (name, password) => {
 
     if (response.status==200 && response.data.access) {
       sessionStorage.setItem("token", response.data.access);
+      sessionStorage.setItem('tokServ', response.data.refresh)
       axios.defaults.headers.common["Authorization"] = response.data.access;
       return { success: true };
     } else {
