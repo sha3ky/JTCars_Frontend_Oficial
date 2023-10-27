@@ -131,7 +131,6 @@
                </p>
             </div>
          </div>
-
          <div
             class="q-pa-md row items-start q-gutter-md"
             style="justify-content: space-around"
@@ -141,18 +140,15 @@
                v-for="(item, index) in imagenPrincipal"
                :key="index"
             >
-               <q-card style="" flat bordered>
-                  <!-- <q-col cols="6"> -->
+               <q-card style="padding: 0;" flat bordered>
                   <q-img :src="getBase64Image(item)" class="responsive-image">
                      <div
                         style="
                            display: flex;
                            justify-content: flex-end;
-                           display: contents;
-                        "
-                     >
+                           display: contents;">
                         <div>
-                           <q-badge rounded color="red" :label="promocion[index]" />
+                           <q-badge rounded :color="colores[index]" :label="promocion[index]" ></q-badge>
                            <!-- <q-badge rounded color="green" label="OFERTA" />
                            <q-badge rounded color="blue" label="HIBRIDO" /> -->
                         </div>
@@ -166,16 +162,19 @@
                         </div>
                      </div>
                   </q-img>
-
-                  <q-card-section>
+                  <q-card-section style="padding: 0;">
+                     <div style="padding: 5px;text-transform:uppercase;">
+                        {{ marcas[index] }}  {{ modelos[index] }}
+                     </div>
                      <div
                         class="text-overline text-orange-9"
                         style="line-height: 1px"
                      >
                         Precio
                      </div>
+
                      <div class="text-h5 q-mt-sm q-mb-xs" style="margin: 3px">
-                        2500<span>€</span>
+                        {{ precios[index] }}<span>€</span>
                      </div>
                      <div>
                         <div class="text-caption text-grey">
@@ -186,7 +185,6 @@
                         </div>
                      </div>
                   </q-card-section>
-
                   <q-card-actions style="display: block;padding: 0;">
                      <q-btn
                         flat
@@ -200,9 +198,7 @@
                         label="Más Datos"
                         @click="masDatos(index)"
                      />
-
                      <q-space />
-
                      <!-- <q-btn
                         color="grey"
                         round
@@ -216,8 +212,8 @@
                         @click="expanded(index)"
                      /> -->
                   </q-card-actions>
-                  <q-card-section class="text-subtitle2">
-                     {{ arrayDescripciones[index] }}
+                  <q-card-section class="text-subtitle2" style="padding: 0;">
+                 {{ arrayDescripciones[index] }}
                   </q-card-section>
                   <!-- </q-col> -->
                </q-card>
@@ -304,7 +300,7 @@
 }
 </style>
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
@@ -342,7 +338,11 @@ export default defineComponent({
          kmCoche: [],
          etiquetas: [],
          combustible:[],
-         promocion:[]
+         promocion:[],
+         precios:[],
+         marcas:[],
+         modelos:[],
+         colores:[]
       };
    },
 
@@ -356,7 +356,13 @@ export default defineComponent({
             this.etiquetas.push(element.etiqueta);
             this.promocion.push(element.promocion)
             this.combustible.push(element.combustible)
+            this.precios.push(element.precio)
+            this.marcas.push(element.marca)
+            this.modelos.push(element.modelo)
+            this.colores.push(element.color)
+
          });
+
       },
       getBase64Image(image) {
          return `data:image/jpeg;base64,${image}`;
