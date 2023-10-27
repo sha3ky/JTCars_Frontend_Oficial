@@ -38,21 +38,32 @@
 //   // Optionally, perform any other logout-related actions
 // };
 // export default logout;
-import axios from "axios";
+import axios, { AxiosHeaders } from "axios";
 import apiLink from "./apiLink";
 
-const logout = async (token) => {
-  debugger
-  try {
-    await axios.post(`${apiLink}usuarios/logout/`, { token });
-
-    // Remove the token from sessionStorage and the axios defaults
-
-    return { success: true };
-  } catch (error) {
-    console.error("Logout error:", error);
-    return { success: false, message: "An error occurred" };
-  }
+const logout = async () => {
+   const refresh_token = sessionStorage.refresh_token;
+   const access_token = sessionStorage.access_token;
+   try {
+      await axios.post(
+         `${apiLink}api/logout/`,
+         {
+            refresh_token: refresh_token,
+         },
+         {
+            headers: {
+               Authorization: `Bearer ${access_token}`,
+            },
+         }
+      );
+      // Remove the token from sessionStorage (or wherever it's stored)
+      sessionStorage.removeItem("access_token");
+      sessionStorage.removeItem("refresh_token");
+      return  true ;
+   } catch (error) {
+      console.error("Logout error:", error);
+      return { success: false, message: "An error occurred" };
+   }
 };
 
 export default logout;

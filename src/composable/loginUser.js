@@ -78,8 +78,8 @@ const login = async (name, password) => {
     console.log(response); // Log the response for debugging
 
     if (response.status==200 && response.data.access) {
-      sessionStorage.setItem("token", response.data.access);
-      sessionStorage.setItem('tokServ', response.data.refresh)
+      sessionStorage.setItem("access_token", response.data.access);
+      sessionStorage.setItem('refresh_token', response.data.refresh)
       axios.defaults.headers.common["Authorization"] = response.data.access;
       return { success: true };
     } else {

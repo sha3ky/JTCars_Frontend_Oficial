@@ -67,20 +67,8 @@
                      flat
                      >Aceptar</q-btn
                   >
-                  <q-btn
-                     glossy
-                     rounded
-                     color="deep-orange"
-                     @click="handleLogOut"
-                     flat
-                     >LogOut</q-btn
-                  >
                </q-card-actions>
             </q-card>
-
-            <!-- <q-card-actions align="right">
-               <q-btn flat label="OK" color="primary" v-close-popup />
-            </q-card-actions> -->
          </q-card>
       </q-dialog>
    </div>
@@ -89,7 +77,6 @@
 import { defineComponent } from "vue";
 import apiLink from "../composable/apiLink";
 import insertUser from "../composable/usersInput";
-import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 export default defineComponent({
    name: "InputUser",
@@ -148,10 +135,7 @@ export default defineComponent({
          this.contrasenaInput = "";
          this.correoInput = "";
       },
-      handleLogOut() {
-         debugger;
-         logout();
-      },
+
 
       // comprobarUsuario() {
       //    let contrasena, usuario;

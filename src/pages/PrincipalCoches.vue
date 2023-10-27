@@ -39,6 +39,7 @@
                style="background: aliceblue"
                v-if="$q.screen.width < 600"
             />
+
             <q-space></q-space>
             <!-- reactividad -->
             <template v-if="$q.screen.width > 600">
@@ -347,6 +348,7 @@ import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as n
 import MasInfoDatos from "components/MasInfoDatos.vue";
 import getAllData from "src/composable/loadAllData";
 import logout from "src/composable/logOut";
+import { Notify } from "quasar";
 
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 
@@ -438,10 +440,27 @@ export default defineComponent({
       },
       async logOut() {
          debugger;
-         const authToken = sessionStorage.tokServ;
-         await logout(authToken);
+         const result = await logout();
+         if (result) {
+            Notify.create({
+               type: "positive",
+               message: "Adios.",
+            });
+         } else {
+            Notify.create({
+               type: "negative",
+               message: "Error al des-loginear al usuario.",
+            });
+         }
+         this.usuarioLogineado = "";
       },
-
+      // deleteStorage() {
+      //   debugger
+      //    sessionStorage.removeItem("access_token");
+      //    sessionStorage.removeItem("refresh_token");
+      //    sessionStorage.removeItem("tokServ");
+      //    sessionStorage.removeItem("token");
+      // },
    },
    async mounted() {
       debugger;
