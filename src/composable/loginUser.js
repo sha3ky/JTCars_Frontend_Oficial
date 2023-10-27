@@ -81,13 +81,15 @@ const login = async (name, password) => {
       sessionStorage.setItem("access_token", response.data.access);
       sessionStorage.setItem('refresh_token', response.data.refresh)
       axios.defaults.headers.common["Authorization"] = response.data.access;
-      return { success: true };
+      return  true
     } else {
-      return { success: false, message: "Invalid credentials" };
+      console.log("Invalid credentials")
+
     }
   } catch (error) {
     console.error("Login error:", error);
-    return { success: false, message: "An error occurred" };
+    // return { success: false, message: "An error occurred" };
+    return false
   }
 };
 

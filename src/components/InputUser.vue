@@ -112,10 +112,8 @@ export default defineComponent({
          const username = this.userName;
          const password = this.contrasenaInput;
          const email = this.correoInput;
-
          // Call the login function
          const result = await insertUser(username, email, password);
-
          if (result) {
             console.log("usuario registrado");
             Notify.create({
@@ -129,13 +127,11 @@ export default defineComponent({
                message: "Error al registrar el usuario.",
             });
          }
-
          this.inputDialog = false;
          this.userName = "";
          this.contrasenaInput = "";
          this.correoInput = "";
       },
-
 
       // comprobarUsuario() {
       //    let contrasena, usuario;

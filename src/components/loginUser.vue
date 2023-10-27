@@ -93,10 +93,8 @@ export default defineComponent({
          const password = this.contrasenaInput;
          // Call the login function
          const result = await login(username, password);
-
-         if (result.success == true) {
+         if (result) {
             console.log("usuario logineado");
-
             Notify.create({
                type: "positive",
                message: "Usuario logineado correctamente.",
