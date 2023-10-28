@@ -61,8 +61,7 @@
 
 //
 
-import store from "../store";
-
+ import store from "../store";
 import axios from "axios";
 import apiLink from "./apiLink";
 

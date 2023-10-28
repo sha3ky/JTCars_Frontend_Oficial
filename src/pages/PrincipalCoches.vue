@@ -67,7 +67,7 @@
                      </router-link>
 
                      <!-- test -->
-                     <!-- <template v-if="usuarioLogineado">
+                     <template v-if="usuarioLogineado">
                         <router-link to="/extra">
                            <q-btn
                               class="glossy"
@@ -78,17 +78,15 @@
                               <q-item-section>Extra</q-item-section>
                            </q-btn>
                         </router-link>
-                     </template> -->
+                     </template>
                      <!-- test -->
-
                   </div>
                </div>
             </template>
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-              <!-- v-if="!usuarioLogineado" -->
-               <div >
+               <div v-if="!usuarioLogineado">
                   <q-btn
                      flat
                      round
@@ -105,8 +103,8 @@
                      @click="nuevoUsuario"
                   ></q-btn>
                </div>
-               <!-- v-if="usuarioLogineado" -->
-               <div >
+               <!--  -->
+               <div v-if="usuarioLogineado">
                   <div>
                      {{ texto }}
                   </div>
@@ -336,16 +334,13 @@
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
             @update-usuario-logineado="updateUsuarioLogineado"
-
          />
-         <!-- :usuarioLogineado="usuarioLogineado" -->
-         <router-view />
-         <!-- Include your custom carousel component here -->
          <MyCarousel
             :carouseloDialog="showCarousel"
             @close-dialog-carousel="handleDialogClose"
             :array-datos="arrayDatos"
          />
+         <router-view />
       </q-page-container>
    </q-layout>
 </template>
@@ -367,6 +362,7 @@ import MasInfoDatos from "components/MasInfoDatos.vue";
 import getAllData from "src/composable/loadAllData";
 import logout from "src/composable/logOut";
 import { Notify } from "quasar";
+import store from "../../src/store"
 
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 
@@ -452,13 +448,14 @@ export default defineComponent({
          const $q = this.$q;
          $q.dark.toggle();
       },
-// ------------------------------------------------------------------------------------------------------------------
+      // ------------------------------------------------------------------------------------------------------------------
       // forma paleto de mantener el usuario logineado a traves de todos los componentes y paginas
-      // updateUsuarioLogineado(username) {
-      //    debugger;
-      //    this.usuarioLogineado = username;
-      // },
-// ------------------------------------------------------------------------------------------------------------------
+      updateUsuarioLogineado(username) {
+         debugger;
+         this.usuarioLogineado = username;
+         this.$emit("update-usuario-logineado", username);
+      },
+      // ------------------------------------------------------------------------------------------------------------------
       async logOut() {
          debugger;
          const result = await logout();
@@ -473,7 +470,7 @@ export default defineComponent({
                message: "Error al des-loginear al usuario.",
             });
          }
-        //  this.usuarioLogineado = "";
+         this.usuarioLogineado = "";
       },
       // deleteStorage() {
       //   debugger

@@ -67,7 +67,7 @@
                      </router-link>
 
                      <!-- test -->
-                     <!-- <template v-if="usuarioLogineado">
+                     <template v-if="sessionData">
                        <router-link to="/extra">
                           <q-btn
                              class="glossy"
@@ -78,7 +78,7 @@
                              <q-item-section>Extra</q-item-section>
                           </q-btn>
                        </router-link>
-                    </template> -->
+                    </template>
                      <!-- test -->
                   </div>
                </div>
@@ -86,7 +86,7 @@
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <div v-if="!usuarioLogineado">
+               <div v-if="!sessionData">
                   <q-btn
                      flat
                      round
@@ -103,7 +103,7 @@
                      @click="nuevoUsuario"
                   ></q-btn>
                </div>
-               <div v-if="usuarioLogineado">
+               <div v-if="sessionData">
                   <div>
                      {{ usuarioLogineado }}
                   </div>
@@ -291,12 +291,14 @@ import { useQuasar } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
+import store from "../../src/store"
 export default defineComponent({
    name: "ContactoPage",
    data() {
       return {
          //  correo: "",
-         usuarioLogineado: "",
+         sessionData:'',
+         usuarioLogineado: '',
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
@@ -306,14 +308,17 @@ export default defineComponent({
       };
    },
    watch: {
-    usuarioLogineado: function (newValue, oldValue) {
-         debugger;
-         // Your logic here
-      },
+   },
+   mounted(){
+
+     this.sessionData = store.state.sessionData; // Access store data using `this.$store`
+    // if(sessionData){
+    //   this.usuarioLogineado=true
+    // } // Log the session data for debugging
    },
    methods: {
       updateUsuarioLogineado(username) {
-         debugger;
+        debugger
          this.usuarioLogineado = username;
       },
       handleDialogClose() {
@@ -336,7 +341,7 @@ export default defineComponent({
          $q.dark.toggle();
       },
    },
-   mounted() {},
+
    components: {
       InputUser,
       loginUser,
