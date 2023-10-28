@@ -65,20 +65,17 @@
                            <q-item-section>Contacto</q-item-section>
                         </q-btn>
                      </router-link>
-
                      <!-- test -->
-                     <template v-if="sessionData">
-                       <router-link to="/extra">
-                          <q-btn
-                             class="glossy"
-                             style="color: #1aee9f; margin-left: 10px"
-                             clickable
-                             rounded
-                          >
-                             <q-item-section>Extra</q-item-section>
-                          </q-btn>
-                       </router-link>
-                    </template>
+                     <router-link to="/extra">
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f; margin-left: 10px"
+                           clickable
+                           rounded
+                        >
+                           <q-item-section>USER</q-item-section>
+                        </q-btn>
+                     </router-link>
                      <!-- test -->
                   </div>
                </div>
@@ -86,7 +83,7 @@
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <div v-if="!sessionData">
+               <div>
                   <q-btn
                      flat
                      round
@@ -103,7 +100,7 @@
                      @click="nuevoUsuario"
                   ></q-btn>
                </div>
-               <div v-if="sessionData">
+               <div>
                   <div>
                      {{ usuarioLogineado }}
                   </div>
@@ -291,14 +288,14 @@ import { useQuasar } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
-import store from "../../src/store"
+import store from "../../src/store";
 export default defineComponent({
    name: "ContactoPage",
    data() {
       return {
          //  correo: "",
-         sessionData:'',
-         usuarioLogineado: '',
+         sessionData: "",
+         usuarioLogineado: "",
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
@@ -307,18 +304,16 @@ export default defineComponent({
          modelSelectedMenu: ref("coches"),
       };
    },
-   watch: {
-   },
-   mounted(){
-
-     this.sessionData = store.state.sessionData; // Access store data using `this.$store`
-    // if(sessionData){
-    //   this.usuarioLogineado=true
-    // } // Log the session data for debugging
+   watch: {},
+   mounted() {
+      this.sessionData = store.state.sessionData; // Access store data using `this.$store`
+      // if(sessionData){
+      //   this.usuarioLogineado=true
+      // } // Log the session data for debugging
    },
    methods: {
       updateUsuarioLogineado(username) {
-        debugger
+         debugger;
          this.usuarioLogineado = username;
       },
       handleDialogClose() {

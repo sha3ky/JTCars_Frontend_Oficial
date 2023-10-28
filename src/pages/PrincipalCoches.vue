@@ -65,20 +65,17 @@
                            <q-item-section>Contacto</q-item-section>
                         </q-btn>
                      </router-link>
-
                      <!-- test -->
-                     <template v-if="usuarioLogineado">
-                        <router-link to="/extra">
-                           <q-btn
-                              class="glossy"
-                              style="color: #1aee9f; margin-left: 10px"
-                              clickable
-                              rounded
-                           >
-                              <q-item-section>Extra</q-item-section>
-                           </q-btn>
-                        </router-link>
-                     </template>
+                     <router-link to="/extra">
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f; margin-left: 10px"
+                           clickable
+                           rounded
+                        >
+                           <q-item-section>USER</q-item-section>
+                        </q-btn>
+                     </router-link>
                      <!-- test -->
                   </div>
                </div>
@@ -86,7 +83,7 @@
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <div v-if="!usuarioLogineado">
+               <div>
                   <q-btn
                      flat
                      round
@@ -104,9 +101,9 @@
                   ></q-btn>
                </div>
                <!--  -->
-               <div v-if="usuarioLogineado">
+               <div>
                   <div>
-                     {{ texto }}
+                     {{ usuarioLogineado }}
                   </div>
                   <div>
                      <q-btn flat round dense @click="logOut">Exit</q-btn>
@@ -362,7 +359,7 @@ import MasInfoDatos from "components/MasInfoDatos.vue";
 import getAllData from "src/composable/loadAllData";
 import logout from "src/composable/logOut";
 import { Notify } from "quasar";
-import store from "../../src/store"
+import store from "../../src/store";
 
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 
@@ -399,6 +396,7 @@ export default defineComponent({
          modelos: [],
          colores: [],
          usuarioLogineado: "",
+         sessionData: "",
       };
    },
 
@@ -453,6 +451,7 @@ export default defineComponent({
       updateUsuarioLogineado(username) {
          debugger;
          this.usuarioLogineado = username;
+         this.sessionData = store.state.sessionData;
          this.$emit("update-usuario-logineado", username);
       },
       // ------------------------------------------------------------------------------------------------------------------
@@ -482,6 +481,7 @@ export default defineComponent({
    },
    async mounted() {
       debugger;
+      this.sessionData = store.state.sessionData;
       // Use an async function to fetch data and assign it to allData
       this.allData = await getAllData();
       console.log(this.allData);

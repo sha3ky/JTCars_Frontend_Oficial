@@ -85,7 +85,8 @@ const login = async (name, password) => {
       sessionStorage.setItem('refresh_token', response.data.refresh)
       axios.defaults.headers.common["Authorization"] = response.data.access;
 
-      store.dispatch("login", response.data.access); ///vuex Stores Nuevo
+      store.dispatch("login", response.data.access);
+      store.dispatch('nombre',name)
       return  true
     } else {
       console.log("Invalid credentials")
