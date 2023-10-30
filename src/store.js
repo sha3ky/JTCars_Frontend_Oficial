@@ -1,22 +1,24 @@
-// store.js
+
 import { createStore } from "vuex";
 
 const store = createStore({
-
   state: {
     sessionData: null,
+    name: null
   },
   mutations: {
-    setSessionData(state, sessionData) {
+    setSessionData(state, { sessionData, name }) {
       state.sessionData = sessionData;
+      state.name = name;
     },
     clearSessionData(state) {
       state.sessionData = null;
+      state.name = null;
     },
   },
   actions: {
-    login({ commit }, sessionData) {
-      commit("setSessionData", sessionData);
+    login({ commit }, { sessionData, name }) {
+      commit("setSessionData", { sessionData, name });
     },
     logout({ commit }) {
       commit("clearSessionData");
@@ -26,6 +28,7 @@ const store = createStore({
 });
 
 export default store;
+
 
 ///////////////////ALTERNATIVAS//////////////////////
 // const state = {

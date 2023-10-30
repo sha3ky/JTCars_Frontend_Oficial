@@ -22,6 +22,13 @@
                            <q-item-section>Contacto</q-item-section>
                         </q-item>
                      </router-link>
+                     <!-- <template v-if="sessionData"> -->
+                        <router-link to="/extra">
+                           <q-item clickable>
+                              <q-item-section>Extra</q-item-section>
+                           </q-item>
+                        </router-link>
+                     <!-- </template> -->
                      <q-separator />
                   </q-list>
                </q-menu>
@@ -66,16 +73,18 @@
                         </q-btn>
                      </router-link>
                      <!-- test -->
-                     <router-link to="/extra">
-                        <q-btn
-                           class="glossy"
-                           style="color: #1aee9f; margin-left: 10px"
-                           clickable
-                           rounded
-                        >
-                           <q-item-section>USER</q-item-section>
-                        </q-btn>
-                     </router-link>
+                     <!-- <template v-if="sessionData"> -->
+                        <router-link to="/extra">
+                           <q-btn
+                              class="glossy"
+                              style="color: #1aee9f; margin-left: 10px"
+                              clickable
+                              rounded
+                           >
+                              <q-item-section>Noticias</q-item-section>
+                           </q-btn>
+                        </router-link>
+                     <!-- </template> -->
                      <!-- test -->
                   </div>
                </div>
@@ -83,32 +92,36 @@
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <div>
-                  <q-btn
-                     flat
-                     round
-                     dense
-                     icon="img:loginGreen.png"
-                     @click="loginearUsuario"
-                     style="width: 50px"
-                  ></q-btn>
-                  <q-btn
-                     flat
-                     round
-                     dense
-                     icon="img:userplusGreen.png"
-                     @click="nuevoUsuario"
-                  ></q-btn>
-               </div>
+               <template v-if="!sessionData">
+                  <div>
+                     <q-btn
+                        flat
+                        round
+                        dense
+                        icon="img:loginGreen.png"
+                        @click="loginearUsuario"
+                        style="width: 50px"
+                     ></q-btn>
+                     <q-btn
+                        flat
+                        round
+                        dense
+                        icon="img:userplusGreen.png"
+                        @click="nuevoUsuario"
+                     ></q-btn>
+                  </div>
+               </template>
+               <template v-if="sessionData">
+                  <div>
+                     <div>
+                        {{ usuarioLogineado }}
+                     </div>
+                     <div>
+                        <q-btn flat round dense @click="logOut">Exit</q-btn>
+                     </div>
+                  </div>
+               </template>
                <!--  -->
-               <div>
-                  <div>
-                     {{ usuarioLogineado }}
-                  </div>
-                  <div>
-                     <q-btn flat round dense @click="logOut">Exit</q-btn>
-                  </div>
-               </div>
             </div>
             <q-toggle
                color="red"
@@ -249,18 +262,6 @@
                         @click="masDatos(index)"
                      />
                      <q-space />
-                     <!-- <q-btn
-                        color="grey"
-                        round
-                        flat
-                        dense
-                        :icon="
-                           expandedArrow
-                              ? 'keyboard_arrow_up'
-                              : 'keyboard_arrow_down'
-                        "
-                        @click="expanded(index)"
-                     /> -->
                   </q-card-actions>
                   <q-card-section class="text-subtitle2" style="padding: 0">
                      {{ arrayDescripciones[index] }}
@@ -270,53 +271,6 @@
             </div>
          </div>
 
-         <!-- <div class="q-pa-md row items-start q-gutter-md">
-
-            <q-card
-               v-for="(image, index) in imagenPrincipal"
-               :key="index"
-               style="padding: 10px"
-               flat
-               bordered
-            >
-               <q-col cols="6">
-
-               </q-col>
-            </q-card>
-
-         </div> -->
-
-         <!-- <template>
-          <div>
-
-          </div>
-        </template> -->
-
-         <!-- <q-page v-if="showLogin == true">
-           <InputUser
-              @show-login-updated="updateShowLogin"
-              :show-login="showLogin"
-              @user-id-updated="updateUserId"
-              @user-admin="updateAdmin"
-           />
-        </q-page> -->
-
-         <!-- <q-page v-if="showLogin === false && userIsAdmin === true">
-           <AdminPart
-              @show-login-updated="updateShowLogin"
-              :show-login="showLogin"
-              :user-id="userId"
-              @user-admin="updateAdmin"
-           />
-        </q-page>
-        <q-page v-if="showLogin === false && userIsAdmin === false">
-           <LabellerUser
-              @show-login-updated="updateShowLogin"
-              :show-login="showLogin"
-              :user-id="userId"
-              @user-admin="updateAdmin"
-           />
-        </q-page> -->
          <MasInfoDatos
             :masInfoDialog="showMasInfo"
             @close-dialog-masinfo="handleDialogClose"
@@ -332,6 +286,8 @@
             @close-dialog-loginuser="handleDialogClose"
             @update-usuario-logineado="updateUsuarioLogineado"
          />
+         <!-- @usuario_token="updateUsuarioToken" -->
+         <!-- @update-usuario-logineado="updateUsuarioLogineado" -->
          <MyCarousel
             :carouseloDialog="showCarousel"
             @close-dialog-carousel="handleDialogClose"
@@ -378,11 +334,7 @@ export default defineComponent({
          userIsAdmin: false,
          toggleDark: ref(false),
          modelSelectedMenu: ref("coches"),
-         optionsMenu: [
-            { label: "Coches", value: "coches" },
-            // { label: "Ofertas", value: "ofertas" },
-            { label: "Contacto", value: "contacto" },
-         ],
+
          imagenPrincipal: [],
          expandedArrow: false,
          arrayDescripciones: [],
@@ -395,13 +347,26 @@ export default defineComponent({
          marcas: [],
          modelos: [],
          colores: [],
+
          usuarioLogineado: "",
          sessionData: "",
       };
    },
-
+   async mounted() {
+      debugger;
+      // cuando vienes de otras rutas
+      this.sessionData = store.state.sessionData;
+      this.usuarioLogineado = store.state.name;
+      // Use an async function to fetch data and assign it to allData
+      this.allData = await getAllData();
+      console.log(this.allData);
+      if (this.allData !== 0) {
+         this.repartirData(this.allData);
+      }
+   },
    methods: {
       repartirData() {
+         debugger;
          this.allData.forEach((element) => {
             this.imagenPrincipal.push(element.imagen1);
             this.arrayDescripciones.push(element.descripcion);
@@ -448,17 +413,21 @@ export default defineComponent({
       },
       // ------------------------------------------------------------------------------------------------------------------
       // forma paleto de mantener el usuario logineado a traves de todos los componentes y paginas
-      updateUsuarioLogineado(username) {
+      updateUsuarioLogineado(bool) {
          debugger;
-         this.usuarioLogineado = username;
-         this.sessionData = store.state.sessionData;
-         this.$emit("update-usuario-logineado", username);
+         if (bool) {
+            this.usuarioLogineado = store.state.name;
+            this.sessionData = store.state.sessionData;
+         }
       },
       // ------------------------------------------------------------------------------------------------------------------
       async logOut() {
          debugger;
          const result = await logout();
          if (result) {
+            store.dispatch("logout");
+            this.usuarioLogineado = "";
+            this.sessionData = "";
             Notify.create({
                type: "positive",
                message: "Adios.",
@@ -468,27 +437,11 @@ export default defineComponent({
                type: "negative",
                message: "Error al des-loginear al usuario.",
             });
+            store.dispatch("logout");
          }
-         this.usuarioLogineado = "";
       },
-      // deleteStorage() {
-      //   debugger
-      //    sessionStorage.removeItem("access_token");
-      //    sessionStorage.removeItem("refresh_token");
-      //    sessionStorage.removeItem("tokServ");
-      //    sessionStorage.removeItem("token");
-      // },
    },
-   async mounted() {
-      debugger;
-      this.sessionData = store.state.sessionData;
-      // Use an async function to fetch data and assign it to allData
-      this.allData = await getAllData();
-      console.log(this.allData);
-      if (this.allData !== 0) {
-         this.repartirData(this.allData);
-      }
-   },
+
    components: {
       InputUser,
       loginUser,
@@ -497,29 +450,38 @@ export default defineComponent({
    },
 
    setup() {
+      // dark mode
       const $q = useQuasar();
-      // const imagenPrincipal = ref([]);
       $q.dark.set(true); // or false or "auto"
       $q.dark.toggle(); // toggle
-      // onMounted(async () => {
-      //    // Use an async function to fetch data and assign it to allData
-      //    allData.value = await getAllData();
-      //    console.log(allData.value);
-      //    if (allData.value !== 0) {
-      //       repartirData(allData.value);
-      //    }
-      // });
-      // function repartirData() {
-      //    debugger;
-      //    allData.value.forEach((element) => {
-      //       imagenPrincipal.value.push(element.imagen1);
-      //    });
-      // }
-      // function getBase64Image(image) {
-      //    return `data:image/jpeg;base64,${image}`;
-      // }
-
       return {};
    },
 });
 </script>
+
+<!-- function para conseguir borrar el storage
+  //  deleteStorage() {
+  //   debugger
+  //    sessionStorage.removeItem("access_token");
+  //    sessionStorage.removeItem("refresh_token");
+  //    sessionStorage.removeItem("tokServ");
+  //    sessionStorage.removeItem("token");
+  // }, -->
+
+<!-- // onMounted(async () => {
+    //    // Use an async function to fetch data and assign it to allData
+    //    allData.value = await getAllData();
+    //    console.log(allData.value);
+    //    if (allData.value !== 0) {
+    //       repartirData(allData.value);
+    //    }
+    // });
+    // function repartirData() {
+    //    debugger;
+    //    allData.value.forEach((element) => {
+    //       imagenPrincipal.value.push(element.imagen1);
+    //    });
+    // }
+    // function getBase64Image(image) {
+    //    return `data:image/jpeg;base64,${image}`;
+    // } -->

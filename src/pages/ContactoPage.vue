@@ -22,6 +22,13 @@
                            <q-item-section>Contacto</q-item-section>
                         </q-item>
                      </router-link>
+                     <!-- <template v-if="sessionData"> -->
+                        <router-link to="/extra">
+                           <q-item clickable>
+                              <q-item-section>Extra</q-item-section>
+                           </q-item>
+                        </router-link>
+                     <!-- </template> -->
                      <q-separator />
                   </q-list>
                </q-menu>
@@ -66,16 +73,18 @@
                         </q-btn>
                      </router-link>
                      <!-- test -->
-                     <router-link to="/extra">
-                        <q-btn
-                           class="glossy"
-                           style="color: #1aee9f; margin-left: 10px"
-                           clickable
-                           rounded
-                        >
-                           <q-item-section>USER</q-item-section>
-                        </q-btn>
-                     </router-link>
+                     <!-- <template v-if="sessionData"> -->
+                        <router-link to="/extra">
+                           <q-btn
+                              class="glossy"
+                              style="color: #1aee9f; margin-left: 10px"
+                              clickable
+                              rounded
+                           >
+                              <q-item-section>Noticias</q-item-section>
+                           </q-btn>
+                        </router-link>
+                     <!-- </template> -->
                      <!-- test -->
                   </div>
                </div>
@@ -83,31 +92,36 @@
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <div>
-                  <q-btn
-                     flat
-                     round
-                     dense
-                     icon="img:loginGreen.png"
-                     @click="loginearUsuario"
-                     style="width: 50px"
-                  ></q-btn>
-                  <q-btn
-                     flat
-                     round
-                     dense
-                     icon="img:userplusGreen.png"
-                     @click="nuevoUsuario"
-                  ></q-btn>
-               </div>
-               <div>
+               <template v-if="!sessionData">
                   <div>
-                     {{ usuarioLogineado }}
+                     <q-btn
+                        flat
+                        round
+                        dense
+                        icon="img:loginGreen.png"
+                        @click="loginearUsuario"
+                        style="width: 50px"
+                     ></q-btn>
+                     <q-btn
+                        flat
+                        round
+                        dense
+                        icon="img:userplusGreen.png"
+                        @click="nuevoUsuario"
+                     ></q-btn>
                   </div>
+               </template>
+               <template v-if="sessionData">
                   <div>
-                     <q-btn flat round dense @click="logOut">Exit</q-btn>
+                     <div>
+                        {{ usuarioName }}
+                     </div>
+                     <div>
+                        <q-btn flat round dense @click="logOut">Exit</q-btn>
+                     </div>
                   </div>
-               </div>
+               </template>
+               <!--  -->
             </div>
             <q-toggle
                color="red"
@@ -268,8 +282,8 @@
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
             @update-usuario-logineado="updateUsuarioLogineado"
-            :usuarioLogineado="usuarioLogineado"
          />
+
          <router-view />
       </q-page-container>
    </q-layout>
@@ -289,13 +303,14 @@ import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
 import store from "../../src/store";
+import logout from "src/composable/logOut";
 export default defineComponent({
    name: "ContactoPage",
    data() {
       return {
          //  correo: "",
          sessionData: "",
-         usuarioLogineado: "",
+         usuarioName: "",
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
@@ -304,17 +319,18 @@ export default defineComponent({
          modelSelectedMenu: ref("coches"),
       };
    },
-   watch: {},
+
    mounted() {
-      this.sessionData = store.state.sessionData; // Access store data using `this.$store`
-      // if(sessionData){
-      //   this.usuarioLogineado=true
-      // } // Log the session data for debugging
+      this.sessionData = store.state.sessionData;
+      this.usuarioName=store.state.name
    },
    methods: {
-      updateUsuarioLogineado(username) {
+    updateUsuarioLogineado(bool) {
          debugger;
-         this.usuarioLogineado = username;
+         if (bool) {
+            this.usuarioLogineado = store.state.name;
+            this.sessionData = store.state.sessionData;
+         }
       },
       handleDialogClose() {
          debugger;
@@ -334,6 +350,22 @@ export default defineComponent({
       toggleDarkMode() {
          const $q = this.$q;
          $q.dark.toggle();
+      },
+      async logOut() {
+         debugger;
+         const result = await logout();
+         if (result) {
+            Notify.create({
+               type: "positive",
+               message: "Adios.",
+            });
+         } else {
+            Notify.create({
+               type: "negative",
+               message: "Error al des-loginear al usuario.",
+            });
+         }
+         //  this.usuarioLogineado = "";
       },
    },
 

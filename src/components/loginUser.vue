@@ -60,11 +60,13 @@ import { defineComponent } from "vue";
 import apiLink from "../composable/apiLink";
 import login from "../composable/loginUser";
 import { Notify } from "quasar";
+
 export default defineComponent({
-   name: "loginUser",
+   //  name: "loginUser",
    props: {
       loginUserDialog: Boolean, // Define a prop to receive showLogin from parent
-      // usuarioLogineado:String /// forma paleto de enviar el usuario logineado de uno a otro
+      //usuarioLogineado:String /// forma paleto de enviar el usuario logineado de uno a otro
+      // sessionData:String
    },
    data() {
       return {
@@ -89,7 +91,7 @@ export default defineComponent({
       async handleLogin() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
-         const username= this.userName;
+         const username = this.userName;
          const password = this.contrasenaInput;
          // Call the login function
          const result = await login(username, password);
@@ -99,7 +101,7 @@ export default defineComponent({
                type: "positive",
                message: "Usuario logineado correctamente.",
             });
-            this.$emit("update-usuario-logineado", username); /// forma paleto de enviar el usuario logineado de uno a otro
+            this.$emit("update-usuario-logineado", "true"); /// forma paleto de enviar el usuario logineado de uno a otro
          } else {
             console.log("usuario no logineado");
             Notify.create({
@@ -109,7 +111,7 @@ export default defineComponent({
          }
          this.userName = "";
          this.contrasenaInput = "";
-         this.loginDialog =false
+         this.loginDialog = false;
       },
 
       //-----------------------------------------making calls to api

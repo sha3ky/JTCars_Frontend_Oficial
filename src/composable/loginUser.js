@@ -61,7 +61,7 @@
 
 //
 
- import store from "../store";
+import store from "../store";
 import axios from "axios";
 import apiLink from "./apiLink";
 
@@ -85,8 +85,11 @@ const login = async (name, password) => {
       sessionStorage.setItem('refresh_token', response.data.refresh)
       axios.defaults.headers.common["Authorization"] = response.data.access;
 
-      store.dispatch("login", response.data.access);
-      store.dispatch('nombre',name)
+      store.dispatch("login", {
+        sessionData: response.data.access,
+        name: name // Replace with the actual name you want to store
+      });
+
       return  true
     } else {
       console.log("Invalid credentials")
