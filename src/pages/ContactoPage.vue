@@ -304,6 +304,7 @@ import InputUser from "components/InputUser.vue"; // Replace with the actual pat
 import loginUser from "src/components/loginUser.vue";
 import store from "../../src/store";
 import logout from "src/composable/logOut";
+import toggleDarkMode from "src/composable/toggleDark";
 import { Notify } from "quasar";
 export default defineComponent({
    name: "ContactoPage",
@@ -316,15 +317,18 @@ export default defineComponent({
          showLoginUser: false,
          userId: null,
          userIsAdmin: false,
-         toggleDark: ref(false),
+         toggleDark: false,
          modelSelectedMenu: ref("coches"),
          usuarioLogineado:''
       };
    },
 
    mounted() {
+    debugger
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
+      this.toggleDark= store.state.toggleDarkMode?store.state.toggleDarkMode:this.toggleDark
+      // this.toggleDark=toggleDarkMode(this.toggleDark)
    },
    methods: {
       updateUsuarioLogineado(bool) {
@@ -350,8 +354,10 @@ export default defineComponent({
          //this.showInputUser = false;
       },
       toggleDarkMode() {
-         const $q = this.$q;
+        debugger
+        const $q = this.$q;
          $q.dark.toggle();
+         store.state.toggleDarkMode=this.toggleDark
       },
       async logOut() {
          debugger;
@@ -382,8 +388,8 @@ export default defineComponent({
    setup() {
       const myForm = ref(null);
       const $q = useQuasar();
-      $q.dark.set(true); // or false or "auto"
-      $q.dark.toggle(); // toggle
+      // $q.dark.set(true); // or false or "auto"
+      // $q.dark.toggle(); // toggle
       const nombre = ref(null);
       const email = ref(null);
       const mobileNumber = ref(null);

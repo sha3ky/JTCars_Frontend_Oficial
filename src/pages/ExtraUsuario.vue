@@ -205,6 +205,7 @@ export default defineComponent({
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
+      this.toggleDark= store.state.toggleDarkMode?store.state.toggleDarkMode:this.toggleDark
    },
    methods: {
       updateUsuarioLogineado(bool) {
@@ -232,6 +233,7 @@ export default defineComponent({
       toggleDarkMode() {
          const $q = this.$q;
          $q.dark.toggle();
+         store.state.toggleDarkMode=this.toggleDark
       },
       async logOut() {
          debugger;
@@ -261,8 +263,8 @@ export default defineComponent({
 
    setup() {
       const $q = useQuasar();
-      $q.dark.set(true); // or false or "auto"
-      $q.dark.toggle(); // toggle
+      // $q.dark.set(true); // or false or "auto"
+      // $q.dark.toggle(); // toggle
 
       return {};
    },

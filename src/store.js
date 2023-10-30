@@ -1,34 +1,35 @@
-
 import { createStore } from "vuex";
 
 const store = createStore({
-  state: {
-    sessionData: null,
-    name: null
-  },
-  mutations: {
-    setSessionData(state, { sessionData, name }) {
-      state.sessionData = sessionData;
-      state.name = name;
-    },
-    clearSessionData(state) {
-      state.sessionData = null;
-      state.name = null;
-    },
-  },
-  actions: {
-    login({ commit }, { sessionData, name }) {
-      commit("setSessionData", { sessionData, name });
-    },
-    logout({ commit }) {
-      commit("clearSessionData");
-      // Perform any additional logout actions (e.g., clear session storage)
-    },
-  },
+   state: {
+      sessionData: null,
+      name: null,
+      darkMode: null,
+   },
+   mutations: {
+      setSessionData(state, { sessionData, name, darkMode }) {
+         state.sessionData = sessionData;
+         state.name = name;
+         state.darkMode = darkMode;
+      },
+      clearSessionData(state) {
+         state.sessionData = null;
+         state.name = null;
+         state.darkMode = null;
+      },
+   },
+   actions: {
+      login({ commit }, { sessionData, name, darkMode }) {
+         commit("setSessionData", { sessionData, name, darkMode });
+      },
+      logout({ commit }) {
+         commit("clearSessionData");
+         // Perform any additional logout actions (e.g., clear session storage)
+      },
+   },
 });
 
 export default store;
-
 
 ///////////////////ALTERNATIVAS//////////////////////
 // const state = {

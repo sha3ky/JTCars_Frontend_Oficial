@@ -23,11 +23,11 @@
                         </q-item>
                      </router-link>
                      <!-- <template v-if="sessionData"> -->
-                        <router-link to="/extra">
-                           <q-item clickable>
-                              <q-item-section>Extra</q-item-section>
-                           </q-item>
-                        </router-link>
+                     <router-link to="/extra">
+                        <q-item clickable>
+                           <q-item-section>Extra</q-item-section>
+                        </q-item>
+                     </router-link>
                      <!-- </template> -->
                      <q-separator />
                   </q-list>
@@ -74,16 +74,16 @@
                      </router-link>
                      <!-- test -->
                      <!-- <template v-if="sessionData"> -->
-                        <router-link to="/extra">
-                           <q-btn
-                              class="glossy"
-                              style="color: #1aee9f; margin-left: 10px"
-                              clickable
-                              rounded
-                           >
-                              <q-item-section>Noticias</q-item-section>
-                           </q-btn>
-                        </router-link>
+                     <router-link to="/extra">
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f; margin-left: 10px"
+                           clickable
+                           rounded
+                        >
+                           <q-item-section>Noticias</q-item-section>
+                        </q-btn>
+                     </router-link>
                      <!-- </template> -->
                      <!-- test -->
                   </div>
@@ -332,9 +332,8 @@ export default defineComponent({
          showCarousel: false,
          userId: null,
          userIsAdmin: false,
-         toggleDark: ref(false),
+         toggleDark: false,
          modelSelectedMenu: ref("coches"),
-
          imagenPrincipal: [],
          expandedArrow: false,
          arrayDescripciones: [],
@@ -347,7 +346,6 @@ export default defineComponent({
          marcas: [],
          modelos: [],
          colores: [],
-
          usuarioLogineado: "",
          sessionData: "",
       };
@@ -357,6 +355,7 @@ export default defineComponent({
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
+      this.toggleDark= store.state.toggleDarkMode?store.state.toggleDarkMode:this.toggleDark
       // Use an async function to fetch data and assign it to allData
       this.allData = await getAllData();
       console.log(this.allData);
@@ -408,8 +407,10 @@ export default defineComponent({
          this.showLoginUser = true;
       },
       toggleDarkMode() {
+         debugger;
          const $q = this.$q;
          $q.dark.toggle();
+        store.state.toggleDarkMode=this.toggleDark
       },
       // ------------------------------------------------------------------------------------------------------------------
       // forma paleto de mantener el usuario logineado a traves de todos los componentes y paginas
@@ -451,9 +452,9 @@ export default defineComponent({
 
    setup() {
       // dark mode
-      const $q = useQuasar();
-      $q.dark.set(true); // or false or "auto"
-      $q.dark.toggle(); // toggle
+      // const $q = useQuasar();
+      // $q.dark.set(true); // or false or "auto"
+      // $q.dark.toggle(); // toggle
       return {};
    },
 });
