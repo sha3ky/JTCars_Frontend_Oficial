@@ -409,7 +409,7 @@ export default defineComponent({
                icon: "cloud_done",
                message: "Gracias por subscribirte",
             });
-            contactUser(nombre, email, mobileNumber);
+            contactUser(nombre.value, email.value, mobileNumber.value);
          } else {
             $q.notify({
                color: "warning",
