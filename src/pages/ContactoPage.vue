@@ -304,6 +304,7 @@ import InputUser from "components/InputUser.vue"; // Replace with the actual pat
 import loginUser from "src/components/loginUser.vue";
 import store from "../../src/store";
 import logout from "src/composable/logOut";
+import contactUser from "src/composable/contactUser";
 import toggleDarkMode from "src/composable/toggleDark";
 import { Notify } from "quasar";
 export default defineComponent({
@@ -319,15 +320,17 @@ export default defineComponent({
          userIsAdmin: false,
          toggleDark: false,
          modelSelectedMenu: ref("coches"),
-         usuarioLogineado:''
+         usuarioLogineado: "",
       };
    },
 
    mounted() {
-    debugger
+      debugger;
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
-      this.toggleDark= store.state.toggleDarkMode?store.state.toggleDarkMode:this.toggleDark
+      this.toggleDark = store.state.toggleDarkMode
+         ? store.state.toggleDarkMode
+         : this.toggleDark;
       // this.toggleDark=toggleDarkMode(this.toggleDark)
    },
    methods: {
@@ -354,10 +357,10 @@ export default defineComponent({
          //this.showInputUser = false;
       },
       toggleDarkMode() {
-        debugger
-        const $q = this.$q;
+         debugger;
+         const $q = this.$q;
          $q.dark.toggle();
-         store.state.toggleDarkMode=this.toggleDark
+         store.state.toggleDarkMode = this.toggleDark;
       },
       async logOut() {
          debugger;
@@ -397,12 +400,23 @@ export default defineComponent({
       const dialogVisible = ref(false);
 
       function onSubmit() {
-         $q.notify({
-            color: "green-4",
-            textColor: "white",
-            icon: "cloud_done",
-            message: "Gracias por subscribirte",
-         });
+         debugger;
+
+         if (toggleAcept.value) {
+            $q.notify({
+               color: "green-4",
+               textColor: "white",
+               icon: "cloud_done",
+               message: "Gracias por subscribirte",
+            });
+            contactUser(nombre, email, mobileNumber);
+         } else {
+            $q.notify({
+               color: "warning",
+               textColor: "dark",
+               message: "Tienes que aceptar el envio de novedades",
+            });
+         }
       }
       // to reset validations:
       function onReset() {

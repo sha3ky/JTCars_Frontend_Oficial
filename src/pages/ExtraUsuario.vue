@@ -194,7 +194,7 @@ export default defineComponent({
          showLoginUser: false,
          userId: null,
          userIsAdmin: false,
-         toggleDark: ref(false),
+         toggleDark: false,
          modelSelectedMenu: ref("coches"),
          usuarioLogineado: "",
          sessionData: "",
