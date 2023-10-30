@@ -3,7 +3,7 @@ import apiLink from "./apiLink";
 
 const link = apiLink;
 
-const contactUser = async (name, email, telefono) => {
+const contactUser = async (name, email, telefono,mensaje) => {
   debugger
    debugger;
    try {
@@ -12,14 +12,8 @@ const contactUser = async (name, email, telefono) => {
          name: name, // Update to match the field names in the Django view
          email: email,
          telefono: telefono,
+         mensaje:mensaje
       });
-      //esto no hace falta al ingresar un usuario nuevo
-      // if (response.data && response.data.message === "User registered successfully") {
-      //    localStorage.setItem("token", response.data.key); // Store the user's authentication token
-      //    axios.defaults.headers.common[
-      //       "Authorization"
-      //    ] = `Token ${response.data.key}`; // Set default header for future axios requests
-      // }
 
       if (response.status == 200) {
          return true;

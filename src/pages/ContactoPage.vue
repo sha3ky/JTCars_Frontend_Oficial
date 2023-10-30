@@ -222,10 +222,20 @@
                         ]"
                         class="q-mb-md md:q-mb-0"
                      />
+                     <q-input
+                        v-model="textareaModel"
+                        filled
+                        clearable
+                        type="textarea"
+                        color="red-12"
+                        label="Si buscas algo en particular ..."
+                        hint="Mandanos tus dudas"
+
+                     />
 
                      <q-toggle
                         v-model="toggleAcept"
-                        label="Acepto envio de novedades"
+                        label="Acepto el envio de novedades"
                      />
 
                      <div>
@@ -305,7 +315,7 @@ import loginUser from "src/components/loginUser.vue";
 import store from "../../src/store";
 import logout from "src/composable/logOut";
 import contactUser from "src/composable/contactUser";
-import toggleDarkMode from "src/composable/toggleDark";
+// import toggleDarkMode from "src/composable/toggleDark";
 import { Notify } from "quasar";
 export default defineComponent({
    name: "ContactoPage",
@@ -331,7 +341,6 @@ export default defineComponent({
       this.toggleDark = store.state.toggleDarkMode
          ? store.state.toggleDarkMode
          : this.toggleDark;
-      // this.toggleDark=toggleDarkMode(this.toggleDark)
    },
    methods: {
       updateUsuarioLogineado(bool) {
@@ -349,7 +358,6 @@ export default defineComponent({
       nuevoUsuario() {
          debugger;
          this.showInputUser = true;
-         //this.showLoginUser = false;
       },
       loginearUsuario() {
          debugger;
@@ -393,6 +401,7 @@ export default defineComponent({
       const $q = useQuasar();
       // $q.dark.set(true); // or false or "auto"
       // $q.dark.toggle(); // toggle
+      const textareaModel = ref("");
       const nombre = ref(null);
       const email = ref(null);
       const mobileNumber = ref(null);
@@ -409,7 +418,12 @@ export default defineComponent({
                icon: "cloud_done",
                message: "Gracias por subscribirte",
             });
-            contactUser(nombre.value, email.value, mobileNumber.value);
+            contactUser(
+               nombre.value,
+               email.value,
+               mobileNumber.value,
+               textareaModel.value
+            );
          } else {
             $q.notify({
                color: "warning",
@@ -433,6 +447,7 @@ export default defineComponent({
          toggleAcept,
          myForm,
          mobileNumber,
+         textareaModel
       };
    },
 });
