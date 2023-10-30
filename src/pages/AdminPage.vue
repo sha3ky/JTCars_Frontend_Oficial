@@ -145,6 +145,7 @@
             >
          </q-toolbar>
       </q-footer>
+      <!-- v-if="sessionData" -->
       <q-page-container style="min-height: 100vh; text-align: center">
          <div class="q-gutter-y-md" style="">
             <q-card>
@@ -194,11 +195,134 @@
          </div>
 
          <q-dialog v-model="dialogCoches" persistent>
-            <q-card style="min-width: 350px">
+            <q-card style="max-width: 650px">
                <q-card-section>
-                  <div class="text-h6">Your address</div>
+                  <div class="text-h6">Cambiar configuracion coche</div>
                </q-card-section>
-               <q-input filled v-model="matricula" label="Matricula" />
+               <q-card>
+                  <div>
+                     <div style="display: flex">
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.matricula"
+                              label="Matricula"
+                           />
+                        </div>
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.marca"
+                              label="Marca"
+                           />
+                        </div>
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.modelo"
+                              label="Modelo"
+                           />
+                        </div>
+                     </div>
+
+                     <div style="display: flex">
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.ano"
+                              label="Año"
+                           />
+                        </div>
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.km"
+                              label="KM"
+                           />
+                        </div>
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.descripcion"
+                              label="Descripcion"
+                           />
+                        </div>
+                     </div>
+
+                     <div style="display: flex">
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.etiqueta"
+                              label="Etiqueta"
+                           />
+                        </div>
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.tipo"
+                              label="Tipo"
+                           />
+                        </div>
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.promocion"
+                              label="Promocion"
+                           />
+                        </div>
+                     </div>
+                     <div style="display: flex">
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.combustible"
+                              label="Combustible"
+                           />
+                        </div>
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.precio"
+                              label="Precio"
+                           />
+                        </div>
+                        <div>
+                           <q-input
+                              filled
+                              v-model="datosCoches.colorBanner"
+                              label="ColorBanner"
+                           />
+                        </div>
+                     </div>
+                     <div style="display: flex">
+                        <q-card
+                           v-for="(image, index) in imagenesArray"
+                           :key="index"
+                           :name="index"
+                        >
+                           <!-- <div
+                              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+                           >
+                              <q-img
+                                 class="rounded-borders full-height"
+                                 :src="getBase64Image(image)"
+                              />
+                           </div> -->
+                           <!-- <q-input
+                              filled
+                              v-model="datosCoches.imagenesArray[index]"
+                              label="Imagen"
+                           /> -->
+                           <q-img
+                              :src="getBase64Image(image)"
+                              class="responsive-image"
+                           />
+                        </q-card>
+                     </div>
+                  </div>
+               </q-card>
+
                <q-card-section class="q-pt-none"> </q-card-section>
 
                <q-card-actions align="right" class="text-primary">
@@ -207,18 +331,18 @@
                </q-card-actions>
             </q-card>
          </q-dialog>
-         <InputUser
-            :inputUserDialog="showInputUser"
-            @close-dialog-newuser="handleDialogClose"
-         />
-
-         <loginUser
-            :loginUserDialog="showLoginUser"
-            @close-dialog-loginuser="handleDialogClose"
-            @update-usuario-logineado="updateUsuarioLogineado"
-         />
-         <router-view />
       </q-page-container>
+      <InputUser
+         :inputUserDialog="showInputUser"
+         @close-dialog-newuser="handleDialogClose"
+      />
+
+      <loginUser
+         :loginUserDialog="showLoginUser"
+         @close-dialog-loginuser="handleDialogClose"
+         @update-usuario-logineado="updateUsuarioLogineado"
+      />
+      <router-view />
    </q-layout>
 </template>
 <style>
@@ -232,7 +356,6 @@ body.body--dark {
 }
 </style>
 <script>
-
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";
@@ -357,8 +480,8 @@ export default defineComponent({
             },
             { name: "telefono", label: "Telefono", field: "telefono" },
          ],
-         datosCoches:{},
-         matricula:''
+         datosCoches: {},
+         imagenesArray: [],
       };
    },
    async mounted() {
@@ -373,13 +496,39 @@ export default defineComponent({
       this.rowsPersonas = await getAllusers();
    },
    methods: {
+      getBase64Image(image) {
+        debugger
+         return `data:image/jpeg;base64,${image}`;
+      },
       handleRowClick(evt, row) {
          debugger;
          this.dialogCoches = true;
          // Handle row click event here
          console.log("Row clicked:", row);
-         this.matricula=row.matricula
+         this.datosCoches.matricula = row.matricula;
+         this.datosCoches.marca = row.marca;
+         this.datosCoches.modelo = row.modelo;
+         this.datosCoches.ano = row.ano;
+         this.datosCoches.km = row.km;
+         this.datosCoches.descripcion = row.descripcion;
+         this.datosCoches.etiqueta = row.etiqueta;
+         this.datosCoches.tipo = row.tipo;
+         this.datosCoches.promocion = row.promocion;
+         this.datosCoches.combustible = row.combustible;
+         this.datosCoches.precio = row.precio;
+         this.datosCoches.colorBanner = row.colorBanner;
+         this.extrerImagenes(row);
          // You can perform actions such as opening a dialog, navigating to a detail page, etc.
+      },
+      extrerImagenes(row) {
+         debugger;
+         this.imagenesArray = [];
+         for (let img = 1; img <= 8; img++) {
+            const propertyName = "imagen" + img;
+            if (row[propertyName]) {
+               this.imagenesArray.push(row[propertyName]);
+            }
+         }
       },
       updateUsuarioLogineado(bool) {
          debugger;

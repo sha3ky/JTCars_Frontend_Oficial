@@ -67,8 +67,8 @@
 
 // export default router;
 
-import { createRouter, createWebHistory } from 'vue-router';
-import store from '../store';
+// import { createRouter, createWebHistory } from 'vue-router';
+// import store from '../store';
 
 import ContactoPageVue from 'src/pages/ContactoPage.vue';
 import ExtraUsuarioVue from 'src/pages/ExtraUsuario.vue';
@@ -101,21 +101,22 @@ const routes = [
   // ... other route configurations
 ];
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
+// const router = createRouter({
+//   history: createWebHistory(),
+//   routes,
+// });
 
-router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    if (!store.state.sessionData) {
-      next({ name: 'principal-coches' }); // Redirect to the login page or another route
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
 
-export default router;
+//   if (to.meta.requiresAuth) {
+//     if (!store.state.sessionData) {
+//       next({ name: 'principal-coches' }); // Redirect to the login page or another route
+//     } else {
+//       next();
+//     }
+//   } else {
+//     next();
+//   }
+// });
+
+export default routes;
