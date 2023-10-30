@@ -28,6 +28,14 @@
                            <q-item-section>Extra</q-item-section>
                         </q-item>
                      </router-link>
+                     <template v-if="userIsAdmin">
+                        <router-link to="/admin">
+                           <q-item clickable>
+                              <q-item-section>Admin</q-item-section>
+                           </q-item>
+                        </router-link>
+                     </template>
+
                      <!-- </template> -->
                      <q-separator />
                   </q-list>
@@ -84,6 +92,19 @@
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
                      </router-link>
+                     <template v-if="userIsAdmin">
+                        <router-link to="/admin">
+                           <q-btn
+                              class="glossy"
+                              style="color: #f11212; margin-left: 10px"
+                              clickable
+                              rounded
+                           >
+                              <q-item-section>Admin</q-item-section>
+                           </q-btn>
+                        </router-link>
+                     </template>
+
                      <!-- </template> -->
                      <!-- test -->
                   </div>
@@ -355,7 +376,12 @@ export default defineComponent({
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
-      this.toggleDark= store.state.toggleDarkMode?store.state.toggleDarkMode:this.toggleDark
+      this.userIsAdmin = store.state.isAdmin
+         ? store.state.isAdmin
+         : this.userIsAdmin;
+      this.toggleDark = store.state.toggleDarkMode
+         ? store.state.toggleDarkMode
+         : this.toggleDark;
       // Use an async function to fetch data and assign it to allData
       this.allData = await getAllData();
       console.log(this.allData);
@@ -410,7 +436,7 @@ export default defineComponent({
          debugger;
          const $q = this.$q;
          $q.dark.toggle();
-        store.state.toggleDarkMode=this.toggleDark
+         store.state.toggleDarkMode = this.toggleDark;
       },
       // ------------------------------------------------------------------------------------------------------------------
       // forma paleto de mantener el usuario logineado a traves de todos los componentes y paginas
@@ -419,6 +445,7 @@ export default defineComponent({
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
+            this.userIsAdmin=store.state.isAdmin
          }
       },
       // ------------------------------------------------------------------------------------------------------------------
@@ -429,6 +456,7 @@ export default defineComponent({
             store.dispatch("logout");
             this.usuarioLogineado = "";
             this.sessionData = "";
+            this.userIsAdmin=false
             Notify.create({
                type: "positive",
                message: "Adios.",

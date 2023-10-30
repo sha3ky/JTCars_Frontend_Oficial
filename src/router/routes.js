@@ -1,6 +1,7 @@
 import ContactoPageVue from "src/pages/ContactoPage.vue";
 import ExtraUsuarioVue from "src/pages/ExtraUsuario.vue";
 import PrincipalCoches from "src/pages/PrincipalCoches.vue";
+import AdminPageVue  from "src/pages/AdminPage.vue";
 
 // ---------------------------forStore----------------------
 // import { createRouter, createWebHistory } from "vue-router";
@@ -31,7 +32,7 @@ const routes = [
    {
     path: "/admin",
     name: "admin-page",
-    component: ExtraUsuarioVue, //AdminPage.vue
+    component: AdminPageVue, //AdminPage.vue
     // meta: { requiresAuth: true },
  },
    // Always leave this as last one,

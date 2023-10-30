@@ -28,6 +28,13 @@
                            <q-item-section>Extra</q-item-section>
                         </q-item>
                      </router-link>
+                     <template v-if="userIsAdmin">
+                        <router-link to="/admin">
+                           <q-item clickable>
+                              <q-item-section>Admin</q-item-section>
+                           </q-item>
+                        </router-link>
+                     </template>
                      <!-- </template> -->
                      <q-separator />
                   </q-list>
@@ -84,6 +91,19 @@
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
                      </router-link>
+                     <template v-if="userIsAdmin">
+                        <router-link to="/admin">
+                           <q-btn
+                              class="glossy"
+                              style="color: #f11212; margin-left: 10px"
+                              clickable
+                              rounded
+                           >
+                              <q-item-section>Admin</q-item-section>
+                           </q-btn>
+                        </router-link>
+                     </template>
+
                      <!-- </template> -->
                      <!-- test -->
                   </div>
@@ -229,8 +249,7 @@
                         type="textarea"
                         color="red-12"
                         label="Si buscas algo en particular ..."
-                        hint="Mandanos tus dudas"
-
+                        hint="O si tienes dudas"
                      />
 
                      <q-toggle
@@ -338,6 +357,9 @@ export default defineComponent({
       debugger;
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
+      this.userIsAdmin = store.state.isAdmin
+         ? store.state.isAdmin
+         : this.userIsAdmin;
       this.toggleDark = store.state.toggleDarkMode
          ? store.state.toggleDarkMode
          : this.toggleDark;
@@ -348,6 +370,7 @@ export default defineComponent({
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
+            this.userIsAdmin=store.state.isAdmin
          }
       },
       handleDialogClose() {
@@ -377,6 +400,7 @@ export default defineComponent({
             store.dispatch("logout");
             this.usuarioLogineado = "";
             this.sessionData = "";
+            this.userIsAdmin=false
             Notify.create({
                type: "positive",
                message: "Adios.",
@@ -447,7 +471,7 @@ export default defineComponent({
          toggleAcept,
          myForm,
          mobileNumber,
-         textareaModel
+         textareaModel,
       };
    },
 });

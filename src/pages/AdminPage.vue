@@ -23,19 +23,12 @@
                         </q-item>
                      </router-link>
                      <!-- <template v-if="sessionData"> -->
-                     <!-- <router-link to="/extra">
-                           <q-item clickable>
-                              <q-item-section>Extra</q-item-section>
-                           </q-item>
-                        </router-link> -->
+                     <router-link to="/extra">
+                        <q-item clickable>
+                           <q-item-section>Extra</q-item-section>
+                        </q-item>
+                     </router-link>
                      <!-- </template> -->
-                     <template v-if="userIsAdmin">
-                        <router-link to="/admin">
-                           <q-item clickable>
-                              <q-item-section>Admin</q-item-section>
-                           </q-item>
-                        </router-link>
-                     </template>
                      <q-separator />
                   </q-list>
                </q-menu>
@@ -79,34 +72,30 @@
                            <q-item-section>Contacto</q-item-section>
                         </q-btn>
                      </router-link>
-                     <template v-if="userIsAdmin">
-                        <router-link to="/admin">
-                           <q-btn
-                              class="glossy"
-                              style="color: #f11212; margin-left: 10px"
-                              clickable
-                              rounded
-                           >
-                              <q-item-section>Admin</q-item-section>
-                           </q-btn>
-                        </router-link>
-                     </template>
-
                      <!-- test -->
                      <!-- <template v-if="sessionData"> -->
+                     <router-link to="/extra">
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f; margin-left: 10px"
+                           clickable
+                           rounded
+                        >
+                           <q-item-section>Noticias</q-item-section>
+                        </q-btn>
+                     </router-link>
                      <!-- <router-link to="/extra">
-                           <q-btn
-                              class="glossy"
-                              style="color: #1aee9f; margin-left: 10px"
-                              clickable
-                              rounded
-                           >
-                              <q-item-section>Noticias</q-item-section>
-                           </q-btn>
-                        </router-link> -->
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f; margin-left: 10px"
+                           clickable
+                           rounded
+                        >
+                           <q-item-section>Noticias</q-item-section>
+                        </q-btn>
+                     </router-link> -->
                      <!-- </template> -->
                      <!-- test -->
-
                   </div>
                </div>
             </template>
@@ -124,12 +113,12 @@
                         style="width: 50px"
                      ></q-btn>
                      <!-- <q-btn
-                        flat
-                        round
-                        dense
-                        icon="img:userplusGreen.png"
-                        @click="nuevoUsuario"
-                     ></q-btn> -->
+                       flat
+                       round
+                       dense
+                       icon="img:userplusGreen.png"
+                       @click="nuevoUsuario"
+                    ></q-btn> -->
                   </div>
                </template>
                <template v-if="sessionData">
@@ -164,16 +153,48 @@
          </q-toolbar>
       </q-footer>
       <q-page-container style="min-height: 100vh; text-align: center">
-         <div class="iframe-container">
-            <iframe
-               src="https://loscochesmasvendidos.com/"
-               width="100%"
-               height="100%"
-               style="border: 0"
-               allowfullscreen=""
-               loading="lazy"
-               referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
+         <div class="q-gutter-y-md" style="">
+            <q-card>
+               <q-tabs
+                  v-model="tab"
+                  dense
+                  class="text-grey"
+                  active-color="primary"
+                  indicator-color="primary"
+                  align="justify"
+                  narrow-indicator
+               >
+                  <q-tab name="coches" label="Coches" />
+                  <q-tab name="personas" label="Clientes" />
+               </q-tabs>
+
+               <q-separator />
+
+               <q-tab-panels v-model="tab" animated>
+                  <q-tab-panel name="coches">
+                     <div class="text-h6">Coches</div>
+
+                     <div class="q-pa-md">
+                        <q-table
+                           title="Coches"
+                           :rows="rowsCoches"
+                           :columns="columnsCoches"
+                           row-key="name"
+                        />
+                     </div>
+                  </q-tab-panel>
+
+                  <q-tab-panel name="personas">
+                     <div class="text-h6">Clientes</div>
+                     <q-table
+                           title="Personas"
+                           :rows="rowsPersonas"
+                           :columns="columnsPersonas"
+                           row-key="name"
+                        />
+                  </q-tab-panel>
+               </q-tab-panels>
+            </q-card>
          </div>
          <InputUser
             :inputUserDialog="showInputUser"
@@ -207,8 +228,11 @@ import InputUser from "components/InputUser.vue"; // Replace with the actual pat
 import loginUser from "src/components/loginUser.vue";
 import logout from "src/composable/logOut";
 import { Notify } from "quasar";
+import getAllData from "src/composable/loadAllData";
+import getAllusers from "src/composable/getUsersContact"
+
 export default defineComponent({
-   name: "ExtraUsuario",
+   name: "AdminPage",
    data() {
       return {
          showInputUser: false, // Initialize showInputUser to control InputUser component
@@ -219,6 +243,92 @@ export default defineComponent({
          modelSelectedMenu: ref("coches"),
          usuarioLogineado: "",
          sessionData: "",
+         tab: "coches",
+         columnsCoches: [
+            {
+               name: "matricula",
+               required: true,
+               label: "Matricula",
+               align: "center",
+               sortable: true,
+               field:'matricula'
+            },
+            {
+               name: "marca",
+               align: "center",
+               label: "Marca",
+               field: "marca",
+               sortable: true,
+            },
+            { name: "modelo", label: "Modelo", field: "modelo", sortable: true, align: "center", },
+            { name: "ano", label: "Año", field: "ano" , align: "center",},
+            { name: "km", label: "KM", field: "km" , align: "center",},
+            { name: "descripcion", label: "Descripcion", field: "descripcion", align: "center", },
+            {
+               name: "etiqueta",
+               label: "Etiqueta",
+               field: "etiqueta",
+               sortable: true,
+               align: "center",
+            },
+            {
+               name: "tipo",
+               label: "Tipo",
+               field: "tipo",
+               sortable: true,
+               align: "center",
+            },
+            {
+               name: "promocion",
+               label: "Promocion",
+               field: "promocion",
+               sortable: true,
+               align: "center",
+            },
+            {
+               name: "combustible",
+               label: "Combustible",
+               field: "combustible",
+               sortable: true,
+               align: "center",
+            },
+            {
+               name: "precio",
+               label: "Precio",
+               field: "precio",
+               sortable: true,
+               align: "center",
+            },
+            {
+               name: "colorBanner",
+               label: "ColorBanner",
+               field: "colorBanner",
+               sortable: true,
+               align: "center",
+            },
+         ],
+         rowsCoches: [ ],
+         rowsPersonas:[],
+         columnsPersonas:[
+         {
+               name: "username",
+
+               label: "Nombre",
+               align: "center",
+               field: "username",
+               sortable: true,
+            },
+            {
+               name: "email",
+               align: "center",
+               label: "Email",
+               field: "email",
+               sortable: true,
+            },
+            { name: "mensaje", label: "Mensaje", field: "mensaje", sortable: true },
+            { name: "telefono", label: "Telefono", field: "telefono" },
+
+         ]
       };
    },
    async mounted() {
@@ -226,12 +336,11 @@ export default defineComponent({
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
-      this.userIsAdmin = store.state.isAdmin
-         ? store.state.isAdmin
-         : this.userIsAdmin;
       this.toggleDark = store.state.toggleDarkMode
          ? store.state.toggleDarkMode
          : this.toggleDark;
+       this.rowsCoches=await getAllData()
+       this.rowsPersonas=await getAllusers()
    },
    methods: {
       updateUsuarioLogineado(bool) {
@@ -239,7 +348,6 @@ export default defineComponent({
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
-            this.userIsAdmin=store.state.isAdmin
          }
       },
       handleDialogClose() {
@@ -269,7 +377,6 @@ export default defineComponent({
             store.dispatch("logout");
             this.usuarioLogineado = "";
             this.sessionData = "";
-            this.userIsAdmin=false
             Notify.create({
                type: "positive",
                message: "Adios.",
