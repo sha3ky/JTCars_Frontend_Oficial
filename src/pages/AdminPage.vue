@@ -53,18 +53,12 @@
                <div>
                   <div>
                      <router-link to="/">
-                        <q-btn
-                           class="glossy"
-                           style="color: #1aee9f"
-                           clickable
-                           rounded
-                        >
+                        <q-btn style="color: #1aee9f" clickable rounded>
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
                      </router-link>
                      <router-link to="/contacto">
                         <q-btn
-                           class="glossy"
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -76,7 +70,6 @@
                      <!-- <template v-if="sessionData"> -->
                      <router-link to="/extra">
                         <q-btn
-                           class="glossy"
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -86,7 +79,7 @@
                      </router-link>
                      <!-- <router-link to="/extra">
                         <q-btn
-                           class="glossy"
+
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -179,23 +172,41 @@
                            title="Coches"
                            :rows="rowsCoches"
                            :columns="columnsCoches"
-                           row-key="name"
-                        />
+                           row-key="matricula"
+                           @row-click="handleRowClick"
+                        >
+                        </q-table>
                      </div>
                   </q-tab-panel>
 
                   <q-tab-panel name="personas">
                      <div class="text-h6">Clientes</div>
                      <q-table
-                           title="Personas"
-                           :rows="rowsPersonas"
-                           :columns="columnsPersonas"
-                           row-key="name"
-                        />
+                        title="Personas"
+                        :rows="rowsPersonas"
+                        :columns="columnsPersonas"
+                        row-key="email"
+                        @row-click="handleRowClick"
+                     />
                   </q-tab-panel>
                </q-tab-panels>
             </q-card>
          </div>
+
+         <q-dialog v-model="dialogCoches" persistent>
+            <q-card style="min-width: 350px">
+               <q-card-section>
+                  <div class="text-h6">Your address</div>
+               </q-card-section>
+               <q-input filled v-model="matricula" label="Matricula" />
+               <q-card-section class="q-pt-none"> </q-card-section>
+
+               <q-card-actions align="right" class="text-primary">
+                  <q-btn flat label="Cancel" v-close-popup />
+                  <q-btn flat label="Add address" v-close-popup />
+               </q-card-actions>
+            </q-card>
+         </q-dialog>
          <InputUser
             :inputUserDialog="showInputUser"
             @close-dialog-newuser="handleDialogClose"
@@ -221,6 +232,7 @@ body.body--dark {
 }
 </style>
 <script>
+
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";
@@ -229,12 +241,13 @@ import loginUser from "src/components/loginUser.vue";
 import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import getAllData from "src/composable/loadAllData";
-import getAllusers from "src/composable/getUsersContact"
+import getAllusers from "src/composable/getUsersContact";
 
 export default defineComponent({
    name: "AdminPage",
    data() {
       return {
+         dialogCoches: false,
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
@@ -251,7 +264,7 @@ export default defineComponent({
                label: "Matricula",
                align: "center",
                sortable: true,
-               field:'matricula'
+               field: "matricula",
             },
             {
                name: "marca",
@@ -260,10 +273,21 @@ export default defineComponent({
                field: "marca",
                sortable: true,
             },
-            { name: "modelo", label: "Modelo", field: "modelo", sortable: true, align: "center", },
-            { name: "ano", label: "Año", field: "ano" , align: "center",},
-            { name: "km", label: "KM", field: "km" , align: "center",},
-            { name: "descripcion", label: "Descripcion", field: "descripcion", align: "center", },
+            {
+               name: "modelo",
+               label: "Modelo",
+               field: "modelo",
+               sortable: true,
+               align: "center",
+            },
+            { name: "ano", label: "Año", field: "ano", align: "center" },
+            { name: "km", label: "KM", field: "km", align: "center" },
+            {
+               name: "descripcion",
+               label: "Descripcion",
+               field: "descripcion",
+               align: "center",
+            },
             {
                name: "etiqueta",
                label: "Etiqueta",
@@ -307,10 +331,10 @@ export default defineComponent({
                align: "center",
             },
          ],
-         rowsCoches: [ ],
-         rowsPersonas:[],
-         columnsPersonas:[
-         {
+         rowsCoches: [],
+         rowsPersonas: [],
+         columnsPersonas: [
+            {
                name: "username",
 
                label: "Nombre",
@@ -325,10 +349,16 @@ export default defineComponent({
                field: "email",
                sortable: true,
             },
-            { name: "mensaje", label: "Mensaje", field: "mensaje", sortable: true },
+            {
+               name: "mensaje",
+               label: "Mensaje",
+               field: "mensaje",
+               sortable: true,
+            },
             { name: "telefono", label: "Telefono", field: "telefono" },
-
-         ]
+         ],
+         datosCoches:{},
+         matricula:''
       };
    },
    async mounted() {
@@ -339,10 +369,18 @@ export default defineComponent({
       this.toggleDark = store.state.toggleDarkMode
          ? store.state.toggleDarkMode
          : this.toggleDark;
-       this.rowsCoches=await getAllData()
-       this.rowsPersonas=await getAllusers()
+      this.rowsCoches = await getAllData();
+      this.rowsPersonas = await getAllusers();
    },
    methods: {
+      handleRowClick(evt, row) {
+         debugger;
+         this.dialogCoches = true;
+         // Handle row click event here
+         console.log("Row clicked:", row);
+         this.matricula=row.matricula
+         // You can perform actions such as opening a dialog, navigating to a detail page, etc.
+      },
       updateUsuarioLogineado(bool) {
          debugger;
          if (bool) {

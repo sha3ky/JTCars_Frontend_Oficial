@@ -61,7 +61,7 @@
                   <div>
                      <router-link to="/">
                         <q-btn
-                           class="glossy"
+
                            style="color: #1aee9f"
                            clickable
                            rounded
@@ -71,7 +71,7 @@
                      </router-link>
                      <router-link to="/contacto">
                         <q-btn
-                           class="glossy"
+
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -82,7 +82,7 @@
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
-                              class="glossy"
+
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
@@ -96,7 +96,7 @@
                      <!-- <template v-if="sessionData"> -->
                      <!-- <router-link to="/extra">
                            <q-btn
-                              class="glossy"
+
                               style="color: #1aee9f; margin-left: 10px"
                               clickable
                               rounded
@@ -200,6 +200,7 @@ body.body--dark {
 }
 </style>
 <script>
+
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";

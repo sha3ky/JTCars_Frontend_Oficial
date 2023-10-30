@@ -72,7 +72,7 @@
                      </router-link> -->
                      <router-link to="/contacto">
                         <q-btn
-                           class="glossy"
+
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -84,7 +84,7 @@
                      <!-- <template v-if="sessionData"> -->
                      <router-link to="/extra">
                         <q-btn
-                           class="glossy"
+
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -95,7 +95,7 @@
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
-                              class="glossy"
+
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded

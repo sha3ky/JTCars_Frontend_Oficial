@@ -6,7 +6,7 @@ let link = apiLink;
 async function getAllusers() {
    debugger;
    try {
-      const response = await axios.get(`${link}api/getallusers/`, {
+      const response = await axios.get(`${link}api/contactUser/`, {
          headers: {
             "Content-Type": "application/json",
             // "ngrok-skip-browser-warning": "69420",
