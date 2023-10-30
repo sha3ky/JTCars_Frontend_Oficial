@@ -12,11 +12,11 @@
             >
                <q-menu transition-show="scale" transition-hide="scale">
                   <q-list style="min-width: 100px">
-                     <router-link to="/">
+                     <!-- <router-link to="/">
                         <q-item clickable>
                            <q-item-section>Coches</q-item-section>
                         </q-item>
-                     </router-link>
+                     </router-link> -->
                      <router-link to="/contacto">
                         <q-item clickable>
                            <q-item-section>Contacto</q-item-section>
@@ -52,7 +52,7 @@
             <template v-if="$q.screen.width > 600">
                <div>
                   <div>
-                     <router-link to="/">
+                     <!-- <router-link to="/">
                         <q-btn
                            class="glossy"
                            style="color: #1aee9f"
@@ -61,7 +61,7 @@
                         >
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
-                     </router-link>
+                     </router-link> -->
                      <router-link to="/contacto">
                         <q-btn
                            class="glossy"
@@ -102,13 +102,13 @@
                         @click="loginearUsuario"
                         style="width: 50px"
                      ></q-btn>
-                     <q-btn
+                     <!-- <q-btn
                         flat
                         round
                         dense
                         icon="img:userplusGreen.png"
                         @click="nuevoUsuario"
-                     ></q-btn>
+                     ></q-btn> -->
                   </div>
                </template>
                <template v-if="sessionData">

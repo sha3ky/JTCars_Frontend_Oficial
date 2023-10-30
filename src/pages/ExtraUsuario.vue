@@ -74,7 +74,7 @@
                      </router-link>
                      <!-- test -->
                      <!-- <template v-if="sessionData"> -->
-                        <router-link to="/extra">
+                        <!-- <router-link to="/extra">
                            <q-btn
                               class="glossy"
                               style="color: #1aee9f; margin-left: 10px"
@@ -83,7 +83,7 @@
                            >
                               <q-item-section>Noticias</q-item-section>
                            </q-btn>
-                        </router-link>
+                        </router-link> -->
                      <!-- </template> -->
                      <!-- test -->
                   </div>
@@ -102,13 +102,13 @@
                         @click="loginearUsuario"
                         style="width: 50px"
                      ></q-btn>
-                     <q-btn
+                     <!-- <q-btn
                         flat
                         round
                         dense
                         icon="img:userplusGreen.png"
                         @click="nuevoUsuario"
-                     ></q-btn>
+                     ></q-btn> -->
                   </div>
                </template>
                <template v-if="sessionData">
