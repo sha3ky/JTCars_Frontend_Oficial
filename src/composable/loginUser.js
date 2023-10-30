@@ -87,7 +87,8 @@ const login = async (name, password) => {
 
       store.dispatch("login", {
         sessionData: response.data.access,
-        name: name // Replace with the actual name you want to store
+        name: name ,// Replace with the actual name you want to store
+        isAdmin:response.data.is_admin
       });
 
       return  true

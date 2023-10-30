@@ -5,22 +5,25 @@ const store = createStore({
       sessionData: null,
       name: null,
       darkMode: null,
+      isAdmin:null
    },
    mutations: {
-      setSessionData(state, { sessionData, name, darkMode }) {
+      setSessionData(state, { sessionData, name, darkMode,isAdmin }) {
          state.sessionData = sessionData;
          state.name = name;
          state.darkMode = darkMode;
+         state.isAdmin=isAdmin
       },
       clearSessionData(state) {
          state.sessionData = null;
          state.name = null;
          state.darkMode = null;
+         state.isAdmin=null
       },
    },
    actions: {
-      login({ commit }, { sessionData, name, darkMode }) {
-         commit("setSessionData", { sessionData, name, darkMode });
+      login({ commit }, { sessionData, name, darkMode,isAdmin }) {
+         commit("setSessionData", { sessionData, name, darkMode,isAdmin });
       },
       logout({ commit }) {
          commit("clearSessionData");
