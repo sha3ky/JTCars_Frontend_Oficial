@@ -23,11 +23,11 @@
                         </q-item>
                      </router-link>
                      <!-- <template v-if="sessionData"> -->
-                        <router-link to="/extra">
-                           <q-item clickable>
-                              <q-item-section>Extra</q-item-section>
-                           </q-item>
-                        </router-link>
+                     <router-link to="/extra">
+                        <q-item clickable>
+                           <q-item-section>Extra</q-item-section>
+                        </q-item>
+                     </router-link>
                      <!-- </template> -->
                      <q-separator />
                   </q-list>
@@ -74,16 +74,16 @@
                      </router-link>
                      <!-- test -->
                      <!-- <template v-if="sessionData"> -->
-                        <router-link to="/extra">
-                           <q-btn
-                              class="glossy"
-                              style="color: #1aee9f; margin-left: 10px"
-                              clickable
-                              rounded
-                           >
-                              <q-item-section>Noticias</q-item-section>
-                           </q-btn>
-                        </router-link>
+                     <router-link to="/extra">
+                        <q-btn
+                           class="glossy"
+                           style="color: #1aee9f; margin-left: 10px"
+                           clickable
+                           rounded
+                        >
+                           <q-item-section>Noticias</q-item-section>
+                        </q-btn>
+                     </router-link>
                      <!-- </template> -->
                      <!-- test -->
                   </div>
@@ -114,7 +114,7 @@
                <template v-if="sessionData">
                   <div>
                      <div>
-                        {{ usuarioName }}
+                        {{ usuarioLogineado }}
                      </div>
                      <div>
                         <q-btn flat round dense @click="logOut">Exit</q-btn>
@@ -304,6 +304,7 @@ import InputUser from "components/InputUser.vue"; // Replace with the actual pat
 import loginUser from "src/components/loginUser.vue";
 import store from "../../src/store";
 import logout from "src/composable/logOut";
+import { Notify } from "quasar";
 export default defineComponent({
    name: "ContactoPage",
    data() {
@@ -317,15 +318,16 @@ export default defineComponent({
          userIsAdmin: false,
          toggleDark: ref(false),
          modelSelectedMenu: ref("coches"),
+         usuarioLogineado:''
       };
    },
 
    mounted() {
       this.sessionData = store.state.sessionData;
-      this.usuarioName=store.state.name
+      this.usuarioLogineado = store.state.name;
    },
    methods: {
-    updateUsuarioLogineado(bool) {
+      updateUsuarioLogineado(bool) {
          debugger;
          if (bool) {
             this.usuarioLogineado = store.state.name;
@@ -355,6 +357,9 @@ export default defineComponent({
          debugger;
          const result = await logout();
          if (result) {
+            store.dispatch("logout");
+            this.usuarioLogineado = "";
+            this.sessionData = "";
             Notify.create({
                type: "positive",
                message: "Adios.",
@@ -364,8 +369,8 @@ export default defineComponent({
                type: "negative",
                message: "Error al des-loginear al usuario.",
             });
+            store.dispatch("logout");
          }
-         //  this.usuarioLogineado = "";
       },
    },
 

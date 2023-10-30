@@ -114,7 +114,7 @@
                <template v-if="sessionData">
                   <div>
                      <div>
-                        {{ usuarioName }}
+                        {{ usuarioLogineado }}
                      </div>
                      <div>
                         <q-btn flat round dense @click="logOut">Exit</q-btn>
@@ -162,6 +162,7 @@
          <loginUser
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
+            @update-usuario-logineado="updateUsuarioLogineado"
          />
          <router-view />
       </q-page-container>
@@ -184,19 +185,18 @@ import store from "../../src/store";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
 import logout from "src/composable/logOut";
+import { Notify } from "quasar";
 export default defineComponent({
    name: "ExtraUsuario",
    data() {
       return {
-
-
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
          userIsAdmin: false,
          toggleDark: ref(false),
          modelSelectedMenu: ref("coches"),
-         usuarioName: "",
+         usuarioLogineado: "",
          sessionData: "",
       };
    },
@@ -204,7 +204,7 @@ export default defineComponent({
       debugger;
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
-      this.usuarioName = store.state.name;
+      this.usuarioLogineado = store.state.name;
    },
    methods: {
       updateUsuarioLogineado(bool) {
@@ -232,6 +232,25 @@ export default defineComponent({
       toggleDarkMode() {
          const $q = this.$q;
          $q.dark.toggle();
+      },
+      async logOut() {
+         debugger;
+         const result = await logout();
+         if (result) {
+            store.dispatch("logout");
+            this.usuarioLogineado = "";
+            this.sessionData = "";
+            Notify.create({
+               type: "positive",
+               message: "Adios.",
+            });
+         } else {
+            Notify.create({
+               type: "negative",
+               message: "Error al des-loginear al usuario.",
+            });
+            store.dispatch("logout");
+         }
       },
    },
 
