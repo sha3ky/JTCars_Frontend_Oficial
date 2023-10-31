@@ -201,7 +201,7 @@
                </q-card-section>
                <q-card>
                   <div>
-                     <div style="display: flex;padding: 10px;">
+                     <div style="display: flex; padding: 10px">
                         <div>
                            <q-input
                               filled
@@ -225,7 +225,7 @@
                         </div>
                      </div>
 
-                     <div style="display: flex;padding: 10px;">
+                     <div style="display: flex; padding: 10px">
                         <div>
                            <q-input
                               filled
@@ -249,8 +249,8 @@
                         </div>
                      </div>
 
-                     <div style="display: flex;padding: 10px;" >
-                        <div >
+                     <div style="display: flex; padding: 10px">
+                        <div>
                            <div>
                               <q-select
                                  filled
@@ -310,7 +310,7 @@
                            </div>
                         </div>
                      </div>
-                     <div style="display: flex;padding: 10px;">
+                     <div style="display: flex; padding: 10px">
                         <div>
                            <q-input
                               filled
@@ -335,7 +335,7 @@
                      </div>
 
                      <div>
-                        <div style="  ">
+                        <div style="">
                            <q-file filled v-model="subirPdf" label="PDF" />
                         </div>
 
@@ -452,6 +452,7 @@ import getAllusers from "src/composable/getUsersContact";
 import getEtiqueta from "src/composable/getEtiqueta";
 import getPromotions from "src/composable/getPromotions";
 import getTipoCoche from "src/composable/getTipoCoches";
+import updateTables from "src/composable/updatetableCocheMedia";
 
 export default defineComponent({
    name: "AdminPage",
@@ -575,9 +576,9 @@ export default defineComponent({
          imagenSubida: null,
          subirPdf: null,
          mediaTable: {},
-         modelEtiqueta:'',
-         modelTipo:'',
-         modelPromotion:''
+         modelEtiqueta: "",
+         modelTipo: "",
+         modelPromotion: "",
       };
    },
    watch: {
@@ -587,21 +588,21 @@ export default defineComponent({
       imagenSubida: function (newVal) {
          this.convertImageToBase64(newVal);
       },
-      modelEtiqueta:function(item){
-         if (item){
-            this.datosCoches.etiqueta=item
+      modelEtiqueta: function (item) {
+         if (item) {
+            this.datosCoches.etiqueta = item;
          }
       },
-      modelPromotion:function(item){
-         if (item){
-            this.datosCoches.promocion=item
+      modelPromotion: function (item) {
+         if (item) {
+            this.datosCoches.promocion = item;
          }
       },
-      modelTipo:function(item){
-         if (item){
-            this.datosCoches.tipo=item
+      modelTipo: function (item) {
+         if (item) {
+            this.datosCoches.tipo = item;
          }
-      }
+      },
    },
    async mounted() {
       // cuando vienes de otras rutas
@@ -613,17 +614,17 @@ export default defineComponent({
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
       let etiqueta = await getEtiqueta();
-      this.optionsEtiqueta=this.extrareKeysObjeto(etiqueta[0])
+      this.optionsEtiqueta = this.extrareKeysObjeto(etiqueta[0]);
       let promotion = await getPromotions();
-      this.optionsPromotion=this.extrareKeysObjeto(promotion[0])
+      this.optionsPromotion = this.extrareKeysObjeto(promotion[0]);
       let tipo = await getTipoCoche();
-      this.optionsTipo=this.extrareKeysObjeto(tipo[0])
+      this.optionsTipo = this.extrareKeysObjeto(tipo[0]);
    },
    methods: {
-    extrareKeysObjeto(item){
-      return Object.values(item)
-    },
-      aceptarCambios() {
+      extrareKeysObjeto(item) {
+         return Object.values(item);
+      },
+    async  aceptarCambios() {
          debugger;
          this.datosCoches;
          this.mediaTable = this.imagenesArray.reduce((result, item) => {
@@ -632,7 +633,13 @@ export default defineComponent({
                [item.imagenNum]: item.imagen,
             });
          }, this.mediaTable);
-         console.log(this.mediaTable);
+         let res =await updateTables(this.datosCoches, this.mediaTable);
+         if (res) {
+            console.log("siiii");
+         } else {
+            ("nooooo");
+         }
+         //  console.log(this.mediaTable);
       },
       convertImageToBase64(file) {
          if (file) {
