@@ -1,0 +1,30 @@
+
+import axios from "axios";
+import apiLink from "./apiLink";
+
+let link = apiLink;
+
+const updateTables = async (name, password) => {
+  debugger;
+  try {
+    const response = await axios.post(`${link}api/loginUser/`, {
+        username: name,
+        password: password,
+    });
+
+    console.log(response); // Log the response for debugging
+
+    if (response.status==200 && response.data.access) {
+      return  true
+    } else {
+      console.log("Error no se han guardato los datos")
+
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    // return { success: false, message: "An error occurred" };
+    return false
+  }
+};
+
+export default updateTables;

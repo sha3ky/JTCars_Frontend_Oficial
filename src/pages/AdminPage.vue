@@ -201,7 +201,7 @@
                </q-card-section>
                <q-card>
                   <div>
-                     <div style="display: flex">
+                     <div style="display: flex;padding: 10px;">
                         <div>
                            <q-input
                               filled
@@ -225,7 +225,7 @@
                         </div>
                      </div>
 
-                     <div style="display: flex">
+                     <div style="display: flex;padding: 10px;">
                         <div>
                            <q-input
                               filled
@@ -249,8 +249,8 @@
                         </div>
                      </div>
 
-                     <div style="display: flex">
-                        <div>
+                     <div style="display: flex;padding: 10px;" >
+                        <div >
                            <div>
                               <q-select
                                  filled
@@ -291,7 +291,7 @@
                         </div>
                         <!-- promotions -->
                         <div>
-                           <div>
+                           <div style="">
                               <q-select
                                  filled
                                  v-model="modelPromotion"
@@ -299,7 +299,7 @@
                                  label="Selecionar Promocion"
                               />
                            </div>
-                           <div>
+                           <div style="">
                               <q-input
                                  filled
                                  v-model="datosCoches.promocion"
@@ -310,7 +310,7 @@
                            </div>
                         </div>
                      </div>
-                     <div style="display: flex">
+                     <div style="display: flex;padding: 10px;">
                         <div>
                            <q-input
                               filled
@@ -335,7 +335,7 @@
                      </div>
 
                      <div>
-                        <div>
+                        <div style="  ">
                            <q-file filled v-model="subirPdf" label="PDF" />
                         </div>
 
@@ -574,7 +574,7 @@ export default defineComponent({
          imagenParaCambiar: "",
          imagenSubida: null,
          subirPdf: null,
-         extractedData: {},
+         mediaTable: {},
          modelEtiqueta:'',
          modelTipo:'',
          modelPromotion:''
@@ -582,18 +582,28 @@ export default defineComponent({
    },
    watch: {
       subirPdf: function (item) {
-         debugger;
          this.convertPdfTobase64(item);
       },
       imagenSubida: function (newVal) {
-         debugger;
          this.convertImageToBase64(newVal);
-         // Your watcher logic here
-         // "newVal" is the new value of "imagenSubida"
       },
+      modelEtiqueta:function(item){
+         if (item){
+            this.datosCoches.etiqueta=item
+         }
+      },
+      modelPromotion:function(item){
+         if (item){
+            this.datosCoches.promocion=item
+         }
+      },
+      modelTipo:function(item){
+         if (item){
+            this.datosCoches.tipo=item
+         }
+      }
    },
    async mounted() {
-
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -602,8 +612,6 @@ export default defineComponent({
          : this.toggleDark;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
-      debugger
-
       let etiqueta = await getEtiqueta();
       this.optionsEtiqueta=this.extrareKeysObjeto(etiqueta[0])
       let promotion = await getPromotions();
@@ -618,13 +626,13 @@ export default defineComponent({
       aceptarCambios() {
          debugger;
          this.datosCoches;
-         this.extractedData = this.imagenesArray.reduce((result, item) => {
+         this.mediaTable = this.imagenesArray.reduce((result, item) => {
             return Object.assign(result, {
                id: item.id,
                [item.imagenNum]: item.imagen,
             });
-         }, this.extractedData);
-         console.log(this.extractedData);
+         }, this.mediaTable);
+         console.log(this.mediaTable);
       },
       convertImageToBase64(file) {
          if (file) {
@@ -650,7 +658,7 @@ export default defineComponent({
             const withoutPrefixPdf = base64Data.substring(
                base64Data.indexOf(",") + 1
             );
-            this.extractedData.pdf = withoutPrefixPdf;
+            this.mediaTable.pdf = withoutPrefixPdf;
             // Now you can use the base64Data as needed, e.g., send it to the server or display it.
             console.log(base64Data);
          };
