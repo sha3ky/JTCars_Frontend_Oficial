@@ -195,7 +195,7 @@
          </div>
 
          <q-dialog v-model="dialogCoches" persistent>
-            <q-card style="max-width: 650px">
+            <q-card style="max-width: 538px">
                <q-card-section>
                   <div class="text-h6">Cambiar configuracion coche</div>
                </q-card-section>
@@ -295,30 +295,40 @@
                            />
                         </div>
                      </div>
-                     <div style="display: flex">
-                        <q-card
-                           v-for="(image, index) in imagenesArray"
-                           :key="index"
-                           :name="index"
-                        >
-                           <!-- <div
-                              class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-                           >
-                              <q-img
-                                 class="rounded-borders full-height"
-                                 :src="getBase64Image(image)"
-                              />
-                           </div> -->
-                           <!-- <q-input
-                              filled
-                              v-model="datosCoches.imagenesArray[index]"
-                              label="Imagen"
-                           /> -->
-                           <q-img
-                              :src="getBase64Image(image)"
-                              class="responsive-image"
-                           />
-                        </q-card>
+
+                     <div>
+                        <div>
+                           <q-file filled v-model="subirPdf" label="PDF" />
+                        </div>
+
+                        <div style="display: flex">
+                           <div class="card-container">
+                              <q-card
+                                 v-for="(image, index) in imagenesArray"
+                                 :key="index"
+                                 :name="index"
+                                 class="card-container"
+                                 style="display: flex; justify-content: center"
+                              >
+                                 <q-img
+                                    :src="getBase64Image(image.imagen)"
+                                    class="responsive-image"
+                                    style="max-width: 150px; height: 50px"
+                                 />
+
+                                 <q-separator />
+
+                                 <q-card-actions align="right">
+                                    <q-btn flat @click="anadirImagen(image)"
+                                       >Añadir</q-btn
+                                    >
+                                    <q-btn flat @click="eliminarImagen(image)"
+                                       >Eliminar</q-btn
+                                    >
+                                 </q-card-actions>
+                              </q-card>
+                           </div>
+                        </div>
                      </div>
                   </div>
                </q-card>
@@ -327,8 +337,36 @@
 
                <q-card-actions align="right" class="text-primary">
                   <q-btn flat label="Cancel" v-close-popup />
-                  <q-btn flat label="Add address" v-close-popup />
+                  <q-btn
+                     flat
+                     label="Aceptar"
+                     @click="aceptarCambios"
+                     v-close-popup
+                  />
                </q-card-actions>
+            </q-card>
+         </q-dialog>
+         <q-dialog v-model="anadirImagenDialog">
+            <q-card>
+               <q-card-section class="row items-center q-pb-none">
+                  <h4>Cambiar imagen</h4>
+                  <q-space />
+                  <q-btn icon="close" flat round dense v-close-popup />
+               </q-card-section>
+
+               <q-card-section>
+                  <q-file filled v-model="imagenSubida" label="Filled" />
+                  <!-- <q-input
+                     @update:model-value="
+                        (val) => {
+                           file = val[0];
+                        }
+                     "
+                     filled
+                     type="file"
+                     hint="Native file"
+                  /> -->
+               </q-card-section>
             </q-card>
          </q-dialog>
       </q-page-container>
@@ -354,6 +392,14 @@
 body.body--dark {
    background: #0c0c0c;
 }
+.card-container {
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.card-item {
+   flex: 0 0 calc(33.33% - 1rem); /* Three columns with 1rem spacing between cards */
+}
 </style>
 <script>
 import { defineComponent, ref } from "vue";
@@ -370,6 +416,7 @@ export default defineComponent({
    name: "AdminPage",
    data() {
       return {
+         anadirImagenDialog: false,
          dialogCoches: false,
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
@@ -482,10 +529,26 @@ export default defineComponent({
          ],
          datosCoches: {},
          imagenesArray: [],
+         base64Image: null,
+         imagenParaCambiar: "",
+         imagenSubida: null,
+         subirPdf: null,
+         extractedData: {},
       };
    },
+   watch: {
+      subirPdf: function (item) {
+         debugger;
+         this.convertPdfTobase64(item);
+      },
+      imagenSubida: function (newVal) {
+         debugger;
+         this.convertImageToBase64(newVal);
+         // Your watcher logic here
+         // "newVal" is the new value of "imagenSubida"
+      },
+   },
    async mounted() {
-      debugger;
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -496,12 +559,53 @@ export default defineComponent({
       this.rowsPersonas = await getAllusers();
    },
    methods: {
+      aceptarCambios() {
+         debugger;
+         this.datosCoches;
+         this.extractedData = this.imagenesArray.reduce((result, item) => {
+            return Object.assign(result, {
+               id: item.id,
+               [item.imagenNum]: item.imagen,
+            });
+         }, this.extractedData);
+         console.log(this.extractedData);
+      },
+      convertImageToBase64(file) {
+         //  const file = event.target.files[0]; // Assuming you have an input element for file upload
+
+         if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+               const base64String = e.target.result;
+               // Remove the prefix data64....
+               const withoutPrefix = base64String.substring(
+                  base64String.indexOf(",") + 1
+               );
+               this.imagenParaCambiar.imagen = withoutPrefix;
+               this.anadirImagenDialog = false;
+            };
+            reader.readAsDataURL(file);
+         }
+      },
+      convertPdfTobase64(pdf) {
+         let file = pdf;
+         const reader = new FileReader();
+         reader.onload = (event) => {
+            // The base64 data will be available in event.target.result
+            const base64Data = event.target.result;
+            const withoutPrefixPdf = base64Data.substring(
+               base64Data.indexOf(",") + 1
+            );
+            this.extractedData.pdf = withoutPrefixPdf;
+            // Now you can use the base64Data as needed, e.g., send it to the server or display it.
+            console.log(base64Data);
+         };
+         reader.readAsDataURL(file);
+      },
       getBase64Image(image) {
-        debugger
          return `data:image/jpeg;base64,${image}`;
       },
       handleRowClick(evt, row) {
-         debugger;
          this.dialogCoches = true;
          // Handle row click event here
          console.log("Row clicked:", row);
@@ -517,16 +621,28 @@ export default defineComponent({
          this.datosCoches.combustible = row.combustible;
          this.datosCoches.precio = row.precio;
          this.datosCoches.colorBanner = row.colorBanner;
+         this.datosCoches.id = row.id;
          this.extrerImagenes(row);
          // You can perform actions such as opening a dialog, navigating to a detail page, etc.
       },
-      extrerImagenes(row) {
+      anadirImagen(item) {
          debugger;
+         this.imagenParaCambiar = item;
+         this.anadirImagenDialog = true;
+      },
+      eliminarImagen(item) {
+         debugger;
+      },
+      extrerImagenes(row) {
          this.imagenesArray = [];
          for (let img = 1; img <= 8; img++) {
+            let imgObj = {};
             const propertyName = "imagen" + img;
             if (row[propertyName]) {
-               this.imagenesArray.push(row[propertyName]);
+               imgObj.imagen = row[propertyName];
+               imgObj.imagenNum = propertyName;
+               imgObj.id = row.id;
+               this.imagenesArray.push(imgObj);
             }
          }
       },
