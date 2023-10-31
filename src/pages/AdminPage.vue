@@ -250,26 +250,62 @@
                      </div>
 
                      <div style="display: flex">
+                      <div>
                         <div>
                            <q-input
                               filled
                               v-model="datosCoches.etiqueta"
                               label="Etiqueta"
+                              disabled
                            />
                         </div>
                         <div>
-                           <q-input
-                              filled
-                              v-model="datosCoches.tipo"
-                              label="Tipo"
-                           />
+                          <q-select
+                                 filled
+                                 v-model="modelEtiqueta"
+                                 :options="optionsEtiqueta"
+                                 label="Filled"
+                              />
+
                         </div>
+                      </div>
+                        <!-- tipoCoches -->
                         <div>
-                           <q-input
-                              filled
-                              v-model="datosCoches.promocion"
-                              label="Promocion"
-                           />
+                           <div>
+                              <q-input
+                                 filled
+                                 v-model="datosCoches.tipo"
+                                 label="Tipo"
+                                 diasbled
+                              />
+                           </div>
+                           <div>
+                              <q-select
+                                 filled
+                                 v-model="modelTipo"
+                                 :options="optionsTipo"
+                                 label="Filled"
+                              />
+                           </div>
+                        </div>
+                        <!-- promotions -->
+                        <div>
+                           <div>
+                              <q-input
+                                 filled
+                                 v-model="datosCoches.promocion"
+                                 label="Promocion"
+                                 diasbled
+                              />
+                           </div>
+                           <div>
+                            <q-select
+                                 filled
+                                 v-model="modelPromotion"
+                                 :options="optionsPromotion"
+                                 label="Filled"
+                              />
+                           </div>
                         </div>
                      </div>
                      <div style="display: flex">
@@ -411,6 +447,9 @@ import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import getAllData from "src/composable/loadAllData";
 import getAllusers from "src/composable/getUsersContact";
+import getEtiqueta from "src/composable/getEtiqueta";
+import getPromotions from "src/composable/getPromotions";
+import getTipoCoche from "src/composable/getTipoCoches";
 
 export default defineComponent({
    name: "AdminPage",
@@ -557,6 +596,9 @@ export default defineComponent({
          : this.toggleDark;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
+      this.optionsEtiqueta=await getEtiqueta()
+      this.optionsPromotion=await getPromotions()
+      this.optionsTipo=await getTipoCoche()
    },
    methods: {
       aceptarCambios() {
