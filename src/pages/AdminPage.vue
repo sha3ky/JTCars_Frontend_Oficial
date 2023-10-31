@@ -579,6 +579,9 @@ export default defineComponent({
          modelEtiqueta: "",
          modelTipo: "",
          modelPromotion: "",
+         optionsPromotion:[],
+         optionsEtiqueta:[],
+         optionsTipo:[]
       };
    },
    watch: {
@@ -604,7 +607,7 @@ export default defineComponent({
          }
       },
    },
-   async mounted() {
+  async mounted() {
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -613,6 +616,7 @@ export default defineComponent({
          : this.toggleDark;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
+      debugger
       let etiqueta = await getEtiqueta();
       this.optionsEtiqueta = this.extrareKeysObjeto(etiqueta[0]);
       let promotion = await getPromotions();
@@ -622,6 +626,7 @@ export default defineComponent({
    },
    methods: {
       extrareKeysObjeto(item) {
+        debugger
          return Object.values(item);
       },
     async  aceptarCambios() {
