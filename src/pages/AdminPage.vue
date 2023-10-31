@@ -640,7 +640,8 @@ export default defineComponent({
          }, this.mediaTable);
          let res =await updateTables(this.datosCoches, this.mediaTable);
          if (res) {
-            console.log("siiii");
+            await getAllData()
+            await getAllusers()
          } else {
             ("nooooo");
          }
