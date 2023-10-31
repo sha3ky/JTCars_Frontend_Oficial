@@ -250,60 +250,62 @@
                      </div>
 
                      <div style="display: flex">
-                      <div>
                         <div>
-                           <q-input
-                              filled
-                              v-model="datosCoches.etiqueta"
-                              label="Etiqueta"
-                              disabled
-                           />
-                        </div>
-                        <div>
-                          <q-select
+                           <div>
+                              <q-select
                                  filled
                                  v-model="modelEtiqueta"
                                  :options="optionsEtiqueta"
-                                 label="Filled"
+                                 label="Selecionar Etiqueta"
                               />
-
-                        </div>
-                      </div>
-                        <!-- tipoCoches -->
-                        <div>
+                           </div>
                            <div>
                               <q-input
                                  filled
-                                 v-model="datosCoches.tipo"
-                                 label="Tipo"
-                                 diasbled
+                                 v-model="datosCoches.etiqueta"
+                                 label="Etiqueta"
+                                 disable
+                                 readonly
                               />
                            </div>
+                        </div>
+                        <!-- tipoCoches -->
+                        <div>
                            <div>
                               <q-select
                                  filled
                                  v-model="modelTipo"
                                  :options="optionsTipo"
-                                 label="Filled"
+                                 label="Selecionar Tipo"
+                              />
+                           </div>
+                           <div>
+                              <q-input
+                                 filled
+                                 v-model="datosCoches.tipo"
+                                 label="Tipo"
+                                 disable
+                                 readonly
                               />
                            </div>
                         </div>
                         <!-- promotions -->
                         <div>
                            <div>
+                              <q-select
+                                 filled
+                                 v-model="modelPromotion"
+                                 :options="optionsPromotion"
+                                 label="Selecionar Promocion"
+                              />
+                           </div>
+                           <div>
                               <q-input
                                  filled
                                  v-model="datosCoches.promocion"
                                  label="Promocion"
-                                 diasbled
-                              />
-                           </div>
-                           <div>
-                            <q-select
-                                 filled
-                                 v-model="modelPromotion"
-                                 :options="optionsPromotion"
-                                 label="Filled"
+                                 disable
+                                 readonly
                               />
                            </div>
                         </div>
@@ -573,6 +575,9 @@ export default defineComponent({
          imagenSubida: null,
          subirPdf: null,
          extractedData: {},
+         modelEtiqueta:'',
+         modelTipo:'',
+         modelPromotion:''
       };
    },
    watch: {
@@ -588,6 +593,7 @@ export default defineComponent({
       },
    },
    async mounted() {
+
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -596,11 +602,19 @@ export default defineComponent({
          : this.toggleDark;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
-      this.optionsEtiqueta=await getEtiqueta()
-      this.optionsPromotion=await getPromotions()
-      this.optionsTipo=await getTipoCoche()
+      debugger
+
+      let etiqueta = await getEtiqueta();
+      this.optionsEtiqueta=this.extrareKeysObjeto(etiqueta[0])
+      let promotion = await getPromotions();
+      this.optionsPromotion=this.extrareKeysObjeto(promotion[0])
+      let tipo = await getTipoCoche();
+      this.optionsTipo=this.extrareKeysObjeto(tipo[0])
    },
    methods: {
+    extrareKeysObjeto(item){
+      return Object.values(item)
+    },
       aceptarCambios() {
          debugger;
          this.datosCoches;
@@ -613,8 +627,6 @@ export default defineComponent({
          console.log(this.extractedData);
       },
       convertImageToBase64(file) {
-         //  const file = event.target.files[0]; // Assuming you have an input element for file upload
-
          if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
