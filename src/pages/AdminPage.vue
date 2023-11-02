@@ -654,17 +654,19 @@ export default defineComponent({
       },
       anadirImagenNueva: function (item) {
          debugger;
-         this.convertImageToBase64(item)
-            .then((result) => {
-               // Handle the base64 result here
-               this.imagenConvertidaBase64 = result;
-               console.log(this.imagenConvertidaBase64);
-               this.añadirDatosRowImagenNueva(this.imagenConvertidaBase64);
-            })
-            .catch((error) => {
-               // Handle any errors here
-               console.error(error);
-            });
+         if (item) {
+            this.convertImageToBase64(item)
+               .then((result) => {
+                  // Handle the base64 result here
+                  this.imagenConvertidaBase64 = result;
+                  console.log(this.imagenConvertidaBase64);
+                  this.añadirDatosRowImagenNueva(this.imagenConvertidaBase64);
+               })
+               .catch((error) => {
+                  // Handle any errors here
+                  console.error(error);
+               });
+         }
       },
    },
    async mounted() {
@@ -728,9 +730,9 @@ export default defineComponent({
          }, this.mediaTable);
          let res = await updateTables(this.datosCoches, this.mediaTable);
          if (res) {
-            await getAllData();
-            await getAllusers();
-            this.datosCoches={}
+          this.rowsCoches = await getAllData();
+          this.rowsPersonas = await getAllusers();
+            this.datosCoches = {};
          } else {
             ("nooooo");
          }
