@@ -694,14 +694,24 @@ export default defineComponent({
          this.datosCoches = {};
          this.imagenesArray = [];
       },
+      arreglarArrayNumeracion(array) {
+         debugger;
+         let x = 1;
+         array.forEach((item) => {
+            let numArray = item.imagenNum.split(""); // Convert the string to an array
+            numArray[6] = x.toString(); // Update the character at index 6 with the value of x
+            item.imagenNum = numArray.join(""); // Join the array back into a string
+            x++;
+         });
+      },
+
       añadirDatosRowImagenNueva(item) {
          debugger;
          // nos llevamos el ultimo componente del array y comprobamos a ver que numero tiene , i le añadimos uno de mas si es mas pequeño que 8
          // y en ese caso reconstrumos el componente con el id , imagen y el imagenNum
+         this.arreglarArrayNumeracion(this.imagenesArray);
          let lastFromArray = this.imagenesArray[this.imagenesArray.length - 1];
-         let num =
-            lastFromArray.imagenNum.charAt(lastFromArray.imagenNum.length - 1) *
-            1;
+         let num = lastFromArray.imagenNum.split("")[6] * 1;
          if (num <= 8) {
             num++;
             let newObject = {
@@ -730,8 +740,8 @@ export default defineComponent({
          }, this.mediaTable);
          let res = await updateTables(this.datosCoches, this.mediaTable);
          if (res) {
-          this.rowsCoches = await getAllData();
-          this.rowsPersonas = await getAllusers();
+            this.rowsCoches = await getAllData();
+            this.rowsPersonas = await getAllusers();
             this.datosCoches = {};
          } else {
             ("nooooo");
@@ -809,6 +819,12 @@ export default defineComponent({
 
       eliminarImagen(item) {
          debugger;
+         let indexOf = this.imagenesArray.findIndex((obj) => {
+            return obj.imagenNum == item.imagenNum;
+         });
+         console.log(indexOf);
+         this.imagenesArray.splice(indexOf, 1);
+         this.arreglarArrayNumeracion(this.imagenesArray);
       },
       extrerImagenes(row) {
          this.imagenesArray = [];
