@@ -709,20 +709,33 @@ export default defineComponent({
          debugger;
          // nos llevamos el ultimo componente del array y comprobamos a ver que numero tiene , i le añadimos uno de mas si es mas pequeño que 8
          // y en ese caso reconstrumos el componente con el id , imagen y el imagenNum
-         this.arreglarArrayNumeracion(this.imagenesArray);
-         let lastFromArray = this.imagenesArray[this.imagenesArray.length - 1];
-         let num = lastFromArray.imagenNum.split("")[6] * 1;
-         if (num <= 8) {
-            num++;
+         let num;
+         if (this.imagenesArray.length) {
+            this.arreglarArrayNumeracion(this.imagenesArray);
+            let lastFromArray =
+               this.imagenesArray[this.imagenesArray.length - 1];
+            num = lastFromArray.imagenNum.split("")[6] * 1;
+            if (num <= 8) {
+               num++;
+               let newObject = {
+                  id: lastFromArray.id,
+                  imagen: item,
+                  imagenNum: "imagen" + num,
+               };
+               this.imagenesArray.push(newObject);
+            } else {
+               console.log("maximo 8 imagenes");
+            }
+         } else {
+            num = 1;
             let newObject = {
-               id: lastFromArray.id,
+               id:this.datosCoches.id,
                imagen: item,
                imagenNum: "imagen" + num,
             };
             this.imagenesArray.push(newObject);
-         } else {
-            console.log("maximo 8 imagenes");
          }
+
          this.anadirImagenNueva = "";
       },
       extrareKeysObjeto(item) {
@@ -824,7 +837,7 @@ export default defineComponent({
          });
          console.log(indexOf);
          this.imagenesArray.splice(indexOf, 1);
-         this.arreglarArrayNumeracion(this.imagenesArray);
+         // this.arreglarArrayNumeracion(this.imagenesArray);
       },
       extrerImagenes(row) {
          this.imagenesArray = [];
