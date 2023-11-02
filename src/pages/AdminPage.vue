@@ -49,6 +49,7 @@
 
             <q-space></q-space>
             <!-- reactividad -->
+
             <template v-if="$q.screen.width > 600">
                <div>
                   <div>
@@ -167,7 +168,12 @@
                <q-tab-panels v-model="tab" animated>
                   <q-tab-panel name="coches">
                      <div class="text-h6">Coches</div>
-
+                     <div>
+                        <q-btn color="teal" @click="anadirCocheNuevo">
+                           <q-icon left size="1em" name="add" />
+                           <div>Añadir Coche</div>
+                        </q-btn>
+                     </div>
                      <div class="q-pa-md">
                         <q-table
                            title="Coches"
@@ -187,7 +193,6 @@
                         :rows="rowsPersonas"
                         :columns="columnsPersonas"
                         row-key="email"
-                        @row-click="handleRowClick"
                      />
                   </q-tab-panel>
                </q-tab-panels>
@@ -196,17 +201,18 @@
 
          <q-dialog v-model="dialogCoches" persistent>
             <q-card style="max-width: 538px">
-               <q-card-section>
+               <q-card-section style="padding: 0">
                   <div class="text-h6">Cambiar configuracion coche</div>
                </q-card-section>
                <q-card>
                   <div>
-                     <div style="display: flex; padding: 10px">
+                     <div style="display: flex; padding: 5px">
                         <div>
                            <q-input
                               filled
                               v-model="datosCoches.matricula"
                               label="Matricula"
+                              dense
                            />
                         </div>
                         <div>
@@ -214,6 +220,7 @@
                               filled
                               v-model="datosCoches.marca"
                               label="Marca"
+                              dense
                            />
                         </div>
                         <div>
@@ -221,16 +228,18 @@
                               filled
                               v-model="datosCoches.modelo"
                               label="Modelo"
+                              dense
                            />
                         </div>
                      </div>
 
-                     <div style="display: flex; padding: 10px">
+                     <div style="display: flex; padding: 5px">
                         <div>
                            <q-input
                               filled
                               v-model="datosCoches.ano"
                               label="Año"
+                              dense
                            />
                         </div>
                         <div>
@@ -238,6 +247,7 @@
                               filled
                               v-model="datosCoches.km"
                               label="KM"
+                              dense
                            />
                         </div>
                         <div>
@@ -245,11 +255,12 @@
                               filled
                               v-model="datosCoches.descripcion"
                               label="Descripcion"
+                              dense
                            />
                         </div>
                      </div>
 
-                     <div style="display: flex; padding: 10px">
+                     <div style="display: flex; padding: 5px">
                         <div>
                            <div>
                               <q-select
@@ -257,6 +268,7 @@
                                  v-model="modelEtiqueta"
                                  :options="optionsEtiqueta"
                                  label="Selecionar Etiqueta"
+                                 dense
                               />
                            </div>
                            <div>
@@ -266,6 +278,7 @@
                                  label="Etiqueta"
                                  disable
                                  readonly
+                                 dense
                               />
                            </div>
                         </div>
@@ -277,6 +290,7 @@
                                  v-model="modelTipo"
                                  :options="optionsTipo"
                                  label="Selecionar Tipo"
+                                 dense
                               />
                            </div>
                            <div>
@@ -286,6 +300,7 @@
                                  label="Tipo"
                                  disable
                                  readonly
+                                 dense
                               />
                            </div>
                         </div>
@@ -297,6 +312,7 @@
                                  v-model="modelPromotion"
                                  :options="optionsPromotion"
                                  label="Selecionar Promocion"
+                                 dense
                               />
                            </div>
                            <div style="">
@@ -306,13 +322,15 @@
                                  label="Promocion"
                                  disable
                                  readonly
+                                 dense
                               />
                            </div>
                         </div>
                      </div>
-                     <div style="display: flex; padding: 10px">
+                     <div style="display: flex; padding: 5px">
                         <div>
                            <q-input
+                              dense
                               filled
                               v-model="datosCoches.combustible"
                               label="Combustible"
@@ -320,6 +338,7 @@
                         </div>
                         <div>
                            <q-input
+                              dense
                               filled
                               v-model="datosCoches.precio"
                               label="Precio"
@@ -330,13 +349,29 @@
                               filled
                               v-model="datosCoches.colorBanner"
                               label="ColorBanner"
+                              dense
                            />
                         </div>
                      </div>
 
                      <div>
-                        <div style="">
-                           <q-file filled v-model="subirPdf" label="PDF" />
+                        <div style="display: flex; justify-content: center">
+                           <div style="">
+                              <q-file
+                                 filled
+                                 v-model="subirPdf"
+                                 label="PDF"
+                                 dense
+                              />
+                           </div>
+                           <div style="">
+                              <q-file
+                                 filled
+                                 v-model="anadirImagenNueva"
+                                 label="Añadir imagen"
+                                 dense
+                              />
+                           </div>
                         </div>
 
                         <div style="display: flex">
@@ -346,19 +381,20 @@
                                  :key="index"
                                  :name="index"
                                  class="card-container"
-                                 style="display: flex; justify-content: center"
+                                 style="display: flex; justify-content: center;max-width: 130px;
+}"
                               >
                                  <q-img
                                     :src="getBase64Image(image.imagen)"
                                     class="responsive-image"
-                                    style="max-width: 150px; height: 50px"
+                                    style="max-width: 180px; height: 60px"
                                  />
 
                                  <q-separator />
 
-                                 <q-card-actions align="right">
-                                    <q-btn flat @click="anadirImagen(image)"
-                                       >Añadir</q-btn
+                                 <q-card-actions align="center">
+                                    <q-btn flat @click="modificarImagen(image)"
+                                       >Modificar</q-btn
                                     >
                                     <q-btn flat @click="eliminarImagen(image)"
                                        >Eliminar</q-btn
@@ -579,9 +615,12 @@ export default defineComponent({
          modelEtiqueta: "",
          modelTipo: "",
          modelPromotion: "",
-         optionsPromotion:[],
-         optionsEtiqueta:[],
-         optionsTipo:[]
+         optionsPromotion: [],
+         optionsEtiqueta: [],
+         optionsTipo: [],
+         cocheNuevoAnadir: false,
+         anadirImagenNueva: "",
+         imagenConvertidaBase64: "",
       };
    },
    watch: {
@@ -589,7 +628,14 @@ export default defineComponent({
          this.convertPdfTobase64(item);
       },
       imagenSubida: function (newVal) {
-         this.convertImageToBase64(newVal);
+         this.convertImageToBase64(newVal).then((result) => {
+            if (result) {
+               this.imagenParaCambiar.imagen = result;
+               this.anadirImagenDialog = false;
+            } else {
+               console.log("la imagen no se ha podido modificar");
+            }
+         });
       },
       modelEtiqueta: function (item) {
          if (item) {
@@ -606,8 +652,22 @@ export default defineComponent({
             this.datosCoches.tipo = item;
          }
       },
+      anadirImagenNueva: function (item) {
+         debugger;
+         this.convertImageToBase64(item)
+            .then((result) => {
+               // Handle the base64 result here
+               this.imagenConvertidaBase64 = result;
+               console.log(this.imagenConvertidaBase64);
+               this.añadirDatosRowImagenNueva(this.imagenConvertidaBase64);
+            })
+            .catch((error) => {
+               // Handle any errors here
+               console.error(error);
+            });
+      },
    },
-  async mounted() {
+   async mounted() {
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -616,7 +676,7 @@ export default defineComponent({
          : this.toggleDark;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
-      debugger
+      debugger;
       let etiqueta = await getEtiqueta();
       this.optionsEtiqueta = this.extrareKeysObjeto(etiqueta[0]);
       let promotion = await getPromotions();
@@ -625,11 +685,39 @@ export default defineComponent({
       this.optionsTipo = this.extrareKeysObjeto(tipo[0]);
    },
    methods: {
+      anadirCocheNuevo() {
+         debugger;
+         this.dialogCoches = true;
+         this.cocheNuevoAnadir = true;
+         this.datosCoches = {};
+         this.imagenesArray = [];
+      },
+      añadirDatosRowImagenNueva(item) {
+         debugger;
+         // nos llevamos el ultimo componente del array y comprobamos a ver que numero tiene , i le añadimos uno de mas si es mas pequeño que 8
+         // y en ese caso reconstrumos el componente con el id , imagen y el imagenNum
+         let lastFromArray = this.imagenesArray[this.imagenesArray.length - 1];
+         let num =
+            lastFromArray.imagenNum.charAt(lastFromArray.imagenNum.length - 1) *
+            1;
+         if (num <= 8) {
+            num++;
+            let newObject = {
+               id: lastFromArray.id,
+               imagen: item,
+               imagenNum: "imagen" + num,
+            };
+            this.imagenesArray.push(newObject);
+         } else {
+            console.log("maximo 8 imagenes");
+         }
+         this.anadirImagenNueva = "";
+      },
       extrareKeysObjeto(item) {
-        debugger
+         debugger;
          return Object.values(item);
       },
-    async  aceptarCambios() {
+      async aceptarCambios() {
          debugger;
          this.datosCoches;
          this.mediaTable = this.imagenesArray.reduce((result, item) => {
@@ -638,29 +726,40 @@ export default defineComponent({
                [item.imagenNum]: item.imagen,
             });
          }, this.mediaTable);
-         let res =await updateTables(this.datosCoches, this.mediaTable);
+         let res = await updateTables(this.datosCoches, this.mediaTable);
          if (res) {
-            await getAllData()
-            await getAllusers()
+            await getAllData();
+            await getAllusers();
+            this.datosCoches={}
          } else {
             ("nooooo");
          }
          //  console.log(this.mediaTable);
       },
       convertImageToBase64(file) {
-         if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-               const base64String = e.target.result;
-               // Remove the prefix data64....
-               const withoutPrefix = base64String.substring(
-                  base64String.indexOf(",") + 1
-               );
-               this.imagenParaCambiar.imagen = withoutPrefix;
-               this.anadirImagenDialog = false;
-            };
-            reader.readAsDataURL(file);
-         }
+         return new Promise((resolve, reject) => {
+            if (file) {
+               const reader = new FileReader();
+
+               reader.onload = (e) => {
+                  const base64String = e.target.result;
+                  // Remove the prefix 'data:image/jpeg;base64,' or similar
+                  const withoutPrefix = base64String.substring(
+                     base64String.indexOf(",") + 1
+                  );
+
+                  resolve(withoutPrefix); // Resolve the promise with the base64 data
+               };
+
+               reader.onerror = (error) => {
+                  reject(error); // Reject the promise in case of an error
+               };
+
+               reader.readAsDataURL(file);
+            } else {
+               reject("No file provided");
+            }
+         });
       },
       convertPdfTobase64(pdf) {
          let file = pdf;
@@ -681,6 +780,7 @@ export default defineComponent({
          return `data:image/jpeg;base64,${image}`;
       },
       handleRowClick(evt, row) {
+         debugger;
          this.dialogCoches = true;
          // Handle row click event here
          console.log("Row clicked:", row);
@@ -700,11 +800,11 @@ export default defineComponent({
          this.extrerImagenes(row);
          // You can perform actions such as opening a dialog, navigating to a detail page, etc.
       },
-      anadirImagen(item) {
-         debugger;
+      modificarImagen(item) {
          this.imagenParaCambiar = item;
          this.anadirImagenDialog = true;
       },
+
       eliminarImagen(item) {
          debugger;
       },
