@@ -502,6 +502,7 @@ import getPromotions from "src/composable/getPromotions";
 import getTipoCoche from "src/composable/getTipoCoches";
 import updateTables from "src/composable/updatetableCocheMedia";
 import convertFileToBase64 from "src/composable/convertirFileBase64";
+import insertCocheNuevo from "src/composable/insertarCocheNuevo";
 
 export default defineComponent({
    name: "AdminPage",
@@ -698,7 +699,6 @@ export default defineComponent({
          : this.toggleDark;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
-      debugger;
       let etiqueta = await getEtiqueta();
       this.optionsEtiqueta = this.extrareKeysObjeto(etiqueta[0]);
       let promotion = await getPromotions();
@@ -717,6 +717,8 @@ export default defineComponent({
          this.cocheNuevoAnadir = true;
          this.datosCoches = {};
          this.imagenesArray = [];
+         this.existPdf = "";
+         this.subirPdf = null;
       },
       arreglarArrayNumeracion(array) {
          debugger;
@@ -768,24 +770,32 @@ export default defineComponent({
       },
       async aceptarCambios() {
          debugger;
-         this.mediaTable = {};
-         this.mediaTable = this.imagenesArray.reduce((result, item) => {
-            return Object.assign(result, {
-               id: item.id,
-               [item.imagenNum]: item.imagen,
-            });
-         }, this.mediaTable);
-         this.mediaTable.pdf = this.existPdf;
-         this.mediaTable.id = this.datosCoches.id;
-         let res = await updateTables(this.datosCoches, this.mediaTable);
-         if (res) {
+         if (!this.cocheNuevoAnadir) {
+            this.mediaTable = {};
+            this.mediaTable = this.imagenesArray.reduce((result, item) => {
+               return Object.assign(result, {
+                  id: item.id,
+                  [item.imagenNum]: item.imagen,
+               });
+            }, this.mediaTable);
+            this.mediaTable.pdf = this.existPdf;
+            this.mediaTable.id = this.datosCoches.id;
+            let res = await updateTables(this.datosCoches, this.mediaTable);
+            if (res) {
+               this.rowsCoches = await getAllData();
+               this.rowsPersonas = await getAllusers();
+               this.datosCoches = {};
+            } else {
+               ("nooooo");
+            }
+            //  console.log(this.mediaTable);
+         } else {
+            insertCocheNuevo(this.datosCoches);
             this.rowsCoches = await getAllData();
             this.rowsPersonas = await getAllusers();
             this.datosCoches = {};
-         } else {
-            ("nooooo");
+            this.cocheNuevoAnadir=false
          }
-         //  console.log(this.mediaTable);
       },
       getBase64Image(image) {
          return `data:image/jpeg;base64,${image}`;
