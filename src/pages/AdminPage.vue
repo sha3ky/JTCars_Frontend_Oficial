@@ -356,6 +356,15 @@
 
                      <div>
                         <div style="display: flex; justify-content: center">
+                           <div v-if="existPdf">
+                              <q-btn
+                                 outline
+                                 color="primary"
+                                 label="Eliminar Pdf"
+                                 @click="deletePdf"
+                              />
+                           </div>
+                           <div v-if="!existPdf">sin pdf</div>
                            <div style="">
                               <q-file
                                  filled
@@ -381,8 +390,11 @@
                                  :key="index"
                                  :name="index"
                                  class="card-container"
-                                 style="display: flex; justify-content: center;max-width: 130px;
-}"
+                                 style="
+                                    display: flex;
+                                    justify-content: center;
+                                    max-width: 130px;
+                                 "
                               >
                                  <q-img
                                     :src="getBase64Image(image.imagen)"
@@ -489,6 +501,7 @@ import getEtiqueta from "src/composable/getEtiqueta";
 import getPromotions from "src/composable/getPromotions";
 import getTipoCoche from "src/composable/getTipoCoches";
 import updateTables from "src/composable/updatetableCocheMedia";
+import convertFileToBase64 from "src/composable/convertirFileBase64";
 
 export default defineComponent({
    name: "AdminPage",
@@ -621,11 +634,18 @@ export default defineComponent({
          cocheNuevoAnadir: false,
          anadirImagenNueva: "",
          imagenConvertidaBase64: "",
+         existPdf: "",
       };
    },
    watch: {
       subirPdf: function (item) {
-         this.convertPdfTobase64(item);
+         convertFileToBase64(item).then((result) => {
+            if (result) {
+               this.existPdf = result;
+            } else {
+               console.log("la imagen no se ha podido modificar");
+            }
+         });
       },
       imagenSubida: function (newVal) {
          this.convertImageToBase64(newVal).then((result) => {
@@ -655,7 +675,7 @@ export default defineComponent({
       anadirImagenNueva: function (item) {
          debugger;
          if (item) {
-            this.convertImageToBase64(item)
+            convertFileToBase64(item)
                .then((result) => {
                   // Handle the base64 result here
                   this.imagenConvertidaBase64 = result;
@@ -687,6 +707,10 @@ export default defineComponent({
       this.optionsTipo = this.extrareKeysObjeto(tipo[0]);
    },
    methods: {
+      deletePdf() {
+         debugger;
+         this.existPdf = "";
+      },
       anadirCocheNuevo() {
          debugger;
          this.dialogCoches = true;
@@ -729,7 +753,7 @@ export default defineComponent({
          } else {
             num = 1;
             let newObject = {
-               id:this.datosCoches.id,
+               id: this.datosCoches.id,
                imagen: item,
                imagenNum: "imagen" + num,
             };
@@ -744,13 +768,15 @@ export default defineComponent({
       },
       async aceptarCambios() {
          debugger;
-         this.datosCoches;
+         this.mediaTable = {};
          this.mediaTable = this.imagenesArray.reduce((result, item) => {
             return Object.assign(result, {
                id: item.id,
                [item.imagenNum]: item.imagen,
             });
          }, this.mediaTable);
+         this.mediaTable.pdf = this.existPdf;
+         this.mediaTable.id = this.datosCoches.id;
          let res = await updateTables(this.datosCoches, this.mediaTable);
          if (res) {
             this.rowsCoches = await getAllData();
@@ -760,46 +786,6 @@ export default defineComponent({
             ("nooooo");
          }
          //  console.log(this.mediaTable);
-      },
-      convertImageToBase64(file) {
-         return new Promise((resolve, reject) => {
-            if (file) {
-               const reader = new FileReader();
-
-               reader.onload = (e) => {
-                  const base64String = e.target.result;
-                  // Remove the prefix 'data:image/jpeg;base64,' or similar
-                  const withoutPrefix = base64String.substring(
-                     base64String.indexOf(",") + 1
-                  );
-
-                  resolve(withoutPrefix); // Resolve the promise with the base64 data
-               };
-
-               reader.onerror = (error) => {
-                  reject(error); // Reject the promise in case of an error
-               };
-
-               reader.readAsDataURL(file);
-            } else {
-               reject("No file provided");
-            }
-         });
-      },
-      convertPdfTobase64(pdf) {
-         let file = pdf;
-         const reader = new FileReader();
-         reader.onload = (event) => {
-            // The base64 data will be available in event.target.result
-            const base64Data = event.target.result;
-            const withoutPrefixPdf = base64Data.substring(
-               base64Data.indexOf(",") + 1
-            );
-            this.mediaTable.pdf = withoutPrefixPdf;
-            // Now you can use the base64Data as needed, e.g., send it to the server or display it.
-            console.log(base64Data);
-         };
-         reader.readAsDataURL(file);
       },
       getBase64Image(image) {
          return `data:image/jpeg;base64,${image}`;
@@ -822,6 +808,7 @@ export default defineComponent({
          this.datosCoches.precio = row.precio;
          this.datosCoches.colorBanner = row.colorBanner;
          this.datosCoches.id = row.id;
+         this.existPdf = row.pdf;
          this.extrerImagenes(row);
          // You can perform actions such as opening a dialog, navigating to a detail page, etc.
       },
@@ -837,6 +824,10 @@ export default defineComponent({
          });
          console.log(indexOf);
          this.imagenesArray.splice(indexOf, 1);
+         if (this.imagenesArray.length == 0) {
+            item.imagen = "";
+            this.imagenesArray.push(item);
+         }
          // this.arreglarArrayNumeracion(this.imagenesArray);
       },
       extrerImagenes(row) {
