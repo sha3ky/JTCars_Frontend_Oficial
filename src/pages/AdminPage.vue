@@ -169,7 +169,7 @@
                   <q-tab-panel name="coches">
                      <div class="text-h6">Coches</div>
                      <div>
-                        <q-btn color="teal" @click="anadirCocheNuevo">
+                        <q-btn color="teal" @click="addNewCar">
                            <q-icon left size="1em" name="add" />
                            <div>Añadir Coche</div>
                         </q-btn>
@@ -364,11 +364,13 @@
                                  @click="deletePdf"
                               />
                            </div>
-                           <div v-if="!existPdf">sin pdf</div>
+                           <div v-if="!existPdf">
+                              <span style="padding: 5px"> sin pdf</span>
+                           </div>
                            <div style="">
                               <q-file
                                  filled
-                                 v-model="subirPdf"
+                                 v-model="inputPdf"
                                  label="PDF"
                                  dense
                               />
@@ -376,7 +378,7 @@
                            <div style="">
                               <q-file
                                  filled
-                                 v-model="anadirImagenNueva"
+                                 v-model="modelInImgNew"
                                  label="Añadir imagen"
                                  dense
                               />
@@ -441,7 +443,7 @@
                </q-card-section>
 
                <q-card-section>
-                  <q-file filled v-model="imagenSubida" label="Filled" />
+                  <q-file filled v-model="inputImagen" label="Filled" />
                   <!-- <q-input
                      @update:model-value="
                         (val) => {
@@ -623,8 +625,8 @@ export default defineComponent({
          imagenesArray: [],
          base64Image: null,
          imagenParaCambiar: "",
-         imagenSubida: null,
-         subirPdf: null,
+         inputImagen: null,
+         inputPdf: null,
          mediaTable: {},
          modelEtiqueta: "",
          modelTipo: "",
@@ -632,31 +634,34 @@ export default defineComponent({
          optionsPromotion: [],
          optionsEtiqueta: [],
          optionsTipo: [],
-         cocheNuevoAnadir: false,
-         anadirImagenNueva: "",
+         newCar: false,
+         modelInImgNew: "",
          imagenConvertidaBase64: "",
          existPdf: "",
       };
    },
    watch: {
-      subirPdf: function (item) {
+      inputPdf: function (item) {
          convertFileToBase64(item).then((result) => {
             if (result) {
                this.existPdf = result;
             } else {
-               console.log("la imagen no se ha podido modificar");
+               console.log("El pdf no se ha podido añadir");
             }
          });
       },
-      imagenSubida: function (newVal) {
-         this.convertImageToBase64(newVal).then((result) => {
-            if (result) {
-               this.imagenParaCambiar.imagen = result;
-               this.anadirImagenDialog = false;
-            } else {
-               console.log("la imagen no se ha podido modificar");
-            }
-         });
+      inputImagen: function (newVal) {
+         if (newVal) {
+            convertFileToBase64(newVal).then((result) => {
+               if (result) {
+                  this.imagenParaCambiar.imagen = result;
+                  this.anadirImagenDialog = false;
+               } else {
+                  console.log("La imagen no se ha podido  modificar");
+               }
+            });
+         }
+         this.inputImagen = null;
       },
       modelEtiqueta: function (item) {
          if (item) {
@@ -673,7 +678,7 @@ export default defineComponent({
             this.datosCoches.tipo = item;
          }
       },
-      anadirImagenNueva: function (item) {
+      modelInImgNew: function (item) {
          debugger;
          if (item) {
             convertFileToBase64(item)
@@ -681,11 +686,12 @@ export default defineComponent({
                   // Handle the base64 result here
                   this.imagenConvertidaBase64 = result;
                   console.log(this.imagenConvertidaBase64);
-                  this.añadirDatosRowImagenNueva(this.imagenConvertidaBase64);
+                  this.addMetaImgNew(this.imagenConvertidaBase64);
                })
                .catch((error) => {
                   // Handle any errors here
                   console.error(error);
+                  console.log("No se ha podido convertir la imagen");
                });
          }
       },
@@ -708,19 +714,17 @@ export default defineComponent({
    },
    methods: {
       deletePdf() {
-         debugger;
          this.existPdf = "";
       },
-      anadirCocheNuevo() {
-         debugger;
+      addNewCar() {
          this.dialogCoches = true;
-         this.cocheNuevoAnadir = true;
+         this.newCar = true;
          this.datosCoches = {};
          this.imagenesArray = [];
          this.existPdf = "";
-         this.subirPdf = null;
+         this.inputPdf = null;
       },
-      arreglarArrayNumeracion(array) {
+      fixArrNum(array) {
          debugger;
          let x = 1;
          array.forEach((item) => {
@@ -731,13 +735,13 @@ export default defineComponent({
          });
       },
 
-      añadirDatosRowImagenNueva(item) {
+      addMetaImgNew(item) {
          debugger;
          // nos llevamos el ultimo componente del array y comprobamos a ver que numero tiene , i le añadimos uno de mas si es mas pequeño que 8
          // y en ese caso reconstrumos el componente con el id , imagen y el imagenNum
          let num;
          if (this.imagenesArray.length) {
-            this.arreglarArrayNumeracion(this.imagenesArray);
+            this.fixArrNum(this.imagenesArray);
             let lastFromArray =
                this.imagenesArray[this.imagenesArray.length - 1];
             num = lastFromArray.imagenNum.split("")[6] * 1;
@@ -762,7 +766,7 @@ export default defineComponent({
             this.imagenesArray.push(newObject);
          }
 
-         this.anadirImagenNueva = "";
+         this.modelInImgNew = "";
       },
       extrareKeysObjeto(item) {
          debugger;
@@ -770,7 +774,7 @@ export default defineComponent({
       },
       async aceptarCambios() {
          debugger;
-         if (!this.cocheNuevoAnadir) {
+         if (!this.newCar) {
             this.mediaTable = {};
             this.mediaTable = this.imagenesArray.reduce((result, item) => {
                return Object.assign(result, {
@@ -782,20 +786,23 @@ export default defineComponent({
             this.mediaTable.id = this.datosCoches.id;
             let res = await updateTables(this.datosCoches, this.mediaTable);
             if (res) {
-               this.rowsCoches = await getAllData();
-               this.rowsPersonas = await getAllusers();
-               this.datosCoches = {};
+               console.log("Datos subidos a la base");
             } else {
-               ("nooooo");
+               ("Error al subir datos en la base");
             }
             //  console.log(this.mediaTable);
          } else {
             insertCocheNuevo(this.datosCoches);
-            this.rowsCoches = await getAllData();
-            this.rowsPersonas = await getAllusers();
-            this.datosCoches = {};
-            this.cocheNuevoAnadir=false
+
+            this.newCar = false;
          }
+         this.rowsCoches = await getAllData();
+         this.rowsPersonas = await getAllusers();
+         this.datosCoches = {};
+         this.modelEtiqueta = "";
+         this.modelTipo = "";
+         this.modelPromotion = "";
+         this.inputImagen = null;
       },
       getBase64Image(image) {
          return `data:image/jpeg;base64,${image}`;
@@ -838,7 +845,7 @@ export default defineComponent({
             item.imagen = "";
             this.imagenesArray.push(item);
          }
-         // this.arreglarArrayNumeracion(this.imagenesArray);
+         // this.fixArrNum(this.imagenesArray);
       },
       extrerImagenes(row) {
          this.imagenesArray = [];
