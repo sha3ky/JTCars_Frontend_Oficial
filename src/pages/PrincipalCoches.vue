@@ -72,7 +72,6 @@
                      </router-link> -->
                      <router-link to="/contacto">
                         <q-btn
-
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -84,7 +83,6 @@
                      <!-- <template v-if="sessionData"> -->
                      <router-link to="/extra">
                         <q-btn
-
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -95,7 +93,6 @@
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
-
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
@@ -393,7 +390,8 @@ export default defineComponent({
       repartirData() {
          debugger;
          this.allData.forEach((element) => {
-            this.imagenPrincipal.push(element.imagen1);
+            let imagen = this.firstImgNotNull(element);
+            this.imagenPrincipal.push(imagen);
             this.arrayDescripciones.push(element.descripcion);
             this.anoCoche.push(element.ano);
             this.kmCoche.push(element.km);
@@ -405,6 +403,23 @@ export default defineComponent({
             this.modelos.push(element.modelo);
             this.colores.push(element.colorBanner);
          });
+      },
+      firstImgNotNull(item) {
+         // devolver la primera imagen del objeto que no es null
+         const sliced = {};
+         const keys = Object.keys(item);
+         for (let i = 13; i <= 20; i++) {
+            sliced[keys[i]] = item[keys[i]];
+         }
+         let num = 1;
+         while (num != 8) {
+            const propertyName = `imagen${num}`;
+            if (sliced[propertyName] != null) {
+               return sliced[propertyName];
+            } else {
+               num++;
+            }
+         }
       },
       getBase64Image(image) {
          return `data:image/jpeg;base64,${image}`;
@@ -445,7 +460,7 @@ export default defineComponent({
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
-            this.userIsAdmin=store.state.isAdmin
+            this.userIsAdmin = store.state.isAdmin;
          }
       },
       // ------------------------------------------------------------------------------------------------------------------
@@ -456,7 +471,7 @@ export default defineComponent({
             store.dispatch("logout");
             this.usuarioLogineado = "";
             this.sessionData = "";
-            this.userIsAdmin=false
+            this.userIsAdmin = false;
             Notify.create({
                type: "positive",
                message: "Adios.",

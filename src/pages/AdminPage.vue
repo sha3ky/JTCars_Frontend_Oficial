@@ -734,7 +734,6 @@ export default defineComponent({
             x++;
          });
       },
-
       addMetaImgNew(item) {
          debugger;
          // nos llevamos el ultimo componente del array y comprobamos a ver que numero tiene , i le añadimos uno de mas si es mas pequeño que 8

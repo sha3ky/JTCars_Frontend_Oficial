@@ -98,7 +98,8 @@ export default {
          this.carousel = item;
       },
       arrayDatos: function (item) {
-         if (this.arrayDatos !== 0) {
+      debugger
+         if (item) {
             this.repartirImg(this.arrayDatos);
          }
       },
