@@ -181,6 +181,8 @@
                            :columns="columnsCoches"
                            row-key="matricula"
                            @row-click="handleRowClick"
+                           :dense="$q.screen.lt.md"
+                           :rows-per-page="25"
                         >
                         </q-table>
                      </div>
@@ -193,6 +195,8 @@
                         :rows="rowsPersonas"
                         :columns="columnsPersonas"
                         row-key="email"
+                        :dense="$q.screen.lt.md"
+                        :rows-per-page="25"
                      />
                   </q-tab-panel>
                </q-tab-panels>
@@ -202,7 +206,7 @@
          <q-dialog v-model="dialogCoches" persistent>
             <q-card style="max-width: 538px">
                <q-card-section style="padding: 0">
-                  <div class="text-h6">Cambiar configuracion coche</div>
+                  <div class="text-h6" style="text-align: center;">Cambiar configuracion coche</div>
                </q-card-section>
                <q-card>
                   <div>
@@ -261,82 +265,53 @@
                      </div>
 
                      <div style="display: flex; padding: 5px">
-                        <div>
+                        <div style="width: 33vw">
                            <div>
                               <q-select
                                  filled
-                                 v-model="modelEtiqueta"
+                                 v-model="datosCoches.etiqueta"
                                  :options="optionsEtiqueta"
                                  label="Selecionar Etiqueta"
                                  dense
                               />
                            </div>
-                           <div>
-                              <q-input
-                                 filled
-                                 v-model="datosCoches.etiqueta"
-                                 label="Etiqueta"
-                                 disable
-                                 readonly
-                                 dense
-                              />
-                           </div>
                         </div>
                         <!-- tipoCoches -->
-                        <div>
+                        <div style="width: 33vw">
                            <div>
                               <q-select
                                  filled
-                                 v-model="modelTipo"
+                                 v-model="datosCoches.tipo"
                                  :options="optionsTipo"
                                  label="Selecionar Tipo"
                                  dense
                               />
                            </div>
-                           <div>
-                              <q-input
-                                 filled
-                                 v-model="datosCoches.tipo"
-                                 label="Tipo"
-                                 disable
-                                 readonly
-                                 dense
-                              />
-                           </div>
                         </div>
                         <!-- promotions -->
-                        <div>
+                        <div style="width: 33vw">
                            <div style="">
                               <q-select
                                  filled
-                                 v-model="modelPromotion"
+                                 v-model="datosCoches.promocion"
                                  :options="optionsPromotion"
                                  label="Selecionar Promocion"
-                                 dense
-                              />
-                           </div>
-                           <div style="">
-                              <q-input
-                                 filled
-                                 v-model="datosCoches.promocion"
-                                 label="Promocion"
-                                 disable
-                                 readonly
                                  dense
                               />
                            </div>
                         </div>
                      </div>
                      <div style="display: flex; padding: 5px">
-                        <div>
-                           <q-input
-                              dense
+                        <div style="width: 33vw">
+                           <q-select
                               filled
                               v-model="datosCoches.combustible"
-                              label="Combustible"
+                              :options="optionsCombustible"
+                              label="Selecionar Promocion"
+                              dense
                            />
                         </div>
-                        <div>
+                        <div style="width: 33vw">
                            <q-input
                               dense
                               filled
@@ -344,16 +319,16 @@
                               label="Precio"
                            />
                         </div>
-                        <div>
-                           <q-input
+                        <div style="width: 33vw">
+                           <q-select
                               filled
                               v-model="datosCoches.colorBanner"
-                              label="ColorBanner"
+                              :options="coloresBanners"
+                              label="Selecionar Promocion"
                               dense
                            />
                         </div>
                      </div>
-
                      <div>
                         <div style="display: flex; justify-content: center">
                            <div v-if="existPdf">
@@ -407,10 +382,10 @@
                                  <q-separator />
 
                                  <q-card-actions align="center">
-                                    <q-btn flat @click="modificarImagen(image)"
+                                    <q-btn flat @click="modImg(image)"
                                        >Modificar</q-btn
                                     >
-                                    <q-btn flat @click="eliminarImagen(image)"
+                                    <q-btn flat @click="delImg(image)"
                                        >Eliminar</q-btn
                                     >
                                  </q-card-actions>
@@ -424,12 +399,13 @@
                <q-card-section class="q-pt-none"> </q-card-section>
 
                <q-card-actions align="right" class="text-primary">
-                  <q-btn flat label="Cancel" v-close-popup />
+                <q-btn color="red" text-color="black" label="Eliminar" v-close-popup @click='delCar' />
+                  <q-btn color="orange" text-color="black" label="Cancel" @click='cancelInputCarDialog' />
                   <q-btn
-                     flat
                      label="Aceptar"
                      @click="aceptarCambios"
                      v-close-popup
+                     color="green" text-color="black"
                   />
                </q-card-actions>
             </q-card>
@@ -462,7 +438,6 @@
          :inputUserDialog="showInputUser"
          @close-dialog-newuser="handleDialogClose"
       />
-
       <loginUser
          :loginUserDialog="showLoginUser"
          @close-dialog-loginuser="handleDialogClose"
@@ -499,12 +474,22 @@ import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import getAllData from "src/composable/loadAllData";
 import getAllusers from "src/composable/getUsersContact";
-import getEtiqueta from "src/composable/getEtiqueta";
-import getPromotions from "src/composable/getPromotions";
-import getTipoCoche from "src/composable/getTipoCoches";
+import deleteCar from "src/composable/deleteCar"
+// import getEtiqueta from "src/composable/getEtiqueta";
+// import getPromotions from "src/composable/getPromotions";
+// import getTipoCoche from "src/composable/getTipoCoches";
 import updateTables from "src/composable/updatetableCocheMedia";
 import convertFileToBase64 from "src/composable/convertirFileBase64";
 import insertCocheNuevo from "src/composable/insertarCocheNuevo";
+import { colorsEn_Es } from "src/composable/translateColorEn_Es";
+import { colorsEs_En } from "src/composable/translateColorEs_En";
+import {
+   etiquetaCoche,
+   tipoCoche,
+   tipoPromocion,
+   tipoCombustible,
+   coloresBanners,
+} from "src/composable/dataSelectores";
 
 export default defineComponent({
    name: "AdminPage",
@@ -628,16 +613,18 @@ export default defineComponent({
          inputImagen: null,
          inputPdf: null,
          mediaTable: {},
-         modelEtiqueta: "",
-         modelTipo: "",
-         modelPromotion: "",
-         optionsPromotion: [],
-         optionsEtiqueta: [],
-         optionsTipo: [],
+         //  modelEtiqueta: "",
+         //  modelTipo: "",
+         //  modelPromotion: "",
+         optionsPromotion: tipoPromocion,
+         optionsEtiqueta: etiquetaCoche,
+         optionsTipo: tipoCoche,
          newCar: false,
          modelInImgNew: "",
          imagenConvertidaBase64: "",
          existPdf: "",
+         optionsCombustible: tipoCombustible,
+         coloresBanners: coloresBanners,
       };
    },
    watch: {
@@ -651,6 +638,7 @@ export default defineComponent({
          });
       },
       inputImagen: function (newVal) {
+         debugger;
          if (newVal) {
             convertFileToBase64(newVal).then((result) => {
                if (result) {
@@ -663,21 +651,22 @@ export default defineComponent({
          }
          this.inputImagen = null;
       },
-      modelEtiqueta: function (item) {
-         if (item) {
-            this.datosCoches.etiqueta = item;
-         }
-      },
-      modelPromotion: function (item) {
-         if (item) {
-            this.datosCoches.promocion = item;
-         }
-      },
-      modelTipo: function (item) {
-         if (item) {
-            this.datosCoches.tipo = item;
-         }
-      },
+      // modelEtiqueta: function (item) {
+      //    if (item) {
+      //       this.datosCoches.etiqueta = item;
+      //    }
+      // },
+
+      // modelPromotion: function (item) {
+      //    if (item) {
+      //       this.datosCoches.promocion = item;
+      //    }
+      // },
+      // modelTipo: function (item) {
+      //    if (item) {
+      //       this.datosCoches.tipo = item;
+      //    }
+      // },
       modelInImgNew: function (item) {
          debugger;
          if (item) {
@@ -705,14 +694,22 @@ export default defineComponent({
          : this.toggleDark;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
-      let etiqueta = await getEtiqueta();
-      this.optionsEtiqueta = this.extrareKeysObjeto(etiqueta[0]);
-      let promotion = await getPromotions();
-      this.optionsPromotion = this.extrareKeysObjeto(promotion[0]);
-      let tipo = await getTipoCoche();
-      this.optionsTipo = this.extrareKeysObjeto(tipo[0]);
+      // let etiqueta = await getEtiqueta();
+      //  this.optionsEtiqueta = etiqueta
+      // let promotion = await getPromotions();
+      // this.optionsPromotion = this.extrareKeysObjeto(promotion[0]);
+      // let tipo = await getTipoCoche();
+      // this.optionsTipo = this.extrareKeysObjeto(tipo[0]);
    },
    methods: {
+   async   delCar(){
+       let respuesta=await deleteCar(this.datosCoches.id)
+       if (respuesta) {
+               console.log("Coche eliminado");
+            } else {
+               ("Error al eliminar coche de la base");
+            }
+      },
       deletePdf() {
          this.existPdf = "";
       },
@@ -767,12 +764,14 @@ export default defineComponent({
 
          this.modelInImgNew = "";
       },
-      extrareKeysObjeto(item) {
-         debugger;
-         return Object.values(item);
-      },
+      // extrareKeysObjeto(item) {
+      //    debugger;
+      //    return Object.values(item);
+      // },
       async aceptarCambios() {
          debugger;
+         const colorEs_En = colorsEs_En(this.datosCoches.colorBanner);
+         this.datosCoches.colorBanner = colorEs_En;
          if (!this.newCar) {
             this.mediaTable = {};
             this.mediaTable = this.imagenesArray.reduce((result, item) => {
@@ -789,25 +788,29 @@ export default defineComponent({
             } else {
                ("Error al subir datos en la base");
             }
+            this.newCar=false
             //  console.log(this.mediaTable);
          } else {
             insertCocheNuevo(this.datosCoches);
-
             this.newCar = false;
          }
          this.rowsCoches = await getAllData();
          this.rowsPersonas = await getAllusers();
          this.datosCoches = {};
-         this.modelEtiqueta = "";
-         this.modelTipo = "";
-         this.modelPromotion = "";
+         //  this.modelEtiqueta = "";
+         //  this.modelTipo = "";
+         //  this.modelPromotion = "";
          this.inputImagen = null;
       },
       getBase64Image(image) {
-         return `data:image/jpeg;base64,${image}`;
+        if(image) return `data:image/jpeg;base64,${image}`;
+      },
+      cancelInputCarDialog(){
+        debugger
+        this.newCar=false
+        this.dialogCoches=false
       },
       handleRowClick(evt, row) {
-         debugger;
          this.dialogCoches = true;
          // Handle row click event here
          console.log("Row clicked:", row);
@@ -822,18 +825,19 @@ export default defineComponent({
          this.datosCoches.promocion = row.promocion;
          this.datosCoches.combustible = row.combustible;
          this.datosCoches.precio = row.precio;
-         this.datosCoches.colorBanner = row.colorBanner;
+         const color = colorsEn_Es(row.colorBanner);
+         this.datosCoches.colorBanner = color;
          this.datosCoches.id = row.id;
          this.existPdf = row.pdf;
          this.extrerImagenes(row);
          // You can perform actions such as opening a dialog, navigating to a detail page, etc.
       },
-      modificarImagen(item) {
+      modImg(item) {
+        debugger
          this.imagenParaCambiar = item;
          this.anadirImagenDialog = true;
       },
-
-      eliminarImagen(item) {
+      delImg(item) {
          debugger;
          let indexOf = this.imagenesArray.findIndex((obj) => {
             return obj.imagenNum == item.imagenNum;
@@ -916,8 +920,8 @@ export default defineComponent({
       const $q = useQuasar();
       // $q.dark.set(true); // or false or "auto"
       // $q.dark.toggle(); // toggle
-
       return {};
    },
 });
 </script>
+src/composable/translateColorEn_Es
