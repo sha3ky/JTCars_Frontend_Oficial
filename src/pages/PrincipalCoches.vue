@@ -1,5 +1,7 @@
 <template>
+
    <q-layout view="lHh Lpr lFf">
+
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
             <q-btn
@@ -149,6 +151,7 @@
             />
          </q-toolbar>
       </q-header>
+
       <q-footer elevated class="bg-blue-grey-9">
          <q-toolbar>
             <q-toolbar-title style="text-align: center"
@@ -334,6 +337,7 @@ import getAllData from "src/composable/loadAllData";
 import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import store from "../../src/store";
+
 
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 

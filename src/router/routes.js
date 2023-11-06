@@ -67,7 +67,7 @@
 
 // export default router;
 
-// import { createRouter, createWebHistory } from 'vue-router';
+
 // import store from '../store';
 
 import ContactoPageVue from 'src/pages/ContactoPage.vue';
@@ -75,6 +75,7 @@ import ExtraUsuarioVue from 'src/pages/ExtraUsuario.vue';
 import PrincipalCoches from 'src/pages/PrincipalCoches.vue';
 import AdminPageVue from 'src/pages/AdminPage.vue';
 import ErrorNotFoundVue from 'src/pages/ErrorNotFound.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
@@ -105,12 +106,16 @@ const routes = [
     component: ErrorNotFoundVue,
   },
   // ... other route configurations
+  {
+    path: '/:catchAll(.*)',
+    redirect: { name: 'error-page' },
+  },
 ];
 
-// const router = createRouter({
-//   history: createWebHistory(),
-//   routes,
-// });
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
 
 // router.beforeEach((to, from, next) => {
 
