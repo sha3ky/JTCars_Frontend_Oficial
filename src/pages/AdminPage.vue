@@ -206,7 +206,9 @@
          <q-dialog v-model="dialogCoches" persistent>
             <q-card style="max-width: 538px">
                <q-card-section style="padding: 0">
-                  <div class="text-h6" style="text-align: center;">Cambiar configuracion coche</div>
+                  <div class="text-h6" style="text-align: center">
+                     Cambiar configuracion coche
+                  </div>
                </q-card-section>
                <q-card>
                   <div>
@@ -399,13 +401,25 @@
                <q-card-section class="q-pt-none"> </q-card-section>
 
                <q-card-actions align="right" class="text-primary">
-                <q-btn color="red" text-color="black" label="Eliminar" v-close-popup @click='delCar' />
-                  <q-btn color="orange" text-color="black" label="Cancel" @click='cancelInputCarDialog' />
+                  <q-btn
+                     color="red"
+                     text-color="black"
+                     label="Eliminar"
+                     v-close-popup
+                     @click="delCar"
+                  />
+                  <q-btn
+                     color="orange"
+                     text-color="black"
+                     label="Cancel"
+                     @click="cancelInputCarDialog"
+                  />
                   <q-btn
                      label="Aceptar"
                      @click="aceptarCambios"
                      v-close-popup
-                     color="green" text-color="black"
+                     color="green"
+                     text-color="black"
                   />
                </q-card-actions>
             </q-card>
@@ -474,7 +488,7 @@ import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import getAllData from "src/composable/loadAllData";
 import getAllusers from "src/composable/getUsersContact";
-import deleteCar from "src/composable/deleteCar"
+import deleteCar from "src/composable/deleteCar";
 // import getEtiqueta from "src/composable/getEtiqueta";
 // import getPromotions from "src/composable/getPromotions";
 // import getTipoCoche from "src/composable/getTipoCoches";
@@ -702,13 +716,16 @@ export default defineComponent({
       // this.optionsTipo = this.extrareKeysObjeto(tipo[0]);
    },
    methods: {
-   async   delCar(){
-       let respuesta=await deleteCar(this.datosCoches.id)
-       if (respuesta) {
-               console.log("Coche eliminado");
-            } else {
-               ("Error al eliminar coche de la base");
-            }
+      async reloadData() {
+         this.rowsCoches = await getAllData();
+         this.rowsPersonas = await getAllusers();
+      },
+      async delCar() {
+         let respuesta = await deleteCar(this.datosCoches.id);
+         if (respuesta) {
+            console.log(respuesta);
+         }
+         this.reloadData();
       },
       deletePdf() {
          this.existPdf = "";
@@ -788,14 +805,13 @@ export default defineComponent({
             } else {
                ("Error al subir datos en la base");
             }
-            this.newCar=false
+            this.newCar = false;
             //  console.log(this.mediaTable);
          } else {
             insertCocheNuevo(this.datosCoches);
             this.newCar = false;
          }
-         this.rowsCoches = await getAllData();
-         this.rowsPersonas = await getAllusers();
+         this.reloadData();
          this.datosCoches = {};
          //  this.modelEtiqueta = "";
          //  this.modelTipo = "";
@@ -803,12 +819,12 @@ export default defineComponent({
          this.inputImagen = null;
       },
       getBase64Image(image) {
-        if(image) return `data:image/jpeg;base64,${image}`;
+         if (image) return `data:image/jpeg;base64,${image}`;
       },
-      cancelInputCarDialog(){
-        debugger
-        this.newCar=false
-        this.dialogCoches=false
+      cancelInputCarDialog() {
+         debugger;
+         this.newCar = false;
+         this.dialogCoches = false;
       },
       handleRowClick(evt, row) {
          this.dialogCoches = true;
@@ -833,7 +849,7 @@ export default defineComponent({
          // You can perform actions such as opening a dialog, navigating to a detail page, etc.
       },
       modImg(item) {
-        debugger
+         debugger;
          this.imagenParaCambiar = item;
          this.anadirImagenDialog = true;
       },
