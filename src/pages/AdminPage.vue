@@ -974,3 +974,5 @@ export default defineComponent({
 });
 </script>
 src/composable/translateColorEn_Es
+../stores
+../../../store

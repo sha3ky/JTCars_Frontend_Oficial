@@ -533,3 +533,5 @@ export default defineComponent({
     // function getBase64Image(image) {
     //    return `data:image/jpeg;base64,${image}`;
     // } -->
+../stores
+../../../store

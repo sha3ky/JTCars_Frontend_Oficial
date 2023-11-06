@@ -67,67 +67,64 @@
 
 // export default router;
 
-
 // import store from '../store';
-
-import ContactoPageVue from 'src/pages/ContactoPage.vue';
-import ExtraUsuarioVue from 'src/pages/ExtraUsuario.vue';
-import PrincipalCoches from 'src/pages/PrincipalCoches.vue';
-import AdminPageVue from 'src/pages/AdminPage.vue';
-import ErrorNotFoundVue from 'src/pages/ErrorNotFound.vue';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from "vue-router";
+import ContactoPageVue from "src/pages/ContactoPage.vue";
+import ExtraUsuarioVue from "src/pages/ExtraUsuario.vue";
+import PrincipalCoches from "src/pages/PrincipalCoches.vue";
+import AdminPageVue from "src/pages/AdminPage.vue";
+import ErrorNotFoundVue from "src/pages/ErrorNotFound.vue";
+import store from "../store";
 
 const routes = [
-  {
-    path: '/',
-    name: 'principal-coches',
-    component: PrincipalCoches,
-  },
-  {
-    path: '/contacto',
-    name: 'contacto-page',
-    component: ContactoPageVue,
-  },
-  {
-    path: '/extra',
-    name: 'extra-usuario',
-    component: ExtraUsuarioVue,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/admin',
-    name: 'admin-page',
-    component: AdminPageVue,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/error',
-    name: 'error-page',
-    component: ErrorNotFoundVue,
-  },
-  // ... other route configurations
-  {
-    path: '/:catchAll(.*)',
-    redirect: { name: 'error-page' },
-  },
+   {
+      path: "/",
+      name: "principal-coches",
+      component: PrincipalCoches,
+   },
+   {
+      path: "/contacto",
+      name: "contacto-page",
+      component: ContactoPageVue,
+   },
+   {
+      path: "/extra",
+      name: "extra-usuario",
+      component: ExtraUsuarioVue,
+      meta: { requiresAuth: true },
+   },
+   {
+      path: "/admin",
+      name: "admin-page",
+      component: AdminPageVue,
+      meta: { requiresAuth: true },
+   },
+   {
+      path: "/error",
+      name: "error-page",
+      component: ErrorNotFoundVue,
+   },
+   {
+      path: "/:catchAll(.*)",
+      redirect: { name: "error-page" },
+   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+   history: createWebHistory(),
+   routes,
 });
 
 // router.beforeEach((to, from, next) => {
-
-//   if (to.meta.requiresAuth) {
-//     if (!store.state.sessionData) {
-//       next({ name: 'principal-coches' }); // Redirect to the login page or another route
-//     } else {
+//    if (to.meta.requiresAuth) {
+//       if (!store.state.sessionData) {
+//          next({ name: "principal-coches" }); // Redirect to the 'principal-coches' page if not authenticated
+//       } else {
+//          next();
+//       }
+//    } else {
 //       next();
-//     }
-//   } else {
-//     next();
-//   }
+//    }
 // });
 
 export default routes;
