@@ -3,4 +3,8 @@ const tipoCoche=['Sedán','Deportivo','Familiar','4X4','SUV','Turismo','Furgonet
 const tipoPromocion=['Oferta','Precio Reducido','Mejor precio garantizado','Como Nuevo','Pocos KM','Revisión recién','Financiamiento disponible','Posibilidad de entrega','Recién revisado','Garantía de fábrica restante','Un solo propietario','Bajas emisiones','Económico']
 const tipoCombustible=['Gasolina','Diesel','GLP','GNC']
 const coloresBanners=['Rojo','Verde','Azul','Negro','Naranja','Gris','Marrón','Rosa','Púrpura']
-export {etiquetaCoche,tipoCoche,tipoPromocion,tipoCombustible,coloresBanners}
+const cocheAno=[]
+for (let year = 1975; year <= 2030; year++) {
+  cocheAno.push(year.toString());
+}
+export {etiquetaCoche,tipoCoche,tipoPromocion,tipoCombustible,coloresBanners,cocheAno}

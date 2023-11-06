@@ -1,36 +1,43 @@
-
 import axios from "axios";
 import apiLink from "./apiLink";
 
 let link = apiLink;
+let id_newCar;
+const insertCocheNuevo = async (coches, media) => {
+   debugger;
+   try {
+      // Send the coches data to the coches endpoint
+      const cochesResponse = await axios.post(`${link}api/createcoche`, coches);
 
-const insertCocheNuevo = async (coches) => {
-  debugger
-  const cochesData = {
-    coches: coches, // Assuming you have an array of coches
-  };
+      if (cochesResponse.status === 201) {
+         id_newCar = cochesResponse.data.id;
+         console.log("Coche saved successfully");
+      } else {
+         console.log("Error: Coche not saved");
+      }
+   } catch (cochesError) {
+      console.error("Error saving Coche:", cochesError);
+      return false;
+   }
 
-  // const mediaData = {
-  //   media: media, // Assuming you have an array of media
-  // };
+   try {
+      media.id = id_newCar;
+      // Send the media data to the media endpoint
+      const mediaResponse = await axios.post(`${link}api/updateMedia`, media);
 
-  try {
-    // Send the coches data to the coches endpoint
-    const cochesResponse = await axios.post(`${link}api/createcoche`, coches);
+      if (mediaResponse.status === 200) {
+         console.log("Media saved successfully");
+         return true;
+      } else {
+         console.log("Error: Media not saved");
+      }
+   } catch (mediaError) {
+      console.error("Error saving Media:", mediaError);
+      return false;
+   }
 
-    // Send the media data to the media endpoint
-    // const mediaResponse = await axios.post(`${link}api/updateMedia`, media);
-
-    if (cochesResponse.status === 200 ) {
-      console.log("Data saved successfully");
-      return true;
-    } else {
-      console.log("Error: Data not saved");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    return false;
-  }
+   // If no exceptions are thrown, return true by default
+   return true;
 };
 
 export default insertCocheNuevo;

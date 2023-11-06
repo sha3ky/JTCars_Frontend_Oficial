@@ -1,5 +1,5 @@
 <template>
-   <q-layout view="lHh Lpr lFf">
+   <q-layout view="lHh Lpr lFf" v-if="sessionData && userIsAdmin">
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
             <q-btn
@@ -146,7 +146,7 @@
             >
          </q-toolbar>
       </q-footer>
-      <!-- v-if="sessionData" -->
+      <!--  -->
       <q-page-container style="min-height: 100vh; text-align: center">
          <div class="q-gutter-y-md" style="">
             <q-card>
@@ -240,15 +240,16 @@
                      </div>
 
                      <div style="display: flex; padding: 5px">
-                        <div>
-                           <q-input
+                        <div style="width: 33vw">
+                           <q-select
                               filled
                               v-model="datosCoches.ano"
-                              label="Año"
+                              :options="optionsAno"
+                              label="Selecionar Año"
                               dense
                            />
                         </div>
-                        <div>
+                        <div style="width: 33vw">
                            <q-input
                               filled
                               v-model="datosCoches.km"
@@ -256,7 +257,7 @@
                               dense
                            />
                         </div>
-                        <div>
+                        <div style="width: 33vw">
                            <q-input
                               filled
                               v-model="datosCoches.descripcion"
@@ -309,7 +310,7 @@
                               filled
                               v-model="datosCoches.combustible"
                               :options="optionsCombustible"
-                              label="Selecionar Promocion"
+                              label="Selecionar Combustible"
                               dense
                            />
                         </div>
@@ -410,7 +411,7 @@
                         @click="delCar"
                      />
                   </div>
-                  <div style="padding: 3px;">
+                  <div style="padding: 3px">
                      <q-btn
                         color="orange"
                         text-color="black"
@@ -465,6 +466,28 @@
       />
       <router-view />
    </q-layout>
+   <q-layout v-else>
+      <div
+         class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center"
+      >
+         <div>
+            <div style="font-size: 30vh">404</div>
+
+            <div class="text-h2" style="opacity: 0.4">
+               Oops. No hay nada que ver aqui...
+            </div>
+            <q-btn
+               class="q-mt-xl"
+               color="white"
+               text-color="blue"
+               unelevated
+               to="/"
+               label="Primera página"
+               no-caps
+            />
+         </div>
+      </div>
+   </q-layout>
 </template>
 <style>
 .iframe-container {
@@ -509,6 +532,7 @@ import {
    tipoPromocion,
    tipoCombustible,
    coloresBanners,
+   cocheAno,
 } from "src/composable/dataSelectores";
 
 export default defineComponent({
@@ -639,6 +663,7 @@ export default defineComponent({
          optionsPromotion: tipoPromocion,
          optionsEtiqueta: etiquetaCoche,
          optionsTipo: tipoCoche,
+         optionsAno: cocheAno,
          newCar: false,
          modelInImgNew: "",
          imagenConvertidaBase64: "",
@@ -709,6 +734,7 @@ export default defineComponent({
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
+      this.userIsAdmin = store.state.isAdmin;
       this.toggleDark = store.state.toggleDarkMode
          ? store.state.toggleDarkMode
          : this.toggleDark;
@@ -784,7 +810,6 @@ export default defineComponent({
             };
             this.imagenesArray.push(newObject);
          }
-
          this.modelInImgNew = "";
       },
       // extrareKeysObjeto(item) {
@@ -795,16 +820,18 @@ export default defineComponent({
          debugger;
          const colorEs_En = colorsEs_En(this.datosCoches.colorBanner);
          this.datosCoches.colorBanner = colorEs_En;
+
+         this.mediaTable = {};
+         this.mediaTable = this.imagenesArray.reduce((result, item) => {
+            return Object.assign(result, {
+               id: item.id,
+               [item.imagenNum]: item.imagen,
+            });
+         }, this.mediaTable);
+         this.mediaTable.pdf = this.existPdf;
+         this.mediaTable.id = this.datosCoches.id;
+
          if (!this.newCar) {
-            this.mediaTable = {};
-            this.mediaTable = this.imagenesArray.reduce((result, item) => {
-               return Object.assign(result, {
-                  id: item.id,
-                  [item.imagenNum]: item.imagen,
-               });
-            }, this.mediaTable);
-            this.mediaTable.pdf = this.existPdf;
-            this.mediaTable.id = this.datosCoches.id;
             let res = await updateTables(this.datosCoches, this.mediaTable);
             if (res) {
                console.log("Datos subidos a la base");
@@ -814,7 +841,7 @@ export default defineComponent({
             this.newCar = false;
             //  console.log(this.mediaTable);
          } else {
-            insertCocheNuevo(this.datosCoches);
+            await insertCocheNuevo(this.datosCoches, this.mediaTable);
             this.newCar = false;
          }
          this.reloadData();

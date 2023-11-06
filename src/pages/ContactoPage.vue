@@ -190,7 +190,6 @@
                         outlined
                         v-model="nombre"
                         label="Tu nombre *"
-                        hint="Nombre y Apellido"
                      />
 
                      <q-input
@@ -321,7 +320,6 @@ export default defineComponent({
    },
 
    mounted() {
-      debugger;
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
       this.userIsAdmin = store.state.isAdmin
@@ -333,7 +331,6 @@ export default defineComponent({
    },
    methods: {
       updateUsuarioLogineado(bool) {
-         debugger;
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
@@ -341,27 +338,22 @@ export default defineComponent({
          }
       },
       handleDialogClose() {
-         debugger;
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
          this.showInputUser = false;
       },
       nuevoUsuario() {
-         debugger;
          this.showInputUser = true;
       },
       loginearUsuario() {
-         debugger;
          this.showLoginUser = true;
          //this.showInputUser = false;
       },
       toggleDarkMode() {
-         debugger;
          const $q = this.$q;
          $q.dark.toggle();
          store.state.toggleDarkMode = this.toggleDark;
       },
       async logOut() {
-         debugger;
          const result = await logout();
          if (result) {
             store.dispatch("logout");
@@ -400,7 +392,6 @@ export default defineComponent({
       const dialogVisible = ref(false);
 
       function onSubmit() {
-         debugger;
          let res;
          if (toggleAcept.value) {
             if (email.value) {
@@ -448,7 +439,6 @@ export default defineComponent({
          }
       }
       function mensaje(msg, color) {
-         debugger;
          $q.notify({
             color: color,
             textColor: "white",
