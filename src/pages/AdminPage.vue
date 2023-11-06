@@ -28,6 +28,17 @@
                            <q-item-section>Extra</q-item-section>
                         </q-item>
                      </router-link>
+                     <template v-if="sessionData">
+                        <router-link to="/usuarioPage">
+                           <q-btn
+                              style="color: #f11212; margin-left: 10px"
+                              clickable
+                              rounded
+                           >
+                              <q-item-section>Mi Página</q-item-section>
+                           </q-btn>
+                        </router-link>
+                     </template>
                      <!-- </template> -->
                      <q-separator />
                   </q-list>
@@ -78,6 +89,13 @@
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
                      </router-link>
+                     <template v-if="sessionData">
+                        <router-link to="/usuarioPage">
+                           <q-item clickable>
+                              <q-item-section>Mis datos</q-item-section>
+                           </q-item>
+                        </router-link>
+                     </template>
                      <!-- <router-link to="/extra">
                         <q-btn
 
@@ -161,6 +179,7 @@
                >
                   <q-tab name="coches" label="Coches" />
                   <q-tab name="personas" label="Clientes" />
+                  <!-- <q-tab name="datos" label="Datos personales" /> -->
                </q-tabs>
 
                <q-separator />
@@ -187,7 +206,6 @@
                         </q-table>
                      </div>
                   </q-tab-panel>
-
                   <q-tab-panel name="personas">
                      <div class="text-h6">Clientes</div>
                      <q-table
@@ -199,6 +217,38 @@
                         :rows-per-page="25"
                      />
                   </q-tab-panel>
+                  <!-- <q-tab-panel name="datos">
+                     <div class="text-h6">Usuario</div>
+                     <div style="display: flex; justify-content: center">
+                        <div>
+                           <q-input
+                              filled
+                              v-model="nombreUsuario"
+                              label="Nombre"
+                              dense
+                           />
+                           <q-input
+                              filled
+                              v-model="nombreUsuario"
+                              label="Apellido"
+                              dense
+                           />
+                        </div>
+                        <div>
+                           <q-input
+                              filled
+                              v-model="nombreUsuario"
+                              label="Correo"
+                              dense
+                           /><q-input
+                              filled
+                              v-model="nombreUsuario"
+                              label="Contraseña"
+                              dense
+                           />
+                        </div>
+                     </div>
+                  </q-tab-panel> -->
                </q-tab-panels>
             </q-card>
          </div>
@@ -670,6 +720,7 @@ export default defineComponent({
          existPdf: "",
          optionsCombustible: tipoCombustible,
          coloresBanners: coloresBanners,
+         fechaActual: new Date().getFullYear(),
       };
    },
    watch: {
@@ -973,6 +1024,4 @@ export default defineComponent({
    },
 });
 </script>
-src/composable/translateColorEn_Es
-../stores
-../../../store
+src/composable/translateColorEn_Es ../stores ../../../store

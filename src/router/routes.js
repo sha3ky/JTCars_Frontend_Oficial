@@ -74,6 +74,7 @@ import ExtraUsuarioVue from "src/pages/ExtraUsuario.vue";
 import PrincipalCoches from "src/pages/PrincipalCoches.vue";
 import AdminPageVue from "src/pages/AdminPage.vue";
 import ErrorNotFoundVue from "src/pages/ErrorNotFound.vue";
+import usuarioPageVue from "src/pages/usuarioPage.vue"
 import store from "../store";
 
 const routes = [
@@ -104,6 +105,11 @@ const routes = [
       name: "error-page",
       component: ErrorNotFoundVue,
    },
+   {
+    path: "/usuarioPage",
+    name: "usuario-page",
+    component: usuarioPageVue,
+ },
    {
       path: "/:catchAll(.*)",
       redirect: { name: "error-page" },

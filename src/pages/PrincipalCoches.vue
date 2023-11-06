@@ -1,7 +1,5 @@
 <template>
-
    <q-layout view="lHh Lpr lFf">
-
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
             <q-btn
@@ -34,6 +32,13 @@
                         <router-link to="/admin">
                            <q-item clickable>
                               <q-item-section>Admin</q-item-section>
+                           </q-item>
+                        </router-link>
+                     </template>
+                     <template v-if="sessionData">
+                      <router-link to="/usuarioPage">
+                           <q-item clickable>
+                              <q-item-section>Mis datos</q-item-section>
                            </q-item>
                         </router-link>
                      </template>
@@ -92,6 +97,17 @@
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
                      </router-link>
+                     <template v-if="sessionData">
+                        <router-link to="/usuarioPage">
+                          <q-btn
+                              style="color: #f11212; margin-left: 10px"
+                              clickable
+                              rounded
+                           >
+                              <q-item-section>Mi Página</q-item-section>
+                           </q-btn>
+                        </router-link>
+                     </template>
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
@@ -122,13 +138,13 @@
                         @click="loginearUsuario"
                         style="width: 50px"
                      ></q-btn>
-                     <!-- <q-btn
+                     <q-btn
                         flat
                         round
                         dense
                         icon="img:userplusGreen.png"
                         @click="nuevoUsuario"
-                     ></q-btn> -->
+                     ></q-btn>
                   </div>
                </template>
                <template v-if="sessionData">
@@ -159,7 +175,7 @@
                <span
                   ><q-img src="/lovePng.png" width="50px" height="50px"></q-img
                ></span>
-               by Sha3ky's TEAM</q-toolbar-title
+               by Sha3ky's TEAM {{ fechaActual }}</q-toolbar-title
             >
          </q-toolbar>
       </q-footer>
@@ -338,7 +354,6 @@ import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import store from "../../src/store";
 
-
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 
 export default defineComponent({
@@ -370,6 +385,7 @@ export default defineComponent({
          colores: [],
          usuarioLogineado: "",
          sessionData: "",
+         fechaActual: new Date().getFullYear(),
       };
    },
    async mounted() {
@@ -533,5 +549,5 @@ export default defineComponent({
     // function getBase64Image(image) {
     //    return `data:image/jpeg;base64,${image}`;
     // } -->
-../stores
-../../../store
+<!-- ../stores
+../../../store -->

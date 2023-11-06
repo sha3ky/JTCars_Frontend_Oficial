@@ -24,22 +24,22 @@
                      </router-link>
                      <!-- <template v-if="sessionData"> -->
                      <!-- <router-link to="/extra">
-                           <q-item clickable>
-                              <q-item-section>Extra</q-item-section>
-                           </q-item>
-                        </router-link> -->
+                          <q-item clickable>
+                             <q-item-section>Extra</q-item-section>
+                          </q-item>
+                       </router-link> -->
                      <!-- </template> -->
-                      <template v-if="sessionData">
-                      <router-link to="/usuarioPage">
-                           <q-item clickable>
-                              <q-item-section>Mis datos</q-item-section>
-                           </q-item>
-                        </router-link>
-                     </template>
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-item clickable>
                               <q-item-section>Admin</q-item-section>
+                           </q-item>
+                        </router-link>
+                     </template>
+                     <template v-if="sessionData">
+                        <router-link to="/usuarioPage">
+                           <q-item clickable>
+                              <q-item-section>Mis datos</q-item-section>
                            </q-item>
                         </router-link>
                      </template>
@@ -67,18 +67,12 @@
                <div>
                   <div>
                      <router-link to="/">
-                        <q-btn
-
-                           style="color: #1aee9f"
-                           clickable
-                           rounded
-                        >
+                        <q-btn style="color: #1aee9f" clickable rounded>
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
                      </router-link>
                      <router-link to="/contacto">
                         <q-btn
-
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -89,7 +83,6 @@
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
-
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
@@ -100,7 +93,7 @@
                      </template>
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
-                          <q-btn
+                           <q-btn
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
@@ -109,21 +102,6 @@
                            </q-btn>
                         </router-link>
                      </template>
-                     <!-- test -->
-                     <!-- <template v-if="sessionData"> -->
-                     <!-- <router-link to="/extra">
-                           <q-btn
-
-                              style="color: #1aee9f; margin-left: 10px"
-                              clickable
-                              rounded
-                           >
-                              <q-item-section>Noticias</q-item-section>
-                           </q-btn>
-                        </router-link> -->
-                     <!-- </template> -->
-                     <!-- test -->
-
                   </div>
                </div>
             </template>
@@ -217,7 +195,6 @@ body.body--dark {
 }
 </style>
 <script>
-
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";
@@ -258,7 +235,7 @@ export default defineComponent({
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
-            this.userIsAdmin=store.state.isAdmin
+            this.userIsAdmin = store.state.isAdmin;
          }
       },
       handleDialogClose() {
@@ -288,7 +265,7 @@ export default defineComponent({
             store.dispatch("logout");
             this.usuarioLogineado = "";
             this.sessionData = "";
-            this.userIsAdmin=false
+            this.userIsAdmin = false;
             Notify.create({
                type: "positive",
                message: "Adios.",
@@ -317,5 +294,4 @@ export default defineComponent({
    },
 });
 </script>
-../stores
-../../../store
+../stores ../../../store
