@@ -326,7 +326,7 @@
                               filled
                               v-model="datosCoches.colorBanner"
                               :options="coloresBanners"
-                              label="Selecionar Promocion"
+                              label="Color Banner"
                               dense
                            />
                         </div>
@@ -401,26 +401,32 @@
                <q-card-section class="q-pt-none"> </q-card-section>
 
                <q-card-actions align="right" class="text-primary">
-                  <q-btn
-                     color="red"
-                     text-color="black"
-                     label="Eliminar"
-                     v-close-popup
-                     @click="delCar"
-                  />
-                  <q-btn
-                     color="orange"
-                     text-color="black"
-                     label="Cancel"
-                     @click="cancelInputCarDialog"
-                  />
-                  <q-btn
-                     label="Aceptar"
-                     @click="aceptarCambios"
-                     v-close-popup
-                     color="green"
-                     text-color="black"
-                  />
+                  <div v-if="!newCar">
+                     <q-btn
+                        color="red"
+                        text-color="black"
+                        label="Eliminar"
+                        v-close-popup
+                        @click="delCar"
+                     />
+                  </div>
+                  <div style="padding: 3px;">
+                     <q-btn
+                        color="orange"
+                        text-color="black"
+                        label="Cancel"
+                        @click="cancelInputCarDialog"
+                     />
+                  </div>
+                  <div>
+                     <q-btn
+                        label="Aceptar"
+                        @click="aceptarCambios"
+                        v-close-popup
+                        color="green"
+                        text-color="black"
+                     />
+                  </div>
                </q-card-actions>
             </q-card>
          </q-dialog>

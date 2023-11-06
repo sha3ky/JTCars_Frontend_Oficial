@@ -60,12 +60,7 @@
                <div>
                   <div>
                      <router-link to="/">
-                        <q-btn
-
-                           style="color: #1aee9f"
-                           clickable
-                           rounded
-                        >
+                        <q-btn style="color: #1aee9f" clickable rounded>
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
                      </router-link>
@@ -83,7 +78,6 @@
                      <!-- <template v-if="sessionData"> -->
                      <router-link to="/extra">
                         <q-btn
-
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -94,7 +88,6 @@
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
-
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
@@ -173,10 +166,10 @@
          </q-img>
          <div style="padding: 20px">
             <div>
-               <h2 style="margin: 10px">
+               <h4 style="margin: 10px">
                   Contacta con nosotros y serás el primero <br />
                   en enterarte las las novedades
-               </h2>
+               </h4>
             </div>
             <div>
                <div
@@ -198,12 +191,6 @@
                         v-model="nombre"
                         label="Tu nombre *"
                         hint="Nombre y Apellido"
-                        lazy-rules
-                        :rules="[
-                           (val) =>
-                              (val && val.length > 0) ||
-                              'Por favor introduce el nombre',
-                        ]"
                      />
 
                      <q-input
@@ -212,34 +199,12 @@
                         v-model="email"
                         label="Tu Email *"
                         lazy-rules
-                        :rules="[
-                           (val) => {
-                              if (!val) return 'Por favor introduce tu email';
-                              const emailRegex =
-                                 /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-                              return (
-                                 emailRegex.test(val) ||
-                                 'Este email no es válido'
-                              );
-                           },
-                        ]"
                      />
                      <q-input
                         outlined
                         type="tel"
                         v-model="mobileNumber"
                         label="Tu Número de Teléfono"
-                        lazy-rules
-                        :rules="[
-                           (val) => {
-                              if (!val) return 'Por favor un número válido ';
-                              const phoneNumberRegex = /^[0-9]*$/; // Regular expression to match only numbers
-                              if (phoneNumberRegex.test(val)) {
-                                 return true; // It's a valid phone number
-                              }
-                              return 'Este número no es valido';
-                           },
-                        ]"
                         class="q-mb-md md:q-mb-0"
                      />
                      <q-input
@@ -278,10 +243,12 @@
             </div>
 
             <div>
-               <h2 style="margin: 10px">
-                  Estamos en Cubelles <br />
-                  Carrer Maestrat número 3
-               </h2>
+               <h4 style="margin: 10px">
+                  Estamos en Cubelles, Carrer Maestrat número 3 <br />
+                  Contactar al Teléfono: 614103736 / 722411324 <br />
+                  Lunes - Viernes: 9.00-20:00h<br />
+                  Sabado : 10.00 - 15.00h
+               </h4>
             </div>
             <div
                style="
@@ -291,15 +258,15 @@
                   padding: 10px;
                "
             >
-               <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d909.7966577374251!2d1.6512922696582077!3d41.19919300728751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDExJzU3LjEiTiAxwrAzOScwNy4wIkU!5e1!3m2!1ses!2ses!4v1698127089612!5m2!1ses!2ses"
-                  width="800"
-                  height="650"
-                  style="border: 0"
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-               ></iframe>
+               <div>
+                  <iframe
+                     src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d909.7966577374251!2d1.6512922696582077!3d41.19919300728751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDExJzU3LjEiTiAxwrAzOScwNy4wIkU!5e1!3m2!1ses!2ses!4v1698127089612!5m2!1ses!2ses"
+                     style="border: 0"
+                     allowfullscreen=""
+                     loading="lazy"
+                     referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+               </div>
             </div>
          </div>
          <InputUser
@@ -370,7 +337,7 @@ export default defineComponent({
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
-            this.userIsAdmin=store.state.isAdmin
+            this.userIsAdmin = store.state.isAdmin;
          }
       },
       handleDialogClose() {
@@ -400,7 +367,7 @@ export default defineComponent({
             store.dispatch("logout");
             this.usuarioLogineado = "";
             this.sessionData = "";
-            this.userIsAdmin=false
+            this.userIsAdmin = false;
             Notify.create({
                type: "positive",
                message: "Adios.",
@@ -434,27 +401,59 @@ export default defineComponent({
 
       function onSubmit() {
          debugger;
-
+         let res;
          if (toggleAcept.value) {
-            $q.notify({
-               color: "green-4",
-               textColor: "white",
-               icon: "cloud_done",
-               message: "Gracias por subscribirte",
-            });
+            if (email.value) {
+               const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+               res = emailRegex.test(email.value);
+               if (!res) {
+                  mensaje("El email no es valido", red);
+                  return;
+               }
+            } else {
+               return;
+            }
+
+            if (mobileNumber.value) {
+               const phoneNumberRegex = /^[0-9]*$/; // Regular expression to match only numbers
+               res = phoneNumberRegex.test(mobileNumber.value);
+               if (!res) {
+                  mensaje("El número no es valido", red);
+                  return;
+               }
+            } else {
+               return;
+            }
+            if (!nombre.value) {
+               mensaje("Introducir un nombre por favor", red);
+               return;
+            }
+            if (!textareaModel.value) {
+               mensaje("Indica en que te podriamos ayudar", red);
+               return;
+            }
             contactUser(
                nombre.value,
                email.value,
                mobileNumber.value,
                textareaModel.value
             );
-         } else {
-            $q.notify({
-               color: "warning",
-               textColor: "dark",
-               message: "Tienes que aceptar el envio de novedades",
-            });
+            nombre.value = null;
+            email.value = null;
+            textareaModel.value = "";
+            mobileNumber.value = null;
+            toggleAcept.value = false;
+            dialogVisible.value = false;
+            mensaje("Gracias por subscribirte", green);
          }
+      }
+      function mensaje(msg, color) {
+         debugger;
+         $q.notify({
+            color: color,
+            textColor: "white",
+            message: msg,
+         });
       }
       // to reset validations:
       function onReset() {
@@ -466,6 +465,7 @@ export default defineComponent({
          dialogVisible,
          onReset,
          onSubmit,
+         mensaje,
          nombre,
          email,
          toggleAcept,
