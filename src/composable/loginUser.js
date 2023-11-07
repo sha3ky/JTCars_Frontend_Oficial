@@ -83,6 +83,8 @@ const login = async (name, password) => {
     if (response.status==200 && response.data.access) {
       sessionStorage.setItem("access_token", response.data.access);
       sessionStorage.setItem('refresh_token', response.data.refresh)
+      sessionStorage.setItem('username', response.data.username); // Store the username
+      sessionStorage.setItem('email', response.data.email);
       axios.defaults.headers.common["Authorization"] = response.data.access;
 
       store.dispatch("login", {

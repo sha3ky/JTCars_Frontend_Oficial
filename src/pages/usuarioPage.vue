@@ -159,11 +159,89 @@
          </q-toolbar>
       </q-footer>
       <q-page-container style="min-height: 100vh; text-align: center">
-
-        <div>
-
-
-         </div>
+         <h4>Opciones Usuario</h4>
+         <q-card>
+            <div
+               style="
+                  height: 50vh;
+                  width: 100vw;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+               "
+            >
+               <div
+                  style="
+                     background-color: yellowgreen;
+                     height: 40vh;
+                     width: 60vw;
+                     display: flex;
+                     flex-direction: column;
+                     align-items: center;
+                     border-radius: 25px;
+                  "
+               >
+                  <div style="padding: 10px; margin-top: 10%">
+                     <q-input v-model="username" label="Nombre usuario" dense />
+                  </div>
+                  <div style="padding: 10px">
+                     <q-input v-model="email" label="Email" dense />
+                  </div>
+                  <div>
+                     <p>Dejar de recibir notificaciones</p>
+                     <q-toggle v-model="notificacionesIsActive" color="green" />
+                  </div>
+               </div>
+               <div
+                  style="
+                     background-color: rgb(50, 182, 205);
+                     height: 40vh;
+                     width: 60vw;
+                     display: flex;
+                     flex-direction: column;
+                     align-items: center;
+                     border-radius: 25px;
+                  "
+               >
+                  <div style="padding: 10px; margin-top: 10%">
+                     <q-input
+                        v-model="oldPassword"
+                        label="Password antiguo"
+                        dense
+                     />
+                  </div>
+                  <div style="padding: 10px">
+                     <q-input
+                        v-model="newPassword"
+                        label="Password nuevo"
+                        dense
+                     />
+                  </div>
+               </div>
+            </div>
+            <q-card-actions align="right" class="text-primary">
+               <div style="">
+                  <q-btn color="red"> ELIMINAR CUENTA </q-btn>
+               </div>
+               <div style="padding: 5px">
+                  <q-btn
+                     color="orange"
+                     text-color="black"
+                     label="Cancel"
+                     @click="cancelInputCarDialog"
+                  />
+               </div>
+               <div>
+                  <q-btn
+                     label="Aceptar"
+                     @click="aceptarCambios"
+                     v-close-popup
+                     color="green"
+                     text-color="black"
+                  />
+               </div>
+            </q-card-actions>
+         </q-card>
 
          <InputUser
             :inputUserDialog="showInputUser"
@@ -190,6 +268,9 @@ body.body--dark {
 }
 </style>
 <script>
+// const username = sessionStorage.getItem('username');
+// const email = sessionStorage.getItem('email');
+
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";
@@ -197,6 +278,8 @@ import InputUser from "components/InputUser.vue"; // Replace with the actual pat
 import loginUser from "src/components/loginUser.vue";
 import logout from "src/composable/logOut";
 import { Notify } from "quasar";
+import updateUser from "src/composable/updateUser";
+import { createLogger } from "vuex";
 export default defineComponent({
    name: "ExtraUsuario",
    data() {
@@ -210,7 +293,18 @@ export default defineComponent({
          usuarioLogineado: "",
          sessionData: "",
          fechaActual: new Date().getFullYear(),
+         oldPassword: "",
+         newPassword: "",
+         notificacionesIsActive: true,
+         username: sessionStorage.getItem("username"),
+         email: sessionStorage.getItem("email"),
       };
+   },
+   watch: {
+      notificacionesIsActive: function (item) {
+         debugger;
+         item;
+      },
    },
    async mounted() {
       debugger;
@@ -225,6 +319,18 @@ export default defineComponent({
          : this.toggleDark;
    },
    methods: {
+      async aceptarCambios() {
+         let res = await updateUser(
+            this.username,
+            this.email,
+            this.notificacionesIsActive
+         );
+         if (res) {
+            console.log("usuario update ok");
+         } else {
+            console.log("error al updatear usuario");
+         }
+      },
       updateUsuarioLogineado(bool) {
          debugger;
          if (bool) {
@@ -289,4 +395,3 @@ export default defineComponent({
    },
 });
 </script>
-
