@@ -19,7 +19,7 @@
                      </router-link>
                      <router-link to="/contacto">
                         <q-item clickable>
-                           <q-item-section>Contacto</q-item-section>
+                           <q-item-section>Contactar</q-item-section>
                         </q-item>
                      </router-link>
                      <!-- <template v-if="sessionData"> -->
@@ -77,7 +77,16 @@
                            clickable
                            rounded
                         >
-                           <q-item-section>Contacto</q-item-section>
+                           <q-item-section>Contactar</q-item-section>
+                        </q-btn>
+                     </router-link>
+                     <router-link to="/extra">
+                        <q-btn
+                           style="color: #1aee9f; margin-left: 10px"
+                           clickable
+                           rounded
+                        >
+                           <q-item-section>Noticias</q-item-section>
                         </q-btn>
                      </router-link>
                      <template v-if="userIsAdmin">
@@ -91,7 +100,7 @@
                            </q-btn>
                         </router-link>
                      </template>
-                     <template v-if="sessionData">
+                     <!-- <template v-if="sessionData">
                         <router-link to="/usuarioPage">
                            <q-btn
                               style="color: #f11212; margin-left: 10px"
@@ -101,7 +110,7 @@
                               <q-item-section>Mis Datos</q-item-section>
                            </q-btn>
                         </router-link>
-                     </template>
+                     </template> -->
                   </div>
                </div>
             </template>

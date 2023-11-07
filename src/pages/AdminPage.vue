@@ -75,7 +75,7 @@
                            clickable
                            rounded
                         >
-                           <q-item-section>Contacto</q-item-section>
+                           <q-item-section>Contactar</q-item-section>
                         </q-btn>
                      </router-link>
                      <!-- test -->
@@ -92,7 +92,7 @@
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
                            <q-btn
-                              style="color: #1aee9f; margin-left: 10px"
+                              style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
                            >

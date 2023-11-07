@@ -19,7 +19,7 @@
                      </router-link> -->
                      <router-link to="/contacto">
                         <q-item clickable>
-                           <q-item-section>Contacto</q-item-section>
+                           <q-item-section>Contactar</q-item-section>
                         </q-item>
                      </router-link>
                      <!-- <template v-if="sessionData"> -->
@@ -83,7 +83,7 @@
                            clickable
                            rounded
                         >
-                           <q-item-section>Contacto</q-item-section>
+                           <q-item-section>Contactar</q-item-section>
                         </q-btn>
                      </router-link>
                      <!-- test -->
