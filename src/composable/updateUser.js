@@ -2,9 +2,9 @@ import axios from "axios";
 import apiLink from "./apiLink";
 
 let link = apiLink;
-const accessToken = sessionStorage.getItem("access_token");
 
 const updateUser = async (name, email) => {
+   const accessToken = sessionStorage.getItem("access_token");
    debugger;
    try {
       const response = await axios.post(

@@ -403,6 +403,7 @@ export default defineComponent({
                type: "succes",
                message: "Cuenta Eliminada",
             });
+            window.location.href = './';
          }
       },
       async aceptarCambios() {

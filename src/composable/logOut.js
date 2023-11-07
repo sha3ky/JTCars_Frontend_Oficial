@@ -42,6 +42,7 @@ import axios, { AxiosHeaders } from "axios";
 import apiLink from "./apiLink";
 
 const logout = async () => {
+  debugger
    const refresh_token = sessionStorage.refresh_token;
    const access_token = sessionStorage.access_token;
    try {

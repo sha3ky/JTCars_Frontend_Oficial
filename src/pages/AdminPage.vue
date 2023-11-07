@@ -91,9 +91,13 @@
                      </router-link>
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
-                           <q-item clickable>
+                           <q-btn
+                              style="color: #1aee9f; margin-left: 10px"
+                              clickable
+                              rounded
+                           >
                               <q-item-section>Mis datos</q-item-section>
-                           </q-item>
+                           </q-btn>
                         </router-link>
                      </template>
                      <!-- <router-link to="/extra">
@@ -1001,6 +1005,7 @@ export default defineComponent({
                type: "positive",
                message: "Adios.",
             });
+            window.location.href = "/"; //esto NOOOOOOO
          } else {
             Notify.create({
                type: "negative",
