@@ -2,16 +2,24 @@ import axios from "axios";
 import apiLink from "./apiLink";
 
 let link = apiLink;
+const accessToken = sessionStorage.getItem('access_token');
 
 const updateUser = async (name, email, isActive) => {
    debugger;
    try {
-      console.log(name, password);
-      const response = await axios.post(`${link}api/updateUser/`, {
-         username: name,
-         email: email,
-         is_active: isActive,
-      });
+      const response = await axios.post(
+         `${link}api/updateUserProfile`,
+         {
+            username: name,
+            email: email,
+            is_active: isActive,
+         },
+         {
+            headers: {
+               Authorization: `Bearer ${accessToken}`, // Include the access token in the headers
+            },
+         }
+      );
       console.log(response); // Log the response for debugging
 
       if (response.status == 200 && response.data.access) {

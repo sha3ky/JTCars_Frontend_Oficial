@@ -36,7 +36,7 @@
                         </router-link>
                      </template>
                      <template v-if="sessionData">
-                      <router-link to="/usuarioPage">
+                        <router-link to="/usuarioPage">
                            <q-item clickable>
                               <q-item-section>Mis datos</q-item-section>
                            </q-item>
@@ -99,7 +99,7 @@
                      </router-link>
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
-                          <q-btn
+                           <q-btn
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
@@ -145,6 +145,7 @@
                         icon="img:userplusGreen.png"
                         @click="nuevoUsuario"
                      ></q-btn>
+                     <q-btn color="red"  round dense @click="deleteStorage"></q-btn>
                   </div>
                </template>
                <template v-if="sessionData">
@@ -504,6 +505,18 @@ export default defineComponent({
             store.dispatch("logout");
          }
       },
+      deleteStorage() {
+         debugger;
+         sessionStorage.removeItem("access_token");
+         sessionStorage.removeItem("refresh_token");
+         sessionStorage.removeItem("tokServ");
+         sessionStorage.removeItem("token");
+         sessionStorage.removeItem("username");
+         sessionStorage.removeItem("email");
+         sessionStorage.removeItem('is_active')
+      //    sessionStorage.setItem('username', response.data.username); // Store the username
+      // sessionStorage.setItem('email', response.data.email);
+      }
    },
 
    components: {

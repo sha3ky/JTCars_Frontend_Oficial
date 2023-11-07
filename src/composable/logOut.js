@@ -59,6 +59,8 @@ const logout = async () => {
       // Remove the token from sessionStorage (or wherever it's stored)
       sessionStorage.removeItem("access_token");
       sessionStorage.removeItem("refresh_token");
+      sessionStorage.removeItem("username");
+      sessionStorage.removeItem("email");
       return true;
    } catch (error) {
       console.error("Logout error:", error);

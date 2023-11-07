@@ -295,7 +295,7 @@ export default defineComponent({
          fechaActual: new Date().getFullYear(),
          oldPassword: "",
          newPassword: "",
-         notificacionesIsActive: true,
+         notificacionesIsActive: false,
          username: sessionStorage.getItem("username"),
          email: sessionStorage.getItem("email"),
       };
