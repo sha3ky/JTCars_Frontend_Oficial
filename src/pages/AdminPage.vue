@@ -35,7 +35,7 @@
                               clickable
                               rounded
                            >
-                              <q-item-section>Mi Página</q-item-section>
+                              <q-item-section>Mis Datos</q-item-section>
                            </q-btn>
                         </router-link>
                      </template>

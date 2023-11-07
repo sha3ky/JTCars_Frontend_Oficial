@@ -98,7 +98,7 @@
                               clickable
                               rounded
                            >
-                              <q-item-section>Mi Página</q-item-section>
+                              <q-item-section>Mis Datos</q-item-section>
                            </q-btn>
                         </router-link>
                      </template>
@@ -159,17 +159,12 @@
          </q-toolbar>
       </q-footer>
       <q-page-container style="min-height: 100vh; text-align: center">
-         <div class="iframe-container">
-            <iframe
-               src="https://loscochesmasvendidos.com/"
-               width="100%"
-               height="100%"
-               style="border: 0"
-               allowfullscreen=""
-               loading="lazy"
-               referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
+
+        <div>
+
+
          </div>
+
          <InputUser
             :inputUserDialog="showInputUser"
             @close-dialog-newuser="handleDialogClose"
@@ -294,4 +289,4 @@ export default defineComponent({
    },
 });
 </script>
-../stores ../../../store
+
