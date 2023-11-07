@@ -12,7 +12,7 @@
             >
                <q-menu transition-show="scale" transition-hide="scale">
                   <q-list style="min-width: 100px">
-                     <router-link to="/">
+                     <router-link to="/home">
                         <q-item clickable>
                            <q-item-section>Coches</q-item-section>
                         </q-item>
@@ -66,7 +66,7 @@
             <template v-if="$q.screen.width > 600">
                <div>
                   <div>
-                     <router-link to="/">
+                     <router-link to="/home">
                         <q-btn style="color: #1aee9f" clickable rounded>
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
@@ -147,7 +147,7 @@
             />
          </q-toolbar>
       </q-header>
-      <q-footer elevated class="bg-blue-grey-9">
+      <!-- <q-footer elevated class="bg-blue-grey-9">
          <q-toolbar>
             <q-toolbar-title style="text-align: center"
                >Made with
@@ -157,7 +157,8 @@
                by Sha3ky's TEAM {{ fechaActual }}</q-toolbar-title
             >
          </q-toolbar>
-      </q-footer>
+      </q-footer> -->
+      <Footer_Layout/>
       <q-page-container style="min-height: 100vh; text-align: center">
          <h4>Opciones Usuario</h4>
          <q-card>
@@ -191,7 +192,7 @@
                      <p style="margin: 0">Quiero recibir notificaciones</p>
                      <q-toggle v-model="notificaciones" color="green" />
                   </div>
-                  <div >
+                  <div>
                      <p style="margin: 0">Quiero modificar la contraseña</p>
                      <q-toggle v-model="modificarPassword" color="green" />
                   </div>
@@ -337,7 +338,7 @@ body.body--dark {
 <script>
 // const username = sessionStorage.getItem('username');
 // const email = sessionStorage.getItem('email');
-
+import Footer_Layout from 'src/layouts/Footer_Layout.vue';
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";
@@ -403,7 +404,8 @@ export default defineComponent({
                type: "succes",
                message: "Cuenta Eliminada",
             });
-            window.location.href = './';
+            // window.location.href = './home';
+            this.$router.push({ name: "principal-coches" });
          }
       },
       async aceptarCambios() {
@@ -502,6 +504,7 @@ export default defineComponent({
                type: "positive",
                message: "Adios.",
             });
+            this.$router.push({ name: "principal-coches" });
          } else {
             Notify.create({
                type: "negative",
@@ -515,6 +518,8 @@ export default defineComponent({
    components: {
       InputUser,
       loginUser,
+      Footer_Layout,
+
    },
 
    setup() {

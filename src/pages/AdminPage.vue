@@ -12,7 +12,7 @@
             >
                <q-menu transition-show="scale" transition-hide="scale">
                   <q-list style="min-width: 100px">
-                     <router-link to="/">
+                     <router-link to="/home">
                         <q-item clickable>
                            <q-item-section>Coches</q-item-section>
                         </q-item>
@@ -157,7 +157,7 @@
             />
          </q-toolbar>
       </q-header>
-      <q-footer elevated class="bg-blue-grey-9">
+      <!-- <q-footer elevated class="bg-blue-grey-9">
          <q-toolbar>
             <q-toolbar-title style="text-align: center"
                >Made with
@@ -167,7 +167,8 @@
                by Sha3ky's TEAM</q-toolbar-title
             >
          </q-toolbar>
-      </q-footer>
+      </q-footer> -->
+      <Footer_Layout/>
       <!--  -->
       <q-page-container style="min-height: 100vh; text-align: center">
          <div class="q-gutter-y-md" style="">
@@ -301,6 +302,7 @@
                               :options="optionsAno"
                               label="Selecionar Año"
                               dense
+                              style="max-width: 100%;"
                            />
                         </div>
                         <div style="width: 33vw">
@@ -330,6 +332,7 @@
                                  :options="optionsEtiqueta"
                                  label="Selecionar Etiqueta"
                                  dense
+                                 style="max-width: 100%;"
                               />
                            </div>
                         </div>
@@ -342,6 +345,7 @@
                                  :options="optionsTipo"
                                  label="Selecionar Tipo"
                                  dense
+                                 style="max-width: 100%;"
                               />
                            </div>
                         </div>
@@ -354,6 +358,7 @@
                                  :options="optionsPromotion"
                                  label="Selecionar Promocion"
                                  dense
+                                 style="max-width: 100%;"
                               />
                            </div>
                         </div>
@@ -366,6 +371,7 @@
                               :options="optionsCombustible"
                               label="Selecionar Combustible"
                               dense
+                              style="max-width: 100%;"
                            />
                         </div>
                         <div style="width: 33vw">
@@ -374,6 +380,7 @@
                               filled
                               v-model="datosCoches.precio"
                               label="Precio"
+
                            />
                         </div>
                         <div style="width: 33vw">
@@ -383,6 +390,7 @@
                               :options="coloresBanners"
                               label="Color Banner"
                               dense
+                              style="max-width: 100%;"
                            />
                         </div>
                      </div>
@@ -562,6 +570,7 @@ body.body--dark {
 }
 </style>
 <script>
+import Footer_Layout from 'src/layouts/Footer_Layout.vue';
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";
@@ -1005,7 +1014,8 @@ export default defineComponent({
                type: "positive",
                message: "Adios.",
             });
-            window.location.href = "/"; //esto NOOOOOOO
+            this.$router.push({ name: 'principal-coches' }); ///esto sii
+            // window.location.href = "/home"; //esto NOOOOOOO
          } else {
             Notify.create({
                type: "negative",
@@ -1019,6 +1029,7 @@ export default defineComponent({
    components: {
       InputUser,
       loginUser,
+      Footer_Layout,
    },
 
    setup() {

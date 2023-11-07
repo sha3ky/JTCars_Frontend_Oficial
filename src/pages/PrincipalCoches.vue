@@ -174,7 +174,7 @@
          </q-toolbar>
       </q-header>
 
-      <q-footer elevated class="bg-blue-grey-9">
+      <!-- <q-footer elevated class="bg-blue-grey-9">
          <q-toolbar>
             <q-toolbar-title style="text-align: center"
                >Made with
@@ -184,7 +184,8 @@
                by Sha3ky's TEAM {{ fechaActual }}</q-toolbar-title
             >
          </q-toolbar>
-      </q-footer>
+      </q-footer> -->
+      <Footer_Layout/>
 
       <q-page-container style="min-height: 100vh; text-align: center">
          <div>
@@ -348,6 +349,7 @@
 }
 </style>
 <script>
+import Footer_Layout from 'src/layouts/Footer_Layout.vue';
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
@@ -393,7 +395,7 @@ export default defineComponent({
          colores: [],
          usuarioLogineado: "",
          sessionData: "",
-         fechaActual: new Date().getFullYear(),
+
       };
    },
    async mounted() {
@@ -504,6 +506,7 @@ export default defineComponent({
                type: "positive",
                message: "Adios.",
             });
+            this.$router.push({ name: "principal-coches" });
          } else {
             Notify.create({
                type: "negative",
@@ -522,6 +525,7 @@ export default defineComponent({
       loginUser,
       MyCarousel,
       MasInfoDatos,
+      Footer_Layout,
    },
 
    setup() {
