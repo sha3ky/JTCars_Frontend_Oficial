@@ -168,7 +168,7 @@
             >
          </q-toolbar>
       </q-footer> -->
-      <Footer_Layout/>
+      <Footer_Layout />
       <!--  -->
       <q-page-container style="min-height: 100vh; text-align: center">
          <div class="q-gutter-y-md" style="">
@@ -205,9 +205,23 @@
                            :columns="columnsCoches"
                            row-key="matricula"
                            @row-click="handleRowClick"
-                           :dense="$q.screen.lt.md"
+                           dense
                            :rows-per-page="25"
+                           :filter="filterCoches"
                         >
+                           <template v-slot:top-right>
+                              <q-input
+                                 borderless
+                                 dense
+                                 debounce="300"
+                                 v-model="filterCoches"
+                                 placeholder="Search"
+                              >
+                                 <template v-slot:append>
+                                    <q-icon name="search" />
+                                 </template>
+                              </q-input>
+                           </template>
                         </q-table>
                      </div>
                   </q-tab-panel>
@@ -218,9 +232,23 @@
                         :rows="rowsPersonas"
                         :columns="columnsPersonas"
                         row-key="email"
-                        :dense="$q.screen.lt.md"
+                        dense
                         :rows-per-page="25"
-                     />
+                        :filter="filterPersonas"
+                     >
+                        <template v-slot:top-right>
+                           <q-input
+                              borderless
+                              dense
+                              debounce="300"
+                              v-model="filterPersonas"
+                              placeholder="Search"
+                           >
+                              <template v-slot:append>
+                                 <q-icon name="search" />
+                              </template>
+                           </q-input> </template
+                     ></q-table>
                   </q-tab-panel>
                   <!-- <q-tab-panel name="datos">
                      <div class="text-h6">Usuario</div>
@@ -302,7 +330,7 @@
                               :options="optionsAno"
                               label="Selecionar Año"
                               dense
-                              style="max-width: 100%;"
+                              style="max-width: 100%"
                            />
                         </div>
                         <div style="width: 33vw">
@@ -332,7 +360,7 @@
                                  :options="optionsEtiqueta"
                                  label="Selecionar Etiqueta"
                                  dense
-                                 style="max-width: 100%;"
+                                 style="max-width: 100%"
                               />
                            </div>
                         </div>
@@ -345,7 +373,7 @@
                                  :options="optionsTipo"
                                  label="Selecionar Tipo"
                                  dense
-                                 style="max-width: 100%;"
+                                 style="max-width: 100%"
                               />
                            </div>
                         </div>
@@ -358,7 +386,7 @@
                                  :options="optionsPromotion"
                                  label="Selecionar Promocion"
                                  dense
-                                 style="max-width: 100%;"
+                                 style="max-width: 100%"
                               />
                            </div>
                         </div>
@@ -371,7 +399,7 @@
                               :options="optionsCombustible"
                               label="Selecionar Combustible"
                               dense
-                              style="max-width: 100%;"
+                              style="max-width: 100%"
                            />
                         </div>
                         <div style="width: 33vw">
@@ -380,7 +408,6 @@
                               filled
                               v-model="datosCoches.precio"
                               label="Precio"
-
                            />
                         </div>
                         <div style="width: 33vw">
@@ -390,7 +417,7 @@
                               :options="coloresBanners"
                               label="Color Banner"
                               dense
-                              style="max-width: 100%;"
+                              style="max-width: 100%"
                            />
                         </div>
                      </div>
@@ -570,7 +597,7 @@ body.body--dark {
 }
 </style>
 <script>
-import Footer_Layout from 'src/layouts/Footer_Layout.vue';
+import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";
@@ -734,6 +761,8 @@ export default defineComponent({
          optionsCombustible: tipoCombustible,
          coloresBanners: coloresBanners,
          fechaActual: new Date().getFullYear(),
+         filterCoches:'',
+         filterPersonas:'',
       };
    },
    watch: {
@@ -1014,7 +1043,7 @@ export default defineComponent({
                type: "positive",
                message: "Adios.",
             });
-            this.$router.push({ name: 'principal-coches' }); ///esto sii
+            this.$router.push({ name: "principal-coches" }); ///esto sii
             // window.location.href = "/home"; //esto NOOOOOOO
          } else {
             Notify.create({
