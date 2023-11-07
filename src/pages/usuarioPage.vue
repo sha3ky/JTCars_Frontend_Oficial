@@ -191,8 +191,8 @@
                      <p style="margin: 0">Quiero recibir notificaciones</p>
                      <q-toggle v-model="notificaciones" color="green" />
                   </div>
-                  <div style="margin: 0">
-                     <p>Quiero modificar la contraseña</p>
+                  <div >
+                     <p style="margin: 0">Quiero modificar la contraseña</p>
                      <q-toggle v-model="modificarPassword" color="green" />
                   </div>
                </div>
