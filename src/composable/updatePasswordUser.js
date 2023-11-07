@@ -4,14 +4,14 @@ import apiLink from "./apiLink";
 let link = apiLink;
 const accessToken = sessionStorage.getItem("access_token");
 
-const updateUser = async (name, email) => {
+const updatePasswordUser = async (oldPass, newPass) => {
    debugger;
    try {
       const response = await axios.post(
-         `${link}api/updateUserProfile`,
+         `${link}api/changePassword`,
          {
-            username: name,
-            email: email,
+            current_password: oldPass,
+            new_password: newPass,
          },
          {
             headers: {
@@ -27,10 +27,10 @@ const updateUser = async (name, email) => {
          console.log("Invalid credentials");
       }
    } catch (error) {
-      console.error("updateUser error:", error);
+      console.error("updatePassword error:", error);
       // return { success: false, message: "An error occurred" };
       return false;
    }
 };
 
-export default updateUser;
+export default updatePasswordUser;

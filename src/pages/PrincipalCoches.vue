@@ -145,7 +145,12 @@
                         icon="img:userplusGreen.png"
                         @click="nuevoUsuario"
                      ></q-btn>
-                     <q-btn color="red"  round dense @click="deleteStorage"></q-btn>
+                     <q-btn
+                        color="red"
+                        round
+                        dense
+                        @click="limpiarStorage"
+                     ></q-btn>
                   </div>
                </template>
                <template v-if="sessionData">
@@ -354,6 +359,8 @@ import getAllData from "src/composable/loadAllData";
 import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import store from "../../src/store";
+import deleteStorage from "src/composable/deleteStorage";
+
 
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 
@@ -505,18 +512,9 @@ export default defineComponent({
             store.dispatch("logout");
          }
       },
-      deleteStorage() {
-         debugger;
-         sessionStorage.removeItem("access_token");
-         sessionStorage.removeItem("refresh_token");
-         sessionStorage.removeItem("tokServ");
-         sessionStorage.removeItem("token");
-         sessionStorage.removeItem("username");
-         sessionStorage.removeItem("email");
-         sessionStorage.removeItem('is_active')
-      //    sessionStorage.setItem('username', response.data.username); // Store the username
-      // sessionStorage.setItem('email', response.data.email);
-      }
+      limpiarStorage() {
+         deleteStorage();
+      },
    },
 
    components: {

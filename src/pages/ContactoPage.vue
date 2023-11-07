@@ -428,18 +428,18 @@ export default defineComponent({
                const phoneNumberRegex = /^[0-9]*$/; // Regular expression to match only numbers
                res = phoneNumberRegex.test(mobileNumber.value);
                if (!res) {
-                  mensaje("El número no es valido", red);
+                  mensaje("El número no es valido", 'red');
                   return;
                }
             } else {
                return;
             }
             if (!nombre.value) {
-               mensaje("Introducir un nombre por favor", red);
+               mensaje("Introducir un nombre por favor", 'red');
                return;
             }
             if (!textareaModel.value) {
-               mensaje("Indica en que te podriamos ayudar", red);
+               mensaje("Indica en que te podriamos ayudar", 'red');
                return;
             }
             contactUser(
@@ -454,7 +454,7 @@ export default defineComponent({
             mobileNumber.value = null;
             toggleAcept.value = false;
             dialogVisible.value = false;
-            mensaje("Gracias por subscribirte", green);
+            mensaje("Gracias por ponerte en contacto con nostros", 'green');
          }
       }
       function mensaje(msg, color) {

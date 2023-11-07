@@ -1,5 +1,5 @@
 <template>
-   <q-layout view="lHh Lpr lFf">
+   <q-layout view="lHh Lpr lFf" v-if="sessionData">
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
             <q-btn
@@ -130,7 +130,7 @@
                <template v-if="sessionData">
                   <div>
                      <div>
-                        {{ usuarioLogineado }}
+                        {{ this.username }}
                      </div>
                      <div>
                         <q-btn flat round dense @click="logOut">Exit</q-btn>
@@ -181,56 +181,101 @@
                      border-radius: 25px;
                   "
                >
-                  <div style="padding: 10px; margin-top: 10%">
+                  <div style="padding: 10px; margin-top: 2%">
                      <q-input v-model="username" label="Nombre usuario" dense />
                   </div>
                   <div style="padding: 10px">
                      <q-input v-model="email" label="Email" dense />
                   </div>
                   <div>
-                     <p>Dejar de recibir notificaciones</p>
-                     <q-toggle v-model="notificacionesIsActive" color="green" />
+                     <p style="margin: 0">Quiero recibir notificaciones</p>
+                     <q-toggle v-model="notificaciones" color="green" />
+                  </div>
+                  <div style="margin: 0">
+                     <p>Quiero modificar la contraseña</p>
+                     <q-toggle v-model="modificarPassword" color="green" />
                   </div>
                </div>
-               <div
-                  style="
-                     background-color: rgb(50, 182, 205);
-                     height: 40vh;
-                     width: 60vw;
-                     display: flex;
-                     flex-direction: column;
-                     align-items: center;
-                     border-radius: 25px;
-                  "
-               >
-                  <div style="padding: 10px; margin-top: 10%">
-                     <q-input
-                        v-model="oldPassword"
-                        label="Password antiguo"
-                        dense
-                     />
+               <template v-if="notificaciones">
+                  <div
+                     style="
+                        background-color: rgb(205, 169, 50);
+                        height: 40vh;
+                        width: 60vw;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        border-radius: 25px;
+                     "
+                  >
+                     <div>
+                        <q-input
+                           type="tel"
+                           v-model="mobileNumber"
+                           label="Tu Número de Teléfono"
+                           class="q-mb-md md:q-mb-0"
+                        />
+                     </div>
+                     <div>
+                        <q-input
+                           v-model="textareaModel"
+                           filled
+                           clearable
+                           type="textarea"
+                           color="red-12"
+                           label="Si buscas algo en particular ..."
+                           hint="O si tienes dudas"
+                        />
+                     </div>
                   </div>
-                  <div style="padding: 10px">
-                     <q-input
-                        v-model="newPassword"
-                        label="Password nuevo"
-                        dense
-                     />
+               </template>
+               <template v-if="modificarPassword">
+                  <div
+                     style="
+                        background-color: rgb(50, 182, 205);
+                        height: 40vh;
+                        width: 60vw;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        border-radius: 25px;
+                     "
+                  >
+                     <div style="padding: 10px; margin-top: 10%">
+                        <q-input
+                           dense
+                           v-model="oldPassword"
+                           filled
+                           type="password"
+                           label="Password antiguo"
+                        />
+                     </div>
+                     <div style="padding: 10px">
+                        <q-input
+                           v-model="newPassword"
+                           label="Password nuevo"
+                           dense
+                           type="password"
+                        />
+                     </div>
+                     <div style="padding: 10px">
+                        <q-input
+                           v-model="newPassword2"
+                           label="Repetir nuevo"
+                           dense
+                           type="password"
+                        />
+                     </div>
                   </div>
-               </div>
+               </template>
             </div>
             <q-card-actions align="right" class="text-primary">
-               <div style="">
-                  <q-btn color="red"> ELIMINAR CUENTA </q-btn>
-               </div>
                <div style="padding: 5px">
-                  <q-btn
-                     color="orange"
-                     text-color="black"
-                     label="Cancel"
-                     @click="cancelInputCarDialog"
-                  />
+                  <q-btn color="red" @click="eliminarCuenta">
+                     ELIMINAR CUENTA
+                  </q-btn>
                </div>
+
                <div>
                   <q-btn
                      label="Aceptar"
@@ -256,6 +301,28 @@
          <router-view />
       </q-page-container>
    </q-layout>
+   <q-layout v-else>
+      <div
+         class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center"
+      >
+         <div>
+            <div style="font-size: 30vh">404</div>
+
+            <div class="text-h2" style="opacity: 0.4">
+               Oops. No hay nada que ver aqui...
+            </div>
+            <q-btn
+               class="q-mt-xl"
+               color="white"
+               text-color="blue"
+               unelevated
+               to="/"
+               label="Primera página"
+               no-caps
+            />
+         </div>
+      </div>
+   </q-layout>
 </template>
 <style>
 .iframe-container {
@@ -279,7 +346,10 @@ import loginUser from "src/components/loginUser.vue";
 import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import updateUser from "src/composable/updateUser";
-import { createLogger } from "vuex";
+import contactUser from "src/composable/contactUser";
+import updatePasswordUser from "src/composable/updatePasswordUser";
+import eliminarUsuario from "src/composable/eliminarCuenta";
+
 export default defineComponent({
    name: "ExtraUsuario",
    data() {
@@ -295,15 +365,21 @@ export default defineComponent({
          fechaActual: new Date().getFullYear(),
          oldPassword: "",
          newPassword: "",
-         notificacionesIsActive: false,
+         newPassword2: "",
+         notificaciones: false,
+         modificarPassword: false,
          username: sessionStorage.getItem("username"),
          email: sessionStorage.getItem("email"),
+         mobileNumber: "",
+         textareaModel: "",
       };
    },
    watch: {
-      notificacionesIsActive: function (item) {
-         debugger;
-         item;
+      notificaciones: function (item) {
+         item ? (this.modificarPassword = false) : "";
+      },
+      modificarPassword: function (item) {
+         item ? (this.notificaciones = false) : "";
       },
    },
    async mounted() {
@@ -319,16 +395,70 @@ export default defineComponent({
          : this.toggleDark;
    },
    methods: {
+      async eliminarCuenta() {
+         debugger;
+         let delCuenta = await eliminarUsuario();
+         if (delCuenta) {
+            Notify.create({
+               type: "succes",
+               message: "Cuenta Eliminada",
+            });
+         }
+      },
       async aceptarCambios() {
-         let res = await updateUser(
-            this.username,
-            this.email,
-            this.notificacionesIsActive
-         );
-         if (res) {
-            console.log("usuario update ok");
-         } else {
-            console.log("error al updatear usuario");
+         debugger;
+         let userNam = sessionStorage.getItem("username");
+         let mail = sessionStorage.getItem("email");
+         if (this.notificaciones) {
+            let respuestaNot = await contactUser(
+               this.username,
+               this.email,
+               this.mobileNumber,
+               this.textareaModel
+            );
+            if (respuestaNot) {
+               console.log("usuario update ok");
+               this.mobileNumber = "";
+               this.textareaModel = "";
+            } else {
+               console.log("error al updatear usuario");
+            }
+         } else if (this.modificarPassword) {
+            if (this.newPassword !== this.newPassword2) {
+               Notify.create({
+                  type: "negative",
+                  message: "Las contraseñas no son iguales",
+               });
+               return;
+            }
+            let resPasswrod = await updatePasswordUser(
+               this.oldPassword,
+               this.newPassword
+            );
+            if (resPasswrod) {
+               console.log("usuario update ok");
+               Notify.create({
+                  type: "succes",
+                  message: "Contraseña cambiada",
+               });
+               this.oldPassword = "";
+               this.newPassword = "";
+               this.newPassword2 = "";
+            } else {
+               console.log("error al updatear usuario");
+            }
+            console.log("cambiar password");
+         }
+         if (userNam !== this.username || mail !== this.email) {
+            let res = await updateUser(this.username, this.email);
+            if (res) {
+               sessionStorage.setItem("username", this.username); // Store the username
+               sessionStorage.setItem("email", this.email);
+
+               console.log("usuario update ok");
+            } else {
+               console.log("error al updatear usuario");
+            }
          }
       },
       updateUsuarioLogineado(bool) {
