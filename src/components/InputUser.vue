@@ -109,7 +109,7 @@ export default defineComponent({
       async handleInput() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
-         const username = this.userName;
+         const username = this.userName.toLowerCase();
          const password = this.contrasenaInput;
          const email = this.correoInput;
          // Call the login function

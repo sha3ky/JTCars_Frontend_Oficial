@@ -16,7 +16,7 @@ const eliminarUsuario = async () => {
       console.log(response); // Log the response for debugging
 
       if (response.status == 200) {
-         logout();
+         await logout();
          return true;
       } else {
          console.log("Error ab eliminar usuario");

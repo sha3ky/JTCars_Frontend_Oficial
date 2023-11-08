@@ -17,7 +17,7 @@
                         class="q-mr-xs"
                         :color="colorEmail"
                         size="24px"
-                        name="mail"
+                        name="person"
                      />
                   </div>
                </template>
@@ -79,6 +79,7 @@ export default defineComponent({
          loginDialog: false,
       };
    },
+
    watch: {
       loginUserDialog: function (item) {
          this.loginDialog = item;
@@ -91,7 +92,7 @@ export default defineComponent({
       async handleLogin() {
          debugger;
          // Assuming login function takes 'username' and 'password' as parameters
-         const username = this.userName;
+         const username = this.userName.toLowerCase();
          const password = this.contrasenaInput;
          // Call the login function
          const result = await login(username, password);

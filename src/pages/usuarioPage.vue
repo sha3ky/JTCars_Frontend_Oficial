@@ -60,9 +60,7 @@
                style="background: aliceblue"
                v-if="$q.screen.width < 600"
             />
-
             <q-space></q-space>
-            <!-- reactividad -->
             <template v-if="$q.screen.width > 600">
                <div>
                   <div>
@@ -156,20 +154,9 @@
             />
          </q-toolbar>
       </q-header>
-      <!-- <q-footer elevated class="bg-blue-grey-9">
-         <q-toolbar>
-            <q-toolbar-title style="text-align: center"
-               >Made with
-               <span
-                  ><q-img src="/lovePng.png" width="50px" height="50px"></q-img
-               ></span>
-               by Sha3ky's TEAM {{ fechaActual }}</q-toolbar-title
-            >
-         </q-toolbar>
-      </q-footer> -->
-      <Footer_Layout/>
+      <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
-         <h4>Opciones Usuario</h4>
+         <h4 style="margin: 15px;">Opciones Usuario</h4>
          <q-card>
             <div
                style="
@@ -347,7 +334,7 @@ body.body--dark {
 <script>
 // const username = sessionStorage.getItem('username');
 // const email = sessionStorage.getItem('email');
-import Footer_Layout from 'src/layouts/Footer_Layout.vue';
+import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";
@@ -393,7 +380,6 @@ export default defineComponent({
       },
    },
    async mounted() {
-      debugger;
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -415,6 +401,12 @@ export default defineComponent({
             });
             // window.location.href = './home';
             this.$router.push({ name: "principal-coches" });
+         } else {
+            Notify.create({
+               type: "negative",
+               message: "Error al eliminar la cuenta",
+            });
+            return;
          }
       },
       async aceptarCambios() {
@@ -429,14 +421,25 @@ export default defineComponent({
                this.textareaModel
             );
             if (respuestaNot) {
-               console.log("usuario update ok");
+               console.log("Usuario update ok");
                this.mobileNumber = "";
                this.textareaModel = "";
+               Notify.create({
+                  type: "positive",
+                  message: "Usuario update ok",
+               });
+               return;
             } else {
-               console.log("error al updatear usuario");
+               console.log("Error al updatear usuario");
+               Notify.create({
+                  type: "negative",
+                  message: "Error al updatear usuario",
+               });
+               return;
             }
          } else if (this.modificarPassword) {
             if (this.newPassword !== this.newPassword2) {
+               console.log("Las contraseñas no son iguales");
                Notify.create({
                   type: "negative",
                   message: "Las contraseñas no son iguales",
@@ -450,31 +453,42 @@ export default defineComponent({
             if (resPasswrod) {
                console.log("usuario update ok");
                Notify.create({
-                  type: "succes",
+                  type: "positive",
                   message: "Contraseña cambiada",
                });
                this.oldPassword = "";
                this.newPassword = "";
                this.newPassword2 = "";
             } else {
-               console.log("error al updatear usuario");
+               console.log("error al cambiar la contraseña");
+               Notify.create({
+                  type: "negative",
+                  message: "Error al cambiar la constraseña",
+               });
+               return;
             }
-            console.log("cambiar password");
          }
          if (userNam !== this.username || mail !== this.email) {
             let res = await updateUser(this.username, this.email);
             if (res) {
                sessionStorage.setItem("username", this.username); // Store the username
                sessionStorage.setItem("email", this.email);
-
                console.log("usuario update ok");
+               Notify.create({
+                  type: "positive",
+                  message: "Nombre cambiado",
+               });
             } else {
                console.log("error al updatear usuario");
+               Notify.create({
+                  type: "negative",
+                  message: "Error al cambiar el nommbre",
+               });
+               return;
             }
          }
       },
       updateUsuarioLogineado(bool) {
-         debugger;
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
@@ -482,17 +496,14 @@ export default defineComponent({
          }
       },
       handleDialogClose() {
-         debugger;
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
          this.showInputUser = false;
       },
       nuevoUsuario() {
-         debugger;
          this.showInputUser = true;
          //this.showLoginUser = false;
       },
       loginearUsuario() {
-         debugger;
          this.showLoginUser = true;
          //this.showInputUser = false;
       },
@@ -523,19 +534,14 @@ export default defineComponent({
          }
       },
    },
-
    components: {
       InputUser,
       loginUser,
       Footer_Layout,
-
    },
 
    setup() {
       const $q = useQuasar();
-      // $q.dark.set(true); // or false or "auto"
-      // $q.dark.toggle(); // toggle
-
       return {};
    },
 });

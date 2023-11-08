@@ -198,6 +198,7 @@
                      justify-content: center;
                      border: 2px solid #787575;
                      padding: 20px;
+                     border-radius: 15px;
                   "
                >
                   <q-form
@@ -274,6 +275,7 @@
                   justify-content: center;
                   border: 2px solid #787575;
                   padding: 10px;
+                  border-radius: 15px;
                "
             >
                <div>
