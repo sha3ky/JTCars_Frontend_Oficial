@@ -29,7 +29,6 @@
 
 // export default login;
 
-
 // import axios from "axios";
 // import apiLink from "./apiLink";
 // let link = apiLink;
@@ -68,40 +67,37 @@ import apiLink from "./apiLink";
 let link = apiLink;
 
 const login = async (name, password) => {
-  debugger;
-  try {
-    const response = await axios.post(`${link}api/loginUser`, {
-
-        username: name,
-        password: password,
-
-    });
-
-    console.log(response); // Log the response for debugging
-
-    if (response.status==200 && response.data.access) {
-      sessionStorage.setItem("access_token", response.data.access);
-      sessionStorage.setItem('refresh_token', response.data.refresh)
-      sessionStorage.setItem('username', response.data.username); // Store the username
-      sessionStorage.setItem('email', response.data.email);
-      axios.defaults.headers.common["Authorization"] = response.data.access;
-
-      store.dispatch("login", {
-        sessionData: response.data.access,
-        name: name ,// Replace with the actual name you want to store
-        isAdmin:response.data.is_admin
+   debugger;
+   try {
+      const response = await axios.post(`${link}api/loginUser`, {
+         username: name,
+         password: password,
       });
 
-      return  true
-    } else {
-      console.log("Invalid credentials")
+      console.log(response); // Log the response for debugging
 
-    }
-  } catch (error) {
-    console.error("Login error:", error);
-    // return { success: false, message: "An error occurred" };
-    return false
-  }
+      if (response.status == 200 && response.data.access) {
+         sessionStorage.setItem("access_token", response.data.access);
+         sessionStorage.setItem("refresh_token", response.data.refresh);
+         sessionStorage.setItem("username", response.data.username); // Store the username
+         sessionStorage.setItem("email", response.data.email);
+         axios.defaults.headers.common["Authorization"] = response.data.access;
+         /*The purpose of this code is to dispatch the "login" action to the store, passing relevant user data such as the access token, username, and administrator status. This data can be stored in the Vuex store's state and used throughout your application to manage user sessions and access control.*/
+         store.dispatch("login", {
+            sessionData: response.data.access,
+            name: name, // Replace with the actual name you want to store
+            isAdmin: response.data.is_admin,
+         });
+
+         return true;
+      } else {
+         console.log("Invalid credentials");
+      }
+   } catch (error) {
+      console.error("Login error:", error);
+      // return { success: false, message: "An error occurred" };
+      return false;
+   }
 };
 
 export default login;

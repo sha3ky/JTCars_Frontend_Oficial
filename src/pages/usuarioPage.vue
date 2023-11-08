@@ -156,7 +156,7 @@
       </q-header>
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
-         <h4 style="margin: 15px;">Opciones Usuario</h4>
+         <h4 style="margin: 15px">Opciones Usuario</h4>
          <q-card>
             <div
                style="
@@ -179,10 +179,18 @@
                   "
                >
                   <div style="padding: 10px; margin-top: 2%">
-                     <q-input v-model="username" label="Nombre usuario" dense />
+                     <q-input
+                        v-model="objetoNotifField.username"
+                        label="Nombre usuario"
+                        dense
+                     />
                   </div>
                   <div style="padding: 10px">
-                     <q-input v-model="email" label="Email" dense />
+                     <q-input
+                        v-model="objetoNotifField.email"
+                        label="Email"
+                        dense
+                     />
                   </div>
                   <div>
                      <p style="margin: 0">Quiero recibir notificaciones</p>
@@ -208,20 +216,27 @@
                      <div>
                         <q-input
                            type="tel"
-                           v-model="mobileNumber"
+                           v-model="objetoNotifField.mobileNumber"
                            label="Tu Número de Teléfono"
                            class="q-mb-md md:q-mb-0"
                         />
                      </div>
                      <div>
                         <q-input
-                           v-model="textareaModel"
+                           v-model="objetoNotifField.textareaModel"
                            filled
                            clearable
                            type="textarea"
                            color="red-12"
                            label="Si buscas algo en particular ..."
-                           hint="O si tienes dudas"
+                        />
+                     </div>
+                     <div style="padding: 5px">
+                        <q-btn
+                           push
+                           style="background: yellowgreen"
+                           label="Preferencias"
+                           @click="busquedaAvanzada"
                         />
                      </div>
                   </div>
@@ -258,7 +273,7 @@
                      <div style="padding: 10px">
                         <q-input
                            v-model="newPassword2"
-                           label="Repetir nuevo"
+                           label="Repetir password"
                            dense
                            type="password"
                         />
@@ -320,6 +335,97 @@
          </div>
       </div>
    </q-layout>
+   <q-dialog v-model="busquedaDialog">
+      <q-card>
+         <q-card-section>
+            <div class="text-h6">Busqueda avanzada</div>
+         </q-card-section>
+
+         <q-card-section class="q-pt-none">
+            <div style="display: flex; padding: 5px">
+               <div style="width: 33vw">
+                  <q-select
+                     filled
+                     v-model="objetoNotifField.ano"
+                     :options="optionsAno"
+                     label="Selecionar Año Hasta"
+                     dense
+                     style="max-width: 100%"
+                  />
+               </div>
+               <div style="width: 33vw">
+                  <q-select
+                     filled
+                     v-model="objetoNotifField.km"
+                     :options="optionskm"
+                     label="Km hasta"
+                     dense
+                     style="max-width: 100%"
+                  />
+               </div>
+            </div>
+            <div style="display: flex; padding: 5px">
+               <div style="width: 33vw">
+                  <div>
+                     <q-select
+                        filled
+                        v-model="objetoNotifField.etiqueta"
+                        :options="optionsEtiqueta"
+                        label="Selecionar Etiqueta"
+                        dense
+                        style="max-width: 100%"
+                     />
+                  </div>
+               </div>
+               <!-- tipoCoches -->
+               <div style="width: 33vw">
+                  <div>
+                     <q-select
+                        filled
+                        v-model="objetoNotifField.tipo"
+                        :options="optionsTipo"
+                        label="Selecionar Tipo"
+                        dense
+                        style="max-width: 100%"
+                     />
+                  </div>
+               </div>
+               <!-- promotions -->
+            </div>
+            <div style="display: flex; padding: 5px">
+               <div style="width: 33vw">
+                  <q-select
+                     filled
+                     v-model="objetoNotifField.combustible"
+                     :options="optionsCombustible"
+                     label="Selecionar Combustible"
+                     dense
+                     style="max-width: 100%"
+                  />
+               </div>
+               <div style="width: 33vw">
+                  <q-input
+                     dense
+                     filled
+                     v-model="objetoNotifField.precio"
+                     label="Indica el precio maximo"
+                  />
+               </div>
+            </div>
+         </q-card-section>
+
+         <q-card-actions align="right">
+            <q-btn
+               flat
+               label="Cancelar"
+               @click="cancelarDialog"
+               color="primary"
+               v-close-popup
+            />
+            <q-btn flat label="OK" color="primary" v-close-popup />
+         </q-card-actions>
+      </q-card>
+   </q-dialog>
 </template>
 <style>
 .iframe-container {
@@ -330,10 +436,18 @@
 body.body--dark {
    background: #0c0c0c;
 }
+.q-select__dialog {
+   width: 200px !important;
+}
 </style>
 <script>
-// const username = sessionStorage.getItem('username');
-// const email = sessionStorage.getItem('email');
+import {
+   etiquetaCoche,
+   tipoCoche,
+   tipoCombustible,
+   cocheAno,
+   km,
+} from "src/composable/dataSelectores";
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
@@ -363,12 +477,28 @@ export default defineComponent({
          oldPassword: "",
          newPassword: "",
          newPassword2: "",
-         notificaciones: false,
+
          modificarPassword: false,
-         username: sessionStorage.getItem("username"),
-         email: sessionStorage.getItem("email"),
-         mobileNumber: "",
-         textareaModel: "",
+         busquedaDialog: false,
+         ////////////////////////////
+         optionsEtiqueta: etiquetaCoche,
+         optionsTipo: tipoCoche,
+         optionsAno: cocheAno,
+         optionsCombustible: tipoCombustible,
+         optionskm: km,
+         objetoNotifField: {
+            username: sessionStorage.getItem("username"),
+            email: sessionStorage.getItem("email"),
+            notificaciones: sessionStorage.getItem("notificaciones"),
+            mobileNumber: "",
+            textareaModel: "",
+            ano: "",
+            km: 0,
+            etiqueta: "",
+            precio: "",
+            combustible: "",
+            tipo: "",
+         },
       };
    },
    watch: {
@@ -391,6 +521,21 @@ export default defineComponent({
          : this.toggleDark;
    },
    methods: {
+      cancelarDialog() {
+         debugger;
+         this.objetoNotifField.mobileNumber = "";
+         this.objetoNotifField.textareaModel = "";
+         this.objetoNotifField.ano = "";
+         this.objetoNotifField.km = 0;
+         this.objetoNotifField.etiqueta = "";
+         this.objetoNotifField.precio = "";
+         this.objetoNotifField.combustible = "";
+         this.objetoNotifField.tipo = "";
+      },
+      busquedaAvanzada() {
+         debugger;
+         this.busquedaDialog = true;
+      },
       async eliminarCuenta() {
          debugger;
          let delCuenta = await eliminarUsuario();
@@ -413,13 +558,10 @@ export default defineComponent({
          debugger;
          let userNam = sessionStorage.getItem("username");
          let mail = sessionStorage.getItem("email");
+
+         /////////////////////////
          if (this.notificaciones) {
-            let respuestaNot = await contactUser(
-               this.username,
-               this.email,
-               this.mobileNumber,
-               this.textareaModel
-            );
+            let respuestaNot = await contactUser(this.objetoNotifField);
             if (respuestaNot) {
                console.log("Usuario update ok");
                this.mobileNumber = "";
@@ -437,6 +579,8 @@ export default defineComponent({
                });
                return;
             }
+
+            /////////////////////////
          } else if (this.modificarPassword) {
             if (this.newPassword !== this.newPassword2) {
                console.log("Las contraseñas no son iguales");

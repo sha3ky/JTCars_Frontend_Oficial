@@ -3,16 +3,16 @@ import apiLink from "./apiLink";
 
 const link = apiLink;
 
-const contactUser = async (name, email, telefono,mensaje) => {
-  debugger
+const contactUser = async (objeto) => {
    debugger;
+
    try {
       // Send a POST request to register the user
       const response = await axios.post(`${link}api/contactUser/`, {
-         name: name, // Update to match the field names in the Django view
-         email: email,
-         telefono: telefono,
-         mensaje:mensaje
+         name: objeto.username, // Update to match the field names in the Django view
+         email: objeto.email,
+         telefono:objeto.telefono,
+         mensaje:objeto.mensaje,
       });
 
       if (response.status == 200) {
