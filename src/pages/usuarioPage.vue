@@ -492,7 +492,7 @@ export default defineComponent({
             notificaciones: true,
             mobileNumber: "",
             textareaModel: "",
-            ano: "",
+            ano: '',
             km: 0,
             etiqueta: "",
             precio: "",

@@ -5,7 +5,9 @@ const tipoCombustible=['Gasolina','Diesel','GLP','GNC','Electrico']
 const coloresBanners=['Rojo','Verde','Azul','Negro','Naranja','Gris','Marrón','Rosa','Púrpura']
 const km=['50000','100000','150000','200000']
 const cocheAno=[]
-for (let year = 1975; year <= 2030; year++) {
+
+const currentYear = new Date().getFullYear();
+for (let year = 1970; year <= currentYear; year += 5) {
   cocheAno.push(year.toString());
 }
 export {etiquetaCoche,tipoCoche,tipoPromocion,tipoCombustible,coloresBanners,cocheAno,km}
