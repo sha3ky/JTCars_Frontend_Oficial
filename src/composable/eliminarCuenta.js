@@ -3,34 +3,30 @@ import apiLink from "./apiLink";
 import logout from "./logOut";
 
 let link = apiLink;
-const accessToken = sessionStorage.getItem("access_token");
-const refresh_token = sessionStorage.getItem("refresh_token");
 
 const eliminarUsuario = async () => {
    debugger;
+   const accessToken = sessionStorage.getItem("access_token");
+   const refresh_token = sessionStorage.getItem("refresh_token");
+   const user = sessionStorage.getItem("username");
    try {
-      const response = await axios.delete(
-         `${link}api/deleteUserAccount`,
-         {
-            refresh_token: refresh_token,
+      const response = await axios.delete(`${link}api/deleteUserAccount`, {
+         headers: {
+            Authorization: `Bearer ${accessToken}`,
          },
-         {
-            headers: {
-               Authorization: `Bearer ${accessToken}`, // Include the access token in the headers
-            },
-         }
-      );
+         data: {
+            user: user,
+         },
+      });
       console.log(response); // Log the response for debugging
 
       if (response.status == 200) {
-         await logout();
          return true;
       } else {
          console.log("Error ab eliminar usuario");
       }
    } catch (error) {
       console.error("error al eliminar usuario:", error);
-      // return { success: false, message: "An error occurred" };
       return false;
    }
 };

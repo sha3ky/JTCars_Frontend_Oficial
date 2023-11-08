@@ -86,6 +86,7 @@ const routes = [
       path: "/home",
       name: "principal-coches",
       component: PrincipalCoches,
+
    },
    {
       path: "/contacto",
@@ -113,6 +114,7 @@ const routes = [
       path: "/usuarioPage",
       name: "usuario-page",
       component: usuarioPageVue,
+
    },
    {
       path: "/:catchAll(.*)",

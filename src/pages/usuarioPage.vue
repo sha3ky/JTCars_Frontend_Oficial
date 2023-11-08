@@ -590,8 +590,12 @@ export default defineComponent({
                type: "succes",
                message: "Cuenta Eliminada",
             });
+
             // window.location.href = './home';
             this.$router.push({ name: "principal-coches" });
+            store.dispatch("logout");
+            await logout();
+
          } else {
             Notify.create({
                type: "negative",
