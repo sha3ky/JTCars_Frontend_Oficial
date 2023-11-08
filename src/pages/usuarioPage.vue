@@ -178,19 +178,9 @@
                      border-radius: 25px;
                   "
                >
-                  <div style="padding: 10px; margin-top: 2%">
-                     <q-input
-                        v-model="objetoNotifField.username"
-                        label="Nombre usuario"
-                        dense
-                     />
-                  </div>
-                  <div style="padding: 10px">
-                     <q-input
-                        v-model="objetoNotifField.email"
-                        label="Email"
-                        dense
-                     />
+                  <div>
+                     <p style="margin: 0">Quiero modifcar nombre y email</p>
+                     <q-toggle v-model="modificarNomEmail" color="green" />
                   </div>
                   <div>
                      <p style="margin: 0">Quiero recibir notificaciones</p>
@@ -201,6 +191,35 @@
                      <q-toggle v-model="modificarPassword" color="green" />
                   </div>
                </div>
+
+               <template v-if="modificarNomEmail">
+                  <div
+                     style="
+                        background-color: rgb(50, 205, 153);
+                        height: 40vh;
+                        width: 60vw;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        border-radius: 25px;
+                     "
+                  >
+                     <div style="padding: 10px; margin-top: 2%">
+                        <q-input
+                           v-model="objetoNotifField.username"
+                           label="Nombre usuario"
+                           dense
+                        />
+                     </div>
+                     <div style="padding: 10px">
+                        <q-input
+                           v-model="objetoNotifField.email"
+                           label="Email"
+                           dense
+                        />
+                     </div>
+                  </div>
+               </template>
                <template v-if="notificaciones">
                   <div
                      style="
@@ -477,9 +496,11 @@ export default defineComponent({
          oldPassword: "",
          newPassword: "",
          newPassword2: "",
-         notificaciones:false,
+         notificaciones: false,
          modificarPassword: false,
          busquedaDialog: false,
+         modificarNomEmail: false,
+         activeSection: null,
          ////////////////////////////
          optionsEtiqueta: etiquetaCoche,
          optionsTipo: tipoCoche,
@@ -502,15 +523,24 @@ export default defineComponent({
       };
    },
    watch: {
-      notificaciones: function (item) {
-         item ? (this.modificarPassword = false) : "";
-      },
-      modificarPassword: function (item) {
-         item ? (this.notificaciones = false) : "";
+      activeSection: function (section) {
+         if (section === "notificaciones") {
+            this.notificaciones = true;
+            this.modificarPassword = false;
+            this.modificarNomEmail = false;
+         } else if (section === "modificarPassword") {
+            this.notificaciones = false;
+            this.modificarPassword = true;
+            this.modificarNomEmail = false;
+         } else if (section === "modificarNomEmail") {
+            this.notificaciones = false;
+            this.modificarPassword = false;
+            this.modificarNomEmail = true;
+         }
       },
    },
    async mounted() {
-    debugger
+      debugger;
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -560,79 +590,85 @@ export default defineComponent({
          let userNam = sessionStorage.getItem("username");
          let mail = sessionStorage.getItem("email");
 
-         /////////////////////////
-         if (this.notificaciones) {
+         // Handle notificaciones
+         if (this.activeSection === "notificaciones") {
             let respuestaNot = await contactUser(this.objetoNotifField);
             if (respuestaNot) {
                console.log("Cambios realizados");
                this.objetoNotifField.mobileNumber = "";
-               this.objetoNotifField.textareaModel="";
+               this.objetoNotifField.textareaModel = "";
                Notify.create({
                   type: "positive",
                   message: "Cambios realizados",
                });
-               return;
             } else {
-               console.log("Cambiois no realizados ");
+               console.log("Cambios no realizados");
                Notify.create({
                   type: "negative",
-                  message: "Cambiois no realizados ",
+                  message: "Cambios no realizados",
                });
-               return;
             }
-
-            /////////////////////////
-         } else if (this.modificarPassword) {
+         } else if (this.activeSection === "modificarPassword") {
             if (this.newPassword !== this.newPassword2) {
                console.log("Las contraseñas no son iguales");
                Notify.create({
                   type: "negative",
                   message: "Las contraseñas no son iguales",
                });
-               return;
-            }
-            let resPasswrod = await updatePasswordUser(
-               this.oldPassword,
-               this.newPassword
-            );
-            if (resPasswrod) {
-               console.log("usuario update ok");
-               Notify.create({
-                  type: "positive",
-                  message: "Contraseña cambiada",
-               });
-               this.oldPassword = "";
-               this.newPassword = "";
-               this.newPassword2 = "";
             } else {
-               console.log("error al cambiar la contraseña");
-               Notify.create({
-                  type: "negative",
-                  message: "Error al cambiar la constraseña",
-               });
-               return;
+               let resPassword = await updatePasswordUser(
+                  this.oldPassword,
+                  this.newPassword
+               );
+               if (resPassword) {
+                  console.log("Usuario update ok");
+                  Notify.create({
+                     type: "positive",
+                     message: "Contraseña cambiada",
+                  });
+                  this.oldPassword = "";
+                  this.newPassword = "";
+                  this.newPassword2 = "";
+               } else {
+                  console.log("Error al cambiar la contraseña");
+                  Notify.create({
+                     type: "negative",
+                     message: "Error al cambiar la contraseña",
+                  });
+               }
             }
          }
-         if (userNam !== this.objetoNotifField.username || mail !== this.objetoNotifField.email) {
-            let res = await updateUser(this.objetoNotifField.username, this.objetoNotifField.email);
+
+         if (
+            this.activeSection === "modificarNomEmail" &&
+            (userNam !== this.objetoNotifField.username ||
+               mail !== this.objetoNotifField.email)
+         ) {
+            let res = await updateUser(
+               this.objetoNotifField.username,
+               this.objetoNotifField.email
+            );
             if (res) {
-               sessionStorage.setItem("username", this.objetoNotifField.username); // Store the username
-               sessionStorage.setItem("email", this.this.objetoNotifField.email);
-               console.log("usuario update ok");
+               sessionStorage.setItem(
+                  "username",
+                  this.objetoNotifField.username
+               );
+               sessionStorage.setItem("email", this.objetoNotifField.email);
+               console.log("Usuario update ok");
                Notify.create({
                   type: "positive",
                   message: "Nombre cambiado",
                });
             } else {
-               console.log("error al updatear usuario");
+               console.log("Error al actualizar el usuario");
                Notify.create({
                   type: "negative",
-                  message: "Error al cambiar el nommbre",
+                  message: "Error al cambiar el nombre",
                });
-               return;
             }
          }
       },
+
       updateUsuarioLogineado(bool) {
          if (bool) {
             this.usuarioLogineado = store.state.name;
