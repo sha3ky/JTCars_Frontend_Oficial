@@ -137,7 +137,7 @@
                <template v-if="sessionData">
                   <div>
                      <div>
-                        {{ this.username }}
+                        {{ usuarioLogineado }}
                      </div>
                      <div>
                         <q-btn flat round dense @click="logOut">Exit</q-btn>
@@ -510,6 +510,7 @@ export default defineComponent({
       },
    },
    async mounted() {
+    debugger
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -612,11 +613,11 @@ export default defineComponent({
                return;
             }
          }
-         if (userNam !== this.username || mail !== this.email) {
-            let res = await updateUser(this.username, this.email);
+         if (userNam !== this.objetoNotifField.username || mail !== this.objetoNotifField.email) {
+            let res = await updateUser(this.objetoNotifField.username, this.objetoNotifField.email);
             if (res) {
-               sessionStorage.setItem("username", this.username); // Store the username
-               sessionStorage.setItem("email", this.email);
+               sessionStorage.setItem("username", this.objetoNotifField.username); // Store the username
+               sessionStorage.setItem("email", this.this.objetoNotifField.email);
                console.log("usuario update ok");
                Notify.create({
                   type: "positive",

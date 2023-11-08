@@ -844,6 +844,7 @@ export default defineComponent({
       },
    },
    async mounted() {
+    debugger
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;

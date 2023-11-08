@@ -36,7 +36,7 @@
                         </router-link>
                      </template>
                      <template v-if="sessionData">
-                      <router-link to="/usuarioPage">
+                        <router-link to="/usuarioPage">
                            <q-item clickable>
                               <q-item-section>Mis datos</q-item-section>
                            </q-item>
@@ -94,7 +94,7 @@
                      </router-link>
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
-                          <q-btn
+                           <q-btn
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
@@ -162,18 +162,7 @@
             />
          </q-toolbar>
       </q-header>
-      <!-- <q-footer elevated class="bg-blue-grey-9">
-         <q-toolbar>
-            <q-toolbar-title style="text-align: center"
-               >Made with
-               <span
-                  ><q-img src="/lovePng.png" width="50px" height="50px"></q-img
-               ></span>
-               by Sha3ky's TEAM {{ fechaActual }}</q-toolbar-title
-            >
-         </q-toolbar>
-      </q-footer> -->
-      <Footer_Layout/>
+      <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
          <q-img
             src="/banner1WebP.webp"
@@ -208,26 +197,26 @@
                   >
                      <q-input
                         outlined
-                        v-model="obj.nombre"
+                        v-model="obj.nombre.value"
                         label="Tu nombre *"
                      />
 
                      <q-input
                         outlined
                         type="email"
-                        v-model="obj.email"
+                        v-model="obj.email.value"
                         label="Tu Email *"
                         lazy-rules
                      />
                      <q-input
                         outlined
                         type="tel"
-                        v-model="obj.mobileNumber"
+                        v-model="obj.mobileNumber.value"
                         label="Tu Número de Teléfono"
                         class="q-mb-md md:q-mb-0"
                      />
                      <q-input
-                        v-model="obj.textareaModel"
+                        v-model="obj.textareaModel.value"
                         filled
                         clearable
                         type="textarea"
@@ -313,7 +302,7 @@ body.body--dark {
 }
 </style>
 <script>
-import Footer_Layout from 'src/layouts/Footer_Layout.vue';
+import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
@@ -338,7 +327,6 @@ export default defineComponent({
          toggleDark: false,
          modelSelectedMenu: ref("coches"),
          usuarioLogineado: "",
-         fechaActual: new Date().getFullYear(),
       };
    },
 
@@ -409,12 +397,12 @@ export default defineComponent({
       const $q = useQuasar();
       // $q.dark.set(true); // or false or "auto"
       // $q.dark.toggle(); // toggle
-      const obj={
-        textareaModel:ref(""),
-        nombre:ref(null),
-        telefono:ref(null),
-        email:ref(null)
-      }
+      const obj = {
+         textareaModel: ref(""),
+         nombre: ref(""),
+         mobileNumber: ref(""),
+         email: ref(""),
+      };
       // const textareaModel = ref("");
       // const nombre = ;
       // const email = ref(null);
@@ -427,9 +415,9 @@ export default defineComponent({
          if (toggleAcept.value) {
             if (obj.email) {
                const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-               res = emailRegex.test(obj.email);
+               res = emailRegex.test(obj.email.value);
                if (!res) {
-                  mensaje("El email no es valido", red);
+                  mensaje("El email no es valido", "red");
                   return;
                }
             } else {
@@ -438,30 +426,37 @@ export default defineComponent({
 
             if (obj.mobileNumber) {
                const phoneNumberRegex = /^[0-9]*$/; // Regular expression to match only numbers
-               res = phoneNumberRegex.test(obj.mobileNumber);
+               res = phoneNumberRegex.test(obj.mobileNumber.value);
                if (!res) {
-                  mensaje("El número no es valido", 'red');
+                  mensaje("El número no es valido", "red");
                   return;
                }
             } else {
                return;
             }
-            if (!obj.nombre) {
-               mensaje("Introducir un nombre por favor", 'red');
+            if (!obj.nombre.value) {
+               mensaje("Introducir un nombre por favor", "red");
                return;
             }
-            if (!obj.textareaModel) {
-               mensaje("Indica en que te podriamos ayudar", 'red');
+            if (!obj.textareaModel.value) {
+               mensaje("Indica en que te podriamos ayudar", "red");
                return;
             }
-            contactUser(obj);
-            // nombre.value = null;
-            // email.value = null;
-            // textareaModel.value = "";
-            // mobileNumber.value = null;
+            const objetoBBDD = {
+               username: obj.nombre.value,
+               mobileNumber: obj.mobileNumber.value,
+               email: obj.email.value,
+               textareaModel: obj.textareaModel.value,
+               notifications:true,
+            };
+            contactUser(objetoBBDD);
+            obj.mobileNumber.value = "";
+            obj.email.value = "";
+            obj.nombre = "";
+            obj.textareaModel = "";
             toggleAcept.value = false;
             dialogVisible.value = false;
-            mensaje("Gracias por ponerte en contacto con nostros", 'green');
+            mensaje("Gracias por ponerte en contacto con nostros", "green");
          }
       }
       function mensaje(msg, color) {
@@ -485,9 +480,7 @@ export default defineComponent({
          obj,
          toggleAcept,
          myForm,
-
       };
    },
 });
 </script>
-
