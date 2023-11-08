@@ -176,6 +176,7 @@
                      flex-direction: column;
                      align-items: center;
                      border-radius: 25px;
+                     justify-content: center;
                   "
                >
                   <div>
@@ -202,6 +203,7 @@
                         flex-direction: column;
                         align-items: center;
                         border-radius: 25px;
+                        justify-content: center;
                      "
                   >
                      <div style="padding: 10px; margin-top: 2%">
@@ -230,6 +232,7 @@
                         flex-direction: column;
                         align-items: center;
                         border-radius: 25px;
+                        justify-content: center;
                      "
                   >
                      <div>
@@ -270,6 +273,7 @@
                         flex-direction: column;
                         align-items: center;
                         border-radius: 25px;
+                        j
                      "
                   >
                      <div style="padding: 10px; margin-top: 10%">
@@ -500,7 +504,6 @@ export default defineComponent({
          modificarPassword: false,
          busquedaDialog: false,
          modificarNomEmail: false,
-         activeSection: null,
          ////////////////////////////
          optionsEtiqueta: etiquetaCoche,
          optionsTipo: tipoCoche,
@@ -523,19 +526,22 @@ export default defineComponent({
       };
    },
    watch: {
-      activeSection: function (section) {
-         if (section === "notificaciones") {
-            this.notificaciones = true;
+      notificaciones: function (item) {
+         if (item) {
             this.modificarPassword = false;
             this.modificarNomEmail = false;
-         } else if (section === "modificarPassword") {
+         }
+      },
+      modificarPassword: function (item) {
+         if (item) {
             this.notificaciones = false;
-            this.modificarPassword = true;
             this.modificarNomEmail = false;
-         } else if (section === "modificarNomEmail") {
+         }
+      },
+      modificarNomEmail: function (item) {
+         if (item) {
             this.notificaciones = false;
             this.modificarPassword = false;
-            this.modificarNomEmail = true;
          }
       },
    },
@@ -552,6 +558,15 @@ export default defineComponent({
          : this.toggleDark;
    },
    methods: {
+      showNotificaciones() {
+         this.activeSection = "notificaciones";
+      },
+      showModificarPassword() {
+         this.activeSection = "modificarPassword";
+      },
+      showModificarNomEmail() {
+         this.activeSection = "modificarNomEmail";
+      },
       cancelarDialog() {
          debugger;
          this.objetoNotifField.mobileNumber = "";
@@ -591,7 +606,7 @@ export default defineComponent({
          let mail = sessionStorage.getItem("email");
 
          // Handle notificaciones
-         if (this.activeSection === "notificaciones") {
+         if (this.notificaciones) {
             let respuestaNot = await contactUser(this.objetoNotifField);
             if (respuestaNot) {
                console.log("Cambios realizados");
@@ -608,7 +623,7 @@ export default defineComponent({
                   message: "Cambios no realizados",
                });
             }
-         } else if (this.activeSection === "modificarPassword") {
+         } else if (this.modificarPassword) {
             if (this.newPassword !== this.newPassword2) {
                console.log("Las contraseñas no son iguales");
                Notify.create({
@@ -640,7 +655,7 @@ export default defineComponent({
          }
 
          if (
-            this.activeSection === "modificarNomEmail" &&
+            this.modificarNomEmail &&
             (userNam !== this.objetoNotifField.username ||
                mail !== this.objetoNotifField.email)
          ) {
