@@ -739,6 +739,26 @@ export default defineComponent({
                sortable: true,
             },
             { name: "telefono", label: "Telefono", field: "telefono" },
+            { name: "ano", label: "Año Coche", field: "ano", sortable: true },
+            {
+               name: "combustible",
+               label: "Tipo Combustible",
+               field: "combustible",
+               sortable: true,
+            },
+            { name: "km", label: "Km Hasta", field: "km", sortable: true },
+            {
+               name: "precio",
+               label: "Precio Hasta",
+               field: "precio",
+               sortable: true,
+            },
+            {
+               name: "tipo",
+               label: "Tipo de Coche",
+               field: "tipo",
+               sortable: true,
+            },
          ],
          datosCoches: {},
          imagenesArray: [],
@@ -761,8 +781,8 @@ export default defineComponent({
          imagenConvertidaBase64: "",
          existPdf: "",
          fechaActual: new Date().getFullYear(),
-         filterCoches:'',
-         filterPersonas:'',
+         filterCoches: "",
+         filterPersonas: "",
       };
    },
    watch: {
