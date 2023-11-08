@@ -4,15 +4,22 @@ import logout from "./logOut";
 
 let link = apiLink;
 const accessToken = sessionStorage.getItem("access_token");
+const refresh_token = sessionStorage.getItem("refresh_token");
 
 const eliminarUsuario = async () => {
    debugger;
    try {
-      const response = await axios.delete(`${link}api/deleteUserAccount`, {
-         headers: {
-            Authorization: `Bearer ${accessToken}`, // Include the access token in the headers
+      const response = await axios.delete(
+         `${link}api/deleteUserAccount`,
+         {
+            refresh_token: refresh_token,
          },
-      });
+         {
+            headers: {
+               Authorization: `Bearer ${accessToken}`, // Include the access token in the headers
+            },
+         }
+      );
       console.log(response); // Log the response for debugging
 
       if (response.status == 200) {
