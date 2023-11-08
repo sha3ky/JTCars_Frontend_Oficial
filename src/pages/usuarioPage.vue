@@ -477,7 +477,7 @@ export default defineComponent({
          oldPassword: "",
          newPassword: "",
          newPassword2: "",
-
+         notificaciones:false,
          modificarPassword: false,
          busquedaDialog: false,
          ////////////////////////////
@@ -489,7 +489,7 @@ export default defineComponent({
          objetoNotifField: {
             username: sessionStorage.getItem("username"),
             email: sessionStorage.getItem("email"),
-            notificaciones: sessionStorage.getItem("notificaciones"),
+            notificaciones: true,
             mobileNumber: "",
             textareaModel: "",
             ano: "",
@@ -563,19 +563,19 @@ export default defineComponent({
          if (this.notificaciones) {
             let respuestaNot = await contactUser(this.objetoNotifField);
             if (respuestaNot) {
-               console.log("Usuario update ok");
-               this.mobileNumber = "";
-               this.textareaModel = "";
+               console.log("Cambios realizados");
+               this.objetoNotifField.mobileNumber = "";
+               this.objetoNotifField.textareaModel="";
                Notify.create({
                   type: "positive",
-                  message: "Usuario update ok",
+                  message: "Cambios realizados",
                });
                return;
             } else {
-               console.log("Error al updatear usuario");
+               console.log("Cambiois no realizados ");
                Notify.create({
                   type: "negative",
-                  message: "Error al updatear usuario",
+                  message: "Cambiois no realizados ",
                });
                return;
             }

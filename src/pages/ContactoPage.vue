@@ -208,26 +208,26 @@
                   >
                      <q-input
                         outlined
-                        v-model="nombre"
+                        v-model="obj.nombre"
                         label="Tu nombre *"
                      />
 
                      <q-input
                         outlined
                         type="email"
-                        v-model="email"
+                        v-model="obj.email"
                         label="Tu Email *"
                         lazy-rules
                      />
                      <q-input
                         outlined
                         type="tel"
-                        v-model="mobileNumber"
+                        v-model="obj.mobileNumber"
                         label="Tu Número de Teléfono"
                         class="q-mb-md md:q-mb-0"
                      />
                      <q-input
-                        v-model="textareaModel"
+                        v-model="obj.textareaModel"
                         filled
                         clearable
                         type="textarea"
@@ -409,19 +409,25 @@ export default defineComponent({
       const $q = useQuasar();
       // $q.dark.set(true); // or false or "auto"
       // $q.dark.toggle(); // toggle
-      const textareaModel = ref("");
-      const nombre = ref(null);
-      const email = ref(null);
-      const mobileNumber = ref(null);
+      const obj={
+        textareaModel:ref(""),
+        nombre:ref(null),
+        telefono:ref(null),
+        email:ref(null)
+      }
+      // const textareaModel = ref("");
+      // const nombre = ;
+      // const email = ref(null);
+      // const mobileNumber = ref(null);
       const toggleAcept = ref(false);
       const dialogVisible = ref(false);
 
       function onSubmit() {
          let res;
          if (toggleAcept.value) {
-            if (email.value) {
+            if (obj.email) {
                const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-               res = emailRegex.test(email.value);
+               res = emailRegex.test(obj.email);
                if (!res) {
                   mensaje("El email no es valido", red);
                   return;
@@ -430,9 +436,9 @@ export default defineComponent({
                return;
             }
 
-            if (mobileNumber.value) {
+            if (obj.mobileNumber) {
                const phoneNumberRegex = /^[0-9]*$/; // Regular expression to match only numbers
-               res = phoneNumberRegex.test(mobileNumber.value);
+               res = phoneNumberRegex.test(obj.mobileNumber);
                if (!res) {
                   mensaje("El número no es valido", 'red');
                   return;
@@ -440,24 +446,19 @@ export default defineComponent({
             } else {
                return;
             }
-            if (!nombre.value) {
+            if (!obj.nombre) {
                mensaje("Introducir un nombre por favor", 'red');
                return;
             }
-            if (!textareaModel.value) {
+            if (!obj.textareaModel) {
                mensaje("Indica en que te podriamos ayudar", 'red');
                return;
             }
-            contactUser(
-               nombre.value,
-               email.value,
-               mobileNumber.value,
-               textareaModel.value
-            );
-            nombre.value = null;
-            email.value = null;
-            textareaModel.value = "";
-            mobileNumber.value = null;
+            contactUser(obj);
+            // nombre.value = null;
+            // email.value = null;
+            // textareaModel.value = "";
+            // mobileNumber.value = null;
             toggleAcept.value = false;
             dialogVisible.value = false;
             mensaje("Gracias por ponerte en contacto con nostros", 'green');
@@ -481,12 +482,10 @@ export default defineComponent({
          onReset,
          onSubmit,
          mensaje,
-         nombre,
-         email,
+         obj,
          toggleAcept,
          myForm,
-         mobileNumber,
-         textareaModel,
+
       };
    },
 });

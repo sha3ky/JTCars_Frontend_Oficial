@@ -11,8 +11,15 @@ const contactUser = async (objeto) => {
       const response = await axios.post(`${link}api/contactUser/`, {
          name: objeto.username, // Update to match the field names in the Django view
          email: objeto.email,
-         telefono:objeto.telefono,
-         mensaje:objeto.mensaje,
+         telefono:objeto.mobileNumber,
+         mensaje:objeto.textareaModel,
+         combustible:objeto.combustible,
+         precio:objeto.precio,
+         ano:objeto.ano,
+         etiqueta:objeto.etiqueta,
+         km:objeto.km,
+        tipo:objeto.tipo,
+        notifications:objeto.notificaciones
       });
 
       if (response.status == 200) {
@@ -21,8 +28,8 @@ const contactUser = async (objeto) => {
          return false;
       }
    } catch (error) {
-      console.error("User creation error:", error);
-      return { error: "An error occurred while creating the user." };
+      console.error("user contact :", error);
+      return { error: "An error occurred from contactUser function." };
    }
 };
 
