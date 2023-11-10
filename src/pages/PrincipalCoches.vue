@@ -190,7 +190,7 @@
       <Footer_Layout />
 
       <q-page-container style="min-height: 100vh; text-align: center">
-         <div>
+
             <div>
                <q-img
                   src="/banner2WebP.webp"
@@ -213,7 +213,7 @@
                   Coches de segunda mano y vehículos de ocasión.
                </p>
             </div>
-         </div>
+
          <div
             class="q-pa-md row items-start q-gutter-md"
             style="justify-content: space-around"
@@ -411,7 +411,7 @@ export default defineComponent({
       // Use an async function to fetch data and assign it to allData
       this.allData = await getAllData();
       console.log(this.allData);
-      if (this.allData !== 0) {
+      if (this.allData.length != 0) {
          this.repartirData(this.allData);
       }
    },

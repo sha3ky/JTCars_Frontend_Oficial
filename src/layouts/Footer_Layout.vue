@@ -1,7 +1,7 @@
 <template>
   <q-footer elevated class="bg-blue-grey-9">
     <q-toolbar>
-      <q-toolbar-title style="text-align: center">
+      <q-toolbar-title style="text-align: center;font-size: 2vw;">
         Made with
         <span>
           <q-img src="/lovePng.png" width="50px" height="50px"></q-img>
