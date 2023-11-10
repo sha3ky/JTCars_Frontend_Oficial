@@ -183,13 +183,18 @@
                <div
                   class="q-pa-md"
                   style="
-                     display: flex;
-                     justify-content: center;
+                     display: grid;
+                     justify-content: space-around;
                      border: 2px solid #787575;
                      padding: 20px;
                      border-radius: 15px;
                   "
                >
+                  <div>
+                     <h5>En <b>Benny's Cars</b>, nos tomamos en serio su satisfacción.<br>
+                      Estamos comprometidos a brindarle no solo un coche, sino una experiencia <br>
+                       confiable y placentera. Su felicidad al conducir es nuestra prioridad número uno.</h5>
+                  </div>
                   <q-form
                      @submit="onSubmit"
                      @reset="onReset"
@@ -250,14 +255,6 @@
                </div>
             </div>
 
-            <div>
-               <h4 style="margin: 10px">
-                  Estamos en Cubelles, Carrer Maestrat número 3 <br />
-                  Contactar al Teléfono: 614103736 / 722411324 <br />
-                  Lunes - Viernes: 9.00-20:00h<br />
-                  Sabado : 10.00 - 15.00h
-               </h4>
-            </div>
             <div
                style="
                   display: flex;
@@ -267,6 +264,14 @@
                   border-radius: 15px;
                "
             >
+               <div>
+                  <h5 style="margin: 10px">
+                     Estamos en Cubelles, Carrer Maestrat número 3 <br />
+                     Contactar al Teléfono: 614103736 / 722411324 <br />
+                     Lunes - Viernes: 9.00-20:00h<br />
+                     Sabado : 10.00 - 15.00h
+                  </h5>
+               </div>
                <div>
                   <iframe
                      src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d909.7966577374251!2d1.6512922696582077!3d41.19919300728751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDExJzU3LjEiTiAxwrAzOScwNy4wIkU!5e1!3m2!1ses!2ses!4v1698127089612!5m2!1ses!2ses"
@@ -447,7 +452,7 @@ export default defineComponent({
                mobileNumber: obj.mobileNumber.value,
                email: obj.email.value,
                textareaModel: obj.textareaModel.value,
-               notifications:true,
+               notifications: true,
             };
             contactUser(objetoBBDD);
             obj.mobileNumber.value = "";

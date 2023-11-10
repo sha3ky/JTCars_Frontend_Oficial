@@ -201,7 +201,7 @@
             <div style="padding: 25px; background: #37474f">
                <p
                   style="
-                     font-size: 4vw;
+                     font-size: 3vw;
                      text-align: center;
                      text-align: center;
                      color: white;
