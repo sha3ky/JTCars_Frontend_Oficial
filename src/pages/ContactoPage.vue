@@ -257,8 +257,7 @@
 
             <div
                style="
-                  display: flex;
-                  justify-content: space-evenly;
+                  display: flow;
                   border: 2px solid #787575;
                   padding: 10px;
                   border-radius: 15px;
