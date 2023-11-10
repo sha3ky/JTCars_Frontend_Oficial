@@ -27,6 +27,7 @@
                v-model="contrasenaInput"
                label="Contraseña"
                style="padding: 24px; font-size: 20px"
+               hint="Debe contener una o más letras mayúsculas, minúsculas, números y carácteres especiales."
             >
                <template v-slot:label>
                   <div class="row items-center all-pointer-events">
@@ -91,28 +92,43 @@ export default defineComponent({
       },
       async handleLogin() {
          debugger;
-         // Assuming login function takes 'username' and 'password' as parameters
-         const username = this.userName.toLowerCase();
-         const password = this.contrasenaInput;
-         // Call the login function
-         const result = await login(username, password);
-         if (result) {
-            console.log("usuario logineado");
-            Notify.create({
-               type: "positive",
-               message: "Usuario logineado correctamente.",
-            });
-            this.$emit("update-usuario-logineado", "true"); /// forma paleto de enviar el usuario logineado de uno a otro
+         if (this.userName && this.contrasenaInput) {
+            const username = this.userName.toLowerCase();
+            const password = this.contrasenaInput;
+            // Call the login function
+            const result = await login(username, password);
+            if (result) {
+               console.log("usuario logineado");
+               Notify.create({
+                  type: "positive",
+                  message: "Usuario logineado correctamente.",
+               });
+               this.$emit("update-usuario-logineado", "true"); /// forma paleto de enviar el usuario logineado de uno a otro
+            } else {
+               console.log("usuario no logineado");
+               Notify.create({
+                  type: "negative",
+                  message: "Error al loginear.",
+               });
+            }
+            this.userName = "";
+            this.contrasenaInput = "";
+            this.loginDialog = false;
          } else {
-            console.log("usuario no logineado");
-            Notify.create({
-               type: "negative",
-               message: "Error al loginear.",
-            });
+            if (!this.userName) {
+               Notify.create({
+                  type: "negative",
+                  message: "Falta nombre.",
+               });
+            }
+            if (!this.contrasenaInput) {
+               Notify.create({
+                  type: "negative",
+                  message: "Falta contraseña.",
+               });
+            }
          }
-         this.userName = "";
-         this.contrasenaInput = "";
-         this.loginDialog = false;
+         // Assuming login function takes 'username' and 'password' as parameters
       },
 
       //-----------------------------------------making calls to api

@@ -12,6 +12,7 @@
                   v-model="userName"
                   label="nombre"
                   style="padding: 24px; font-size: 20px"
+                  hint="Un nombre..."
                >
                   <template v-slot:label>
                      <div class="row items-center all-pointer-events">
@@ -28,6 +29,8 @@
                   v-model="correoInput"
                   label="Correo"
                   style="padding: 24px; font-size: 20px"
+                  hint="Un correo válido"
+
                >
                   <template v-slot:label>
                      <div class="row items-center all-pointer-events">
@@ -45,6 +48,7 @@
                   v-model="contrasenaInput"
                   label="Contraseña"
                   style="padding: 24px; font-size: 20px"
+                  hint="Debe contener una o más letras mayúsculas, minúsculas, números y carácteres especiales."
                >
                   <template v-slot:label>
                      <div class="row items-center all-pointer-events">
@@ -108,29 +112,49 @@ export default defineComponent({
       },
       async handleInput() {
          debugger;
-         // Assuming login function takes 'username' and 'password' as parameters
-         const username = this.userName.toLowerCase();
-         const password = this.contrasenaInput;
-         const email = this.correoInput;
-         // Call the login function
-         const result = await insertUser(username, email, password);
-         if (result) {
-            console.log("usuario registrado");
-            Notify.create({
-               type: "positive",
-               message: "Usuario registrado correctamente.",
-            });
+         if (this.userName && this.contrasenaInput && this.correoInput) {
+            const username = this.userName.toLowerCase();
+            const password = this.contrasenaInput;
+            const email = this.correoInput;
+            // Call the login function
+            const result = await insertUser(username, email, password);
+            if (result) {
+               console.log("usuario registrado");
+               Notify.create({
+                  type: "positive",
+                  message: "Usuario registrado correctamente.",
+               });
+            } else {
+               console.log("usuario no registrado");
+               Notify.create({
+                  type: "negative",
+                  message: "Error al registrar el usuario.",
+               });
+            }
+            this.inputDialog = false;
+            this.userName = "";
+            this.contrasenaInput = "";
+            this.correoInput = "";
          } else {
-            console.log("usuario no registrado");
-            Notify.create({
-               type: "negative",
-               message: "Error al registrar el usuario.",
-            });
+            if (!this.userName) {
+               Notify.create({
+                  type: "negative",
+                  message: "Falta nombre.",
+               });
+            }
+            if (!this.contrasenaInput) {
+               Notify.create({
+                  type: "negative",
+                  message: "Falta la contraseña.",
+               });
+            }
+            if (!this.correoInput) {
+               Notify.create({
+                  type: "negative",
+                  message: "Falta el email.",
+               });
+            }
          }
-         this.inputDialog = false;
-         this.userName = "";
-         this.contrasenaInput = "";
-         this.correoInput = "";
       },
 
       // comprobarUsuario() {

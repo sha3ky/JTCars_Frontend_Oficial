@@ -258,7 +258,7 @@
             <div
                style="
                   display: flex;
-                  justify-content: center;
+                  justify-content: space-evenly;
                   border: 2px solid #787575;
                   padding: 10px;
                   border-radius: 15px;
