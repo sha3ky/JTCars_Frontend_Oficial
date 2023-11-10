@@ -91,7 +91,6 @@ export default defineComponent({
          this.$emit("close-dialog-loginuser"); // Emit an event to notify the parent component
       },
       async handleLogin() {
-         debugger;
          if (this.userName && this.contrasenaInput) {
             const username = this.userName.toLowerCase();
             const password = this.contrasenaInput;

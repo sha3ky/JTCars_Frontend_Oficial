@@ -117,7 +117,6 @@ export default defineComponent({
          allData.value = await getAllData();
       });
       watch(allData, (newValue, oldValue) => {
-
          console.log("group changed from", oldValue, "to", newValue);
          dataImagenes = allData.value.filter((item) => item.label === "");
          if (dataImagenes.length != 0) {
@@ -132,7 +131,6 @@ export default defineComponent({
       });
 
       function checkDataAndInsert(newValue, oldValue) {
-
          if (dataImagenes.length === 0) {
             setTimeout(() => checkDataAndInsert(newValue, oldValue), 5000);
          } else if (newValue.length != oldValue.length) {
@@ -141,7 +139,6 @@ export default defineComponent({
       }
 
       watch(shape, (newValue, oldValue) => {
-
          if (newValue != "" && newValue != oldValue) {
             console.log("group changed from", oldValue, "to", newValue);
             objToBBDD = {};
@@ -240,6 +237,4 @@ export default defineComponent({
    },
 });
 </script>
-../composable/usersInput
-../composable/loadAllData
-../composable/dataSelectores
+../composable/usersInput ../composable/loadAllData ../composable/dataSelectores

@@ -270,13 +270,11 @@ export default defineComponent({
       });
 
       watch(tab, async (newValue, oldValue) => {
-
          currentPic = 0;
          checkDataAndInsert(newValue);
          console.log("tab changed from", oldValue, "to", newValue);
       });
       function checkDataAndInsert(value) {
-
          if (allData.value.length === 0) {
             setTimeout(() => checkDataAndInsert(value), 5000);
             return;
@@ -336,7 +334,6 @@ export default defineComponent({
       }
 
       async function uploadPicture() {
-
          try {
             const imageBlob = await imageUploaded(imagenBBDD.value);
             const data = {
@@ -357,7 +354,7 @@ export default defineComponent({
          textName.value = "";
          group.value[0] = 1;
          imagenBBDD.value = "";
-         allData.value=await getAllData();
+         allData.value = await getAllData();
       }
 
       function downloadPicture() {
@@ -491,6 +488,4 @@ export default defineComponent({
    },
 });
 </script>
-../composable/usersInput
-../composable/loadAllData
-../composable/dataSelectores
+../composable/usersInput ../composable/loadAllData ../composable/dataSelectores

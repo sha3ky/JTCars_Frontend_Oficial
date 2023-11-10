@@ -30,7 +30,6 @@
                   label="Correo"
                   style="padding: 24px; font-size: 20px"
                   hint="Un correo válido"
-
                >
                   <template v-slot:label>
                      <div class="row items-center all-pointer-events">
@@ -101,17 +100,14 @@ export default defineComponent({
    },
    watch: {
       inputUserDialog: function (item) {
-         debugger;
          this.inputDialog = item;
       },
    },
    methods: {
       closeDialog() {
-         debugger;
          this.$emit("close-dialog-newuser"); // Emit an event to notify the parent component
       },
       async handleInput() {
-         debugger;
          if (this.userName && this.contrasenaInput && this.correoInput) {
             const username = this.userName.toLowerCase();
             const password = this.contrasenaInput;

@@ -98,7 +98,6 @@ export default {
          this.carousel = item;
       },
       arrayDatos: function (item) {
-      debugger
          if (item) {
             this.repartirImg(this.arrayDatos);
          }

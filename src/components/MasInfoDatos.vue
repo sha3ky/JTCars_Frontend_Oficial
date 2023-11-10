@@ -84,17 +84,16 @@ export default {
    data() {
       return {
          masInfo: false,
-         pdfFile:''
+         pdfFile: "",
       };
    },
    watch: {
       masInfoDialog: function (item) {
-         debugger;
          this.masInfo = item;
       },
       pdfDatos: function (item) {
-         if(item){
-          this.pdfFile=this.pdfDatos
+         if (item) {
+            this.pdfFile = this.pdfDatos;
          }
       },
    },
