@@ -23,9 +23,9 @@
                         </q-item>
                      </router-link>
                      <!-- <template v-if="sessionData"> -->
-                     <router-link to="/extra">
+                     <router-link to="/noticias">
                         <q-item clickable>
-                           <q-item-section>Extra</q-item-section>
+                           <q-item-section>Noticias</q-item-section>
                         </q-item>
                      </router-link>
                      <template v-if="userIsAdmin">
@@ -88,7 +88,7 @@
                      </router-link>
                      <!-- test -->
                      <!-- <template v-if="sessionData"> -->
-                     <router-link to="/extra">
+                     <router-link to="/noticias">
                         <q-btn
                            style="color: #1aee9f; margin-left: 10px"
                            clickable

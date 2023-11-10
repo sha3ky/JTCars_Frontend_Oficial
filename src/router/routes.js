@@ -93,7 +93,7 @@ const routes = [
       component: ContactoPageVue,
    },
    {
-      path: "/extra",
+      path: "/noticias",
       name: "extra-usuario",
       component: ExtraUsuarioVue,
       meta: { requiresAuth: true },

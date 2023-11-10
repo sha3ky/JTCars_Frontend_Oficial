@@ -23,12 +23,11 @@
                         </q-item>
                      </router-link>
                      <!-- <template v-if="sessionData"> -->
-                     <!-- <router-link to="/extra">
+                      <router-link to="/noticias">
                           <q-item clickable>
-                             <q-item-section>Extra</q-item-section>
+                             <q-item-section>Noticias</q-item-section>
                           </q-item>
-                       </router-link> -->
-                     <!-- </template> -->
+                       </router-link>
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-item clickable>
@@ -36,13 +35,13 @@
                            </q-item>
                         </router-link>
                      </template>
-                     <template v-if="sessionData">
+                     <!-- <template v-if="sessionData">
                         <router-link to="/usuarioPage">
                            <q-item clickable>
                               <q-item-section>Mis datos</q-item-section>
                            </q-item>
                         </router-link>
-                     </template>
+                     </template> -->
                      <q-separator />
                   </q-list>
                </q-menu>
@@ -78,7 +77,7 @@
                            <q-item-section>Contactar</q-item-section>
                         </q-btn>
                      </router-link>
-                     <router-link to="/extra">
+                     <router-link to="/noticias">
                         <q-btn
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
