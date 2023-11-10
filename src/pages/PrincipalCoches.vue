@@ -145,12 +145,14 @@
                         icon="img:userplusGreen.png"
                         @click="nuevoUsuario"
                      ></q-btn>
-                     <q-btn
+                     <!-- boton para limpiar session storage -->
+                     <!-- <q-btn
                         color="red"
                         round
                         dense
                         @click="limpiarStorage"
-                     ></q-btn>
+                     ></q-btn> -->
+                      <!-- boton para limpiar session storage -->
                   </div>
                </template>
                <template v-if="sessionData">
