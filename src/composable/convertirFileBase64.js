@@ -1,5 +1,4 @@
 const convertFileToBase64=(file)=> {
-  debugger
   return new Promise((resolve, reject) => {
      if (file) {
         const reader = new FileReader();

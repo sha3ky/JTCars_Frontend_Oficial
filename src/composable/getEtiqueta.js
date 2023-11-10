@@ -4,7 +4,6 @@ import apiLink from "./apiLink";
 let etiqueta;
 let link = apiLink;
 async function getEtiqueta () {
-  debugger
    try {
       const response = await axios.get(`${link}api/get_etiqueta/`, {
          headers: {

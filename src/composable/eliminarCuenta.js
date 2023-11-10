@@ -5,7 +5,6 @@ import logout from "./logOut";
 let link = apiLink;
 
 const eliminarUsuario = async () => {
-   debugger;
    const accessToken = sessionStorage.getItem("access_token");
    const refresh_token = sessionStorage.getItem("refresh_token");
    const user = sessionStorage.getItem("username");

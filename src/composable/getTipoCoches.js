@@ -4,7 +4,6 @@ import apiLink from "./apiLink";
 let tipoCoche;
 let link = apiLink;
 async function getTipoCoche () {
-  debugger
    try {
       const response = await axios.get(`${link}api/get_tipo_coches/`, {
          headers: {

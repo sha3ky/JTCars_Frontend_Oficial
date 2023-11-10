@@ -796,7 +796,6 @@ export default defineComponent({
          });
       },
       inputImagen: function (newVal) {
-         debugger;
          if (newVal) {
             convertFileToBase64(newVal).then((result) => {
                if (result) {
@@ -826,7 +825,6 @@ export default defineComponent({
       //    }
       // },
       modelInImgNew: function (item) {
-         debugger;
          if (item) {
             convertFileToBase64(item)
                .then((result) => {
@@ -844,7 +842,6 @@ export default defineComponent({
       },
    },
    async mounted() {
-    debugger
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -885,7 +882,6 @@ export default defineComponent({
          this.inputPdf = null;
       },
       fixArrNum(array) {
-         debugger;
          let x = 1;
          array.forEach((item) => {
             let numArray = item.imagenNum.split(""); // Convert the string to an array
@@ -895,7 +891,6 @@ export default defineComponent({
          });
       },
       addMetaImgNew(item) {
-         debugger;
          // nos llevamos el ultimo componente del array y comprobamos a ver que numero tiene , i le añadimos uno de mas si es mas pequeño que 8
          // y en ese caso reconstrumos el componente con el id , imagen y el imagenNum
          let num;
@@ -927,11 +922,10 @@ export default defineComponent({
          this.modelInImgNew = "";
       },
       // extrareKeysObjeto(item) {
-      //    debugger;
+      //
       //    return Object.values(item);
       // },
       async aceptarCambios() {
-         debugger;
          const colorEs_En = colorsEs_En(this.datosCoches.colorBanner);
          this.datosCoches.colorBanner = colorEs_En;
 
@@ -969,7 +963,6 @@ export default defineComponent({
          if (image) return `data:image/jpeg;base64,${image}`;
       },
       cancelInputCarDialog() {
-         debugger;
          this.newCar = false;
          this.dialogCoches = false;
       },
@@ -996,12 +989,10 @@ export default defineComponent({
          // You can perform actions such as opening a dialog, navigating to a detail page, etc.
       },
       modImg(item) {
-         debugger;
          this.imagenParaCambiar = item;
          this.anadirImagenDialog = true;
       },
       delImg(item) {
-         debugger;
          let indexOf = this.imagenesArray.findIndex((obj) => {
             return obj.imagenNum == item.imagenNum;
          });
@@ -1027,24 +1018,20 @@ export default defineComponent({
          }
       },
       updateUsuarioLogineado(bool) {
-         debugger;
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
          }
       },
       handleDialogClose() {
-         debugger;
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
          this.showInputUser = false;
       },
       nuevoUsuario() {
-         debugger;
          this.showInputUser = true;
          //this.showLoginUser = false;
       },
       loginearUsuario() {
-         debugger;
          this.showLoginUser = true;
          //this.showInputUser = false;
       },
@@ -1054,7 +1041,6 @@ export default defineComponent({
          store.state.toggleDarkMode = this.toggleDark;
       },
       async logOut() {
-         debugger;
          const result = await logout();
          if (result) {
             store.dispatch("logout");

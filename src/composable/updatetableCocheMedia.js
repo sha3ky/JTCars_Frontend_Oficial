@@ -5,7 +5,6 @@ import apiLink from "./apiLink";
 let link = apiLink;
 
 const updateTables = async (coches, media) => {
-  debugger
   const cochesData = {
     coches: coches, // Assuming you have an array of coches
   };

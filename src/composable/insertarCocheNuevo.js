@@ -4,7 +4,6 @@ import apiLink from "./apiLink";
 let link = apiLink;
 let id_newCar;
 const insertCocheNuevo = async (coches, media) => {
-   debugger;
    try {
       // Send the coches data to the coches endpoint
       const cochesResponse = await axios.post(`${link}api/createcoche`, coches);

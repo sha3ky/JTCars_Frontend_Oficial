@@ -4,7 +4,6 @@ import apiLink from "./apiLink";
 let allDataUsers;
 let link = apiLink;
 async function getAllusers() {
-   debugger;
    try {
       const response = await axios.get(`${link}api/contactUser/`, {
          headers: {

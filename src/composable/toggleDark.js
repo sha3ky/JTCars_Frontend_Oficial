@@ -3,7 +3,6 @@
 
 
 const toggleDarkMode = (item)=> {
-  debugger
     item=!item
     return item
 }

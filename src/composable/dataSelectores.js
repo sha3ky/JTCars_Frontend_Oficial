@@ -7,7 +7,7 @@ const km=['50000','100000','150000','200000']
 const cocheAno=[]
 
 const currentYear = new Date().getFullYear();
-for (let year = 1990; year <= currentYear+1; year += 2) {
+for (let year = 1990; year <= currentYear+1; year ++) {
   cocheAno.push(year.toString());
 }
 export {etiquetaCoche,tipoCoche,tipoPromocion,tipoCombustible,coloresBanners,cocheAno,km}

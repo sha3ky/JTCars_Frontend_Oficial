@@ -29,8 +29,8 @@
                            </q-item>
                         </router-link> -->
                      <!-- </template> -->
-                      <template v-if="sessionData">
-                      <router-link to="/usuarioPage">
+                     <template v-if="sessionData">
+                        <router-link to="/usuarioPage">
                            <q-item clickable>
                               <q-item-section>Mis datos</q-item-section>
                            </q-item>
@@ -67,18 +67,12 @@
                <div>
                   <div>
                      <router-link to="/">
-                        <q-btn
-
-                           style="color: #1aee9f"
-                           clickable
-                           rounded
-                        >
+                        <q-btn style="color: #1aee9f" clickable rounded>
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
                      </router-link>
                      <router-link to="/contacto">
                         <q-btn
-
                            style="color: #1aee9f; margin-left: 10px"
                            clickable
                            rounded
@@ -89,7 +83,6 @@
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
-
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
@@ -100,7 +93,7 @@
                      </template>
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
-                          <q-btn
+                           <q-btn
                               style="color: #f11212; margin-left: 10px"
                               clickable
                               rounded
@@ -123,7 +116,6 @@
                         </router-link> -->
                      <!-- </template> -->
                      <!-- test -->
-
                   </div>
                </div>
             </template>
@@ -180,7 +172,7 @@
             >
          </q-toolbar>
       </q-footer> -->
-      <Footer_Layout/>
+      <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
          <div class="iframe-container">
             <iframe
@@ -218,7 +210,7 @@ body.body--dark {
 }
 </style>
 <script>
-import Footer_Layout from 'src/layouts/Footer_Layout.vue';
+import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import store from "../../src/store";
@@ -242,7 +234,6 @@ export default defineComponent({
       };
    },
    async mounted() {
-      debugger;
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -255,25 +246,21 @@ export default defineComponent({
    },
    methods: {
       updateUsuarioLogineado(bool) {
-         debugger;
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
-            this.userIsAdmin=store.state.isAdmin
+            this.userIsAdmin = store.state.isAdmin;
          }
       },
       handleDialogClose() {
-         debugger;
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
          this.showInputUser = false;
       },
       nuevoUsuario() {
-         debugger;
          this.showInputUser = true;
          //this.showLoginUser = false;
       },
       loginearUsuario() {
-         debugger;
          this.showLoginUser = true;
          //this.showInputUser = false;
       },
@@ -283,13 +270,12 @@ export default defineComponent({
          store.state.toggleDarkMode = this.toggleDark;
       },
       async logOut() {
-         debugger;
          const result = await logout();
          if (result) {
             store.dispatch("logout");
             this.usuarioLogineado = "";
             this.sessionData = "";
-            this.userIsAdmin=false
+            this.userIsAdmin = false;
             Notify.create({
                type: "positive",
                message: "Adios.",
@@ -320,5 +306,4 @@ export default defineComponent({
    },
 });
 </script>
-../stores
-../../../store
+../stores ../../../store

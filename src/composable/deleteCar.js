@@ -4,7 +4,6 @@ import apiLink from "./apiLink";
 const link = apiLink;
 
 const deleteCar = async (id) => {
-  debugger
    try {
       // Send a POST request to register the user
       const response = await axios.post(`${link}api/deletecar`, {

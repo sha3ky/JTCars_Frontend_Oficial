@@ -152,7 +152,7 @@
                         dense
                         @click="limpiarStorage"
                      ></q-btn> -->
-                      <!-- boton para limpiar session storage -->
+                     <!-- boton para limpiar session storage -->
                   </div>
                </template>
                <template v-if="sessionData">
@@ -187,7 +187,7 @@
             >
          </q-toolbar>
       </q-footer> -->
-      <Footer_Layout/>
+      <Footer_Layout />
 
       <q-page-container style="min-height: 100vh; text-align: center">
          <div>
@@ -351,7 +351,7 @@
 }
 </style>
 <script>
-import Footer_Layout from 'src/layouts/Footer_Layout.vue';
+import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
@@ -364,7 +364,6 @@ import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import store from "../../src/store";
 import deleteStorage from "src/composable/deleteStorage";
-
 
 //import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
 
@@ -397,11 +396,9 @@ export default defineComponent({
          colores: [],
          usuarioLogineado: "",
          sessionData: "",
-
       };
    },
    async mounted() {
-      debugger;
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -420,7 +417,6 @@ export default defineComponent({
    },
    methods: {
       repartirData() {
-         debugger;
          this.allData.forEach((element) => {
             let imagen = this.firstImgNotNull(element);
             this.imagenPrincipal.push(imagen);
@@ -457,7 +453,6 @@ export default defineComponent({
          return `data:image/jpeg;base64,${image}`;
       },
       carouselFoto(index) {
-         debugger;
          this.showCarousel = true;
          this.arrayDatos = this.allData[index];
       },
@@ -480,7 +475,6 @@ export default defineComponent({
          this.showLoginUser = true;
       },
       toggleDarkMode() {
-         debugger;
          const $q = this.$q;
          $q.dark.toggle();
          store.state.toggleDarkMode = this.toggleDark;
@@ -488,7 +482,6 @@ export default defineComponent({
       // ------------------------------------------------------------------------------------------------------------------
       // forma paleto de mantener el usuario logineado a traves de todos los componentes y paginas
       updateUsuarioLogineado(bool) {
-         debugger;
          if (bool) {
             this.usuarioLogineado = store.state.name;
             this.sessionData = store.state.sessionData;
@@ -497,7 +490,6 @@ export default defineComponent({
       },
       // ------------------------------------------------------------------------------------------------------------------
       async logOut() {
-         debugger;
          const result = await logout();
          if (result) {
             store.dispatch("logout");
@@ -558,7 +550,7 @@ export default defineComponent({
     //    }
     // });
     // function repartirData() {
-    //    debugger;
+    //
     //    allData.value.forEach((element) => {
     //       imagenPrincipal.value.push(element.imagen1);
     //    });

@@ -4,7 +4,6 @@ import apiLink from "./apiLink";
 let promotions;
 let link = apiLink;
 async function getPromotions () {
-  debugger
    try {
       const response = await axios.get(`${link}api/get_promotions/`, {
          headers: {

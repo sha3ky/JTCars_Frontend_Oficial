@@ -546,7 +546,6 @@ export default defineComponent({
       },
    },
    async mounted() {
-      debugger;
       // cuando vienes de otras rutas
       this.sessionData = store.state.sessionData;
       this.usuarioLogineado = store.state.name;
@@ -568,7 +567,6 @@ export default defineComponent({
          this.activeSection = "modificarNomEmail";
       },
       cancelarDialog() {
-         debugger;
          this.objetoNotifField.mobileNumber = "";
          this.objetoNotifField.textareaModel = "";
          this.objetoNotifField.ano = "";
@@ -579,11 +577,9 @@ export default defineComponent({
          this.objetoNotifField.tipo = "";
       },
       busquedaAvanzada() {
-         debugger;
          this.busquedaDialog = true;
       },
       async eliminarCuenta() {
-         debugger;
          let delCuenta = await eliminarUsuario();
          if (delCuenta) {
             Notify.create({
@@ -595,7 +591,6 @@ export default defineComponent({
             this.$router.push({ name: "principal-coches" });
             store.dispatch("logout");
             await logout();
-
          } else {
             Notify.create({
                type: "negative",
@@ -605,7 +600,6 @@ export default defineComponent({
          }
       },
       async aceptarCambios() {
-         debugger;
          let userNam = sessionStorage.getItem("username");
          let mail = sessionStorage.getItem("email");
 
@@ -713,7 +707,6 @@ export default defineComponent({
          store.state.toggleDarkMode = this.toggleDark;
       },
       async logOut() {
-         debugger;
          const result = await logout();
          if (result) {
             store.dispatch("logout");

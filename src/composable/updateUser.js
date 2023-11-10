@@ -5,7 +5,6 @@ let link = apiLink;
 
 const updateUser = async (name, email) => {
    const accessToken = sessionStorage.getItem("access_token");
-   debugger;
    try {
       const response = await axios.post(
          `${link}api/updateUserProfile`,
