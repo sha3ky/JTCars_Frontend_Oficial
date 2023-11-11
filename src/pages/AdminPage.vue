@@ -30,9 +30,9 @@
                      </router-link>
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
-                          <q-item clickable>
+                           <q-item clickable>
                               <q-item-section>Mis Datos</q-item-section>
-                            </q-item>
+                           </q-item>
                         </router-link>
                      </template>
                      <!-- </template> -->
@@ -573,6 +573,28 @@
          </div>
       </div>
    </q-layout>
+   <q-dialog v-model="waitDialog" persistent>
+      <q-card
+         style="
+            background: cadetblue;
+            height: 56px;
+            align-items: flex-end;
+            display: flex;
+         "
+      >
+         <q-card-section class="q-pt-none" style="display: contents;">
+            <p style="font-size: medium">Espere por favor ...</p>
+            <q-circular-progress
+               indeterminate
+               size="28px"
+               :thickness="1"
+               color="grey-8"
+               track-color="lime"
+               class="q-ma-md"
+            />
+         </q-card-section>
+      </q-card>
+   </q-dialog>
 </template>
 <style>
 .iframe-container {
@@ -779,6 +801,7 @@ export default defineComponent({
          fechaActual: new Date().getFullYear(),
          filterCoches: "",
          filterPersonas: "",
+         waitDialog: false,
       };
    },
    watch: {
@@ -845,6 +868,7 @@ export default defineComponent({
       this.toggleDark = store.state.toggleDarkMode
          ? store.state.toggleDarkMode
          : this.toggleDark;
+      this.waitDialog = true;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
       // let etiqueta = await getEtiqueta();
@@ -853,11 +877,14 @@ export default defineComponent({
       // this.optionsPromotion = this.extrareKeysObjeto(promotion[0]);
       // let tipo = await getTipoCoche();
       // this.optionsTipo = this.extrareKeysObjeto(tipo[0]);
+      this.waitDialog = false;
    },
    methods: {
       async reloadData() {
+         this.waitDialog = true;
          this.rowsCoches = await getAllData();
          this.rowsPersonas = await getAllusers();
+         this.waitDialog = false;
       },
       async delCar() {
          let respuesta = await deleteCar(this.datosCoches.id);
@@ -936,6 +963,7 @@ export default defineComponent({
          this.mediaTable.id = this.datosCoches.id;
 
          if (!this.newCar) {
+            this.waitDialog = true;
             let res = await updateTables(this.datosCoches, this.mediaTable);
             if (res) {
                console.log("Datos subidos a la base");
@@ -943,17 +971,20 @@ export default defineComponent({
                ("Error al subir datos en la base");
             }
             this.newCar = false;
+
             //  console.log(this.mediaTable);
          } else {
+            this.waitDialog = true;
             await insertCocheNuevo(this.datosCoches, this.mediaTable);
             this.newCar = false;
          }
-         this.reloadData();
+         await this.reloadData();
          this.datosCoches = {};
          //  this.modelEtiqueta = "";
          //  this.modelTipo = "";
          //  this.modelPromotion = "";
          this.inputImagen = null;
+         this.waitDialog = false;
       },
       getBase64Image(image) {
          if (image) return `data:image/jpeg;base64,${image}`;
