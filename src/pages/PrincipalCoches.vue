@@ -217,11 +217,7 @@
             class="q-pa-md row items-start q-gutter-md"
             style="justify-content: space-around"
          >
-            <div
-
-               v-for="(item, index) in imagenPrincipal"
-               :key="index"
-            >
+            <div v-for="(item, index) in imagenPrincipal" :key="index">
                <q-card class="cardImage" style="padding: 0" flat bordered>
                   <q-img :src="getBase64Image(item)" class="responsive-image">
                      <div
@@ -300,12 +296,15 @@
                         label="Más Fotos"
                         @click="carouselFoto(index)"
                      />
-                     <q-btn
-                        flat
-                        color="secondary"
-                        label="Más Datos"
-                        @click="masDatos(index)"
-                     />
+                     <template v-if="arrayPdf[index]">
+                        <q-btn
+                           flat
+                           color="secondary"
+                           label="Más Datos"
+                           @click="masDatos(index)"
+                        ></q-btn>
+                     </template>
+
                      <q-space />
                   </q-card-actions>
                   <q-card-section class="text-subtitle2" style="padding: 0">
@@ -349,27 +348,26 @@
    object-fit: cover; /* Preserve the aspect ratio and cover the entire space */
 }
 .cardImage {
-    width: 95vw; /* 95% width on mobile screens */
-    margin: 0 auto; /* Center the card */
-  }
+   width: 95vw; /* 95% width on mobile screens */
+   margin: 0 auto; /* Center the card */
+}
 
-  @media (min-width: 600px) {
-    /* Apply the following styles for screens larger than 600px */
-    .cardImage {
+@media (min-width: 600px) {
+   /* Apply the following styles for screens larger than 600px */
+   .cardImage {
       width: 47vw; /* Two images in a row for larger screens */
       margin: 0 1%; /* Adjust margin between cards */
       display: inline-block; /* Display cards in a row */
-    }
-    @media (max-width: 1060px) {
-    /* Apply the following styles for screens larger than 600px */
-    .cardImage {
-      width: 77vw; /* Two images in a row for larger screens */
-      margin: 0 1%; /* Adjust margin between cards */
-      display: inline-block; /* Display cards in a row */
-    }
-  }
-  }
-
+   }
+   @media (max-width: 1060px) {
+      /* Apply the following styles for screens larger than 600px */
+      .cardImage {
+         width: 77vw; /* Two images in a row for larger screens */
+         margin: 0 1%; /* Adjust margin between cards */
+         display: inline-block; /* Display cards in a row */
+      }
+   }
+}
 </style>
 <script>
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
@@ -417,6 +415,7 @@ export default defineComponent({
          colores: [],
          usuarioLogineado: "",
          sessionData: "",
+         arrayPdf: [],
       };
    },
    async mounted() {
@@ -451,6 +450,7 @@ export default defineComponent({
             this.marcas.push(element.marca);
             this.modelos.push(element.modelo);
             this.colores.push(element.colorBanner);
+            this.arrayPdf.push(element.pdf); //guardamos todos los pdfs en un array
          });
       },
       firstImgNotNull(item) {
