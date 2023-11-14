@@ -175,8 +175,7 @@
          <div style="padding: 20px">
             <div>
                <h4 style="margin: 10px">
-                  Contacta con nosotros y serás el primero <br />
-                  en enterarte las las novedades
+                  Contacta con nosotros y sé el primero en <br> enterarte de las novedades.
                </h4>
             </div>
             <div>
