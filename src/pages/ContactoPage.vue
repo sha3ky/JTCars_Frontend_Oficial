@@ -165,10 +165,10 @@
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
          <q-img
-            src="/banner1WebP.webp"
+            src="/bannerBeny.png"
             class="q-mx-auto"
             :max-width="400"
-            :max-height="225"
+            :max-height="500"
             alt="Beny1 Logo"
          >
          </q-img>
