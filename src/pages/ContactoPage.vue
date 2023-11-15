@@ -178,7 +178,7 @@
                   Contacta con nosotros y sé el primero en <br> enterarte de las novedades.
                </h4>
             </div>
-            <div>
+            <div style="    margin-bottom: 5px;">
                <div
                   class="q-pa-md"
                   style="
@@ -304,6 +304,7 @@ body.body--dark {
    background: #0c0c0c;
 }
 </style>
+
 <script>
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
