@@ -220,19 +220,24 @@
                Coches de segunda mano y vehículos de ocasión.
             </p>-->
             <div class="waviy">
-               <span style="--i: 1">CO</span>
-               <span style="--i: 2">CH</span>
-               <span style="--i: 3">ES</span>
+               <span style="--i: 1">Coches</span>
                <span style="">&nbsp; </span>
-               <span style="--i: 4">DE</span>
+               <span style="--i: 2">de</span>
                <span style="">&nbsp; </span>
-               <span style="--i: 5">SE</span>
-               <span style="--i: 6">GU</span>
-               <span style="--i: 7">N</span>
-               <span style="--i: 8">DA</span>
+               <span style="--i: 3">segunda</span>
                <span style="">&nbsp; </span>
-               <span style="--i: 9">MA</span>
-               <span style="--i: 10">NO</span>
+               <span style="--i: 4">mano</span>
+               <span style="">&nbsp; </span>
+               <span style="--i: 5">y</span>
+               <span style="">&nbsp; </span>
+               <span style="--i: 6">vehículos</span>
+               <span style="">&nbsp; </span>
+               <span style="--i: 7">de</span>
+               <span style="">&nbsp; </span>
+               <span style="--i: 8">ocasión</span>
+               <span style="">&nbsp; </span>
+               <!-- <span style="--i: 9">MA</span>
+               <span style="--i: 10">NO</span> -->
             </div>
          </div>
 
@@ -404,7 +409,7 @@
    position: relative;
    display: inline-block;
    color: #fff;
-   text-transform: uppercase;
+   /* text-transform: uppercase; */
    animation: waviy 2s infinite;
    animation-delay: calc(0.2s * var(--i));
 }
@@ -415,7 +420,7 @@
       transform: translateY(0);
    }
    20% {
-      transform: translateY(-20px);
+      transform: translateY(-10px);
    }
 }
 </style>
