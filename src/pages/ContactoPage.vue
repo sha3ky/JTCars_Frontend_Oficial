@@ -174,7 +174,7 @@
          </div> -->
          <div class="q-pa-md q-gutter-md">
             <div class="row justify-between">
-               <q-parallax :height="400" :speed="1" src="/paralaxFuture.jpeg">
+               <q-parallax :height="450" :speed="1" src="/paralaxFuture.jpeg">
                 <div>
                   <h1
                      style="
@@ -185,7 +185,7 @@
                      "
                      class="text-white"
                   >
-                     Contacta con nosotros
+                     Contactanos
                   </h1>
                 </div>
 
