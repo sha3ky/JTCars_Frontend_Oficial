@@ -199,8 +199,16 @@
                alt="Beny1 Logo"
             ></q-img>
          </div>
-         <div style="padding: 10px; background: #37474f">
-            <p
+         <div
+            style="
+               padding: 10px;
+               background: #37474f;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+            "
+         >
+            <!--<p
                style="
                   font-size: 2.7vw;
                   text-align: center;
@@ -210,7 +218,22 @@
                "
             >
                Coches de segunda mano y vehículos de ocasión.
-            </p>
+            </p>-->
+            <div class="waviy">
+               <span style="--i: 1">CO</span>
+               <span style="--i: 2">CH</span>
+               <span style="--i: 3">ES</span>
+               <span style="">&nbsp; </span>
+               <span style="--i: 4">DE</span>
+               <span style="">&nbsp; </span>
+               <span style="--i: 5">SE</span>
+               <span style="--i: 6">GU</span>
+               <span style="--i: 7">N</span>
+               <span style="--i: 8">DA</span>
+               <span style="">&nbsp; </span>
+               <span style="--i: 9">MA</span>
+               <span style="--i: 10">NO</span>
+            </div>
          </div>
 
          <div
@@ -358,6 +381,9 @@
       width: 47vw; /* Two images in a row for larger screens */
       margin: 0 1%; /* Adjust margin between cards */
       display: inline-block; /* Display cards in a row */
+      /* .waviy {
+         font-size: 60px;
+      } */
    }
    @media (max-width: 1060px) {
       /* Apply the following styles for screens larger than 600px */
@@ -366,6 +392,30 @@
          margin: 0 1%; /* Adjust margin between cards */
          display: inline-block; /* Display cards in a row */
       }
+   }
+}
+.waviy {
+   position: relative;
+   -webkit-box-reflect: below -50px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+   font-size:3vw;
+}
+.waviy span {
+   font-family: "Times New Roman", Times, serif;
+   position: relative;
+   display: inline-block;
+   color: #fff;
+   text-transform: uppercase;
+   animation: waviy 2s infinite;
+   animation-delay: calc(0.2s * var(--i));
+}
+@keyframes waviy {
+   0%,
+   40%,
+   100% {
+      transform: translateY(0);
+   }
+   20% {
+      transform: translateY(-20px);
    }
 }
 </style>
