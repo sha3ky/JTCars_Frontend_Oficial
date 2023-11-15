@@ -164,21 +164,43 @@
       </q-header>
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
-         <q-img
-            src="/bannerBeny.png"
-            class="q-mx-auto"
-            :max-width="400"
-            :max-height="500"
-            alt="Beny1 Logo"
-         >
-         </q-img>
+         <!-- <div>
+
+
+            <q-img
+               src="/newPngFuture.png"
+               class="q-mx-auto"
+               alt="Beny1 Logo"
+            >
+            </q-img>
+         </div> -->
+
+         <div class="q-pa-md q-gutter-md">
+            <div class="row justify-between">
+               <q-parallax :height="400" :speed="1" src="/paralaxFuture.jpeg">
+                  <h1
+                     style="
+                        background: black;
+                        opacity: 0.6;
+                        border-radius: 10px;
+                        font-size: 8vw;
+                     "
+                     class="text-white"
+                  >
+                     Contacta con nosotros
+                  </h1>
+               </q-parallax>
+            </div>
+         </div>
+
          <div style="padding: 20px">
             <div>
                <h4 style="margin: 10px">
-                  Contacta con nosotros y sé el primero en <br> enterarte de las novedades.
+                  Contacta con nosotros y sé el primero en <br />
+                  enterarte de las novedades.
                </h4>
             </div>
-            <div style="    margin-bottom: 5px;">
+            <div style="margin-bottom: 5px">
                <div
                   class="q-pa-md"
                   style="
@@ -190,9 +212,14 @@
                   "
                >
                   <div>
-                     <h5>En <b>Benny's Cars</b>, nos tomamos en serio su satisfacción.<br>
-                      Estamos comprometidos a brindarle no solo un coche, sino una experiencia <br>
-                       confiable y placentera. Su felicidad al conducir es nuestra prioridad número uno.</h5>
+                     <h5>
+                        En <b>Benny's Cars</b>, nos tomamos en serio su
+                        satisfacción.<br />
+                        Estamos comprometidos a brindarle no solo un coche, sino
+                        una experiencia <br />
+                        confiable y placentera. Su felicidad al conducir es
+                        nuestra prioridad número uno.
+                     </h5>
                   </div>
                   <q-form
                      @submit="onSubmit"

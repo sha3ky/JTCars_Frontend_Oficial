@@ -291,28 +291,16 @@
                      <div>
                         <div class="text-caption text-grey">
                            <div>
-                              Año de fabricación:
-                              <span
-                                 ><b>{{ anoCoche[index] }}</b></span
-                              >
+                              <p class="fontCardCar">Año de fabricación: {{ anoCoche[index] }}</p>
                            </div>
                            <div>
-                              Kilómetros:
-                              <span>
-                                 <b>{{ kmCoche[index] }}</b></span
-                              >
+                             <p class="fontCardCar">Kilómetros: {{ kmCoche[index] }}</p>
                            </div>
                            <div>
-                              Etiqueta:
-                              <span
-                                 ><b>{{ etiquetas[index] }}</b></span
-                              >
+                              <p class="fontCardCar">Etiqueta:{{ etiquetas[index] }}</p>
                            </div>
                            <div>
-                              Combustible:
-                              <span
-                                 ><b>{{ combustible[index] }}</b></span
-                              >
+                              <p class="fontCardCar">Combustible:{{ combustible[index] }}</p>
                            </div>
                         </div>
                      </div>
@@ -370,6 +358,10 @@
    </q-layout>
 </template>
 <style scoped>
+.fontCardCar{
+  font-size:medium;
+  margin:0;
+}
 .responsive-image {
    height: 250px; /* Set a fixed height for the images */
    width: 100%; /* Ensure the image takes up the entire space */
