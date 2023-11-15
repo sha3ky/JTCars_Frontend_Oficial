@@ -165,8 +165,6 @@
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
          <!-- <div>
-
-
             <q-img
                src="/newPngFuture.png"
                class="q-mx-auto"
@@ -174,7 +172,6 @@
             >
             </q-img>
          </div> -->
-
          <div class="q-pa-md q-gutter-md">
             <div class="row justify-between">
                <q-parallax :height="400" :speed="1" src="/paralaxFuture.jpeg">

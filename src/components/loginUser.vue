@@ -40,7 +40,6 @@
                   </div>
                </template>
             </q-input>
-            <q-separator dark />
             <q-card-actions style="justify-content: flex-end">
                <q-btn
                   glossy
