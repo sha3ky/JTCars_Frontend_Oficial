@@ -178,17 +178,20 @@
          <div class="q-pa-md q-gutter-md">
             <div class="row justify-between">
                <q-parallax :height="400" :speed="1" src="/paralaxFuture.jpeg">
+                <div>
                   <h1
                      style="
                         background: black;
-                        opacity: 0.6;
+                        opacity: 0.7;
                         border-radius: 10px;
-                        font-size: 8vw;
+                        font-size: 6vw;
                      "
                      class="text-white"
                   >
                      Contacta con nosotros
                   </h1>
+                </div>
+
                </q-parallax>
             </div>
          </div>
