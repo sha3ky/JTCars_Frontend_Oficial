@@ -50,7 +50,7 @@
             <q-img
                height="70px"
                width="108px"
-               src="/benysCarlogoMetal.png"
+               src="/logo.png"
                v-if="$q.screen.width > 600"
             >
             </q-img>
@@ -67,7 +67,7 @@
                <div>
                   <div>
                      <router-link to="/">
-                        <q-btn style="color: #1aee9f" clickable rounded>
+                        <q-btn style="color: #bbdefb" clickable>
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
                      </router-link>
@@ -85,9 +85,8 @@
                      <!-- <template v-if="sessionData"> -->
                      <router-link to="/noticias">
                         <q-btn
-                           style="color: #1aee9f; margin-left: 10px"
+                           style="color: #bbdefb; margin-left: 15px"
                            clickable
-                           rounded
                         >
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
@@ -95,9 +94,8 @@
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
                            <q-btn
-                              style="color: #f11212; margin-left: 10px"
+                              style="color: #ffab91; margin-left: 15px"
                               clickable
-                              rounded
                            >
                               <q-item-section>Mis Datos</q-item-section>
                            </q-btn>
@@ -106,9 +104,8 @@
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
-                              style="color: #f11212; margin-left: 10px"
+                              style="color: #ffab91; margin-left: 15px"
                               clickable
-                              rounded
                            >
                               <q-item-section>Admin</q-item-section>
                            </q-btn>
@@ -174,30 +171,71 @@
          </div> -->
          <div class="q-pa-md q-gutter-md">
             <div class="row justify-between">
-               <q-parallax :height="450" :speed="1" src="/paralaxFuture.jpeg">
-                <div>
-                  <h1
+               <div
+                  style="
+                     position: relative;
+                     width: 100%;
+                     height: 500px;
+                     overflow: hidden;
+                  "
+               >
+                  <!-- Imagen de fondo -->
+                  <img
+                     src="/contactar.webp"
                      style="
-                        background: black;
-                        opacity: 0.7;
-                        border-radius: 10px;
-                        font-size: 6vw;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center 60%;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 1;
                      "
-                     class="text-white"
-                  >
-                     Contactanos
-                  </h1>
-                </div>
+                  />
 
-               </q-parallax>
+                  <!-- Capa oscura encima -->
+                  <div
+                     style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(
+                           0,
+                           0,
+                           0,
+                           0.5
+                        ); /* oscuro semitransparente */
+                        z-index: 2;
+                     "
+                  ></div>
+
+                  <!-- Texto encima de todo -->
+                  <div
+                     style="
+                        position: relative;
+                        z-index: 3;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100%;
+                     "
+                  >
+                     <h1 class="text-h2 text-white text-bold">Contáctanos</h1>
+                  </div>
+               </div>
             </div>
          </div>
 
          <div style="padding: 20px">
             <div>
                <h4 style="margin: 10px">
-                  Contacta con nosotros y sé el primero en <br />
-                  enterarte de las novedades.
+                  <!-- Contacta con nosotros y sé el primero en <br />
+                  enterarte de las novedades. -->
+                  Contacta con nosotros y sé el primero <br />
+                  en conocer las novedades.
                </h4>
             </div>
             <div style="margin-bottom: 5px">
@@ -213,7 +251,7 @@
                >
                   <div>
                      <h5>
-                        En <b>Benny's Cars</b>, nos tomamos en serio su
+                        En <b>JT Cars</b>, nos tomamos en serio su
                         satisfacción.<br />
                         Estamos comprometidos a brindarle no solo un coche, sino
                         una experiencia <br />
@@ -265,9 +303,7 @@
                         <q-btn
                            label="Aceptar"
                            type="aceptar"
-                           glossy
                            style="color: #1aee9f"
-                           rounded
                         />
                         <q-btn
                            label="Reset"
@@ -291,21 +327,37 @@
             >
                <div>
                   <h5 style="margin: 10px">
-                     Estamos en Cubelles, Carrer Maestrat número 3 <br />
-                     Contactar al Teléfono: 614103736 / 722411324 <br />
+                     Estamos en Cubelles, Carrer Maestrat número 5 <br />
+                     Contactar al Teléfono: 614103736 <br />
                      Lunes - Viernes: 9.00-20:00h<br />
                      Sabado : 10.00 - 15.00h
                   </h5>
                </div>
-               <div>
-                  <iframe
-                     src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d909.7966577374251!2d1.6512922696582077!3d41.19919300728751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDExJzU3LjEiTiAxwrAzOScwNy4wIkU!5e1!3m2!1ses!2ses!4v1698127089612!5m2!1ses!2ses"
-                     style="border: 0"
-                     allowfullscreen=""
-                     loading="lazy"
-                     referrerpolicy="no-referrer-when-downgrade"
-                  ></iframe>
-               </div>
+               <q-card flat bordered class="q-mt-md">
+                  <q-card-section class="text-h6 text-bold">
+                     Nuestra Ubicación — Carrer Maresme, 5 (Cubelles)
+                  </q-card-section>
+
+                  <div
+                     style="
+                        position: relative;
+                        padding-bottom: 26.25%;
+                        height: 0;
+                        overflow: hidden;
+                        border-radius: 8px;
+                     "
+                  >
+                     <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d860.9329499534263!2d1.6458031696481854!3d41.19937910728468!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a388dac308fe55%3A0xf212fec437802d0f!2sCarrer%20Maresme%2C%205%2C%2008880%20Cubelles%2C%20Barcelona!5e1!3m2!1ses!2ses!4v1757338182625!5m2!1ses!2ses"
+                        width="600"
+                        height="450"
+                        style="border: 0"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                     ></iframe>
+                  </div>
+               </q-card>
             </div>
          </div>
          <InputUser

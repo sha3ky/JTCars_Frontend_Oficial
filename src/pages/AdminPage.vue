@@ -61,15 +61,14 @@
                <div>
                   <div>
                      <router-link to="/">
-                        <q-btn style="color: #1aee9f" clickable rounded>
+                        <q-btn style="color: #bbdefb" clickable>
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
                      </router-link>
                      <router-link to="/contacto">
                         <q-btn
-                           style="color: #1aee9f; margin-left: 10px"
+                           style="color: #bbdefb; margin-left: 15px"
                            clickable
-                           rounded
                         >
                            <q-item-section>Contactar</q-item-section>
                         </q-btn>
@@ -78,9 +77,8 @@
                      <!-- <template v-if="sessionData"> -->
                      <router-link to="/noticias">
                         <q-btn
-                           style="color: #1aee9f; margin-left: 10px"
+                           style="color: #bbdefb; margin-left: 15px"
                            clickable
-                           rounded
                         >
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
@@ -88,26 +86,13 @@
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
                            <q-btn
-                              style="color: #f11212; margin-left: 10px"
+                              style="color: #ffab91; margin-left: 15px"
                               clickable
-                              rounded
                            >
                               <q-item-section>Mis datos</q-item-section>
                            </q-btn>
                         </router-link>
                      </template>
-                     <!-- <router-link to="/extra">
-                        <q-btn
-
-                           style="color: #1aee9f; margin-left: 10px"
-                           clickable
-                           rounded
-                        >
-                           <q-item-section>Noticias</q-item-section>
-                        </q-btn>
-                     </router-link> -->
-                     <!-- </template> -->
-                     <!-- test -->
                   </div>
                </div>
             </template>
@@ -582,7 +567,7 @@
             display: flex;
          "
       >
-         <q-card-section class="q-pt-none" style="display: contents;">
+         <q-card-section class="q-pt-none" style="display: contents">
             <p style="font-size: medium">Espere por favor ...</p>
             <q-circular-progress
                indeterminate

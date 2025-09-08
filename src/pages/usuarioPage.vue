@@ -23,11 +23,11 @@
                         </q-item>
                      </router-link>
                      <!-- <template v-if="sessionData"> -->
-                      <router-link to="/noticias">
-                          <q-item clickable>
-                             <q-item-section>Noticias</q-item-section>
-                          </q-item>
-                       </router-link>
+                     <router-link to="/noticias">
+                        <q-item clickable>
+                           <q-item-section>Noticias</q-item-section>
+                        </q-item>
+                     </router-link>
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-item clickable>
@@ -64,24 +64,22 @@
                <div>
                   <div>
                      <router-link to="/home">
-                        <q-btn style="color: #1aee9f" clickable rounded>
+                        <q-btn style="color: #bbdefb" clickable>
                            <q-item-section>Coches</q-item-section>
                         </q-btn>
                      </router-link>
                      <router-link to="/contacto">
                         <q-btn
-                           style="color: #1aee9f; margin-left: 10px"
+                           style="color: #bbdefb; margin-left: 15px"
                            clickable
-                           rounded
                         >
                            <q-item-section>Contactar</q-item-section>
                         </q-btn>
                      </router-link>
                      <router-link to="/noticias">
                         <q-btn
-                           style="color: #1aee9f; margin-left: 10px"
+                           style="color: #bbdefb; margin-left: 15px"
                            clickable
-                           rounded
                         >
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
@@ -89,25 +87,13 @@
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
-                              style="color: #f11212; margin-left: 10px"
+                              style="color: #ffab91; margin-left: 15px"
                               clickable
-                              rounded
                            >
                               <q-item-section>Admin</q-item-section>
                            </q-btn>
                         </router-link>
                      </template>
-                     <!-- <template v-if="sessionData">
-                        <router-link to="/usuarioPage">
-                           <q-btn
-                              style="color: #f11212; margin-left: 10px"
-                              clickable
-                              rounded
-                           >
-                              <q-item-section>Mis Datos</q-item-section>
-                           </q-btn>
-                        </router-link>
-                     </template> -->
                   </div>
                </div>
             </template>
@@ -272,7 +258,6 @@
                         flex-direction: column;
                         align-items: center;
                         border-radius: 25px;
-                        j
                      "
                   >
                      <div style="padding: 10px; margin-top: 10%">

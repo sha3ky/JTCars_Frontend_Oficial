@@ -51,7 +51,7 @@
             <q-img
                height="70px"
                width="108px"
-               src="/benysCarlogoMetal.png"
+               src="/logo.png"
                v-if="$q.screen.width > 600"
             >
             </q-img>
@@ -79,9 +79,8 @@
                      </router-link> -->
                      <router-link to="/contacto">
                         <q-btn
-                           style="color: #1aee9f; margin-left: 10px"
+                           style="color: #bbdefb; margin-left: 15px"
                            clickable
-                           rounded
                         >
                            <q-item-section>Contactar</q-item-section>
                         </q-btn>
@@ -90,9 +89,8 @@
                      <!-- <template v-if="sessionData"> -->
                      <router-link to="/noticias">
                         <q-btn
-                           style="color: #1aee9f; margin-left: 10px"
+                           style="color: #bbdefb; margin-left: 15px"
                            clickable
-                           rounded
                         >
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
@@ -100,9 +98,8 @@
                      <template v-if="sessionData">
                         <router-link to="/usuarioPage">
                            <q-btn
-                              style="color: #f11212; margin-left: 10px"
+                              style="color: #ffab91; margin-left: 15px"
                               clickable
-                              rounded
                            >
                               <q-item-section>Mis Datos</q-item-section>
                            </q-btn>
@@ -111,9 +108,8 @@
                      <template v-if="userIsAdmin">
                         <router-link to="/admin">
                            <q-btn
-                              style="color: #f11212; margin-left: 10px"
+                              style="color: #ffab91; margin-left: 15px"
                               clickable
-                              rounded
                            >
                               <q-item-section>Admin</q-item-section>
                            </q-btn>
@@ -132,19 +128,19 @@
                   <div>
                      <q-btn
                         flat
-                        round
                         dense
-                        icon="img:loginGreen.png"
+                        icon="login"
+                        :style="{ color: '#bbdefb', width: '50px' }"
                         @click="loginearUsuario"
-                        style="width: 50px"
-                     ></q-btn>
-                     <q-btn
+                     />
+                     <!-- <q-btn
                         flat
-                        round
                         dense
-                        icon="img:userplusGreen.png"
+                        icon="person_add"
+                        :style="{ color: '#bbdefb', width: '50px' }"
                         @click="nuevoUsuario"
-                     ></q-btn>
+                     /> -->
+
                      <!-- boton para limpiar session storage -->
                      <!-- <q-btn
                         color="red"
@@ -161,18 +157,24 @@
                         {{ usuarioLogineado }}
                      </div>
                      <div>
-                        <q-btn flat round dense @click="logOut">Exit</q-btn>
+                        <q-btn flat round dense @click="logOut">Salir</q-btn>
                      </div>
                   </div>
                </template>
                <!--  -->
             </div>
             <q-toggle
-               color="red"
-               dark
                v-model="toggleDark"
                @click="toggleDarkMode"
-            />
+               color="black"
+               dark
+               keep-color
+               :label="toggleDark ? 'Modo oscuro' : 'Modo claro'"
+            >
+               <template v-slot:thumb>
+                  <q-icon :name="toggleDark ? 'nights_stay' : 'wb_sunny'" />
+               </template>
+            </q-toggle>
          </q-toolbar>
       </q-header>
 
@@ -192,12 +194,17 @@
       <q-page-container style="min-height: 100vh; text-align: center">
          <div>
             <q-img
-               src="/banner2WebP.webp"
+               src="/backPrincipal.jpg"
                class="q-mx-auto"
-               :max-width="400"
-               :max-height="425"
-               alt="Beny1 Logo"
-            ></q-img>
+               style="height: 400px"
+               alt="jt Logo"
+            >
+               <div class="absolute-full flex flex-center text-white">
+                  <div class="text-center">
+                     <div class="text-h2 text-bold">Bienvenido a JT Cars</div>
+                  </div>
+               </div>
+            </q-img>
          </div>
          <div
             style="
@@ -266,9 +273,10 @@
                         </div>
                         <div style="display: flex; justify-content: flex-end">
                            <q-img
-                              height="7vw"
-                              width="10vw"
-                              src="/benysCarlogoMetal.png"
+                              height="6vw"
+                              width="8vw"
+                              src="/logo.png"
+                              style="margin-top: -20px"
                            >
                            </q-img>
                         </div>
@@ -291,16 +299,24 @@
                      <div>
                         <div class="text-caption text-grey">
                            <div>
-                              <p class="fontCardCar">Año de fabricación: {{ anoCoche[index] }}</p>
+                              <p class="fontCardCar">
+                                 Año de fabricación: {{ anoCoche[index] }}
+                              </p>
                            </div>
                            <div>
-                             <p class="fontCardCar">Kilómetros: {{ kmCoche[index] }}</p>
+                              <p class="fontCardCar">
+                                 Kilómetros: {{ kmCoche[index] }}
+                              </p>
                            </div>
                            <div>
-                              <p class="fontCardCar">Etiqueta:{{ etiquetas[index] }}</p>
+                              <p class="fontCardCar">
+                                 Etiqueta:{{ etiquetas[index] }}
+                              </p>
                            </div>
                            <div>
-                              <p class="fontCardCar">Combustible:{{ combustible[index] }}</p>
+                              <p class="fontCardCar">
+                                 Combustible:{{ combustible[index] }}
+                              </p>
                            </div>
                         </div>
                      </div>
@@ -358,12 +374,12 @@
    </q-layout>
 </template>
 <style scoped>
-.fontCardCar{
-  font-size:medium;
-  margin:0;
+.fontCardCar {
+   font-size: medium;
+   margin: 0;
 }
 .responsive-image {
-   height: 250px; /* Set a fixed height for the images */
+   height: 350px; /* Set a fixed height for the images */
    width: 100%; /* Ensure the image takes up the entire space */
    object-fit: cover; /* Preserve the aspect ratio and cover the entire space */
 }
@@ -394,7 +410,7 @@
 .waviy {
    position: relative;
    -webkit-box-reflect: below -50px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
-   font-size:3vw;
+   font-size: 3vw;
 }
 .waviy span {
    font-family: "Times New Roman", Times, serif;
@@ -466,22 +482,28 @@ export default defineComponent({
       };
    },
    async mounted() {
-      // cuando vienes de otras rutas
-      this.sessionData = store.state.sessionData;
-      this.usuarioLogineado = store.state.name;
-      this.userIsAdmin = store.state.isAdmin
-         ? store.state.isAdmin
-         : this.userIsAdmin;
-      this.toggleDark = store.state.toggleDarkMode
-         ? store.state.toggleDarkMode
-         : this.toggleDark;
-      // Use an async function to fetch data and assign it to allData
+      // ⏺️ Recuperamos datos persistidos del store
+      const { sessionData, name, isAdmin, darkMode } = store.state;
+
+      this.sessionData = sessionData;
+      this.usuarioLogineado = name;
+      this.userIsAdmin = isAdmin ?? this.userIsAdmin;
+
+      // ✅ Aplica el modo oscuro directamente en Quasar si está activo
+      this.toggleDark = darkMode ?? this.toggleDark;
+      if (this.$q.dark.isActive !== this.toggleDark) {
+         this.$q.dark.set(this.toggleDark);
+      }
+
+      // ⏬ Carga de datos asincrónica
       this.allData = await getAllData();
-      console.log(this.allData);
-      if (this.allData.length != 0) {
+      console.log("this.allData / mounted", this.allData);
+
+      if (this.allData.length !== 0) {
          this.repartirData(this.allData);
       }
    },
+
    methods: {
       repartirData() {
          this.allData.forEach((element) => {
@@ -542,11 +564,32 @@ export default defineComponent({
       loginearUsuario() {
          this.showLoginUser = true;
       },
-      toggleDarkMode() {
+      /*   toggleDarkMode() {
+
          const $q = this.$q;
          $q.dark.toggle();
          store.state.toggleDarkMode = this.toggleDark;
+      }, */
+      toggleDarkMode() {
+         const $q = this.$q;
+
+         // Cambia el modo en Quasar
+         $q.dark.toggle();
+
+         // Obtiene el nuevo estado (true / false)
+         const isDark = $q.dark.isActive;
+
+         // Actualiza solo la propiedad darkMode, manteniendo el resto
+         store.commit("setSessionData", {
+            sessionData: store.state.sessionData,
+            name: store.state.name,
+            isAdmin: store.state.isAdmin,
+            darkMode: isDark,
+         });
+
+         // No necesitas guardar manualmente en localStorage gracias a vuex-persistedstate
       },
+
       // ------------------------------------------------------------------------------------------------------------------
       // forma paleto de mantener el usuario logineado a traves de todos los componentes y paginas
       updateUsuarioLogineado(bool) {
@@ -590,13 +633,13 @@ export default defineComponent({
       Footer_Layout,
    },
 
-   setup() {
+   /*   setup() {
       // dark mode
       // const $q = useQuasar();
       // $q.dark.set(true); // or false or "auto"
       // $q.dark.toggle(); // toggle
       return {};
-   },
+   }, */
 });
 </script>
 
