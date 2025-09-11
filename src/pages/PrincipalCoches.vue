@@ -564,12 +564,7 @@ export default defineComponent({
       loginearUsuario() {
          this.showLoginUser = true;
       },
-      /*   toggleDarkMode() {
 
-         const $q = this.$q;
-         $q.dark.toggle();
-         store.state.toggleDarkMode = this.toggleDark;
-      }, */
       toggleDarkMode() {
          const $q = this.$q;
 

@@ -49,7 +49,7 @@
             <q-img
                height="70px"
                width="108px"
-               src="/benysCarlogoMetal.png"
+               src="/logo.png"
                v-if="$q.screen.width > 600"
             >
             </q-img>
@@ -102,21 +102,21 @@
             <div>
                <template v-if="!sessionData">
                   <div>
-                     <q-btn
+                     <!--   <q-btn
                         flat
                         round
                         dense
                         icon="img:loginGreen.png"
                         @click="loginearUsuario"
                         style="width: 50px"
-                     ></q-btn>
-                     <q-btn
+                     ></q-btn> -->
+                     <!--  <q-btn
                         flat
                         round
                         dense
                         icon="img:userplusGreen.png"
                         @click="nuevoUsuario"
-                     ></q-btn>
+                     ></q-btn> -->
                   </div>
                </template>
                <template v-if="sessionData">
@@ -125,18 +125,24 @@
                         {{ usuarioLogineado }}
                      </div>
                      <div>
-                        <q-btn flat round dense @click="logOut">Exit</q-btn>
+                        <q-btn flat round dense @click="logOut">Salir</q-btn>
                      </div>
                   </div>
                </template>
                <!--  -->
             </div>
             <q-toggle
-               color="red"
-               dark
                v-model="toggleDark"
                @click="toggleDarkMode"
-            />
+               color="black"
+               dark
+               keep-color
+               :label="toggleDark ? 'Modo oscuro' : 'Modo claro'"
+            >
+               <template v-slot:thumb>
+                  <q-icon :name="toggleDark ? 'nights_stay' : 'wb_sunny'" />
+               </template>
+            </q-toggle>
          </q-toolbar>
       </q-header>
       <Footer_Layout />
@@ -531,14 +537,17 @@ export default defineComponent({
    },
    async mounted() {
       // cuando vienes de otras rutas
-      this.sessionData = store.state.sessionData;
-      this.usuarioLogineado = store.state.name;
-      this.userIsAdmin = store.state.isAdmin
-         ? store.state.isAdmin
-         : this.userIsAdmin;
-      this.toggleDark = store.state.toggleDarkMode
-         ? store.state.toggleDarkMode
-         : this.toggleDark;
+      const { sessionData, name, isAdmin, darkMode } = store.state;
+
+      this.sessionData = sessionData;
+      this.usuarioLogineado = name;
+      this.userIsAdmin = isAdmin ?? this.userIsAdmin;
+
+      // ✅ Aplica el modo oscuro directamente en Quasar si está activo
+      this.toggleDark = darkMode ?? this.toggleDark;
+      if (this.$q.dark.isActive !== this.toggleDark) {
+         this.$q.dark.set(this.toggleDark);
+      }
    },
    methods: {
       showNotificaciones() {
@@ -687,8 +696,22 @@ export default defineComponent({
       },
       toggleDarkMode() {
          const $q = this.$q;
+
+         // Cambia el modo en Quasar
          $q.dark.toggle();
-         store.state.toggleDarkMode = this.toggleDark;
+
+         // Obtiene el nuevo estado (true / false)
+         const isDark = $q.dark.isActive;
+
+         // Actualiza solo la propiedad darkMode, manteniendo el resto
+         store.commit("setSessionData", {
+            sessionData: store.state.sessionData,
+            name: store.state.name,
+            isAdmin: store.state.isAdmin,
+            darkMode: isDark,
+         });
+
+         // No necesitas guardar manualmente en localStorage gracias a vuex-persistedstate
       },
       async logOut() {
          const result = await logout();
