@@ -1,5 +1,5 @@
 <template>
-   <q-layout view="lHh Lpr lFf" v-if="sessionData && userIsAdmin">
+   <q-layout view="lHh Lpr lFf" v-if="isAuthenticated() && userIsAdmin">
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
             <q-btn
@@ -28,7 +28,7 @@
                            <q-item-section>Noticias</q-item-section>
                         </q-item>
                      </router-link>
-                     <template v-if="sessionData">
+                     <template v-if="isAuthenticated()">
                         <router-link to="/usuarioPage">
                            <q-item clickable>
                               <q-item-section>Mis Datos</q-item-section>
@@ -83,7 +83,7 @@
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
                      </router-link>
-                     <template v-if="sessionData">
+                     <template v-if="isAuthenticated()">
                         <router-link to="/usuarioPage">
                            <q-btn
                               style="color: #ffab91; margin-left: 15px"
@@ -99,7 +99,7 @@
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <template v-if="!sessionData">
+               <template v-if="!isAuthenticated()">
                   <div>
                      <q-btn
                         flat
@@ -118,7 +118,7 @@
                     ></q-btn> -->
                   </div>
                </template>
-               <template v-if="sessionData">
+               <template v-if="isAuthenticated()">
                   <div>
                      <div>
                         {{ usuarioLogineado }}
@@ -130,18 +130,7 @@
                </template>
                <!--  -->
             </div>
-            <q-toggle
-               v-model="toggleDark"
-               @click="toggleDarkMode"
-               color="black"
-               dark
-               keep-color
-               :label="toggleDark ? 'Modo oscuro' : 'Modo claro'"
-            >
-               <template v-slot:thumb>
-                  <q-icon :name="toggleDark ? 'nights_stay' : 'wb_sunny'" />
-               </template>
-            </q-toggle>
+            <dark-mode-toggle />
          </q-toolbar>
       </q-header>
       <!-- <q-footer elevated class="bg-blue-grey-9">
@@ -538,8 +527,8 @@
       <loginUser
          :loginUserDialog="showLoginUser"
          @close-dialog-loginuser="handleDialogClose"
-         @update-usuario-logineado="updateUsuarioLogineado"
       />
+      <!-- @update-usuario-logineado="updateUsuarioLogineado" -->
       <router-view />
    </q-layout>
    <q-layout v-else>
@@ -606,13 +595,12 @@ body.body--dark {
 }
 </style>
 <script>
+import DarkModeToggle from "src/components/DarkModeToggle.vue";
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
-import { useQuasar } from "quasar";
 import store from "../../src/store";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
-import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import getAllData from "src/composable/loadAllData";
 import getAllusers from "src/composable/getUsersContact";
@@ -633,9 +621,10 @@ import {
    coloresBanners,
    cocheAno,
 } from "src/composable/dataSelectores";
-
+import { authMixin } from "../mixins/authMixin";
 export default defineComponent({
    name: "AdminPage",
+   mixins: [authMixin],
    data() {
       return {
          anadirImagenDialog: false,
@@ -643,11 +632,9 @@ export default defineComponent({
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
-         userIsAdmin: false,
-         toggleDark: false,
+
          modelSelectedMenu: ref("coches"),
-         usuarioLogineado: "",
-         sessionData: "",
+
          tab: "coches",
          columnsCoches: [
             {
@@ -786,7 +773,7 @@ export default defineComponent({
          optionsCombustible: tipoCombustible,
          coloresBanners: coloresBanners,
          newCar: false,
-         modelInImgNew: "",
+         modelInImgNew: null,
          imagenConvertidaBase64: "",
          existPdf: "",
          fechaActual: new Date().getFullYear(),
@@ -818,22 +805,7 @@ export default defineComponent({
          }
          this.inputImagen = null;
       },
-      // modelEtiqueta: function (item) {
-      //    if (item) {
-      //       this.datosCoches.etiqueta = item;
-      //    }
-      // },
 
-      // modelPromotion: function (item) {
-      //    if (item) {
-      //       this.datosCoches.promocion = item;
-      //    }
-      // },
-      // modelTipo: function (item) {
-      //    if (item) {
-      //       this.datosCoches.tipo = item;
-      //    }
-      // },
       modelInImgNew: function (item) {
          if (item) {
             convertFileToBase64(item)
@@ -852,28 +824,9 @@ export default defineComponent({
       },
    },
    async mounted() {
-      // cuando vienes de otras rutas
-      const { sessionData, name, isAdmin, darkMode } = store.state;
-
-      this.sessionData = sessionData;
-      this.usuarioLogineado = name;
-      this.userIsAdmin = isAdmin ?? this.userIsAdmin;
-
-      // ✅ Aplica el modo oscuro directamente en Quasar si está activo
-      this.toggleDark = darkMode ?? this.toggleDark;
-      if (this.$q.dark.isActive !== this.toggleDark) {
-         this.$q.dark.set(this.toggleDark);
-      }
-
       this.waitDialog = true;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
-      // let etiqueta = await getEtiqueta();
-      //  this.optionsEtiqueta = etiqueta
-      // let promotion = await getPromotions();
-      // this.optionsPromotion = this.extrareKeysObjeto(promotion[0]);
-      // let tipo = await getTipoCoche();
-      // this.optionsTipo = this.extrareKeysObjeto(tipo[0]);
       this.waitDialog = false;
    },
    methods: {
@@ -1041,12 +994,7 @@ export default defineComponent({
             }
          }
       },
-      updateUsuarioLogineado(bool) {
-         if (bool) {
-            this.usuarioLogineado = store.state.name;
-            this.sessionData = store.state.sessionData;
-         }
-      },
+
       handleDialogClose() {
          this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
          this.showInputUser = false;
@@ -1059,44 +1007,14 @@ export default defineComponent({
          this.showLoginUser = true;
          //this.showInputUser = false;
       },
-      toggleDarkMode() {
-         const $q = this.$q;
 
-         // Cambia el modo en Quasar
-         $q.dark.toggle();
-
-         // Obtiene el nuevo estado (true / false)
-         const isDark = $q.dark.isActive;
-
-         // Actualiza solo la propiedad darkMode, manteniendo el resto
-         store.commit("setSessionData", {
-            sessionData: store.state.sessionData,
-            name: store.state.name,
-            isAdmin: store.state.isAdmin,
-            darkMode: isDark,
-         });
-
-         // No necesitas guardar manualmente en localStorage gracias a vuex-persistedstate
-      },
       async logOut() {
-         const result = await logout();
-         if (result) {
-            store.dispatch("logout");
-            this.usuarioLogineado = "";
-            this.sessionData = "";
-            Notify.create({
-               type: "positive",
-               message: "Adios.",
-            });
-            this.$router.push({ name: "principal-coches" }); ///esto sii
-            // window.location.href = "/home"; //esto NOOOOOOO
-         } else {
-            Notify.create({
-               type: "negative",
-               message: "Error al des-loginear al usuario.",
-            });
-            store.dispatch("logout");
-         }
+         store.dispatch("logout");
+         Notify.create({
+            type: "positive",
+            message: "Adios.",
+         });
+         this.$router.push({ name: "principal-coches" });
       },
    },
 
@@ -1104,14 +1022,7 @@ export default defineComponent({
       InputUser,
       loginUser,
       Footer_Layout,
-   },
-
-   setup() {
-      const $q = useQuasar();
-      // $q.dark.set(true); // or false or "auto"
-      // $q.dark.toggle(); // toggle
-      return {};
+      DarkModeToggle,
    },
 });
 </script>
-src/composable/translateColorEn_Es ../stores ../../../store
