@@ -67,7 +67,6 @@ import apiLink from "./apiLink";
 let link = apiLink;
 
 const login = async (name, password) => {
-   debugger;
    try {
       const response = await axios.post(`${link}api/loginUser`, {
          username: name,

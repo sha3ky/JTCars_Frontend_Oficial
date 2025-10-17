@@ -1,5 +1,5 @@
 <template>
-   <q-layout view="lHh Lpr lFf" v-if="sessionData">
+   <q-layout view="lHh Lpr lFf" v-if="isAuthenticated()">
       <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
             <q-btn
@@ -84,7 +84,7 @@
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
                      </router-link>
-                     <template v-if="userIsAdmin">
+                     <template v-if="isAuthenticated()">
                         <router-link to="/admin">
                            <q-btn
                               style="color: #ffab91; margin-left: 15px"
@@ -100,7 +100,7 @@
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <template v-if="!sessionData">
+               <template v-if="!isAuthenticated()">
                   <div>
                      <!--   <q-btn
                         flat
@@ -119,7 +119,7 @@
                      ></q-btn> -->
                   </div>
                </template>
-               <template v-if="sessionData">
+               <template v-if="isAuthenticated()">
                   <div>
                      <div>
                         {{ usuarioLogineado }}
@@ -131,24 +131,14 @@
                </template>
                <!--  -->
             </div>
-            <q-toggle
-               v-model="toggleDark"
-               @click="toggleDarkMode"
-               color="black"
-               dark
-               keep-color
-               :label="toggleDark ? 'Modo oscuro' : 'Modo claro'"
-            >
-               <template v-slot:thumb>
-                  <q-icon :name="toggleDark ? 'nights_stay' : 'wb_sunny'" />
-               </template>
-            </q-toggle>
+            <dark-mode-toggle />
          </q-toolbar>
       </q-header>
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
-         <h4 style="margin: 15px">Opciones Usuario</h4>
-         <q-card>
+         <h4 style="margin: 15px">Ajustes Usuario</h4>
+
+         <q-card style="">
             <div
                style="
                   height: 50vh;
@@ -158,161 +148,92 @@
                   align-items: center;
                "
             >
-               <div
-                  style="
-                     background-color: yellowgreen;
-                     height: 40vh;
-                     width: 60vw;
-                     display: flex;
-                     flex-direction: column;
-                     align-items: center;
-                     border-radius: 25px;
-                     justify-content: center;
-                  "
-               >
-                  <div>
-                     <p style="margin: 0">Quiero modifcar nombre y email</p>
-                     <q-toggle v-model="modificarNomEmail" color="green" />
-                  </div>
-                  <div>
-                     <p style="margin: 0">Quiero recibir notificaciones</p>
-                     <q-toggle v-model="notificaciones" color="green" />
-                  </div>
-                  <div>
-                     <p style="margin: 0">Quiero modificar la contraseña</p>
-                     <q-toggle v-model="modificarPassword" color="green" />
-                  </div>
-               </div>
+               <div class="q-pa-md" style="max-width: 350px">
+                  <q-list bordered class="rounded-borders">
+                     <q-expansion-item
+                        group="somegroup"
+                        expand-separator
+                        icon="perm_identity"
+                        label="Modificar Nombre y Correo"
+                        :caption="usuarioLogineado"
+                        dense
+                     >
+                        <q-card>
+                           <q-card-section>
+                              <div style="padding: 10px; margin-top: 2%">
+                                 <q-input
+                                    v-model="objetoNotifField.username"
+                                    label="Nombre usuario"
+                                 />
+                              </div>
+                              <div style="padding: 10px">
+                                 <q-input
+                                    v-model="objetoNotifField.email"
+                                    label="Email"
+                                 />
+                              </div>
+                           </q-card-section>
+                        </q-card>
+                     </q-expansion-item>
 
-               <template v-if="modificarNomEmail">
-                  <div
-                     style="
-                        background-color: rgb(50, 205, 153);
-                        height: 40vh;
-                        width: 60vw;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        border-radius: 25px;
-                        justify-content: center;
-                     "
-                  >
-                     <div style="padding: 10px; margin-top: 2%">
-                        <q-input
-                           v-model="objetoNotifField.username"
-                           label="Nombre usuario"
-                           dense
-                        />
-                     </div>
-                     <div style="padding: 10px">
-                        <q-input
-                           v-model="objetoNotifField.email"
-                           label="Email"
-                           dense
-                        />
-                     </div>
-                  </div>
-               </template>
-               <template v-if="notificaciones">
-                  <div
-                     style="
-                        background-color: rgb(205, 169, 50);
-                        height: 40vh;
-                        width: 60vw;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        border-radius: 25px;
-                        justify-content: center;
-                     "
-                  >
-                     <div>
-                        <q-input
-                           type="tel"
-                           v-model="objetoNotifField.mobileNumber"
-                           label="Tu Número de Teléfono"
-                           class="q-mb-md md:q-mb-0"
-                        />
-                     </div>
-                     <div>
-                        <q-input
-                           v-model="objetoNotifField.textareaModel"
-                           filled
-                           clearable
-                           type="textarea"
-                           color="red-12"
-                           label="Si buscas algo en particular ..."
-                        />
-                     </div>
-                     <div style="padding: 5px">
-                        <q-btn
-                           push
-                           style="background: yellowgreen"
-                           label="Preferencias"
-                           @click="busquedaAvanzada"
-                        />
-                     </div>
-                  </div>
-               </template>
-               <template v-if="modificarPassword">
-                  <div
-                     style="
-                        background-color: rgb(50, 182, 205);
-                        height: 40vh;
-                        width: 60vw;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        border-radius: 25px;
-                     "
-                  >
-                     <div style="padding: 10px; margin-top: 10%">
-                        <q-input
-                           dense
-                           v-model="oldPassword"
-                           filled
-                           type="password"
-                           label="Password antiguo"
-                        />
-                     </div>
-                     <div style="padding: 10px">
-                        <q-input
-                           v-model="newPassword"
-                           label="Password nuevo"
-                           dense
-                           type="password"
-                        />
-                     </div>
-                     <div style="padding: 10px">
-                        <q-input
-                           v-model="newPassword2"
-                           label="Repetir password"
-                           dense
-                           type="password"
-                        />
-                     </div>
-                  </div>
-               </template>
+                     <q-expansion-item
+                        group="somegroup"
+                        expand-separator
+                        icon="key"
+                        label="Modificar contraseña"
+                        dense
+                     >
+                        <q-card>
+                           <q-card-section>
+                              <div style="padding: 10px; margin-top: 10%">
+                                 <q-input
+                                    dense
+                                    v-model="oldPassword"
+                                    filled
+                                    type="password"
+                                    label="Password antiguo"
+                                 />
+                              </div>
+                              <div style="padding: 10px">
+                                 <q-input
+                                    v-model="newPassword"
+                                    label="Password nuevo"
+                                    dense
+                                    type="password"
+                                 />
+                              </div>
+                              <div style="padding: 10px">
+                                 <q-input
+                                    v-model="newPassword2"
+                                    label="Repetir password"
+                                    dense
+                                    type="password"
+                                 />
+                              </div>
+                           </q-card-section>
+                        </q-card>
+                     </q-expansion-item>
+                  </q-list>
+               </div>
             </div>
-            <q-card-actions align="right" class="text-primary">
-               <div style="padding: 5px">
-                  <q-btn color="red" @click="eliminarCuenta">
-                     ELIMINAR CUENTA
-                  </q-btn>
-               </div>
-
-               <div>
-                  <q-btn
-                     label="Aceptar"
-                     @click="aceptarCambios"
-                     v-close-popup
-                     color="green"
-                     text-color="black"
-                  />
-               </div>
-            </q-card-actions>
          </q-card>
+         <q-card-actions align="right" class="text-primary">
+            <div style="padding: 5px">
+               <q-btn color="red" @click="eliminarCuenta">
+                  ELIMINAR CUENTA
+               </q-btn>
+            </div>
 
+            <div>
+               <q-btn
+                  label="Aceptar"
+                  @click="aceptarCambios"
+                  v-close-popup
+                  color="green"
+                  text-color="black"
+               />
+            </div>
+         </q-card-actions>
          <InputUser
             :inputUserDialog="showInputUser"
             @close-dialog-newuser="handleDialogClose"
@@ -321,8 +242,8 @@
          <loginUser
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
-            @update-usuario-logineado="updateUsuarioLogineado"
          />
+         <!-- @update-usuario-logineado="updateUsuarioLogineado" -->
          <router-view />
       </q-page-container>
    </q-layout>
@@ -348,7 +269,7 @@
          </div>
       </div>
    </q-layout>
-   <q-dialog v-model="busquedaDialog">
+   <!--  <q-dialog v-model="busquedaDialog">
       <q-card>
          <q-card-section>
             <div class="text-h6">Busqueda avanzada</div>
@@ -390,7 +311,7 @@
                      />
                   </div>
                </div>
-               <!-- tipoCoches -->
+
                <div style="width: 33vw">
                   <div>
                      <q-select
@@ -403,7 +324,7 @@
                      />
                   </div>
                </div>
-               <!-- promotions -->
+
             </div>
             <div style="display: flex; padding: 5px">
                <div style="width: 33vw">
@@ -438,7 +359,7 @@
             <q-btn flat label="OK" color="primary" v-close-popup />
          </q-card-actions>
       </q-card>
-   </q-dialog>
+   </q-dialog> -->
 </template>
 <style>
 .iframe-container {
@@ -462,30 +383,25 @@ import {
    km,
 } from "src/composable/dataSelectores";
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
-import { defineComponent, ref } from "vue";
-import { useQuasar } from "quasar";
+import { defineComponent } from "vue";
 import store from "../../src/store";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
-import logout from "src/composable/logOut";
 import { Notify } from "quasar";
 import updateUser from "src/composable/updateUser";
 import contactUser from "src/composable/contactUser";
 import updatePasswordUser from "src/composable/updatePasswordUser";
 import eliminarUsuario from "src/composable/eliminarCuenta";
-
+import { authMixin } from "../mixins/authMixin";
+import DarkModeToggle from "src/components/DarkModeToggle.vue";
 export default defineComponent({
    name: "ExtraUsuario",
+   mixins: [authMixin],
    data() {
       return {
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
-         userIsAdmin: false,
-         toggleDark: false,
-         modelSelectedMenu: ref("coches"),
-         usuarioLogineado: "",
-         sessionData: "",
          fechaActual: new Date().getFullYear(),
          oldPassword: "",
          newPassword: "",
@@ -535,20 +451,7 @@ export default defineComponent({
          }
       },
    },
-   async mounted() {
-      // cuando vienes de otras rutas
-      const { sessionData, name, isAdmin, darkMode } = store.state;
 
-      this.sessionData = sessionData;
-      this.usuarioLogineado = name;
-      this.userIsAdmin = isAdmin ?? this.userIsAdmin;
-
-      // ✅ Aplica el modo oscuro directamente en Quasar si está activo
-      this.toggleDark = darkMode ?? this.toggleDark;
-      if (this.$q.dark.isActive !== this.toggleDark) {
-         this.$q.dark.set(this.toggleDark);
-      }
-   },
    methods: {
       showNotificaciones() {
          this.activeSection = "notificaciones";
@@ -694,55 +597,21 @@ export default defineComponent({
          this.showLoginUser = true;
          //this.showInputUser = false;
       },
-      toggleDarkMode() {
-         const $q = this.$q;
 
-         // Cambia el modo en Quasar
-         $q.dark.toggle();
-
-         // Obtiene el nuevo estado (true / false)
-         const isDark = $q.dark.isActive;
-
-         // Actualiza solo la propiedad darkMode, manteniendo el resto
-         store.commit("setSessionData", {
-            sessionData: store.state.sessionData,
-            name: store.state.name,
-            isAdmin: store.state.isAdmin,
-            darkMode: isDark,
-         });
-
-         // No necesitas guardar manualmente en localStorage gracias a vuex-persistedstate
-      },
       async logOut() {
-         const result = await logout();
-         if (result) {
-            store.dispatch("logout");
-            this.usuarioLogineado = "";
-            this.sessionData = "";
-            this.userIsAdmin = false;
-            Notify.create({
-               type: "positive",
-               message: "Adios.",
-            });
-            this.$router.push({ name: "principal-coches" });
-         } else {
-            Notify.create({
-               type: "negative",
-               message: "Error al des-loginear al usuario.",
-            });
-            store.dispatch("logout");
-         }
+         store.dispatch("logout");
+         Notify.create({
+            type: "positive",
+            message: "Adios.",
+         });
+         this.$router.push({ name: "principal-coches" });
       },
    },
    components: {
       InputUser,
       loginUser,
       Footer_Layout,
-   },
-
-   setup() {
-      const $q = useQuasar();
-      return {};
+      DarkModeToggle,
    },
 });
 </script>

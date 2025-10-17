@@ -39,7 +39,6 @@ export default {
       const darkMode = computed({
          get: () => store.state.darkMode,
          set: (value) => {
-            debugger;
             $q.dark.set(value);
             store.commit("setSessionData", {
                ...store.state,
@@ -51,7 +50,6 @@ export default {
       const toggleColor = computed(() => (darkMode.value ? "black" : "white"));
 
       const handleToggle = (newValue) => {
-         debugger;
          // 1. Aplicar cambio en Quasar
          $q.dark.set(newValue);
 
