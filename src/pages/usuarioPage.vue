@@ -10,7 +10,7 @@
                class="q-mr-sm"
                v-if="$q.screen.width < 600"
             >
-               <q-menu transition-show="scale" transition-hide="scale">
+               <q-menu transition-show="flip-right" transition-hide="flip-left">
                   <q-list style="min-width: 100px">
                      <router-link to="/home">
                         <q-item clickable>
@@ -137,7 +137,6 @@
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
          <h4 style="margin: 15px">Ajustes Usuario</h4>
-
          <q-card style="">
             <div
                style="
@@ -146,27 +145,43 @@
                   display: flex;
                   justify-content: center;
                   align-items: center;
+                  background-image: url('/gemConces.webp');
+                  background-size: cover;
+                  background-position: center;
+                  z-index: 1;
+                  position: relative;
                "
             >
-               <div class="q-pa-md" style="max-width: 350px">
+               <div
+                  class="q-pa-md"
+                  style="
+                     max-width: 550px;
+                     z-index: 10;
+                     background-color: rgba(0, 0, 0, 0.62);
+                     border-radius: 10px;
+                  "
+               >
                   <q-list bordered class="rounded-borders">
                      <q-expansion-item
                         group="somegroup"
                         expand-separator
                         icon="perm_identity"
                         label="Modificar Nombre y Correo"
-                        :caption="usuarioLogineado"
                         dense
+                        style="
+                           color: white;
+                           font-size: clamp(1.3rem, 4vw, 1.875rem);
+                        "
                      >
                         <q-card>
                            <q-card-section>
-                              <div style="padding: 10px; margin-top: 2%">
+                              <div style="margin-top: 2%">
                                  <q-input
                                     v-model="objetoNotifField.username"
-                                    label="Nombre usuario"
+                                    :label="usuarioLogineado"
                                  />
                               </div>
-                              <div style="padding: 10px">
+                              <div style="">
                                  <q-input
                                     v-model="objetoNotifField.email"
                                     label="Email"
@@ -182,19 +197,22 @@
                         icon="key"
                         label="Modificar contraseña"
                         dense
+                        style="
+                           color: white;
+                           font-size: clamp(1.3rem, 4vw, 1.875rem);
+                        "
                      >
                         <q-card>
                            <q-card-section>
-                              <div style="padding: 10px; margin-top: 10%">
+                              <div style="padding: 3px">
                                  <q-input
                                     dense
                                     v-model="oldPassword"
-                                    filled
                                     type="password"
                                     label="Password antiguo"
                                  />
                               </div>
-                              <div style="padding: 10px">
+                              <div style="padding: 3px">
                                  <q-input
                                     v-model="newPassword"
                                     label="Password nuevo"
@@ -202,7 +220,7 @@
                                     type="password"
                                  />
                               </div>
-                              <div style="padding: 10px">
+                              <div style="padding: 3px">
                                  <q-input
                                     v-model="newPassword2"
                                     label="Repetir password"
@@ -361,7 +379,20 @@
       </q-card>
    </q-dialog> -->
 </template>
-<style>
+<style scoped>
+.big-input :deep(.q-field__native) {
+   font-size: 30px !important;
+   min-height: 50px !important;
+}
+
+.big-input :deep(.q-field__control) {
+   min-height: 60px !important;
+}
+
+.big-input :deep(.q-field__label) {
+   font-size: 20px !important;
+   top: 15px !important;
+}
 .iframe-container {
    width: 100%;
    height: 100vh; /* This makes the container take up the full viewport height */

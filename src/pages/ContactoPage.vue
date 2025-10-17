@@ -10,7 +10,7 @@
                class="q-mr-sm"
                v-if="$q.screen.width < 600"
             >
-               <q-menu transition-show="scale" transition-hide="scale">
+               <q-menu transition-show="flip-right" transition-hide="flip-left">
                   <q-list style="min-width: 100px">
                      <router-link to="/home">
                         <q-item clickable>
