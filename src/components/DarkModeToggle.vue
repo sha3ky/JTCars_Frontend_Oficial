@@ -1,14 +1,20 @@
 <template>
    <q-toggle
       v-model="darkMode"
+      size="xl"
       @update:model-value="handleToggle"
       :color="toggleColor"
-      dark
       keep-color
       :dense="dense"
+      icon="light"
    >
       <template v-slot:thumb>
-         <q-icon :name="darkMode ? 'nights_stay' : 'wb_sunny'" />
+         <div
+            class="flex items-center justify-center"
+            style="width: 100%; height: 100%; font-size: 24px"
+         >
+            {{ darkMode ? "🌙" : "☀️" }}
+         </div>
       </template>
    </q-toggle>
 </template>
@@ -33,6 +39,7 @@ export default {
       const darkMode = computed({
          get: () => store.state.darkMode,
          set: (value) => {
+            debugger;
             $q.dark.set(value);
             store.commit("setSessionData", {
                ...store.state,
@@ -41,9 +48,7 @@ export default {
          },
       });
 
-      const toggleColor = computed(() =>
-         darkMode.value ? "black" : "orange-7"
-      );
+      const toggleColor = computed(() => (darkMode.value ? "black" : "white"));
 
       const handleToggle = (newValue) => {
          debugger;

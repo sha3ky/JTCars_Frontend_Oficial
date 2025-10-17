@@ -36,36 +36,29 @@ export default store; */
 
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
-
+import axios, { AxiosHeaders } from "axios";
+import apiLink from "./composable/apiLink";
 const store = createStore({
    state: {
-      access_token: null, // ← Agregar
-      refresh_token: null, // ← Agregar
+      access_token: null,
+      refresh_token: null,
       name: null,
-      email: null, // ← Agregar
+      email: null,
       isAdmin: null,
       darkMode: false,
    },
    mutations: {
-      setSessionData(
-         state,
-         { access_token, refresh_token, name, email, darkMode, isAdmin }
-      ) {
-         state.access_token = access_token;
-         state.refresh_token = refresh_token;
-         state.name = name;
-         state.email = email;
-         state.darkMode = darkMode;
-         state.isAdmin = isAdmin;
+      setSessionData(state, payload) {
+         Object.assign(state, payload);
       },
       updateTokens(state, { access_token, refresh_token }) {
          state.access_token = access_token;
          if (refresh_token) {
-            // ← Rotación opcional
             state.refresh_token = refresh_token;
          }
       },
       clearSessionData(state) {
+         // ✅ SOLO limpieza del estado (sin efectos secundarios)
          state.access_token = null;
          state.refresh_token = null;
          state.name = null;
@@ -75,34 +68,43 @@ const store = createStore({
       },
    },
    actions: {
-      login(
-         { commit },
-         { access_token, refresh_token, name, email, darkMode, isAdmin }
-      ) {
-         commit("setSessionData", {
-            access_token,
-            refresh_token,
-            name,
-            email,
-            darkMode,
-            isAdmin,
-         });
+      login({ commit }, payload) {
+         commit("setSessionData", payload);
       },
-      refreshTokens({ commit }, { access_token, refresh_token }) {
-         commit("updateTokens", { access_token, refresh_token });
+      refreshTokens({ commit }, payload) {
+         commit("updateTokens", payload);
       },
-      logout({ commit }) {
-         commit("clearSessionData");
+      async logout({ commit, state }) {
+         try {
+            // ✅ Lógica de logout en ACTION (donde pertenece)
+            await axios.post(
+               `${apiLink}api/logout/`,
+               {
+                  refresh_token: state.refresh_token, // ← Usa el token del state
+               },
+               {
+                  headers: {
+                     Authorization: `Bearer ${state.access_token}`,
+                  },
+               }
+            );
+         } catch (error) {
+            console.error("Logout API error:", error);
+            // ✅ Importante: limpiar estado incluso si falla la API
+         } finally {
+            // ✅ Siempre limpiar el estado local
+            commit("clearSessionData");
+         }
       },
    },
-
-   // 🧠 Aquí activamos la persistencia
    plugins: [
       createPersistedState({
-         // Persistir solo datos no sensibles
-         paths: ["name", "email", "isAdmin", "darkMode"],
+         storage: window.sessionStorage,
       }),
    ],
 });
+
+// ❌ ELIMINAR la función logout externa
+// const logout = async () => { ... }
 
 export default store;

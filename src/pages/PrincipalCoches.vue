@@ -35,7 +35,7 @@
                            </q-item>
                         </router-link>
                      </template>
-                     <template v-if="sessionData">
+                     <template v-if="isAuthenticated()">
                         <router-link to="/usuarioPage">
                            <q-item clickable>
                               <q-item-section>Mis datos</q-item-section>
@@ -95,7 +95,7 @@
                            <q-item-section>Noticias</q-item-section>
                         </q-btn>
                      </router-link>
-                     <template v-if="sessionData">
+                     <template v-if="isAuthenticated()">
                         <router-link to="/usuarioPage">
                            <q-btn
                               style="color: #ffab91; margin-left: 15px"
@@ -124,7 +124,7 @@
             <!-- reactividad -->
             <q-space></q-space>
             <div>
-               <template v-if="!sessionData">
+               <template v-if="!isAuthenticated()">
                   <div>
                      <q-btn
                         flat
@@ -151,7 +151,7 @@
                      <!-- boton para limpiar session storage -->
                   </div>
                </template>
-               <template v-if="sessionData">
+               <template v-if="isAuthenticated()">
                   <div>
                      <div>
                         {{ usuarioLogineado }}
@@ -202,7 +202,7 @@
             >
                <div class="absolute-full flex flex-center text-white">
                   <div class="text-center">
-                     <div class="text-h2 text-bold">Bienvenido a JT Cars</div>
+                     <div class="text-h2 text-bold">Bienvenido a JTCars</div>
                   </div>
                </div>
             </q-img>
@@ -361,10 +361,8 @@
          <loginUser
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
-            @update-usuario-logineado="updateUsuarioLogineado"
          />
-         <!-- @usuario_token="updateUsuarioToken" -->
-         <!-- @update-usuario-logineado="updateUsuarioLogineado" -->
+         <!--  @update-usuario-logineado="updateUsuarioLogineado" -->
          <MyCarousel
             :carouseloDialog="showCarousel"
             @close-dialog-carousel="handleDialogClose"
@@ -444,14 +442,12 @@ import loginUser from "src/components/loginUser.vue";
 import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as needed
 import MasInfoDatos from "components/MasInfoDatos.vue";
 import getAllData from "src/composable/loadAllData";
-import logout from "src/composable/logOut";
 import store from "../../src/store";
-import deleteStorage from "src/composable/deleteStorage";
-
-//import EssentialLink from 'components/EssentialLink.vue'; // Adjust the path as needed
+import { authMixin } from "../mixins/authMixin";
 
 export default defineComponent({
    name: "PrincipalCoches",
+   mixins: [authMixin],
    data() {
       return {
          pdfDatos: "",
@@ -462,7 +458,6 @@ export default defineComponent({
          showLoginUser: false,
          showCarousel: false,
          userId: null,
-         userIsAdmin: false,
          toggleDark: false,
          modelSelectedMenu: ref("coches"),
          imagenPrincipal: [],
@@ -477,31 +472,13 @@ export default defineComponent({
          marcas: [],
          modelos: [],
          colores: [],
-         usuarioLogineado: "",
-         sessionData: "",
          arrayPdf: [],
       };
    },
    async mounted() {
-      debugger;
-      // ⏺️ Recuperamos datos persistidos del store
-      const { access_token, name, isAdmin } = store.state;
-
-      // 1. ✅ Configurar axios (pero NO exponer token en variables)
-      if (access_token) {
-         axios.defaults.headers.common[
-            "Authorization"
-         ] = `Bearer ${access_token}`;
-      }
-
-      // 2. ✅ Solo datos necesarios para UI
-      this.usuarioLogineado = name;
-      this.userIsAdmin = isAdmin ?? false;
-
       // ⏬ Carga de datos asincrónica
       this.allData = await getAllData();
       console.log("this.allData / mounted", this.allData);
-
       if (this.allData.length !== 0) {
          this.repartirData(this.allData);
       }
@@ -567,39 +544,13 @@ export default defineComponent({
       loginearUsuario() {
          this.showLoginUser = true;
       },
-
-      // ------------------------------------------------------------------------------------------------------------------
-      // forma paleto de mantener el usuario logineado a traves de todos los componentes y paginas
-      updateUsuarioLogineado(bool) {
-         if (bool) {
-            this.usuarioLogineado = store.state.name;
-            this.sessionData = store.state.sessionData;
-            this.userIsAdmin = store.state.isAdmin;
-         }
-      },
-      // ------------------------------------------------------------------------------------------------------------------
       async logOut() {
-         const result = await logout();
-         if (result) {
-            store.dispatch("logout");
-            this.usuarioLogineado = "";
-            this.sessionData = "";
-            this.userIsAdmin = false;
-            Notify.create({
-               type: "positive",
-               message: "Adios.",
-            });
-            this.$router.push({ name: "principal-coches" });
-         } else {
-            Notify.create({
-               type: "negative",
-               message: "Error al des-loginear al usuario.",
-            });
-            store.dispatch("logout");
-         }
-      },
-      limpiarStorage() {
-         deleteStorage();
+         store.dispatch("logout");
+         Notify.create({
+            type: "positive",
+            message: "Adios.",
+         });
+         this.$router.push({ name: "principal-coches" });
       },
    },
 

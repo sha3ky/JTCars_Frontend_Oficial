@@ -101,7 +101,7 @@ export default defineComponent({
                   type: "positive",
                   message: "Usuario logineado correctamente.",
                });
-               this.$emit("update-usuario-logineado", "true"); /// forma paleto de enviar el usuario logineado de uno a otro
+               /*  this.$emit("update-usuario-logineado", "true"); /// forma paleto de enviar el usuario logineado de uno a otro */
             } else {
                console.log("usuario no logineado");
                Notify.create({
