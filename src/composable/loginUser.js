@@ -67,24 +67,29 @@ import apiLink from "./apiLink";
 let link = apiLink;
 
 const login = async (name, password) => {
+   debugger;
    try {
       const response = await axios.post(`${link}api/loginUser`, {
          username: name,
          password: password,
       });
 
-      console.log(response); // Log the response for debugging
-
       if (response.status == 200 && response.data.access) {
-         sessionStorage.setItem("access_token", response.data.access);
+         /*    sessionStorage.setItem("access_token", response.data.access);
          sessionStorage.setItem("refresh_token", response.data.refresh);
          sessionStorage.setItem("username", response.data.username); // Store the username
          sessionStorage.setItem("email", response.data.email);
-         axios.defaults.headers.common["Authorization"] = response.data.access;
+         axios.defaults.headers.common["Authorization"] = response.data.access; */
+         // ✅ FORMA CORRECTA - Con "Bearer"
+         axios.defaults.headers.common[
+            "Authorization"
+         ] = `Bearer ${response.data.access}`;
          /*The purpose of this code is to dispatch the "login" action to the store, passing relevant user data such as the access token, username, and administrator status. This data can be stored in the Vuex store's state and used throughout your application to manage user sessions and access control.*/
          store.dispatch("login", {
-            sessionData: response.data.access,
-            name: name, // Replace with the actual name you want to store
+            access_token: response.data.access,
+            refresh_token: response.data.refresh_token,
+            name: name,
+            email: response.data.email,
             isAdmin: response.data.is_admin,
          });
 

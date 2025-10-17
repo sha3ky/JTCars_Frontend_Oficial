@@ -39,28 +39,57 @@ import createPersistedState from "vuex-persistedstate";
 
 const store = createStore({
    state: {
-      sessionData: null,
+      access_token: null, // ← Agregar
+      refresh_token: null, // ← Agregar
       name: null,
-      darkMode: false,
+      email: null, // ← Agregar
       isAdmin: null,
+      darkMode: false,
    },
    mutations: {
-      setSessionData(state, { sessionData, name, darkMode, isAdmin }) {
-         state.sessionData = sessionData;
+      setSessionData(
+         state,
+         { access_token, refresh_token, name, email, darkMode, isAdmin }
+      ) {
+         state.access_token = access_token;
+         state.refresh_token = refresh_token;
          state.name = name;
+         state.email = email;
          state.darkMode = darkMode;
          state.isAdmin = isAdmin;
       },
+      updateTokens(state, { access_token, refresh_token }) {
+         state.access_token = access_token;
+         if (refresh_token) {
+            // ← Rotación opcional
+            state.refresh_token = refresh_token;
+         }
+      },
       clearSessionData(state) {
-         state.sessionData = null;
+         state.access_token = null;
+         state.refresh_token = null;
          state.name = null;
+         state.email = null;
          state.darkMode = false;
          state.isAdmin = null;
       },
    },
    actions: {
-      login({ commit }, { sessionData, name, darkMode, isAdmin }) {
-         commit("setSessionData", { sessionData, name, darkMode, isAdmin });
+      login(
+         { commit },
+         { access_token, refresh_token, name, email, darkMode, isAdmin }
+      ) {
+         commit("setSessionData", {
+            access_token,
+            refresh_token,
+            name,
+            email,
+            darkMode,
+            isAdmin,
+         });
+      },
+      refreshTokens({ commit }, { access_token, refresh_token }) {
+         commit("updateTokens", { access_token, refresh_token });
       },
       logout({ commit }) {
          commit("clearSessionData");
@@ -68,7 +97,12 @@ const store = createStore({
    },
 
    // 🧠 Aquí activamos la persistencia
-   plugins: [createPersistedState()],
+   plugins: [
+      createPersistedState({
+         // Persistir solo datos no sensibles
+         paths: ["name", "email", "isAdmin", "darkMode"],
+      }),
+   ],
 });
 
 export default store;

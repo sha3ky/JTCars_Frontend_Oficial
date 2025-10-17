@@ -163,7 +163,7 @@
                </template>
                <!--  -->
             </div>
-            <q-toggle
+            <!--   <q-toggle
                v-model="toggleDark"
                @click="toggleDarkMode"
                color="black"
@@ -174,7 +174,8 @@
                <template v-slot:thumb>
                   <q-icon :name="toggleDark ? 'nights_stay' : 'wb_sunny'" />
                </template>
-            </q-toggle>
+            </q-toggle> -->
+            <dark-mode-toggle />
          </q-toolbar>
       </q-header>
 
@@ -433,9 +434,10 @@
 }
 </style>
 <script>
+import DarkModeToggle from "src/components/DarkModeToggle.vue";
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
-import { useQuasar } from "quasar";
+import { useQuasar, Notify } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
@@ -443,7 +445,6 @@ import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as n
 import MasInfoDatos from "components/MasInfoDatos.vue";
 import getAllData from "src/composable/loadAllData";
 import logout from "src/composable/logOut";
-import { Notify } from "quasar";
 import store from "../../src/store";
 import deleteStorage from "src/composable/deleteStorage";
 
@@ -482,18 +483,20 @@ export default defineComponent({
       };
    },
    async mounted() {
+      debugger;
       // ⏺️ Recuperamos datos persistidos del store
-      const { sessionData, name, isAdmin, darkMode } = store.state;
+      const { access_token, name, isAdmin } = store.state;
 
-      this.sessionData = sessionData;
-      this.usuarioLogineado = name;
-      this.userIsAdmin = isAdmin ?? this.userIsAdmin;
-
-      // ✅ Aplica el modo oscuro directamente en Quasar si está activo
-      this.toggleDark = darkMode ?? this.toggleDark;
-      if (this.$q.dark.isActive !== this.toggleDark) {
-         this.$q.dark.set(this.toggleDark);
+      // 1. ✅ Configurar axios (pero NO exponer token en variables)
+      if (access_token) {
+         axios.defaults.headers.common[
+            "Authorization"
+         ] = `Bearer ${access_token}`;
       }
+
+      // 2. ✅ Solo datos necesarios para UI
+      this.usuarioLogineado = name;
+      this.userIsAdmin = isAdmin ?? false;
 
       // ⏬ Carga de datos asincrónica
       this.allData = await getAllData();
@@ -565,26 +568,6 @@ export default defineComponent({
          this.showLoginUser = true;
       },
 
-      toggleDarkMode() {
-         const $q = this.$q;
-
-         // Cambia el modo en Quasar
-         $q.dark.toggle();
-
-         // Obtiene el nuevo estado (true / false)
-         const isDark = $q.dark.isActive;
-
-         // Actualiza solo la propiedad darkMode, manteniendo el resto
-         store.commit("setSessionData", {
-            sessionData: store.state.sessionData,
-            name: store.state.name,
-            isAdmin: store.state.isAdmin,
-            darkMode: isDark,
-         });
-
-         // No necesitas guardar manualmente en localStorage gracias a vuex-persistedstate
-      },
-
       // ------------------------------------------------------------------------------------------------------------------
       // forma paleto de mantener el usuario logineado a traves de todos los componentes y paginas
       updateUsuarioLogineado(bool) {
@@ -626,6 +609,7 @@ export default defineComponent({
       MyCarousel,
       MasInfoDatos,
       Footer_Layout,
+      DarkModeToggle,
    },
 
    /*   setup() {
