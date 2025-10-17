@@ -448,8 +448,8 @@ export default defineComponent({
          optionsCombustible: tipoCombustible,
          optionskm: km,
          objetoNotifField: {
-            username: sessionStorage.getItem("username"),
-            email: sessionStorage.getItem("email"),
+            username: "",
+            email: "",
             notificaciones: true,
             mobileNumber: "",
             textareaModel: "",
