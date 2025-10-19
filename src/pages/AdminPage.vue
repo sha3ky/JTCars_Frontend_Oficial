@@ -278,6 +278,7 @@
                               v-model="datosCoches.matricula"
                               label="Matricula"
                               dense
+                              type="text"
                            />
                         </div>
                         <div>
@@ -286,6 +287,7 @@
                               v-model="datosCoches.marca"
                               label="Marca"
                               dense
+                              type="text"
                            />
                         </div>
                         <div>
@@ -294,6 +296,7 @@
                               v-model="datosCoches.modelo"
                               label="Modelo"
                               dense
+                              type="text"
                            />
                         </div>
                      </div>
@@ -313,8 +316,9 @@
                            <q-input
                               filled
                               v-model="datosCoches.km"
-                              label="KM"
+                              label="KM sin puntos"
                               dense
+                              @keypress="soloNumerosYPuntos"
                            />
                         </div>
                         <div style="width: 33vw">
@@ -323,6 +327,7 @@
                               v-model="datosCoches.descripcion"
                               label="Descripcion"
                               dense
+                              type="text"
                            />
                         </div>
                      </div>
@@ -383,7 +388,7 @@
                               dense
                               filled
                               v-model="datosCoches.precio"
-                              label="Precio"
+                              label="Precio sin puntos"
                            />
                         </div>
                         <div style="width: 33vw">
@@ -830,6 +835,17 @@ export default defineComponent({
       this.waitDialog = false;
    },
    methods: {
+      soloNumerosYPuntos(event) {
+         const char = String.fromCharCode(event.which || event.keyCode);
+
+         // Permitir solo: números (0-9) y punto (.)
+         if (!/[0-9.]/.test(char)) {
+            event.preventDefault();
+            return false;
+         }
+
+         return true;
+      },
       async reloadData() {
          this.waitDialog = true;
          this.rowsCoches = await getAllData();
