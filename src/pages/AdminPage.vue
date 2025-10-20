@@ -14,7 +14,7 @@
                   <q-list style="min-width: 100px">
                      <router-link to="/home">
                         <q-item clickable>
-                           <q-item-section>Coches</q-item-section>
+                           <q-item-section>Inicio</q-item-section>
                         </q-item>
                      </router-link>
                      <router-link to="/contacto">
@@ -62,7 +62,7 @@
                   <div>
                      <router-link to="/">
                         <q-btn style="color: #bbdefb" clickable>
-                           <q-item-section>Coches</q-item-section>
+                           <q-item-section>Inicio</q-item-section>
                         </q-btn>
                      </router-link>
                      <router-link to="/contacto">
@@ -158,7 +158,7 @@
                   align="justify"
                   narrow-indicator
                >
-                  <q-tab name="coches" label="Coches" />
+                  <q-tab name="coches" label="Garaje" />
                   <q-tab name="personas" label="Clientes" />
                   <!-- <q-tab name="datos" label="Datos personales" /> -->
                </q-tabs>
@@ -167,7 +167,6 @@
 
                <q-tab-panels v-model="tab" animated>
                   <q-tab-panel name="coches">
-                     <div class="text-h6">Coches</div>
                      <div>
                         <q-btn color="teal" @click="addNewCar">
                            <q-icon left size="1em" name="add" />
@@ -176,7 +175,7 @@
                      </div>
                      <div class="q-pa-md">
                         <q-table
-                           title="Coches"
+                           title="Garaje"
                            :rows="rowsCoches"
                            :columns="columnsCoches"
                            row-key="matricula"

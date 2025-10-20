@@ -14,7 +14,7 @@
                   <q-list style="min-width: 100px">
                      <router-link to="/home">
                         <q-item clickable>
-                           <q-item-section>Coches</q-item-section>
+                           <q-item-section>Inicio</q-item-section>
                         </q-item>
                      </router-link>
                      <router-link to="/contacto">
@@ -65,7 +65,7 @@
                   <div>
                      <router-link to="/home">
                         <q-btn style="color: #bbdefb" clickable>
-                           <q-item-section>Coches</q-item-section>
+                           <q-item-section>Inicio</q-item-section>
                         </q-btn>
                      </router-link>
                      <router-link to="/contacto">
