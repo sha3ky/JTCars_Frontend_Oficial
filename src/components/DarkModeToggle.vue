@@ -3,16 +3,13 @@
       v-model="darkMode"
       size="xl"
       @update:model-value="handleToggle"
-      :color="toggleColor"
+      :color="darkMode ? 'grey-9' : 'orange'"
       keep-color
       :dense="dense"
-      icon="light"
+      :icon="darkMode ? 'dark_mode' : 'light_mode'"
    >
-      <template v-slot:thumb>
-         <div
-            class="flex items-center justify-center"
-            style="width: 100%; height: 100%; font-size: 24px"
-         >
+      <template v-slot:label>
+         <div class="q-ml-sm" style="font-size: 20px">
             {{ darkMode ? "🌙" : "☀️" }}
          </div>
       </template>
@@ -22,7 +19,8 @@
 <script>
 import { computed, onMounted } from "vue";
 import { useQuasar } from "quasar";
-import store from "../../src/store";
+import store from "../../src/store"; // ✅ Importa DIRECTAMENTE tu store.js
+
 export default {
    name: "DarkModeToggle",
    props: {
@@ -35,47 +33,28 @@ export default {
    setup(props) {
       const $q = useQuasar();
 
-      // Computed para leer el estado darkMode del store
+      // ✅ Computed que funciona con importación directa
       const darkMode = computed({
          get: () => store.state.darkMode,
          set: (value) => {
             $q.dark.set(value);
-            store.commit("setSessionData", {
-               ...store.state,
-               darkMode: value,
-            });
+            store.commit("SET_DARK_MODE", value);
          },
       });
 
-      const toggleColor = computed(() => (darkMode.value ? "black" : "white"));
-
       const handleToggle = (newValue) => {
-         // 1. Aplicar cambio en Quasar
-         $q.dark.set(newValue);
-
-         // 2. Actualizar Vuex store (usa tu mutation existente)
-         store.commit("setSessionData", {
-            sessionData: store.state.sessionData,
-            name: store.state.name,
-            isAdmin: store.state.isAdmin,
-            darkMode: newValue,
-         });
-
-         // Opcional: emitir evento para el componente padre
-         // emit('darkModeChanged', newValue)
+         darkMode.value = newValue; // ✅ Usa el computed setter
       };
 
       // Sincronizar estado inicial
       onMounted(() => {
-         // Asegurar que Quasar use el estado del store
-         if (darkMode.value !== $q.dark.isActive) {
-            $q.dark.set(darkMode.value);
+         if (store.state.darkMode !== $q.dark.isActive) {
+            $q.dark.set(store.state.darkMode);
          }
       });
 
       return {
          darkMode,
-         toggleColor,
          handleToggle,
       };
    },

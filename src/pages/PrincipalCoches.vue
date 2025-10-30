@@ -252,74 +252,89 @@
          <!-- [class="responsive-image",
                 class="cardImage"
          ] -->
-         <div class="">
-            <div v-for="(item, index) in imagenPrincipal" :key="index">
-               <q-card bordered>
-                  <q-img :src="getBase64Image(item)" class="relative-position">
-                     <!-- Logo -->
-                     <div class="absolute-top-left q-pa-lg">
-                        <q-img
-                           src="/logo.png"
-                           style="height: 12vw; width: 11vw"
-                        ></q-img>
-                     </div>
 
-                     <!-- Badge promoción -->
-                     <div class="absolute-bottom row justify-center">
-                        <q-badge
-                           class="text-h6"
-                           :color="colores[index]"
-                           :label="promocion[index]"
-                        ></q-badge>
-                     </div>
-                  </q-img>
-                  <!-- descripcion -->
-                  <q-card-section style="padding: 0">
-                     <div style="padding: 5px; text-transform: uppercase">
+         <div class="cars-container">
+            <div class="cars-grid">
+               <q-card
+                  v-for="(item, index) in imagenPrincipal"
+                  :key="index"
+                  class="car-card"
+                  bordered
+               >
+                  <!-- IMAGEN DEL COCHE -->
+                  <div class="image-container">
+                     <q-img
+                        :src="getBase64Image(item)"
+                        class="car-image"
+                        ratio="1"
+                     >
+                        <!-- Logo -->
+                        <div class="absolute-top-left q-pa-md">
+                           <q-img src="/logo.png" class="logo-image"></q-img>
+                        </div>
+
+                        <!-- Badge promoción -->
+                        <div class="absolute-bottom row justify-center q-pb-md">
+                           <q-badge
+                              class="text-subtitle1 q-px-md q-py-xs"
+                              :color="colores[index]"
+                              :label="promocion[index]"
+                           ></q-badge>
+                        </div>
+                     </q-img>
+                  </div>
+
+                  <!-- INFORMACIÓN DEL COCHE -->
+                  <q-card-section class="car-info">
+                     <div class="car-title text-primary">
                         {{ marcas[index] }} {{ modelos[index] }}
                      </div>
-                     <div
-                        class="text-overline text-orange-9"
-                        style="line-height: 1px"
-                     >
-                        Precio
-                     </div>
 
-                     <div class="text-h5 q-mt-sm q-mb-xs" style="margin: 3px">
+                     <div class="price-label text-warning">Precio</div>
+
+                     <div class="car-price text-negative">
                         {{ precios[index] }}<span>€</span>
                      </div>
-                     <div>
-                        <div class="text-caption text-grey">
-                           <div>
-                              <p class="fontCardCar">
-                                 Año de fabricación: {{ anoCoche[index] }}
-                              </p>
-                           </div>
-                           <div>
-                              <p class="fontCardCar">
-                                 Kilómetros: {{ kmCoche[index] }}
-                              </p>
-                           </div>
-                           <div>
-                              <p class="fontCardCar">
-                                 Etiqueta:{{ etiquetas[index] }}
-                              </p>
-                           </div>
-                           <div>
-                              <p class="fontCardCar">
-                                 Combustible:{{ combustible[index] }}
-                              </p>
-                           </div>
+
+                     <div class="car-details">
+                        <div class="car-detail">
+                           <span class="label text-grey">Año:</span>
+                           <span class="value text-dark">{{
+                              anoCoche[index]
+                           }}</span>
+                        </div>
+                        <div class="car-detail">
+                           <span class="label text-grey">Km:</span>
+                           <span class="value text-dark">{{
+                              kmCoche[index]
+                           }}</span>
+                        </div>
+                        <div class="car-detail">
+                           <span class="label text-grey">Etiqueta:</span>
+                           <span class="value text-dark">{{
+                              etiquetas[index]
+                           }}</span>
+                        </div>
+                        <div class="car-detail">
+                           <span class="label text-grey">Combustible:</span>
+                           <span class="value text-dark">{{
+                              combustible[index]
+                           }}</span>
                         </div>
                      </div>
                   </q-card-section>
-                  <!-- acciones -->
-                  <q-card-actions style="display: block; padding: 0">
+
+                  <q-card-section class="car-description text-grey">
+                     {{ arrayDescripciones[index] }}
+                  </q-card-section>
+                  <!-- ACCIONES -->
+                  <q-card-actions class="car-actions">
                      <q-btn
                         flat
                         color="primary"
                         label="Más Fotos"
                         @click="carouselFoto(index)"
+                        class="action-btn"
                      />
                      <template v-if="arrayPdf[index]">
                         <q-btn
@@ -327,16 +342,12 @@
                            color="secondary"
                            label="Más Datos"
                            @click="masDatos(index)"
+                           class="action-btn"
                         ></q-btn>
                      </template>
-
-                     <q-space />
                   </q-card-actions>
 
-                  <q-card-section class="text-subtitle2" style="padding: 0">
-                     {{ arrayDescripciones[index] }}
-                  </q-card-section>
-                  <!-- </q-col> -->
+                  <!-- DESCRIPCIÓN -->
                </q-card>
             </div>
          </div>
@@ -366,43 +377,172 @@
    </q-layout>
 </template>
 <style scoped>
-.absolute-bottom {
-   background-color: transparent !important;
-}
 .absolute-top-left {
    background-color: transparent !important;
 }
-.fontCardCar {
-   font-size: medium;
-   margin: 0;
-}
-.responsive-image {
-   height: 100vh; /* Set a fixed height for the images */
-   width: 100%; /* Ensure the image takes up the entire space */
-   object-fit: cover; /* Preserve the aspect ratio and cover the entire space */
-}
-.cardImage {
-   width: 95vw; /* 95% width on mobile screens */
-   margin: 0 auto; /* Center the card */
+.cars-container {
+   padding: 20px;
+   max-width: 1400px;
+   margin: 0 auto;
 }
 
-@media (min-width: 600px) {
-   /* Apply the following styles for screens larger than 600px */
-   .cardImage {
-      width: 47vw; /* Two images in a row for larger screens */
-      margin: 0 1%; /* Adjust margin between cards */
-      display: inline-block; /* Display cards in a row */
-      /* .waviy {
-         font-size: 60px;
-      } */
+/* GRID RESPONSIVE */
+.cars-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 24px;
+   width: 100%;
+}
+
+/* TARJETA DEL COCHE */
+.car-card {
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.car-card:hover {
+   transform: translateY(-4px);
+   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* CONTENEDOR DE IMAGEN */
+.image-container {
+   position: relative;
+   width: 100%;
+}
+
+.car-image {
+   width: 100%;
+   height: 250px;
+   object-fit: cover;
+}
+
+.logo-image {
+   height: 60px;
+   width: 80px;
+   max-height: 8vw;
+   max-width: 10vw;
+}
+
+/* INFORMACIÓN */
+.car-info {
+   flex-grow: 1;
+   padding: 16px;
+}
+
+.car-title {
+   font-size: 1.1rem;
+   font-weight: 700;
+   margin-bottom: 8px;
+   color: #1e3c72;
+   text-transform: uppercase;
+}
+
+.price-label {
+   font-size: 0.8rem;
+   color: #ff9800;
+   margin-bottom: 4px;
+}
+
+.car-price {
+   font-size: 1.4rem;
+   font-weight: 700;
+   color: #e74c3c;
+   margin-bottom: 16px;
+}
+
+.car-details {
+   margin-bottom: 16px;
+}
+
+.car-detail {
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 6px;
+   padding-bottom: 6px;
+   border-bottom: 1px solid #f0f0f0;
+}
+
+.car-detail:last-child {
+   border-bottom: none;
+}
+
+.car-detail .label {
+   font-weight: 500;
+   color: #666;
+   font-size: 0.9rem;
+}
+
+.car-detail .value {
+   font-weight: 400;
+   color: #333;
+   font-size: 0.9rem;
+}
+
+/* ACCIONES */
+.car-actions {
+   display: flex;
+   justify-content: space-between;
+   padding: 0 16px 16px;
+   gap: 8px;
+}
+
+.action-btn {
+   flex: 1;
+}
+
+/* DESCRIPCIÓN */
+.car-description {
+   padding: 12px 16px;
+   font-size: 0.9rem;
+   color: #666;
+   background-color: #f9f9f9;
+   border-top: 1px solid #eee;
+}
+
+/* RESPONSIVE */
+/* Móvil - 1 columna */
+@media (max-width: 599px) {
+   .cars-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
    }
-   @media (max-width: 1060px) {
-      /* Apply the following styles for screens larger than 600px */
-      .cardImage {
-         width: 77vw; /* Two images in a row for larger screens */
-         margin: 0 1%; /* Adjust margin between cards */
-         display: inline-block; /* Display cards in a row */
-      }
+
+   .car-image {
+      height: 200px;
+   }
+
+   .cars-container {
+      padding: 16px;
+   }
+}
+
+/* Tablet - 2 columnas */
+@media (min-width: 600px) and (max-width: 1023px) {
+   .cars-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+   }
+
+   .car-image {
+      height: 220px;
+   }
+}
+
+/* Escritorio - 3 columnas */
+@media (min-width: 1024px) and (max-width: 1439px) {
+   .cars-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+   }
+}
+
+/* Escritorio grande - 4 columnas */
+@media (min-width: 1440px) {
+   .cars-grid {
+      grid-template-columns: repeat(4, 1fr);
    }
 }
 .waviy {
