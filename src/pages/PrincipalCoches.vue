@@ -248,41 +248,32 @@
                <span style="--i: 10">NO</span> -->
             </div>
          </div>
-
-         <div
-            class="q-pa-md row items-start q-gutter-md"
-            style="justify-content: space-around"
-         >
+         <!-- q-pa-md row items-start q-gutter-md -->
+         <!-- [class="responsive-image",
+                class="cardImage"
+         ] -->
+         <div class="">
             <div v-for="(item, index) in imagenPrincipal" :key="index">
-               <q-card class="cardImage" style="padding: 0" flat bordered>
-                  <q-img :src="getBase64Image(item)" class="responsive-image">
-                     <div
-                        style="
-                           display: flex;
-                           justify-content: flex-end;
-                           display: contents;
-                        "
-                     >
-                        <div>
-                           <q-badge
-                              rounded
-                              :color="colores[index]"
-                              :label="promocion[index]"
-                           ></q-badge>
-                           <!-- <q-badge rounded color="green" label="OFERTA" />
-                           <q-badge rounded color="blue" label="HIBRIDO" /> -->
-                        </div>
-                        <div style="display: flex; justify-content: flex-end">
-                           <q-img
-                              height="6vw"
-                              width="8vw"
-                              src="/logo.png"
-                              style="margin-top: -20px"
-                           >
-                           </q-img>
-                        </div>
+               <q-card bordered>
+                  <q-img :src="getBase64Image(item)" class="relative-position">
+                     <!-- Logo -->
+                     <div class="absolute-top-left q-pa-lg">
+                        <q-img
+                           src="/logo.png"
+                           style="height: 12vw; width: 11vw"
+                        ></q-img>
+                     </div>
+
+                     <!-- Badge promoción -->
+                     <div class="absolute-bottom row justify-center">
+                        <q-badge
+                           class="text-h6"
+                           :color="colores[index]"
+                           :label="promocion[index]"
+                        ></q-badge>
                      </div>
                   </q-img>
+                  <!-- descripcion -->
                   <q-card-section style="padding: 0">
                      <div style="padding: 5px; text-transform: uppercase">
                         {{ marcas[index] }} {{ modelos[index] }}
@@ -322,6 +313,7 @@
                         </div>
                      </div>
                   </q-card-section>
+                  <!-- acciones -->
                   <q-card-actions style="display: block; padding: 0">
                      <q-btn
                         flat
@@ -340,6 +332,7 @@
 
                      <q-space />
                   </q-card-actions>
+
                   <q-card-section class="text-subtitle2" style="padding: 0">
                      {{ arrayDescripciones[index] }}
                   </q-card-section>
@@ -373,12 +366,18 @@
    </q-layout>
 </template>
 <style scoped>
+.absolute-bottom {
+   background-color: transparent !important;
+}
+.absolute-top-left {
+   background-color: transparent !important;
+}
 .fontCardCar {
    font-size: medium;
    margin: 0;
 }
 .responsive-image {
-   height: 350px; /* Set a fixed height for the images */
+   height: 100vh; /* Set a fixed height for the images */
    width: 100%; /* Ensure the image takes up the entire space */
    object-fit: cover; /* Preserve the aspect ratio and cover the entire space */
 }
