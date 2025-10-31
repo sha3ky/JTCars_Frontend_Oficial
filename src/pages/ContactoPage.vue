@@ -1,159 +1,13 @@
 <template>
    <q-layout view="lHh Lpr lFf">
-      <q-header elevated>
-         <q-toolbar class="bg-blue-grey-9">
-            <q-btn
-               flat
-               round
-               dense
-               icon="menu"
-               class="q-mr-sm"
-               v-if="$q.screen.width < 600"
-            >
-               <q-menu transition-show="flip-right" transition-hide="flip-left">
-                  <q-list style="min-width: 100px">
-                     <router-link to="/home">
-                        <q-item clickable>
-                           <q-item-section>Inicio</q-item-section>
-                        </q-item>
-                     </router-link>
-                     <!-- <router-link to="/contacto">
-                        <q-item clickable>
-                           <q-item-section>Contacto</q-item-section>
-                        </q-item>
-                     </router-link> -->
-                     <!-- <template v-if="sessionData"> -->
-                     <router-link to="/noticias">
-                        <q-item clickable>
-                           <q-item-section>Noticias</q-item-section>
-                        </q-item>
-                     </router-link>
-                     <template v-if="userIsAdmin">
-                        <router-link to="/admin">
-                           <q-item clickable>
-                              <q-item-section>Admin</q-item-section>
-                           </q-item>
-                        </router-link>
-                     </template>
-                     <template v-if="isAuthenticated()">
-                        <router-link to="/usuarioPage">
-                           <q-item clickable>
-                              <q-item-section>Mis datos</q-item-section>
-                           </q-item>
-                        </router-link>
-                     </template>
-                     <!-- </template> -->
-                     <q-separator />
-                  </q-list>
-               </q-menu>
-            </q-btn>
-            <q-img
-               height="70px"
-               width="108px"
-               src="/logo.png"
-               v-if="$q.screen.width > 600"
-            >
-            </q-img>
-            <q-separator
-               vertical
-               inset
-               style="background: aliceblue"
-               v-if="$q.screen.width < 600"
-            />
+      <HeaderLayout
+         :is-authenticated="isAuthenticated()"
+         :user-is-admin="userIsAdmin"
+         :usuario-logineado="usuarioLogineado"
+         @login="loginearUsuario"
+         @logout="logOut"
+      />
 
-            <q-space></q-space>
-            <!-- reactividad -->
-            <template v-if="$q.screen.width > 600">
-               <div>
-                  <div>
-                     <router-link to="/">
-                        <q-btn style="color: #bbdefb" clickable>
-                           <q-item-section>Inicio </q-item-section>
-                        </q-btn>
-                     </router-link>
-                     <!-- <router-link to="/contacto">
-                        <q-btn
-
-                           style="color: #1aee9f; margin-left: 10px"
-                           clickable
-                           rounded
-                        >
-                           <q-item-section>Contacto</q-item-section>
-                        </q-btn>
-                     </router-link> -->
-                     <!-- test -->
-                     <!-- <template v-if="sessionData"> -->
-                     <router-link to="/noticias">
-                        <q-btn
-                           style="color: #bbdefb; margin-left: 15px"
-                           clickable
-                        >
-                           <q-item-section>Noticias</q-item-section>
-                        </q-btn>
-                     </router-link>
-                     <template v-if="isAuthenticated()">
-                        <router-link to="/usuarioPage">
-                           <q-btn
-                              style="color: #ffab91; margin-left: 15px"
-                              clickable
-                           >
-                              <q-item-section>Mis Datos</q-item-section>
-                           </q-btn>
-                        </router-link>
-                     </template>
-                     <template v-if="userIsAdmin">
-                        <router-link to="/admin">
-                           <q-btn
-                              style="color: #ffab91; margin-left: 15px"
-                              clickable
-                           >
-                              <q-item-section>Admin</q-item-section>
-                           </q-btn>
-                        </router-link>
-                     </template>
-
-                     <!-- </template> -->
-                     <!-- test -->
-                  </div>
-               </div>
-            </template>
-            <!-- reactividad -->
-            <q-space></q-space>
-            <div>
-               <template v-if="!isAuthenticated()">
-                  <div>
-                     <!--  <q-btn
-                        flat
-                        round
-                        dense
-                        icon="img:loginGreen.png"
-                        @click="loginearUsuario"
-                        style="width: 50px"
-                     ></q-btn> -->
-                     <!--   <q-btn
-                        flat
-                        round
-                        dense
-                        icon="img:userplusGreen.png"
-                        @click="nuevoUsuario"
-                     ></q-btn> -->
-                  </div>
-               </template>
-               <template v-if="isAuthenticated()">
-                  <div>
-                     <div>
-                        {{ usuarioLogineado }}
-                     </div>
-                     <div>
-                        <q-btn flat round dense @click="logOut">Salir</q-btn>
-                     </div>
-                  </div>
-               </template>
-               <!--  -->
-            </div>
-            <dark-mode-toggle />
-         </q-toolbar>
-      </q-header>
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
          <!-- <div>
@@ -379,7 +233,6 @@ body.body--dark {
 </style>
 
 <script>
-import DarkModeToggle from "src/components/DarkModeToggle.vue";
 import { authMixin } from "../mixins/authMixin";
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
@@ -389,6 +242,7 @@ import InputUser from "components/InputUser.vue"; // Replace with the actual pat
 import loginUser from "src/components/loginUser.vue";
 import store from "../../src/store";
 import contactUser from "src/composable/contactUser";
+import HeaderLayout from "components/HeaderComponent.vue";
 import { Notify } from "quasar";
 export default defineComponent({
    name: "ContactoPage",
@@ -429,7 +283,7 @@ export default defineComponent({
       InputUser,
       loginUser,
       Footer_Layout,
-      DarkModeToggle,
+      HeaderLayout,
    },
 
    setup() {

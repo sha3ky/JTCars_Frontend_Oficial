@@ -12,6 +12,11 @@
          >
             <q-menu transition-show="flip-right" transition-hide="flip-left">
                <q-list style="min-width: 100px">
+                  <router-link to="/home">
+                     <q-item clickable>
+                        <q-item-section>Inicio</q-item-section>
+                     </q-item>
+                  </router-link>
                   <router-link to="/contacto">
                      <q-item clickable>
                         <q-item-section>Contactar</q-item-section>
@@ -65,17 +70,23 @@
          <!-- MENÚ ESCRITORIO -->
          <template v-if="$q.screen.width > 600">
             <div class="row items-center q-gutter-sm">
+               <router-link to="/home">
+                  <q-btn style="color: #bbdefb" clickable>
+                     <q-item-section>Inicio</q-item-section>
+                  </q-btn>
+               </router-link>
+
                <router-link to="/contacto">
                   <q-btn style="color: #bbdefb" clickable>
                      <q-item-section>Contactar</q-item-section>
                   </q-btn>
                </router-link>
 
-               <router-link to="/noticias">
+               <!--  <router-link to="/noticias">
                   <q-btn style="color: #bbdefb" clickable>
                      <q-item-section>Noticias</q-item-section>
                   </q-btn>
-               </router-link>
+               </router-link> -->
 
                <template v-if="isAuthenticated">
                   <router-link to="/usuarioPage">
