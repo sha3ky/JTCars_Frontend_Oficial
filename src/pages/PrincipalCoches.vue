@@ -1,6 +1,6 @@
 <template>
    <q-layout view="lHh Lpr lFf">
-      <q-header elevated>
+      <!--  <q-header elevated>
          <q-toolbar class="bg-blue-grey-9">
             <q-btn
                flat
@@ -12,17 +12,17 @@
             >
                <q-menu transition-show="flip-right" transition-hide="flip-left">
                   <q-list style="min-width: 100px">
-                     <!-- <router-link to="/">
+                     <router-link to="/">
                         <q-item clickable>
                            <q-item-section>Coches</q-item-section>
                         </q-item>
-                     </router-link> -->
+                     </router-link>
                      <router-link to="/contacto">
                         <q-item clickable>
                            <q-item-section>Contactar</q-item-section>
                         </q-item>
                      </router-link>
-                     <!-- <template v-if="sessionData"> -->
+
                      <router-link to="/noticias">
                         <q-item clickable>
                            <q-item-section>Noticias</q-item-section>
@@ -43,7 +43,6 @@
                         </router-link>
                      </template>
 
-                     <!-- </template> -->
                      <q-separator />
                   </q-list>
                </q-menu>
@@ -63,20 +62,10 @@
             />
 
             <q-space></q-space>
-            <!-- reactividad -->
+
             <template v-if="$q.screen.width > 600">
                <div>
                   <div>
-                     <!-- <router-link to="/">
-                        <q-btn
-                           class="glossy"
-                           style="color: #1aee9f"
-                           clickable
-                           rounded
-                        >
-                           <q-item-section>Coches</q-item-section>
-                        </q-btn>
-                     </router-link> -->
                      <router-link to="/contacto">
                         <q-btn
                            style="color: #bbdefb; margin-left: 15px"
@@ -85,8 +74,7 @@
                            <q-item-section>Contactar</q-item-section>
                         </q-btn>
                      </router-link>
-                     <!-- test -->
-                     <!-- <template v-if="sessionData"> -->
+
                      <router-link to="/noticias">
                         <q-btn
                            style="color: #bbdefb; margin-left: 15px"
@@ -115,13 +103,10 @@
                            </q-btn>
                         </router-link>
                      </template>
-
-                     <!-- </template> -->
-                     <!-- test -->
                   </div>
                </div>
             </template>
-            <!-- reactividad -->
+
             <q-space></q-space>
             <div>
                <template v-if="!isAuthenticated()">
@@ -133,22 +118,6 @@
                         :style="{ color: '#bbdefb', width: '50px' }"
                         @click="loginearUsuario"
                      />
-                     <!-- <q-btn
-                        flat
-                        dense
-                        icon="person_add"
-                        :style="{ color: '#bbdefb', width: '50px' }"
-                        @click="nuevoUsuario"
-                     /> -->
-
-                     <!-- boton para limpiar session storage -->
-                     <!-- <q-btn
-                        color="red"
-                        round
-                        dense
-                        @click="limpiarStorage"
-                     ></q-btn> -->
-                     <!-- boton para limpiar session storage -->
                   </div>
                </template>
                <template v-if="isAuthenticated()">
@@ -161,48 +130,36 @@
                      </div>
                   </div>
                </template>
-               <!--  -->
+
             </div>
-            <!--   <q-toggle
-               v-model="toggleDark"
-               @click="toggleDarkMode"
-               color="black"
-               dark
-               keep-color
-               :label="toggleDark ? 'Modo oscuro' : 'Modo claro'"
-            >
-               <template v-slot:thumb>
-                  <q-icon :name="toggleDark ? 'nights_stay' : 'wb_sunny'" />
-               </template>
-            </q-toggle> -->
+
             <dark-mode-toggle />
          </q-toolbar>
-      </q-header>
+      </q-header> -->
+      <HeaderLayout
+         :is-authenticated="isAuthenticated()"
+         :user-is-admin="userIsAdmin"
+         :usuario-logineado="usuarioLogineado"
+         @login="loginearUsuario"
+         @logout="logOut"
+      />
 
-      <!-- <q-footer elevated class="bg-blue-grey-9">
-         <q-toolbar>
-            <q-toolbar-title style="text-align: center"
-               >Made with
-               <span
-                  ><q-img src="/lovePng.png" width="50px" height="50px"></q-img
-               ></span>
-               by Sha3ky's TEAM {{ fechaActual }}</q-toolbar-title
-            >
-         </q-toolbar>
-      </q-footer> -->
       <Footer_Layout />
 
       <q-page-container style="min-height: 100vh; text-align: center">
-         <div>
+         <div class="hero-container">
             <q-img
                src="/backPrincipal.jpg"
-               class="q-mx-auto"
+               class="q-mx-auto hero-image"
                style="height: 400px"
                alt="jt Logo"
             >
                <div class="absolute-full flex flex-center text-white">
-                  <div class="text-center">
+                  <div class="text-center hero-text">
                      <div class="text-h2 text-bold">Bienvenido a JTCars</div>
+                     <div class="text-h6 q-mt-md" style="opacity: 0.9">
+                        Tu concesionario de confianza
+                     </div>
                   </div>
                </div>
             </q-img>
@@ -290,36 +247,66 @@
                         {{ marcas[index] }} {{ modelos[index] }}
                      </div>
 
-                     <div class="price-label text-warning">Precio</div>
+                     <!--  <div class="price-label text-warning">
+                        <h6 class="q-pa-none q-ma-none">Precio</h6>
+                     </div> -->
 
-                     <div class="car-price text-negative">
-                        {{ precios[index] }}<span>€</span>
+                     <div class="car-price" :class="`text-${colores[index]}`">
+                        {{ formatPrice(precios[index]) }}<span>€</span>
                      </div>
 
                      <div class="car-details">
                         <div class="car-detail">
-                           <span class="label text-grey">Año:</span>
-                           <span class="value text-dark">{{
-                              anoCoche[index]
-                           }}</span>
+                           <span class="label text-grey"> Año: </span>
+                           <span class="value text-grey">
+                              {{ formatPrice(anoCoche[index]) }}</span
+                           >
                         </div>
                         <div class="car-detail">
                            <span class="label text-grey">Km:</span>
-                           <span class="value text-dark">{{
+                           <span class="value text-grey">{{
                               kmCoche[index]
                            }}</span>
                         </div>
-                        <div class="car-detail">
+
+                        <!--      <div class="car-detail">
                            <span class="label text-grey">Etiqueta:</span>
-                           <span class="value text-dark">{{
-                              etiquetas[index]
-                           }}</span>
+                           <div class="car-detail">
+                              <span
+                                 class="label text-grey-8 text-subtitle1 text-weight-bold"
+                              ></span>
+                              <img
+                                 :src="`/etiquetas/etiqueta${etiquetas[index]}.png`"
+                                 :alt="`${etiquetas[index]}`"
+                                 class="etiqueta-image"
+                              />
+                           </div>
+                        </div> -->
+                        <div class="car-detail">
+                           <span class="label">Etiqueta:</span>
+                           <img
+                              v-if="
+                                 etiquetas[index] && etiquetas[index] !== 'sin'
+                              "
+                              :src="getEtiquetaImage(etiquetas[index])"
+                              :alt="`Etiqueta ${etiquetas[index]}`"
+                              class="etiqueta-image"
+                           />
+                           <div v-else class="no-etiqueta">
+                              <q-icon name="block" color="grey-6" size="24px" />
+                              <span class="text-caption text-grey-6 q-ml-xs"
+                                 >Sin etiqueta</span
+                              >
+                           </div>
                         </div>
                         <div class="car-detail">
                            <span class="label text-grey">Combustible:</span>
-                           <span class="value text-dark">{{
-                              combustible[index]
-                           }}</span>
+                           <div>
+                              <img
+                                 :src="getCombustibleImage(combustible[index])"
+                                 class="combustible-image"
+                              />
+                           </div>
                         </div>
                      </div>
                   </q-card-section>
@@ -341,7 +328,7 @@
                            flat
                            color="secondary"
                            label="Más Datos"
-                           @click="masDatos(index)"
+                           @click="datosPdf(index)"
                            class="action-btn"
                         ></q-btn>
                      </template>
@@ -377,6 +364,48 @@
    </q-layout>
 </template>
 <style scoped>
+.combustible-image {
+   width: 5vh;
+}
+.etiqueta-image {
+   width: 5vh;
+}
+.hero-container {
+   overflow: hidden;
+}
+
+.hero-image {
+   animation: subtleZoom 20s ease-in-out infinite;
+   transform-origin: center;
+}
+
+.hero-text {
+   animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes subtleZoom {
+   0%,
+   100% {
+      transform: scale(1);
+   }
+   50% {
+      transform: scale(1.05);
+   }
+}
+
+@keyframes textGlow {
+   from {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+   }
+   to {
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+   }
+}
+
+.fontSizeDescripcion {
+   font-weight: bolder;
+   font-size: 1.1rem;
+}
 .absolute-top-left {
    background-color: transparent !important;
 }
@@ -470,13 +499,13 @@
 }
 
 .car-detail .label {
-   font-weight: 500;
-   color: #666;
-   font-size: 0.9rem;
+   font-weight: 700;
+   color: #9e9e9e;
+   font-size: 1.1rem;
 }
 
 .car-detail .value {
-   font-weight: 400;
+   font-weight: 700;
    color: #333;
    font-size: 0.9rem;
 }
@@ -571,7 +600,7 @@
 }
 </style>
 <script>
-import DarkModeToggle from "src/components/DarkModeToggle.vue";
+/* import DarkModeToggle from "src/components/DarkModeToggle.vue"; */
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
 import { useQuasar, Notify } from "quasar";
@@ -580,6 +609,7 @@ import InputUser from "components/InputUser.vue"; // Replace with the actual pat
 import loginUser from "src/components/loginUser.vue";
 import MyCarousel from "src/components//MyCarousel.vue"; // Adjust the path as needed
 import MasInfoDatos from "components/MasInfoDatos.vue";
+import HeaderLayout from "components/HeaderComponent.vue";
 import getAllData from "src/composable/loadAllData";
 import store from "../../src/store";
 import { authMixin } from "../mixins/authMixin";
@@ -624,6 +654,38 @@ export default defineComponent({
    },
 
    methods: {
+      getCombustibleImage(combustible) {
+         console.log("combustible", combustible);
+         if (!combustible) return "/etiquetas/gasolina.png";
+
+         const combustibleMap = {
+            Gasolina: "/etiquetas/gasolina.png",
+            Diesel: "/etiquetas/diesel.png",
+            Electrico: "/etiquetas/electrico.png",
+            Alternativo: "/etiquetas/alternativo.png",
+            Hibrido: "/etiquetas/alternativo.png",
+         };
+
+         return combustibleMap[combustible] || "/etiquetas/gasolina.png";
+      },
+      formatPrice(price) {
+         if (!price && price !== 0) return "0";
+         const number = Number(price);
+         return isNaN(number) ? "0" : number.toLocaleString("es-ES");
+      },
+      getEtiquetaImage(etiqueta) {
+         const etiquetaMap = {
+            0: "/etiquetas/etiqueta0.png",
+            B: "/etiquetas/etiquetaB.png",
+            C: "/etiquetas/etiquetaC.png",
+            ECO: "/etiquetas/etiquetaEco.png",
+            b: "/etiquetas/etiquetaB.png",
+            c: "/etiquetas/etiquetaC.png",
+            eco: "/etiquetas/etiquetaEco.png",
+         };
+
+         return etiquetaMap[etiqueta] || "/etiquetas/etiqueta0.png";
+      },
       repartirData() {
          this.allData.forEach((element) => {
             let imagen = this.firstImgNotNull(element);
@@ -665,7 +727,7 @@ export default defineComponent({
          this.showCarousel = true;
          this.arrayDatos = this.allData[index];
       },
-      masDatos(index) {
+      datosPdf(index) {
          this.pdfDatos = this.allData[index].pdf;
          if (this.pdfDatos.length != 0) {
             this.showMasInfo = true;
@@ -699,7 +761,8 @@ export default defineComponent({
       MyCarousel,
       MasInfoDatos,
       Footer_Layout,
-      DarkModeToggle,
+      /*   DarkModeToggle, */
+      HeaderLayout,
    },
 
    /*   setup() {
