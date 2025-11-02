@@ -1,4 +1,4 @@
-import axios from "axios";
+/* import axios from "axios";
 import apiLink from "./apiLink";
 import logout from "./logOut";
 
@@ -30,4 +30,4 @@ const eliminarUsuario = async () => {
    }
 };
 
-export default eliminarUsuario;
+export default eliminarUsuario; */

@@ -429,6 +429,7 @@
    flex-direction: column;
    height: 100%;
    transition: transform 0.3s ease, box-shadow 0.3s ease;
+   padding: 5px;
 }
 
 .car-card:hover {
@@ -761,7 +762,7 @@ export default defineComponent({
       MyCarousel,
       MasInfoDatos,
       Footer_Layout,
-      /*   DarkModeToggle, */
+
       HeaderLayout,
    },
 

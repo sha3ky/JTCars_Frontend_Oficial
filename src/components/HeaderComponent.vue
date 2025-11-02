@@ -8,7 +8,7 @@
             dense
             icon="menu"
             class="q-mr-sm"
-            v-if="$q.screen.width < 599"
+            v-if="$q.screen.width < 899"
          >
             <q-menu transition-show="flip-right" transition-hide="flip-left">
                <q-list style="min-width: 100px">
@@ -22,17 +22,17 @@
                         <q-item-section>Contactar</q-item-section>
                      </q-item>
                   </router-link>
-
+                  <!--
                   <router-link to="/noticias">
                      <q-item clickable>
                         <q-item-section>Noticias</q-item-section>
                      </q-item>
-                  </router-link>
+                  </router-link> -->
 
                   <template v-if="userIsAdmin">
                      <router-link to="/admin">
                         <q-item clickable>
-                           <q-item-section>Admin</q-item-section>
+                           <q-item-section>Opciones</q-item-section>
                         </q-item>
                      </router-link>
                   </template>
@@ -40,31 +40,30 @@
                   <template v-if="isAuthenticated">
                      <router-link to="/usuarioPage">
                         <q-item clickable>
-                           <q-item-section>Mis datos</q-item-section>
+                           <q-item-section>Garaje</q-item-section>
                         </q-item>
                      </router-link>
                   </template>
-
                   <q-separator />
                </q-list>
             </q-menu>
          </q-btn>
 
          <!-- LOGO -->
-         <q-img
-            height="70px"
-            width="108px"
-            src="/logo.png"
-            v-if="$q.screen.width > 599"
-         />
 
+         <!-- v-if="$q.screen.width > 599" -->
          <q-separator
             vertical
             inset
             style="background: aliceblue"
             v-if="$q.screen.width < 599"
          />
-
+         <q-img
+            height="70px"
+            width="108px"
+            style="margin-left: 5%"
+            src="/logo.png"
+         />
          <q-space></q-space>
 
          <!-- MENÚ ESCRITORIO -->
@@ -106,7 +105,7 @@
             </div>
          </template>
  -->
-         <template v-if="$q.screen.width > 599">
+         <template v-if="$q.screen.width > 899">
             <div class="row items-center q-gutter-md">
                <router-link to="/home">
                   <q-btn
@@ -123,7 +122,7 @@
                      color="dark"
                      text-color="white"
                      icon="contact_mail"
-                     label="Contacto"
+                     label="Contactar"
                      class="nav-btn"
                   />
                </router-link>
@@ -133,8 +132,8 @@
                      <q-btn
                         color="orange"
                         text-color="white"
-                        icon="speed"
-                        label="Mi Garage"
+                        icon="tune"
+                        label="Opciones"
                         class="nav-btn"
                      />
                   </router-link>
@@ -145,8 +144,8 @@
                      <q-btn
                         color="red"
                         text-color="white"
-                        icon="tune"
-                        label="Admin"
+                        icon="directions_car"
+                        label="Garaje"
                         class="nav-btn"
                      />
                   </router-link>
@@ -193,7 +192,6 @@
 <script>
 import { defineComponent } from "vue";
 import DarkModeToggle from "./DarkModeToggle.vue";
-import { useQuasar, Notify } from "quasar";
 import { RouterView, RouterLink } from "vue-router";
 export default defineComponent({
    name: "HeaderLayout",
