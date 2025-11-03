@@ -499,7 +499,6 @@ import getAllData from "src/composable/loadAllData";
 import getAllusers from "src/composable/getUsersContact";
 import deleteCar from "src/composable/deleteCar";
 import HeaderLayout from "components/HeaderComponent.vue";
-
 import updateTables from "src/composable/updatetableCocheMedia";
 import convertFileToBase64 from "src/composable/convertirFileBase64";
 import insertCocheNuevo from "src/composable/insertarCocheNuevo";

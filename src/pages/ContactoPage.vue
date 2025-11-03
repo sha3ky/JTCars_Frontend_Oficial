@@ -1,7 +1,7 @@
 <template>
-   <q-layout view="lHh Lpr lFf">
+   <q-layout view="lHh Lpr lFf" v-if="isAuthenticated() && userIsAdmin">
       <HeaderLayout
-         :is-authenticated="isAuthenticated"
+         :is-authenticated="isAuthenticated()"
          :user-is-admin="userIsAdmin"
          :usuario-logineado="usuarioLogineado"
          @login="loginearUsuario"
@@ -250,9 +250,7 @@ export default defineComponent({
       const showLoginUser = ref(false);
       const userId = ref(null);
       const modelSelectedMenu = ref("coches");
-      const isAuthenticated = computed(() => {
-         return store.state.isAuthenticated; // O tu lógica de autenticación
-      });
+
       const formData = ref({
          textareaModel: "",
          nombre: "",
@@ -388,9 +386,6 @@ export default defineComponent({
          mensaje,
          onSubmit,
          onReset,
-         isAuthenticated, // ✅ Ahora es un booleano reactivo
-         userIsAdmin: computed(() => store.state.userIsAdmin),
-         usuarioLogineado: computed(() => store.state.name),
       };
    },
 });
