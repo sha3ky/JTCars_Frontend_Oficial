@@ -409,7 +409,6 @@
                         <q-btn
                            label="Aceptar"
                            @click="aceptarCambios"
-                           v-close-popup
                            color="green"
                            text-color="black"
                         />
@@ -721,7 +720,7 @@ export default defineComponent({
          newCar: false,
          modelInImgNew: null,
          imagenConvertidaBase64: "",
-         existPdf: "",
+         existPdf: null,
          fechaActual: new Date().getFullYear(),
          filterCoches: "",
          filterPersonas: "",
@@ -874,14 +873,14 @@ export default defineComponent({
          this.resetCar();
       },
       deletePdf() {
-         this.existPdf = "";
+         this.existPdf = null;
       },
       resetCar() {
          this.dialogCoches = true;
          this.newCar = true;
          this.datosCoches = {};
          this.imagenesArray = [];
-         this.existPdf = "";
+         this.existPdf = null;
          this.inputPdf = null;
       },
       fixArrNum(array) {
@@ -956,6 +955,7 @@ export default defineComponent({
             this.newCar = false;
          }
          await this.reloadData();
+         this.dialogCoches = false;
          this.datosCoches = {};
          //  this.modelEtiqueta = "";
          //  this.modelTipo = "";

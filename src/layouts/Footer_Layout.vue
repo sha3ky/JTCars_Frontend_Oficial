@@ -3,7 +3,6 @@
       <q-toolbar class="q-px-md">
          <q-toolbar-title class="text-center footer-content">
             <div class="footer-text">
-               Creado por
                <span class="logo-wrapper">
                   <q-img
                      src="/logoEmpresa.png"
