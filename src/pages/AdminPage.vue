@@ -40,13 +40,7 @@
                <h4>Mi Garaje</h4>
             </div>
 
-            <q-card
-               style="
-                  margin-top: 10%;
-                  width: 100%;
-                  background-image: url('/carbon.webp');
-               "
-            >
+            <q-card style="margin-top: 10%; width: 100%">
                <q-tabs
                   v-model="tab"
                   dense
@@ -523,9 +517,7 @@ export default defineComponent({
          showInputUser: false, // Initialize showInputUser to control InputUser component
          showLoginUser: false,
          userId: null,
-
          modelSelectedMenu: ref("coches"),
-
          tab: "coches",
          columnsCoches: [
             {
@@ -606,7 +598,6 @@ export default defineComponent({
          columnsPersonas: [
             {
                name: "username",
-
                label: "Nombre",
                align: "center",
                field: "username",
@@ -626,25 +617,33 @@ export default defineComponent({
                sortable: true,
             },
             { name: "telefono", label: "Telefono", field: "telefono" },
-            { name: "ano", label: "Año Coche", field: "ano", sortable: true },
+
             {
-               name: "combustible",
-               label: "Tipo Combustible",
-               field: "combustible",
+               name: "createdAt",
+               label: "Fecha de Contacto",
+               field: "created_at", // <--- Debe coincidir EXACTAMENTE con el campo del modelo
                sortable: true,
-            },
-            { name: "km", label: "Km Hasta", field: "km", sortable: true },
-            {
-               name: "precio",
-               label: "Precio Hasta",
-               field: "precio",
-               sortable: true,
-            },
-            {
-               name: "tipo",
-               label: "Tipo de Coche",
-               field: "tipo",
-               sortable: true,
+               // Opcional: Formatear la fecha para que se vea mejor
+               format: (val) => {
+                  // 1. Crea el objeto Date a partir de la cadena ISO (UTC)
+                  const date = new Date(val);
+
+                  // 2. Extrae y formatea los componentes de la fecha y hora usando métodos UTC.
+                  // getUTC...() asegura que usamos la hora 09:53, no la convertida 10:53
+
+                  // Obtener componentes de fecha
+                  const day = String(date.getUTCDate()).padStart(2, "0");
+                  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Meses son 0-indexados
+                  const year = date.getUTCFullYear();
+
+                  // Obtener componentes de hora
+                  const hours = String(date.getUTCHours()).padStart(2, "0");
+                  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+
+                  // 3. Devolver la cadena en formato DD/MM/AAAA HH:MM
+                  return `${day}/${month}/${year} ${hours}:${minutes}`;
+               },
+               align: "left", // Alineación
             },
          ],
          datosCoches: {},
@@ -654,9 +653,6 @@ export default defineComponent({
          inputImagen: null,
          inputPdf: null,
          mediaTable: {},
-         //  modelEtiqueta: "",
-         //  modelTipo: "",
-         //  modelPromotion: "",
          optionsPromotion: tipoPromocion,
          optionsEtiqueta: etiquetaCoche,
          optionsTipo: tipoCoche,
