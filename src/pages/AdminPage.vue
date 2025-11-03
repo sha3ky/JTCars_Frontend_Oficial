@@ -11,36 +11,42 @@
       <Footer_Layout />
 
       <!--  -->
-      <q-page-container
-         style="
-            height: 100vh;
-            display: flex; /* 1. Activa Flexbox */
-            flex-direction: column; /* 2. Pone los hijos en columna (uno debajo del otro) */
-            align-items: center; /* 3. Centra horizontalmente todos los hijos */
-            min-height: 100vh;
-            background-image: url('/gemConcesWaterPx.webp'); /* La ruta desde la carpeta 'public' */
-            background-size: cover; /* Asegura que la imagen cubra toda el área */
-            background-position: center center; /* Centra la imagen para que se vea bien en diferentes tamaños */
-            background-attachment: fixed; /* Opcional: Fija la imagen mientras el contenido se desplaza (efecto parallax) */
-         "
-      >
+      <q-page-container>
          <div
             style="
-               background-color: rgb(244, 67, 54);
-               width: 50vh;
-               text-align: center; /* Centrado horizontal del texto (funciona para líneas simples) */
-               margin-top: 3%;
-               height: 6%;
-               display: flex;
-               justify-content: center;
-               align-items: center;
-               border-radius: 5px;
+               width: 100vw;
+               height: 100vh;
+               display: flex; /* 1. Activa Flexbox */
+               flex-direction: column; /* 2. Pone los hijos en columna (uno debajo del otro) */
+               align-items: center; /* 3. Centra horizontalmente todos los hijos */
+               background-image: url('/gemConcesWaterPx.webp'); /* La ruta desde la carpeta 'public' */
+               background-size: cover; /* Asegura que la imagen cubra toda el área */
+               background-position: center center; /* Centra la imagen para que se vea bien en diferentes tamaños */
             "
          >
-            <h4>Mi Garaje</h4>
-         </div>
-         <div class="q-gutter-y-md" style="margin-top: 10%">
-            <q-card>
+            <div
+               style="
+                  background-color: rgb(244, 67, 54, 0.5);
+                  width: 50vh;
+                  text-align: center; /* Centrado horizontal del texto (funciona para líneas simples) */
+                  margin-top: 3%;
+                  height: 6%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  border-radius: 5px;
+               "
+            >
+               <h4>Mi Garaje</h4>
+            </div>
+
+            <q-card
+               style="
+                  margin-top: 10%;
+                  width: 100%;
+                  background-image: url('/carbon.webp');
+               "
+            >
                <q-tabs
                   v-model="tab"
                   dense
@@ -82,7 +88,7 @@
                                  dense
                                  debounce="300"
                                  v-model="filterCoches"
-                                 placeholder="Search"
+                                 placeholder="Buscar coche"
                               >
                                  <template v-slot:append>
                                     <q-icon name="search" />
@@ -151,258 +157,257 @@
                   </q-tab-panel> -->
                </q-tab-panels>
             </q-card>
-         </div>
 
-         <q-dialog v-model="dialogCoches" persistent>
-            <q-card style="max-width: 538px">
-               <q-card-section style="padding: 0">
-                  <div class="text-h6" style="text-align: center">
-                     Cambiar configuracion coche
-                  </div>
-               </q-card-section>
-               <q-card>
-                  <div>
-                     <div style="display: flex; padding: 5px">
-                        <div>
-                           <q-input
-                              filled
-                              v-model="datosCoches.matricula"
-                              label="Matricula"
-                              dense
-                              type="text"
-                           />
-                        </div>
-                        <div>
-                           <q-input
-                              filled
-                              v-model="datosCoches.marca"
-                              label="Marca"
-                              dense
-                              type="text"
-                           />
-                        </div>
-                        <div>
-                           <q-input
-                              filled
-                              v-model="datosCoches.modelo"
-                              label="Modelo"
-                              dense
-                              type="text"
-                           />
-                        </div>
+            <q-dialog v-model="dialogCoches" persistent>
+               <q-card style="max-width: 538px">
+                  <q-card-section style="padding: 0">
+                     <div class="text-h6" style="text-align: center">
+                        Cambiar configuracion coche
                      </div>
-
-                     <div style="display: flex; padding: 5px">
-                        <div style="width: 33vw">
-                           <q-select
-                              filled
-                              v-model="datosCoches.ano"
-                              :options="optionsAno"
-                              label="Selecionar Año"
-                              dense
-                              style="max-width: 100%"
-                           />
-                        </div>
-                        <div style="width: 33vw">
-                           <q-input
-                              filled
-                              v-model="datosCoches.km"
-                              label="KM sin puntos"
-                              dense
-                              @keypress="soloNumerosYPuntos"
-                           />
-                        </div>
-                        <div style="width: 33vw">
-                           <q-input
-                              filled
-                              v-model="datosCoches.descripcion"
-                              label="Descripcion"
-                              dense
-                              type="text"
-                           />
-                        </div>
-                     </div>
-
-                     <div style="display: flex; padding: 5px">
-                        <div style="width: 33vw">
+                  </q-card-section>
+                  <q-card>
+                     <div>
+                        <div style="display: flex; padding: 5px">
                            <div>
-                              <q-select
+                              <q-input
                                  filled
-                                 v-model="datosCoches.etiqueta"
-                                 :options="optionsEtiqueta"
-                                 label="Selecionar Etiqueta"
+                                 v-model="datosCoches.matricula"
+                                 label="Matricula"
                                  dense
-                                 style="max-width: 100%"
+                                 type="text"
                               />
                            </div>
-                        </div>
-                        <!-- tipoCoches -->
-                        <div style="width: 33vw">
                            <div>
+                              <q-input
+                                 filled
+                                 v-model="datosCoches.marca"
+                                 label="Marca"
+                                 dense
+                                 type="text"
+                              />
+                           </div>
+                           <div>
+                              <q-input
+                                 filled
+                                 v-model="datosCoches.modelo"
+                                 label="Modelo"
+                                 dense
+                                 type="text"
+                              />
+                           </div>
+                        </div>
+
+                        <div style="display: flex; padding: 5px">
+                           <div style="width: 33vw">
                               <q-select
                                  filled
-                                 v-model="datosCoches.tipo"
-                                 :options="optionsTipo"
-                                 label="Selecionar Tipo"
+                                 v-model="datosCoches.ano"
+                                 :options="optionsAno"
+                                 label="Selecionar Año"
+                                 dense
+                                 style="max-width: 100%"
+                              />
+                           </div>
+                           <div style="width: 33vw">
+                              <q-input
+                                 filled
+                                 v-model="datosCoches.km"
+                                 label="KM sin puntos"
+                                 dense
+                                 @keypress="soloNumerosYPuntos"
+                              />
+                           </div>
+                           <div style="width: 33vw">
+                              <q-input
+                                 filled
+                                 v-model="datosCoches.descripcion"
+                                 label="Descripcion"
+                                 dense
+                                 type="text"
+                              />
+                           </div>
+                        </div>
+
+                        <div style="display: flex; padding: 5px">
+                           <div style="width: 33vw">
+                              <div>
+                                 <q-select
+                                    filled
+                                    v-model="datosCoches.etiqueta"
+                                    :options="optionsEtiqueta"
+                                    label="Selecionar Etiqueta"
+                                    dense
+                                    style="max-width: 100%"
+                                 />
+                              </div>
+                           </div>
+                           <!-- tipoCoches -->
+                           <div style="width: 33vw">
+                              <div>
+                                 <q-select
+                                    filled
+                                    v-model="datosCoches.tipo"
+                                    :options="optionsTipo"
+                                    label="Selecionar Tipo"
+                                    dense
+                                    style="max-width: 100%"
+                                 />
+                              </div>
+                           </div>
+                           <!-- promotions -->
+                           <div style="width: 33vw">
+                              <div style="">
+                                 <q-select
+                                    filled
+                                    v-model="datosCoches.promocion"
+                                    :options="optionsPromotion"
+                                    label="Selecionar Promocion"
+                                    dense
+                                    style="max-width: 100%"
+                                 />
+                              </div>
+                           </div>
+                        </div>
+                        <div style="display: flex; padding: 5px">
+                           <div style="width: 33vw">
+                              <q-select
+                                 filled
+                                 v-model="datosCoches.combustible"
+                                 :options="optionsCombustible"
+                                 label="Selecionar Combustible"
+                                 dense
+                                 style="max-width: 100%"
+                              />
+                           </div>
+                           <div style="width: 33vw">
+                              <q-input
+                                 dense
+                                 filled
+                                 v-model="datosCoches.precio"
+                                 label="Precio sin puntos"
+                              />
+                           </div>
+                           <div style="width: 33vw">
+                              <q-select
+                                 filled
+                                 v-model="datosCoches.colorBanner"
+                                 :options="coloresBanners"
+                                 label="Color Banner"
                                  dense
                                  style="max-width: 100%"
                               />
                            </div>
                         </div>
-                        <!-- promotions -->
-                        <div style="width: 33vw">
-                           <div style="">
-                              <q-select
-                                 filled
-                                 v-model="datosCoches.promocion"
-                                 :options="optionsPromotion"
-                                 label="Selecionar Promocion"
-                                 dense
-                                 style="max-width: 100%"
-                              />
+                        <div>
+                           <div style="display: flex; justify-content: center">
+                              <div v-if="existPdf">
+                                 <q-btn
+                                    outline
+                                    color="primary"
+                                    label="Eliminar Pdf"
+                                    @click="deletePdf"
+                                 />
+                              </div>
+                              <div v-if="!existPdf">
+                                 <span style="padding: 5px"> sin pdf</span>
+                              </div>
+                              <div style="">
+                                 <q-file
+                                    filled
+                                    v-model="inputPdf"
+                                    label="PDF"
+                                    dense
+                                 />
+                              </div>
+                              <div style="">
+                                 <q-file
+                                    filled
+                                    v-model="modelInImgNew"
+                                    label="Añadir imagen"
+                                    dense
+                                 />
+                              </div>
+                           </div>
+
+                           <div style="display: flex">
+                              <div class="card-container">
+                                 <q-card
+                                    v-for="(image, index) in imagenesArray"
+                                    :key="index"
+                                    :name="index"
+                                    class="card-container"
+                                    style="
+                                       display: flex;
+                                       justify-content: center;
+                                       max-width: 130px;
+                                    "
+                                 >
+                                    <q-img
+                                       :src="getBase64Image(image.imagen)"
+                                       class="responsive-image"
+                                       style="max-width: 180px; height: 60px"
+                                    />
+
+                                    <q-separator />
+
+                                    <q-card-actions align="center">
+                                       <q-btn flat @click="modImg(image)"
+                                          >Modificar</q-btn
+                                       >
+                                       <q-btn flat @click="delImg(image)"
+                                          >Eliminar</q-btn
+                                       >
+                                    </q-card-actions>
+                                 </q-card>
+                              </div>
                            </div>
                         </div>
                      </div>
-                     <div style="display: flex; padding: 5px">
-                        <div style="width: 33vw">
-                           <q-select
-                              filled
-                              v-model="datosCoches.combustible"
-                              :options="optionsCombustible"
-                              label="Selecionar Combustible"
-                              dense
-                              style="max-width: 100%"
-                           />
-                        </div>
-                        <div style="width: 33vw">
-                           <q-input
-                              dense
-                              filled
-                              v-model="datosCoches.precio"
-                              label="Precio sin puntos"
-                           />
-                        </div>
-                        <div style="width: 33vw">
-                           <q-select
-                              filled
-                              v-model="datosCoches.colorBanner"
-                              :options="coloresBanners"
-                              label="Color Banner"
-                              dense
-                              style="max-width: 100%"
-                           />
-                        </div>
+                  </q-card>
+
+                  <q-card-section class="q-pt-none"> </q-card-section>
+
+                  <q-card-actions align="right" class="text-primary">
+                     <div v-if="!newCar">
+                        <q-btn
+                           color="red"
+                           text-color="black"
+                           label="Eliminar"
+                           v-close-popup
+                           @click="delCar"
+                        />
+                     </div>
+                     <div style="padding: 3px">
+                        <q-btn
+                           color="orange"
+                           text-color="black"
+                           label="Cancel"
+                           @click="cancelInputCarDialog"
+                        />
                      </div>
                      <div>
-                        <div style="display: flex; justify-content: center">
-                           <div v-if="existPdf">
-                              <q-btn
-                                 outline
-                                 color="primary"
-                                 label="Eliminar Pdf"
-                                 @click="deletePdf"
-                              />
-                           </div>
-                           <div v-if="!existPdf">
-                              <span style="padding: 5px"> sin pdf</span>
-                           </div>
-                           <div style="">
-                              <q-file
-                                 filled
-                                 v-model="inputPdf"
-                                 label="PDF"
-                                 dense
-                              />
-                           </div>
-                           <div style="">
-                              <q-file
-                                 filled
-                                 v-model="modelInImgNew"
-                                 label="Añadir imagen"
-                                 dense
-                              />
-                           </div>
-                        </div>
-
-                        <div style="display: flex">
-                           <div class="card-container">
-                              <q-card
-                                 v-for="(image, index) in imagenesArray"
-                                 :key="index"
-                                 :name="index"
-                                 class="card-container"
-                                 style="
-                                    display: flex;
-                                    justify-content: center;
-                                    max-width: 130px;
-                                 "
-                              >
-                                 <q-img
-                                    :src="getBase64Image(image.imagen)"
-                                    class="responsive-image"
-                                    style="max-width: 180px; height: 60px"
-                                 />
-
-                                 <q-separator />
-
-                                 <q-card-actions align="center">
-                                    <q-btn flat @click="modImg(image)"
-                                       >Modificar</q-btn
-                                    >
-                                    <q-btn flat @click="delImg(image)"
-                                       >Eliminar</q-btn
-                                    >
-                                 </q-card-actions>
-                              </q-card>
-                           </div>
-                        </div>
+                        <q-btn
+                           label="Aceptar"
+                           @click="aceptarCambios"
+                           v-close-popup
+                           color="green"
+                           text-color="black"
+                        />
                      </div>
-                  </div>
+                  </q-card-actions>
                </q-card>
+            </q-dialog>
+            <q-dialog v-model="anadirImagenDialog">
+               <q-card>
+                  <q-card-section class="row items-center q-pb-none">
+                     <h4>Cambiar imagen</h4>
+                     <q-space />
+                     <q-btn icon="close" flat round dense v-close-popup />
+                  </q-card-section>
 
-               <q-card-section class="q-pt-none"> </q-card-section>
-
-               <q-card-actions align="right" class="text-primary">
-                  <div v-if="!newCar">
-                     <q-btn
-                        color="red"
-                        text-color="black"
-                        label="Eliminar"
-                        v-close-popup
-                        @click="delCar"
-                     />
-                  </div>
-                  <div style="padding: 3px">
-                     <q-btn
-                        color="orange"
-                        text-color="black"
-                        label="Cancel"
-                        @click="cancelInputCarDialog"
-                     />
-                  </div>
-                  <div>
-                     <q-btn
-                        label="Aceptar"
-                        @click="aceptarCambios"
-                        v-close-popup
-                        color="green"
-                        text-color="black"
-                     />
-                  </div>
-               </q-card-actions>
-            </q-card>
-         </q-dialog>
-         <q-dialog v-model="anadirImagenDialog">
-            <q-card>
-               <q-card-section class="row items-center q-pb-none">
-                  <h4>Cambiar imagen</h4>
-                  <q-space />
-                  <q-btn icon="close" flat round dense v-close-popup />
-               </q-card-section>
-
-               <q-card-section>
-                  <q-file filled v-model="inputImagen" label="Filled" />
-                  <!-- <q-input
+                  <q-card-section>
+                     <q-file filled v-model="inputImagen" label="Filled" />
+                     <!-- <q-input
                      @update:model-value="
                         (val) => {
                            file = val[0];
@@ -412,9 +417,10 @@
                      type="file"
                      hint="Native file"
                   /> -->
-               </q-card-section>
-            </q-card>
-         </q-dialog>
+                  </q-card-section>
+               </q-card>
+            </q-dialog>
+         </div>
       </q-page-container>
       <InputUser
          :inputUserDialog="showInputUser"
@@ -473,14 +479,6 @@
    </q-dialog>
 </template>
 <style>
-.iframe-container {
-   width: 100%;
-   height: 100vh; /* This makes the container take up the full viewport height */
-   /* Add any additional styles to the container if needed */
-}
-body.body--dark {
-   background: #0c0c0c;
-}
 .card-container {
    display: flex;
    flex-wrap: wrap;

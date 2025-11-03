@@ -36,7 +36,7 @@
          >
             <div
                style="
-                  background-color: rgb(255, 152, 0);
+                  background-color: rgb(255, 152, 0, 0.5);
                   width: 50vh;
                   text-align: center; /* Centrado horizontal del texto (funciona para líneas simples) */
                   margin-top: 3%;

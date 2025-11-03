@@ -1,7 +1,7 @@
 <template>
    <q-layout view="lHh Lpr lFf">
       <HeaderLayout
-         :is-authenticated="isAuthenticated()"
+         :is-authenticated="isAuthenticated"
          :user-is-admin="userIsAdmin"
          :usuario-logineado="usuarioLogineado"
          @login="loginearUsuario"
@@ -10,17 +10,6 @@
 
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
-         <!--  <div
-            class="items-center"
-            style="
-               background-color: black;
-               width: 25%;
-               text-align: center;
-               margin: 0 auto;
-            "
-         >
-            <h4>Contactar</h4>
-         </div> -->
          <div class="q-pa-md q-gutter-md">
             <div class="row justify-between">
                <div
@@ -54,12 +43,7 @@
                         left: 0;
                         width: 100%;
                         height: 100%;
-                        background-color: rgba(
-                           0,
-                           0,
-                           0,
-                           0.5
-                        ); /* oscuro semitransparente */
+                        background-color: rgba(0, 0, 0, 0.5);
                         z-index: 2;
                      "
                   ></div>
@@ -91,11 +75,6 @@
          </div>
 
          <div style="padding: 20px">
-            <!-- <div>
-               <h4 style="margin: 10px">
-
-               </h4>
-            </div> -->
             <div style="margin-bottom: 5px">
                <div
                   class="q-pa-md"
@@ -109,7 +88,7 @@
                >
                   <div>
                      <h5>
-                        En <b>JTCars</b>, nos tomamos en serio su
+                        En <b>[Tu nombre tienda]</b>, nos tomamos en serio su
                         satisfacción.<br />
                         Estamos comprometidos a brindarle no solo un coche, sino
                         una experiencia <br />
@@ -124,26 +103,26 @@
                   >
                      <q-input
                         outlined
-                        v-model="obj.nombre.value"
+                        v-model="formData.nombre"
                         label="Tu nombre *"
                      />
 
                      <q-input
                         outlined
                         type="email"
-                        v-model="obj.email.value"
+                        v-model="formData.email"
                         label="Tu Email *"
                         lazy-rules
                      />
                      <q-input
                         outlined
                         type="tel"
-                        v-model="obj.mobileNumber.value"
+                        v-model="formData.mobileNumber"
                         label="Tu Número de Teléfono"
                         class="q-mb-md md:q-mb-0"
                      />
                      <q-input
-                        v-model="obj.textareaModel.value"
+                        v-model="formData.textareaModel"
                         filled
                         clearable
                         type="textarea"
@@ -160,7 +139,8 @@
                      <div>
                         <q-btn
                            label="Aceptar"
-                           type="aceptar"
+                           type="submit"
+                           color="primary"
                            style="color: #1aee9f"
                         />
                         <q-btn
@@ -185,39 +165,34 @@
             >
                <div>
                   <h5 style="margin: 10px">
-                     Estamos en Cubelles, Carrer Maestrat número 5 <br />
-                     Contactar al Teléfono: 614103736 <br />
-                     Lunes - Viernes: 9.00-20:00h<br />
-                     Sabado : 10.00 - 15.00h
+                     Estamos en: [ Aqui va tu tu ubicación... ],
+                     <br />
+                     Contactar al Teléfono: tu telefono de contacto <br />
+                     Lunes - Viernes: 8:30h - 19:30h<br />
+                     Sábado: 9:00h - 13:30h
                   </h5>
                </div>
                <q-card flat bordered class="q-mt-md">
                   <q-card-section class="text-h6 text-bold">
-                     Nuestra Ubicación — Carrer Maresme, 5 (Cubelles)
+                     Nuestra Ubicación ....
                   </q-card-section>
 
-                  <div
+                  <iframe
+                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.987654321098!2d55.30456787545768!3d25.098765477769126!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f432109876543%3A0x1c0bf6bce5f2f8b5!2sDowntown%20Dubai%2C%20Dubai!5e0!3m2!1ses!2ses!4v1690000000000!5m2!1ses!2ses"
                      style="
-                        position: relative;
-                        padding-bottom: 26.25%;
-                        height: 0;
-                        overflow: hidden;
+                        border: 0;
+                        width: 100%;
+                        height: 400px;
                         border-radius: 8px;
                      "
-                  >
-                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d860.9329499534263!2d1.6458031696481854!3d41.19937910728468!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a388dac308fe55%3A0xf212fec437802d0f!2sCarrer%20Maresme%2C%205%2C%2008880%20Cubelles%2C%20Barcelona!5e1!3m2!1ses!2ses!4v1757338182625!5m2!1ses!2ses"
-                        width="600"
-                        height="450"
-                        style="border: 0"
-                        allowfullscreen=""
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"
-                     ></iframe>
-                  </div>
+                     allowfullscreen=""
+                     loading="lazy"
+                     referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
                </q-card>
             </div>
          </div>
+
          <InputUser
             :inputUserDialog="showInputUser"
             @close-dialog-newuser="handleDialogClose"
@@ -227,15 +202,13 @@
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
          />
-         <!--  @update-usuario-logineado="updateUsuarioLogineado" -->
+
          <router-view />
       </q-page-container>
    </q-layout>
 </template>
+
 <style>
-/* .body--{
-  background-color: beige;
-} */
 body.body--dark {
    background: #0c0c0c;
 }
@@ -244,49 +217,18 @@ body.body--dark {
 <script>
 import { authMixin } from "../mixins/authMixin";
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
-import { defineComponent, ref } from "vue";
-import { useQuasar } from "quasar";
-import { RouterView, RouterLink } from "vue-router";
-import InputUser from "components/InputUser.vue"; // Replace with the actual path
+import { defineComponent, ref, onMounted, computed } from "vue";
+import { useQuasar, Notify } from "quasar";
+import { useRouter } from "vue-router";
+import InputUser from "components/InputUser.vue";
 import loginUser from "src/components/loginUser.vue";
 import store from "../../src/store";
 import contactUser from "src/composable/contactUser";
 import HeaderLayout from "components/HeaderComponent.vue";
-import { Notify } from "quasar";
+
 export default defineComponent({
    name: "ContactoPage",
    mixins: [authMixin],
-   data() {
-      return {
-         showInputUser: false, // Initialize showInputUser to control InputUser component
-         showLoginUser: false,
-         userId: null,
-         modelSelectedMenu: ref("coches"),
-      };
-   },
-
-   mounted() {},
-   methods: {
-      handleDialogClose() {
-         this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
-         this.showInputUser = false;
-      },
-      nuevoUsuario() {
-         this.showInputUser = true;
-      },
-      loginearUsuario() {
-         this.showLoginUser = true;
-         //this.showInputUser = false;
-      },
-      async logOut() {
-         store.dispatch("logout");
-         Notify.create({
-            type: "positive",
-            message: "Adios.",
-         });
-         this.$router.push({ name: "principal-coches" });
-      },
-   },
 
    components: {
       InputUser,
@@ -295,94 +237,160 @@ export default defineComponent({
       HeaderLayout,
    },
 
-   setup() {
-      const myForm = ref(null);
+   setup(props, context) {
       const $q = useQuasar();
-      // $q.dark.set(true); // or false or "auto"
-      // $q.dark.toggle(); // toggle
-      const obj = {
-         textareaModel: ref(""),
-         nombre: ref(""),
-         mobileNumber: ref(""),
-         email: ref(""),
-      };
-      // const textareaModel = ref("");
-      // const nombre = ;
-      // const email = ref(null);
-      // const mobileNumber = ref(null);
+      const router = useRouter();
+
+      // Acceder a los métodos del mixin a través de 'this'
+      // Pero en setup() no tenemos 'this', así que necesitamos una alternativa
+
+      // Refs reactivas
+      const myForm = ref(null);
+      const showInputUser = ref(false);
+      const showLoginUser = ref(false);
+      const userId = ref(null);
+      const modelSelectedMenu = ref("coches");
+      const isAuthenticated = computed(() => {
+         return store.state.isAuthenticated; // O tu lógica de autenticación
+      });
+      const formData = ref({
+         textareaModel: "",
+         nombre: "",
+         mobileNumber: "",
+         email: "",
+      });
+
       const toggleAcept = ref(false);
       const dialogVisible = ref(false);
 
-      function onSubmit() {
-         let res;
-         if (toggleAcept.value) {
-            if (obj.email) {
-               const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-               res = emailRegex.test(obj.email.value);
-               if (!res) {
-                  mensaje("El email no es valido", "red");
-                  return;
-               }
-            } else {
-               return;
-            }
+      // Métodos
+      const handleDialogClose = () => {
+         showLoginUser.value = false;
+         showInputUser.value = false;
+      };
 
-            if (obj.mobileNumber) {
-               const phoneNumberRegex = /^[0-9]*$/; // Regular expression to match only numbers
-               res = phoneNumberRegex.test(obj.mobileNumber.value);
-               if (!res) {
-                  mensaje("El número no es valido", "red");
-                  return;
-               }
-            } else {
-               return;
-            }
-            if (!obj.nombre.value) {
-               mensaje("Introducir un nombre por favor", "red");
-               return;
-            }
-            if (!obj.textareaModel.value) {
-               mensaje("Indica en que te podriamos ayudar", "red");
-               return;
-            }
-            const objetoBBDD = {
-               username: obj.nombre.value,
-               mobileNumber: obj.mobileNumber.value,
-               email: obj.email.value,
-               textareaModel: obj.textareaModel.value,
-               notifications: true,
-            };
-            contactUser(objetoBBDD);
-            obj.mobileNumber.value = "";
-            obj.email.value = "";
-            obj.nombre = "";
-            obj.textareaModel = "";
-            toggleAcept.value = false;
-            dialogVisible.value = false;
-            mensaje("Gracias por ponerte en contacto con nostros", "green");
-         }
-      }
-      function mensaje(msg, color) {
+      const nuevoUsuario = () => {
+         showInputUser.value = true;
+      };
+
+      const loginearUsuario = () => {
+         showLoginUser.value = true;
+      };
+
+      const logOut = async () => {
+         await store.dispatch("logout");
+         Notify.create({
+            type: "positive",
+            message: "Adiós",
+         });
+         router.push({ name: "principal-coches" });
+      };
+
+      const mensaje = (msg, color) => {
          $q.notify({
             color: color,
             textColor: "white",
             message: msg,
          });
-      }
-      // to reset validations:
-      function onReset() {
-         nombre.value = null;
-         email.value = null;
+      };
+
+      const onSubmit = () => {
+         if (!toggleAcept.value) {
+            mensaje("Debes aceptar los términos y condiciones", "red");
+            return;
+         }
+
+         if (!formData.value.nombre?.trim()) {
+            mensaje("Introducir un nombre por favor", "red");
+            return;
+         }
+
+         if (!formData.value.email) {
+            mensaje("El email es obligatorio", "red");
+            return;
+         }
+
+         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+         if (!emailRegex.test(formData.value.email)) {
+            mensaje("El email no es válido", "red");
+            return;
+         }
+
+         if (formData.value.mobileNumber) {
+            const phoneNumberRegex = /^[0-9]*$/;
+            if (!phoneNumberRegex.test(formData.value.mobileNumber)) {
+               mensaje("El número no es válido", "red");
+               return;
+            }
+         }
+
+         if (!formData.value.textareaModel?.trim()) {
+            mensaje("Indica en qué te podríamos ayudar", "red");
+            return;
+         }
+
+         const objetoBBDD = {
+            username: formData.value.nombre.trim(),
+            mobileNumber: formData.value.mobileNumber,
+            email: formData.value.email,
+            textareaModel: formData.value.textareaModel.trim(),
+            notifications: true,
+         };
+
+         const datosEnviados = contactUser(objetoBBDD);
+         if (datosEnviados) {
+            mensaje("Datos guardados", "green");
+         } else {
+            mensaje("Error al guardadr los datos", "red");
+         }
+         formData.value = {
+            textareaModel: "",
+            nombre: "",
+            mobileNumber: "",
+            email: "",
+         };
          toggleAcept.value = false;
-      }
+         dialogVisible.value = false;
+
+         mensaje("Gracias por ponerte en contacto con nosotros", "green");
+      };
+
+      const onReset = () => {
+         formData.value = {
+            textareaModel: "",
+            nombre: "",
+            mobileNumber: "",
+            email: "",
+         };
+         toggleAcept.value = false;
+      };
+
+      onMounted(() => {
+         // Código que estaba en mounted()
+      });
+
       return {
-         dialogVisible,
-         onReset,
-         onSubmit,
-         mensaje,
-         obj,
-         toggleAcept,
+         // Refs
          myForm,
+         showInputUser,
+         showLoginUser,
+         userId,
+         modelSelectedMenu,
+         formData,
+         toggleAcept,
+         dialogVisible,
+
+         // Métodos
+         handleDialogClose,
+         nuevoUsuario,
+         loginearUsuario,
+         logOut,
+         mensaje,
+         onSubmit,
+         onReset,
+         isAuthenticated, // ✅ Ahora es un booleano reactivo
+         userIsAdmin: computed(() => store.state.userIsAdmin),
+         usuarioLogineado: computed(() => store.state.name),
       };
    },
 });
