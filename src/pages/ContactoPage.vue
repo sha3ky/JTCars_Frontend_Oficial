@@ -7,7 +7,7 @@
          @login="loginearUsuario"
          @logout="logOut"
       />
-
+      <FloatingChatButtons style="margin-bottom: 10%" />
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
          <div class="q-pa-md q-gutter-md">
@@ -172,6 +172,7 @@
                      Sábado: 9:00h - 13:30h
                   </h5>
                </div>
+
                <q-card flat bordered class="q-mt-md">
                   <q-card-section class="text-h6 text-bold">
                      Nuestra Ubicación ....
@@ -215,6 +216,8 @@ body.body--dark {
 </style>
 
 <script>
+/* import FloatingChatButtons from "components/FloatingChatButtons.vue"; */
+import FloatingChatButtons from "../components/FloatingChatButtons.vue";
 import { authMixin } from "../mixins/authMixin";
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref, onMounted, computed } from "vue";
@@ -235,6 +238,7 @@ export default defineComponent({
       loginUser,
       Footer_Layout,
       HeaderLayout,
+      FloatingChatButtons,
    },
 
    setup(props, context) {

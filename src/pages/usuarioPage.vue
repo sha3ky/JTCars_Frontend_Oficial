@@ -67,7 +67,7 @@
                            <div style="margin-top: 2%">
                               <q-input
                                  v-model="objetoNotifField.username"
-                                 :label="usuarioLogineado"
+                                 label="Usuario"
                               />
                            </div>
                            <div style="">

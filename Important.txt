@@ -1,0 +1,23 @@
+
+
+1. Cambiar numero de telefono del cliente en floatingChatNumber
+
+
+        name: "FloatingChatButtons",
+
+            props: {
+                // Puedes personalizar desde el padre si quieres
+                phoneNumber: {
+                  type: String,
+                  default: "34722411324", // Tu número por defecto
+                },
+                telegramUser: {
+                  type: String,
+                  default: "JTCars", // Tu usuario de Telegram
+                },
+                whatsappMessage: {
+                  type: String,
+                  default: "Hola, me interesa saber más sobre sus coches",
+                },
+            },
+
