@@ -1,6 +1,5 @@
-// mixins/authMixin.js
 import store from "../../src/store";
-import { RouterView, RouterLink } from "vue-router";
+
 export const authMixin = {
    computed: {
       usuarioLogineado() {
@@ -9,14 +8,16 @@ export const authMixin = {
       userIsAdmin() {
          return store.state.isAdmin ?? false;
       },
-      // ❌ NO agregar isAuthenticated como computed
+      // ✅ OPCIÓN: También puedes hacerlo como computed
+      isAuthenticatedComputed() {
+         return !!store.state.access_token;
+      },
    },
    methods: {
-      // ✅ Seguro - método que no expone el token
+      // ✅ Método para verificar autenticación
       isAuthenticated() {
          return !!store.state.access_token;
       },
-
       logout() {
          store.dispatch("logout");
          this.$router.push("/login");

@@ -3,7 +3,7 @@
    <div class="floating-chat-buttons">
       <q-btn
          round
-         size="md"
+         size="lg"
          class="whatsapp-btn"
          icon="message"
          :href="`https://wa.me/${number}`"

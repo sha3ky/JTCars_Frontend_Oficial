@@ -60,7 +60,7 @@
                <q-tab-panels v-model="tab" animated>
                   <q-tab-panel name="coches">
                      <div>
-                        <q-btn color="teal" @click="addNewCar">
+                        <q-btn color="teal" @click="resetCar">
                            <q-icon left size="1em" name="add" />
                            <div>Añadir Coche</div>
                         </q-btn>
@@ -366,12 +366,18 @@
                                     <q-separator />
 
                                     <q-card-actions align="center">
-                                       <q-btn flat @click="modImg(image)"
-                                          >Modificar</q-btn
-                                       >
-                                       <q-btn flat @click="delImg(image)"
-                                          >Eliminar</q-btn
-                                       >
+                                       <q-btn
+                                          flat
+                                          @click="modImg(image)"
+                                          icon="edit"
+                                          class="q-mr-sm"
+                                       />
+                                       <q-btn
+                                          flat
+                                          @click="deleteImage(image)"
+                                          icon="delete"
+                                          color="negative"
+                                       />
                                     </q-card-actions>
                                  </q-card>
                               </div>
@@ -386,10 +392,9 @@
                      <div v-if="!newCar">
                         <q-btn
                            color="red"
-                           text-color="black"
+                           text-color="white"
                            label="Eliminar"
-                           v-close-popup
-                           @click="delCar"
+                           @click="confirmDeleteCar"
                         />
                      </div>
                      <div style="padding: 3px">
@@ -437,6 +442,28 @@
             </q-dialog>
          </div>
       </q-page-container>
+      <!-- Dialog de confirmación elimnar imagen-->
+      <!--  <q-dialog v-model="confirmDialog">
+         <q-card>
+            <q-card-section>
+               <div class="text-h6">Confirmar eliminación</div>
+            </q-card-section>
+
+            <q-card-section>
+               ¿Estás seguro de que quieres eliminar esta imagen?
+            </q-card-section>
+
+            <q-card-actions align="right">
+               <q-btn flat label="Cancelar" color="primary" v-close-popup />
+               <q-btn
+                  flat
+                  label="Eliminar"
+                  color="negative"
+                  @click="executeDelete"
+               />
+            </q-card-actions>
+         </q-card>
+      </q-dialog> -->
       <InputUser
          :inputUserDialog="showInputUser"
          @close-dialog-newuser="handleDialogClose"
@@ -677,6 +704,7 @@ export default defineComponent({
                align: "left", // Alineación
             },
          ],
+
          datosCoches: {},
          imagenesArray: [],
          base64Image: null,
@@ -765,6 +793,63 @@ export default defineComponent({
       this.waitDialog = false;
    },
    methods: {
+      confirmDeleteCar() {
+         this.$q
+            .dialog({
+               title: "🚗 Eliminar coche",
+               message:
+                  "¿Estás seguro de que quieres eliminar este coche? Esta acción no se puede deshacer.",
+               ok: {
+                  push: true,
+                  color: "negative",
+                  label: "Eliminar",
+               },
+               cancel: {
+                  push: true,
+                  color: "primary",
+                  label: "Cancelar",
+               },
+               persistent: true,
+            })
+            .onOk(() => {
+               this.delCar(); // Tu método original de eliminación
+               this.$q.notify({
+                  type: "positive",
+                  message: "Coche eliminado correctamente",
+                  timeout: 2000,
+               });
+            })
+            .onCancel(() => {
+               this.$q.notify({
+                  type: "info",
+                  message: "Eliminación cancelada",
+                  timeout: 1500,
+               });
+            });
+      },
+      deleteImage(image) {
+         this.$q
+            .dialog({
+               title: "Confirmar",
+               message: "¿Estás seguro de que quieres eliminar esta imagen?",
+               cancel: true,
+               persistent: true,
+            })
+            .onOk(() => {
+               // <--- ¡CORRECCIÓN CLAVE AQUÍ!
+               // Ahora puedes usar await de forma segura
+               this.delImg(image);
+               // Opcional: Agregar lógica de feedback aquí si aceptarCambios no lo tiene
+               this.$q.notify({
+                  type: "info",
+                  message: "Imagen eliminada correctamente.",
+               });
+            })
+            .onCancel(() => {
+               // El usuario canceló la eliminación
+               console.log("Eliminación de imagen cancelada.");
+            });
+      },
       soloNumerosYPuntos(event) {
          const char = String.fromCharCode(event.which || event.keyCode);
          // Permitir solo: números (0-9) y punto (.)
@@ -786,11 +871,12 @@ export default defineComponent({
             console.log(respuesta);
          }
          this.reloadData();
+         this.resetCar();
       },
       deletePdf() {
          this.existPdf = "";
       },
-      addNewCar() {
+      resetCar() {
          this.dialogCoches = true;
          this.newCar = true;
          this.datosCoches = {};

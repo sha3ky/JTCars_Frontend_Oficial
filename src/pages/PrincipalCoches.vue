@@ -143,7 +143,7 @@
          @login="loginearUsuario"
          @logout="logOut"
       />
-      <FloatingChatButtons style="margin-bottom: 10%" />
+
       <Footer_Layout />
 
       <q-page-container style="min-height: 100vh; text-align: center">
@@ -601,7 +601,6 @@
 }
 </style>
 <script>
-import FloatingChatButtons from "../components/FloatingChatButtons.vue";
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
 import { useQuasar, Notify } from "quasar";
@@ -761,7 +760,7 @@ export default defineComponent({
       MyCarousel,
       MasInfoDatos,
       Footer_Layout,
-      FloatingChatButtons,
+
       HeaderLayout,
    },
 
