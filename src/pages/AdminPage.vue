@@ -51,7 +51,7 @@
                   narrow-indicator
                >
                   <q-tab name="coches" label="Garaje" />
-                  <q-tab name="personas" label="Clientes" />
+                  <q-tab name="personas" label="Interesados" />
                   <!-- <q-tab name="datos" label="Datos personales" /> -->
                </q-tabs>
 
@@ -93,14 +93,14 @@
                      </div>
                   </q-tab-panel>
                   <q-tab-panel name="personas">
-                     <div class="text-h6">Clientes</div>
+                     <div class="text-h6">Interesados</div>
                      <q-table
                         title="Personas"
                         :rows="rowsPersonas"
                         :columns="columnsPersonas"
                         row-key="email"
                         dense
-                        :rows-per-page="25"
+                        :rows-per-page="10"
                         :filter="filterPersonas"
                      >
                         <template v-slot:top-right>
@@ -192,7 +192,7 @@
                         </div>
 
                         <div style="display: flex; padding: 5px">
-                           <div style="width: 33vw">
+                           <div style="width: 50vw">
                               <q-select
                                  filled
                                  v-model="datosCoches.ano"
@@ -202,24 +202,42 @@
                                  style="max-width: 100%"
                               />
                            </div>
-                           <div style="width: 33vw">
+                           <div style="width: 50vw">
                               <q-input
                                  filled
                                  v-model="datosCoches.km"
-                                 label="KM sin puntos"
+                                 type="number"
+                                 label="KM "
+                                 min="0"
+                                 step="1"
                                  dense
                                  @keypress="soloNumerosYPuntos"
+                                 input-class="no-arrows"
                               />
                            </div>
-                           <div style="width: 33vw">
-                              <q-input
-                                 filled
-                                 v-model="datosCoches.descripcion"
-                                 label="Descripcion"
-                                 dense
-                                 type="text"
-                              />
-                           </div>
+                        </div>
+                        <div style="">
+                           <q-input
+                              filled
+                              v-model="datosCoches.descripcion"
+                              label="Descripción"
+                              dense
+                              type="textarea"
+                              maxlength="150"
+                              counter
+                              :rules="reglasDescripcion"
+                              autogrow
+                           >
+                              <template v-slot:counter>
+                                 <span :class="contadorClass">
+                                    {{
+                                       datosCoches.descripcion
+                                          ? datosCoches.descripcion.length
+                                          : 0
+                                    }}/150
+                                 </span>
+                              </template>
+                           </q-input>
                         </div>
 
                         <div style="display: flex; padding: 5px">
@@ -277,8 +295,11 @@
                               <q-input
                                  dense
                                  filled
-                                 v-model="datosCoches.precio"
-                                 label="Precio sin puntos"
+                                 v-model.number="datosCoches.precio"
+                                 type="number"
+                                 label="Precio"
+                                 @keypress="soloNumerosYPuntos"
+                                 input-class="no-arrows"
                               />
                            </div>
                            <div style="width: 33vw">
@@ -473,6 +494,16 @@
    </q-dialog>
 </template>
 <style>
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+.no-arrows {
+   -moz-appearance: textfield;
+}
+
 .card-container {
    display: flex;
    flex-wrap: wrap;
@@ -484,7 +515,7 @@
 </style>
 <script>
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import store from "../../src/store";
 import InputUser from "components/InputUser.vue"; // Replace with the actual path
 import loginUser from "src/components/loginUser.vue";
@@ -669,6 +700,23 @@ export default defineComponent({
          waitDialog: false,
       };
    },
+   computed: {
+      reglasDescripcion() {
+         return [
+            (val) => (val && val.length > 0) || "La descripción es obligatoria",
+            (val) => val.length <= 150 || "Máximo 150 caracteres",
+            (val) => val.length >= 20 || "Mínimo 20 caracteres",
+         ];
+      },
+      contadorClass() {
+         const length = this.datosCoches.descripcion
+            ? this.datosCoches.descripcion.length
+            : 0;
+         if (length > 140) return "text-negative";
+         if (length > 120) return "text-warning";
+         return "text-grey";
+      },
+   },
    watch: {
       inputPdf: function (item) {
          convertFileToBase64(item).then((result) => {
@@ -719,13 +767,11 @@ export default defineComponent({
    methods: {
       soloNumerosYPuntos(event) {
          const char = String.fromCharCode(event.which || event.keyCode);
-
          // Permitir solo: números (0-9) y punto (.)
          if (!/[0-9.]/.test(char)) {
             event.preventDefault();
             return false;
          }
-
          return true;
       },
       async reloadData() {
@@ -792,10 +838,7 @@ export default defineComponent({
          }
          this.modelInImgNew = "";
       },
-      // extrareKeysObjeto(item) {
-      //
-      //    return Object.values(item);
-      // },
+
       async aceptarCambios() {
          const colorEs_En = colorsEs_En(this.datosCoches.colorBanner);
          this.datosCoches.colorBanner = colorEs_En;

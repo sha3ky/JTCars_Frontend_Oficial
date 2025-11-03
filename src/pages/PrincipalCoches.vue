@@ -676,13 +676,12 @@ export default defineComponent({
       },
       getEtiquetaImage(etiqueta) {
          const etiquetaMap = {
-            0: "/etiquetas/etiqueta0.png",
+            A: "/etiquetas/etiquetaA.png",
             B: "/etiquetas/etiquetaB.png",
             C: "/etiquetas/etiquetaC.png",
-            ECO: "/etiquetas/etiquetaEco.png",
-            b: "/etiquetas/etiquetaB.png",
-            c: "/etiquetas/etiquetaC.png",
-            eco: "/etiquetas/etiquetaEco.png",
+            Híbrido: "/etiquetas/etiquetaEco.png",
+            Eléctrico: "/etiquetas/etiquetaEco.png",
+            "Sin Etiqueta": "/etiquetas/etiqueta0.png",
          };
 
          return etiquetaMap[etiqueta] || "/etiquetas/etiqueta0.png";

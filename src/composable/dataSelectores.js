@@ -1,13 +1,127 @@
-const etiquetaCoche= ['A','B','C','Híbrido','Eléctrico','Sin Etiqueta']
-const tipoCoche=['Sedán','Deportivo','Familiar','4X4','SUV','Turismo','Furgoneta','Compacto','Monovolumen','Cabrio']
-const tipoPromocion=['Oferta','Precio Reducido','Mejor precio garantizado','Como Nuevo','Pocos KM','Revisión recién','Financiamiento disponible','Posibilidad de entrega','Recién revisado','Garantía de fábrica restante','Un solo propietario','Bajas emisiones','Económico']
-const tipoCombustible=['Gasolina','Diesel','GLP','GNC','Electrico']
-const coloresBanners=['Rojo','Verde','Azul','Negro','Naranja','Gris','Marrón','Rosa','Púrpura']
-const km=['50000','100000','150000','200000']
-const cocheAno=[]
+const etiquetaCoche = ["A", "B", "C", "Híbrido", "Eléctrico", "Sin Etiqueta"];
+const tipoCoche = [
+   "Sedán",
+   "Deportivo",
+   "Familiar",
+   "4X4",
+   "SUV",
+   "Turismo",
+   "Furgoneta",
+   "Compacto",
+   "Monovolumen",
+   "Cabrio",
+   "Berlina",
+   "Coupé",
+   "Pick-up",
+   "Todo Terreno",
+   "Minivan",
+   "Compacto SUV",
+   "Deportivo SUV",
+   "Lujo",
+   "Clásico",
+   "Eléctrico",
+   "Híbrido",
+   "Muscle Car",
+   "Superdeportivo",
+   "Utilitario",
+   "Commercial",
+];
+const tipoPromocion = [
+   "Oferta",
+   "Precio Reducido",
+   "Mejor precio garantizado",
+   "Como Nuevo",
+   "Pocos KM",
+   "Revisión recién",
+   "Financiamiento disponible",
+   "Posibilidad de entrega",
+   "Recién revisado",
+   "Garantía de fábrica restante",
+   "Un solo propietario",
+   "Bajas emisiones",
+   "Económico",
+   "Oferta Especial",
+   "Precio de Oportunidad",
+   "Últimas Unidades",
+   "Stock Limitado",
+   "Oferta Flash",
+   "Precio Negociable",
+   "Incluye Mantenimiento",
+   "ITV Nueva",
+   "Neumáticos Nuevos",
+   "Sin Golpes",
+   "Garantía Extendida",
+   "Cambio Aceptado",
+   "Matriculación Reciente",
+   "Bajo Consumo",
+   "Eficiente",
+   "Listo para Entregar",
+   "Documentación al Día",
+   "Servicio Completo",
+   "Equipamiento Premium",
+   "Versión Full Extra",
+];
+const tipoCombustible = ["Gasolina", "Diesel", "GLP", "GNC", "Electrico"];
+const coloresBanners = [
+   "Rojo",
+   "Verde",
+   "Azul",
+   "Negro",
+   "Naranja",
+   "Gris",
+   "Marrón",
+   "Rosa",
+   "Púrpura",
+
+   // NUEVOS COLORES:
+   "Amarillo",
+   "Blanco",
+   "Turquesa",
+   "Magenta",
+   "Cian",
+   "Beige",
+   "Oro",
+   "Plata",
+   "Bronce",
+   "Verde Lima",
+   "Azul Marino",
+   "Verde Oscuro",
+   "Rojo Oscuro",
+   "Azul Claro",
+   "Verde Claro",
+   "Rosa Claro",
+   "Lila",
+   "Índigo",
+   "Esmeralda",
+   "Rubí",
+   "Zafiro",
+   "Ámbar",
+   "Coral",
+   "Salmón",
+   "Melocotón",
+   "Menta",
+   "Lavanda",
+   "Granate",
+   "Bordó",
+   "Oliva",
+   "Mostaza",
+   "Chocolate",
+   "Carmesí",
+   "Ciruela",
+];
+const km = ["50000", "100000", "150000", "200000"];
+const cocheAno = [];
 
 const currentYear = new Date().getFullYear();
-for (let year = 1990; year <= currentYear+1; year ++) {
-  cocheAno.push(year.toString());
+for (let year = 1990; year <= currentYear + 1; year++) {
+   cocheAno.push(year.toString());
 }
-export {etiquetaCoche,tipoCoche,tipoPromocion,tipoCombustible,coloresBanners,cocheAno,km}
+export {
+   etiquetaCoche,
+   tipoCoche,
+   tipoPromocion,
+   tipoCombustible,
+   coloresBanners,
+   cocheAno,
+   km,
+};
