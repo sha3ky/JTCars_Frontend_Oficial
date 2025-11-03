@@ -10,13 +10,16 @@
 
       <Footer_Layout />
       <q-page-container style="min-height: 100vh; text-align: center">
-         <!-- <div>
-            <q-img
-               src="/newPngFuture.png"
-               class="q-mx-auto"
-               alt="Beny1 Logo"
-            >
-            </q-img>
+         <!--  <div
+            class="items-center"
+            style="
+               background-color: black;
+               width: 25%;
+               text-align: center;
+               margin: 0 auto;
+            "
+         >
+            <h4>Contactar</h4>
          </div> -->
          <div class="q-pa-md q-gutter-md">
             <div class="row justify-between">
@@ -24,7 +27,7 @@
                   style="
                      position: relative;
                      width: 100%;
-                     height: 500px;
+                     height: 30vh;
                      overflow: hidden;
                   "
                >
@@ -72,21 +75,27 @@
                         height: 100%;
                      "
                   >
-                     <h1 class="text-h2 text-white text-bold">Contáctanos</h1>
+                     <h1
+                        class="text-white text-bold"
+                        style="
+                           font-size: clamp(1.5rem, 4vw, 2.5rem);
+                           line-height: 1.2;
+                        "
+                     >
+                        Contacta con nosotros y sé el primero <br />
+                        en conocer las novedades.
+                     </h1>
                   </div>
                </div>
             </div>
          </div>
 
          <div style="padding: 20px">
-            <div>
+            <!-- <div>
                <h4 style="margin: 10px">
-                  <!-- Contacta con nosotros y sé el primero en <br />
-                  enterarte de las novedades. -->
-                  Contacta con nosotros y sé el primero <br />
-                  en conocer las novedades.
+
                </h4>
-            </div>
+            </div> -->
             <div style="margin-bottom: 5px">
                <div
                   class="q-pa-md"

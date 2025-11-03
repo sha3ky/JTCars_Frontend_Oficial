@@ -13,26 +13,21 @@
          :class="{ 'carbon-white': esModoClaro, 'carbon-dark': !esModoClaro }"
          style="min-height: 100vh; text-align: center"
       > -->
-      <q-page-container :style="backgroundStyle" class="mi-fondo-carbon">
-         <div
-            class="q-pa-md items-center"
-            style="
-               background-color: rgb(255, 152, 0);
-
-               text-align: center;
-            "
-         >
-            <h4 style="margin: 15px">Ajustes Usuario</h4>
-         </div>
-
+      <!-- :style="backgroundStyle" -->
+      <q-page-container>
          <div
             style="
-               height: 50vh;
+               height: 100vh;
                width: 100vw;
                display: flex;
-               justify-content: center;
+               flex-direction: column;
+               background-image: linear-gradient(
+                     rgba(0, 0, 0, 0.5),
+                     rgba(0, 0, 0, 0.5)
+                  ),
+                  url('/mechanic.webp');
                align-items: center;
-               background-image: url('/gemConces.webp');
+               align-items: center;
                background-size: cover;
                background-position: center;
                z-index: 1;
@@ -40,14 +35,22 @@
             "
          >
             <div
-               class="q-pa-md"
+               class="items-center"
                style="
-                  max-width: 550px;
-                  z-index: 10;
-                  background-color: rgba(0, 0, 0, 0.62);
-                  border-radius: 10px;
+                  background-color: rgb(255, 152, 0);
+                  width: 25%;
+                  text-align: center; /* Centrado horizontal del texto (funciona para líneas simples) */
+                  margin-top: 3%;
+                  height: 6%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  border-radius: 5px;
                "
             >
+               <h4>Ajustes Usuario</h4>
+            </div>
+            <div class="q-pa-md" :style="backgroundStyle">
                <q-list bordered class="rounded-borders">
                   <q-expansion-item
                      group="somegroup"
@@ -181,16 +184,6 @@
    </q-layout>
 </template>
 <style scoped>
-.mi-fondo-carbon {
-   /* Color de respaldo (el rojo que mencionaste) */
-   background-color: rgb(79, 76, 76);
-
-   /* Propiedades que quieres que siempre estén, independientemente de la imagen */
-   background-repeat: no-repeat;
-   background-size: cover; /* Para que la imagen cubra toda la pantalla */
-   background-position: center center;
-}
-
 .big-input :deep(.q-field__native) {
    font-size: 30px !important;
    min-height: 50px !important;
@@ -296,19 +289,24 @@ export default defineComponent({
    },
    computed: {
       backgroundStyle() {
+         console.log("pici", store.state.darkMode);
+         const baseStyle = {
+            "max-width": "550px",
+            "z-index": "10",
+            "border-radius": "10px",
+            "margin-top": "10%",
+         };
          // Si el usuario ES Admin (por ejemplo) o está en modo claro
          if (store.state.darkMode) {
             return {
-               "background-image": 'url("/carbonWhite.webp")',
-               "min-height": "100vh",
-               "text-align": "center",
+               ...baseStyle,
+               "background-color": "rgba(251, 251, 251, 0.33)",
             };
          } else {
             // Si NO es Admin, usa la versión oscura
             return {
-               "background-image": 'url("/carbon.jpg")',
-               "min-height": "100vh",
-               "text-align": "center",
+               ...baseStyle,
+               "background-color": "rgba(0, 0, 0, 0.62)",
             };
          }
       },
