@@ -32,7 +32,7 @@
                   <template v-if="userIsAdmin">
                      <router-link to="/admin">
                         <q-item clickable>
-                           <q-item-section>Opciones</q-item-section>
+                           <q-item-section>Garaje</q-item-section>
                         </q-item>
                      </router-link>
                   </template>
@@ -40,7 +40,7 @@
                   <template v-if="isAuthenticated">
                      <router-link to="/usuarioPage">
                         <q-item clickable>
-                           <q-item-section>Garaje</q-item-section>
+                           <q-item-section>Opciones</q-item-section>
                         </q-item>
                      </router-link>
                   </template>
@@ -127,18 +127,6 @@
                   />
                </router-link>
 
-               <template v-if="isAuthenticated">
-                  <router-link to="/usuarioPage">
-                     <q-btn
-                        color="orange"
-                        text-color="white"
-                        icon="tune"
-                        label="Opciones"
-                        class="nav-btn"
-                     />
-                  </router-link>
-               </template>
-
                <template v-if="userIsAdmin">
                   <router-link to="/admin">
                      <q-btn
@@ -146,6 +134,17 @@
                         text-color="white"
                         icon="directions_car"
                         label="Garaje"
+                        class="nav-btn"
+                     />
+                  </router-link>
+               </template>
+               <template v-if="isAuthenticated">
+                  <router-link to="/usuarioPage">
+                     <q-btn
+                        color="orange"
+                        text-color="white"
+                        icon="tune"
+                        label="Opciones"
                         class="nav-btn"
                      />
                   </router-link>
