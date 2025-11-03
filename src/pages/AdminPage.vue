@@ -11,8 +11,35 @@
       <Footer_Layout />
 
       <!--  -->
-      <q-page-container style="min-height: 100vh; text-align: center">
-         <div class="q-gutter-y-md" style="">
+      <q-page-container
+         style="
+            height: 100vh;
+            display: flex; /* 1. Activa Flexbox */
+            flex-direction: column; /* 2. Pone los hijos en columna (uno debajo del otro) */
+            align-items: center; /* 3. Centra horizontalmente todos los hijos */
+            min-height: 100vh;
+            background-image: url('/gemConcesWaterPx.webp'); /* La ruta desde la carpeta 'public' */
+            background-size: cover; /* Asegura que la imagen cubra toda el área */
+            background-position: center center; /* Centra la imagen para que se vea bien en diferentes tamaños */
+            background-attachment: fixed; /* Opcional: Fija la imagen mientras el contenido se desplaza (efecto parallax) */
+         "
+      >
+         <div
+            style="
+               background-color: rgb(244, 67, 54);
+               width: 25%;
+               text-align: center; /* Centrado horizontal del texto (funciona para líneas simples) */
+               margin-top: 3%;
+               height: 6%;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               border-radius: 5px;
+            "
+         >
+            <h4>Mi Garaje</h4>
+         </div>
+         <div class="q-gutter-y-md" style="margin-top: 10%">
             <q-card>
                <q-tabs
                   v-model="tab"

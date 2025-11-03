@@ -35,7 +35,6 @@
             "
          >
             <div
-               class="items-center"
                style="
                   background-color: rgb(255, 152, 0);
                   width: 25%;
