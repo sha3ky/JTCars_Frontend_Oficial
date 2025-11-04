@@ -3,7 +3,7 @@ import apiLink from "./apiLink";
 
 let allData;
 let link = apiLink;
-async function getAllData () {
+async function getAllData() {
    try {
       const response = await axios.get(`${link}api/getcoches`, {
          headers: {
@@ -18,7 +18,6 @@ async function getAllData () {
       console.error("Error fetching data:", error);
    }
    return allData;
-  }
-
+}
 
 export default getAllData;

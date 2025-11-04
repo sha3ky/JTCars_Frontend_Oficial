@@ -60,7 +60,7 @@
                <q-tab-panels v-model="tab" animated>
                   <q-tab-panel name="coches">
                      <div>
-                        <q-btn color="teal" @click="resetCar">
+                        <q-btn color="teal" @click="resetDataCar">
                            <q-icon left size="1em" name="add" />
                            <div>Añadir Coche</div>
                         </q-btn>
@@ -337,9 +337,11 @@
                               <div style="">
                                  <q-file
                                     filled
-                                    v-model="modelInImgNew"
+                                    v-model="nuevaImagen"
                                     label="Añadir imagen"
                                     dense
+                                    accept="image/*"
+                                    max-files="1"
                                  />
                               </div>
                            </div>
@@ -358,13 +360,11 @@
                                     "
                                  >
                                     <q-img
-                                       :src="getBase64Image(image.imagen)"
+                                       :src="image.ruta"
                                        class="responsive-image"
                                        style="max-width: 180px; height: 60px"
                                     />
-
                                     <q-separator />
-
                                     <q-card-actions align="center">
                                        <q-btn
                                           flat
@@ -543,7 +543,7 @@
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref, computed } from "vue";
 import store from "../../src/store";
-import InputUser from "components/InputUser.vue"; // Replace with the actual path
+import InputUser from "components/InputUser.vue";
 import loginUser from "src/components/loginUser.vue";
 import { Notify } from "quasar";
 import getAllData from "src/composable/loadAllData";
@@ -564,14 +564,18 @@ import {
    cocheAno,
 } from "src/composable/dataSelectores";
 import { authMixin } from "../mixins/authMixin";
+import axios from "axios";
+import apiLink from "../composable/apiLink";
+
 export default defineComponent({
    name: "AdminPage",
    mixins: [authMixin],
    data() {
       return {
+         link: apiLink,
          anadirImagenDialog: false,
          dialogCoches: false,
-         showInputUser: false, // Initialize showInputUser to control InputUser component
+         showInputUser: false,
          showLoginUser: false,
          userId: null,
          modelSelectedMenu: ref("coches"),
@@ -674,39 +678,25 @@ export default defineComponent({
                sortable: true,
             },
             { name: "telefono", label: "Telefono", field: "telefono" },
-
             {
                name: "createdAt",
                label: "Fecha de Contacto",
-               field: "created_at", // <--- Debe coincidir EXACTAMENTE con el campo del modelo
+               field: "created_at",
                sortable: true,
-               // Opcional: Formatear la fecha para que se vea mejor
                format: (val) => {
-                  // 1. Crea el objeto Date a partir de la cadena ISO (UTC)
                   const date = new Date(val);
-
-                  // 2. Extrae y formatea los componentes de la fecha y hora usando métodos UTC.
-                  // getUTC...() asegura que usamos la hora 09:53, no la convertida 10:53
-
-                  // Obtener componentes de fecha
                   const day = String(date.getUTCDate()).padStart(2, "0");
-                  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Meses son 0-indexados
+                  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
                   const year = date.getUTCFullYear();
-
-                  // Obtener componentes de hora
                   const hours = String(date.getUTCHours()).padStart(2, "0");
                   const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-
-                  // 3. Devolver la cadena en formato DD/MM/AAAA HH:MM
                   return `${day}/${month}/${year} ${hours}:${minutes}`;
                },
-               align: "left", // Alineación
+               align: "left",
             },
          ],
-
          datosCoches: {},
          imagenesArray: [],
-         base64Image: null,
          imagenParaCambiar: "",
          inputImagen: null,
          inputPdf: null,
@@ -718,8 +708,7 @@ export default defineComponent({
          optionsCombustible: tipoCombustible,
          coloresBanners: coloresBanners,
          newCar: false,
-         modelInImgNew: null,
-         imagenConvertidaBase64: "",
+         nuevaImagen: null,
          existPdf: null,
          fechaActual: new Date().getFullYear(),
          filterCoches: "",
@@ -732,7 +721,7 @@ export default defineComponent({
          return [
             (val) => (val && val.length > 0) || "La descripción es obligatoria",
             (val) => val.length <= 150 || "Máximo 150 caracteres",
-            (val) => val.length >= 20 || "Mínimo 20 caracteres",
+            (val) => val.length >= 10 || "Mínimo 10 caracteres",
          ];
       },
       contadorClass() {
@@ -745,6 +734,7 @@ export default defineComponent({
       },
    },
    watch: {
+      // ✅ PDF sigue en base64
       inputPdf: function (item) {
          convertFileToBase64(item).then((result) => {
             if (result) {
@@ -754,34 +744,11 @@ export default defineComponent({
             }
          });
       },
-      inputImagen: function (newVal) {
-         if (newVal) {
-            convertFileToBase64(newVal).then((result) => {
-               if (result) {
-                  this.imagenParaCambiar.imagen = result;
-                  this.anadirImagenDialog = false;
-               } else {
-                  console.log("La imagen no se ha podido  modificar");
-               }
-            });
-         }
-         this.inputImagen = null;
-      },
-
-      modelInImgNew: function (item) {
-         if (item) {
-            convertFileToBase64(item)
-               .then((result) => {
-                  // Handle the base64 result here
-                  this.imagenConvertidaBase64 = result;
-                  console.log(this.imagenConvertidaBase64);
-                  this.addMetaImgNew(this.imagenConvertidaBase64);
-               })
-               .catch((error) => {
-                  // Handle any errors here
-                  console.error(error);
-                  console.log("No se ha podido convertir la imagen");
-               });
+      // ✅ NUEVAS imágenes - usar archivo directamente
+      nuevaImagen: function (archivo) {
+         debugger;
+         if (archivo) {
+            this.procesarNuevaImagen(archivo);
          }
       },
    },
@@ -792,26 +759,112 @@ export default defineComponent({
       this.waitDialog = false;
    },
    methods: {
+      // ✅ Procesar nueva imagen sin base64
+      procesarNuevaImagen(archivo) {
+         debugger;
+         if (!archivo.type.startsWith("image/")) {
+            this.$q.notify({
+               type: "negative",
+               message: "Por favor, selecciona un archivo de imagen válido",
+               timeout: 3000,
+            });
+            this.nuevaImagen = null;
+            return;
+         }
+
+         if (archivo.size > 5 * 1024 * 1024) {
+            this.$q.notify({
+               type: "negative",
+               message: "La imagen es demasiado grande (máximo 5MB)",
+               timeout: 3000,
+            });
+            this.nuevaImagen = null;
+            return;
+         }
+
+         const urlTemporal = URL.createObjectURL(archivo);
+         this.agregarImagenAlArray(urlTemporal, archivo);
+         this.nuevaImagen = null;
+      },
+
+      // ✅ Agregar imagen al array
+      agregarImagenAlArray(urlImagen, archivo) {
+         debugger;
+         if (this.imagenesArray.length >= 8) {
+            this.$q.notify({
+               type: "warning",
+               message: "Máximo 8 imágenes permitidas",
+               timeout: 3000,
+            });
+            URL.revokeObjectURL(urlImagen);
+            return;
+         }
+
+         const nuevoNumero = this.imagenesArray.length + 1;
+         const nuevoId = `imagen_${nuevoNumero}_${Date.now()}`;
+
+         const nuevaImagen = {
+            id: nuevoId,
+            imagen: urlImagen, // URL temporal para previsualización
+            archivo: archivo, // Archivo original para subida
+            imagenNum: `imagen${nuevoNumero}`,
+            nombreArchivo: archivo.name,
+            esNueva: true,
+            ruta: urlImagen, // ← AGREGAR ESTA LÍNEA
+         };
+
+         this.imagenesArray.push(nuevaImagen);
+
+         this.$q.notify({
+            type: "positive",
+            message: `Imagen ${nuevoNumero} agregada correctamente`,
+            timeout: 2000,
+         });
+      },
+
+      // ✅ Eliminar imagen liberando memoria
+      eliminarImagen(imagen) {
+         const index = this.imagenesArray.findIndex(
+            (img) => img.id === imagen.id
+         );
+         if (index !== -1) {
+            if (imagen.imagen && imagen.imagen.startsWith("blob:")) {
+               URL.revokeObjectURL(imagen.imagen);
+            }
+            this.imagenesArray.splice(index, 1);
+            this.renumerarImagenes();
+         }
+      },
+
+      // ✅ Renumerar imágenes después de eliminar
+      renumerarImagenes() {
+         this.imagenesArray.forEach((imagen, index) => {
+            imagen.imagenNum = `imagen${index + 1}`;
+         });
+      },
+
+      // ✅ Limpiar URLs temporales
+      limpiarURLsTemporales() {
+         this.imagenesArray.forEach((imagen) => {
+            if (imagen.imagen && imagen.imagen.startsWith("blob:")) {
+               URL.revokeObjectURL(imagen.imagen);
+            }
+         });
+      },
+
+      // ✅ Confirmación para eliminar coche
       confirmDeleteCar() {
          this.$q
             .dialog({
                title: "🚗 Eliminar coche",
                message:
                   "¿Estás seguro de que quieres eliminar este coche? Esta acción no se puede deshacer.",
-               ok: {
-                  push: true,
-                  color: "negative",
-                  label: "Eliminar",
-               },
-               cancel: {
-                  push: true,
-                  color: "primary",
-                  label: "Cancelar",
-               },
+               ok: { push: true, color: "negative", label: "Eliminar" },
+               cancel: { push: true, color: "primary", label: "Cancelar" },
                persistent: true,
             })
             .onOk(() => {
-               this.delCar(); // Tu método original de eliminación
+               this.deleteCar();
                this.$q.notify({
                   type: "positive",
                   message: "Coche eliminado correctamente",
@@ -826,6 +879,8 @@ export default defineComponent({
                });
             });
       },
+
+      // ✅ Confirmación para eliminar imagen
       deleteImage(image) {
          this.$q
             .dialog({
@@ -835,47 +890,47 @@ export default defineComponent({
                persistent: true,
             })
             .onOk(() => {
-               // <--- ¡CORRECCIÓN CLAVE AQUÍ!
-               // Ahora puedes usar await de forma segura
-               this.delImg(image);
-               // Opcional: Agregar lógica de feedback aquí si aceptarCambios no lo tiene
+               this.eliminarImagen(image);
                this.$q.notify({
                   type: "info",
                   message: "Imagen eliminada correctamente.",
                });
             })
             .onCancel(() => {
-               // El usuario canceló la eliminación
                console.log("Eliminación de imagen cancelada.");
             });
       },
+
+      // ✅ Validación para solo números y puntos
       soloNumerosYPuntos(event) {
          const char = String.fromCharCode(event.which || event.keyCode);
-         // Permitir solo: números (0-9) y punto (.)
          if (!/[0-9.]/.test(char)) {
             event.preventDefault();
             return false;
          }
          return true;
       },
+
+      // ✅ Recargar datos desde API
       async reloadData() {
          this.waitDialog = true;
          this.rowsCoches = await getAllData();
          this.rowsPersonas = await getAllusers();
          this.waitDialog = false;
       },
-      async delCar() {
+
+      async deleteCar() {
          let respuesta = await deleteCar(this.datosCoches.id);
-         if (respuesta) {
-            console.log(respuesta);
-         }
+         if (respuesta) console.log(respuesta);
          this.reloadData();
-         this.resetCar();
+         this.resetDataCar();
       },
+
       deletePdf() {
          this.existPdf = null;
       },
-      resetCar() {
+
+      resetDataCar() {
          this.dialogCoches = true;
          this.newCar = true;
          this.datosCoches = {};
@@ -883,48 +938,9 @@ export default defineComponent({
          this.existPdf = null;
          this.inputPdf = null;
       },
-      fixArrNum(array) {
-         let x = 1;
-         array.forEach((item) => {
-            let numArray = item.imagenNum.split(""); // Convert the string to an array
-            numArray[6] = x.toString(); // Update the character at index 6 with the value of x
-            item.imagenNum = numArray.join(""); // Join the array back into a string
-            x++;
-         });
-      },
-      addMetaImgNew(item) {
-         // nos llevamos el ultimo componente del array y comprobamos a ver que numero tiene , i le añadimos uno de mas si es mas pequeño que 8
-         // y en ese caso reconstrumos el componente con el id , imagen y el imagenNum
-         let num;
-         if (this.imagenesArray.length) {
-            this.fixArrNum(this.imagenesArray);
-            let lastFromArray =
-               this.imagenesArray[this.imagenesArray.length - 1];
-            num = lastFromArray.imagenNum.split("")[6] * 1;
-            if (num <= 8) {
-               num++;
-               let newObject = {
-                  id: lastFromArray.id,
-                  imagen: item,
-                  imagenNum: "imagen" + num,
-               };
-               this.imagenesArray.push(newObject);
-            } else {
-               console.log("maximo 8 imagenes");
-            }
-         } else {
-            num = 1;
-            let newObject = {
-               id: this.datosCoches.id,
-               imagen: item,
-               imagenNum: "imagen" + num,
-            };
-            this.imagenesArray.push(newObject);
-         }
-         this.modelInImgNew = "";
-      },
 
       async aceptarCambios() {
+         debugger;
          const colorEs_En = colorsEs_En(this.datosCoches.colorBanner);
          this.datosCoches.colorBanner = colorEs_En;
 
@@ -932,47 +948,45 @@ export default defineComponent({
          this.mediaTable = this.imagenesArray.reduce((result, item) => {
             return Object.assign(result, {
                id: item.id,
-               [item.imagenNum]: item.imagen,
+               [item.imagenNum]: item.esNueva ? item.archivo : item.imagen,
             });
          }, this.mediaTable);
+
          this.mediaTable.pdf = this.existPdf;
          this.mediaTable.id = this.datosCoches.id;
 
-         if (!this.newCar) {
-            this.waitDialog = true;
-            let res = await updateTables(this.datosCoches, this.mediaTable);
-            if (res) {
-               console.log("Datos subidos a la base");
+         this.waitDialog = true;
+         try {
+            if (!this.newCar) {
+               let res = await updateTables(this.datosCoches, this.mediaTable);
+               console.log(
+                  res
+                     ? "Datos subidos a la base"
+                     : "Error al subir datos en la base"
+               );
             } else {
-               ("Error al subir datos en la base");
+               await insertCocheNuevo(this.datosCoches, this.mediaTable);
             }
             this.newCar = false;
-
-            //  console.log(this.mediaTable);
-         } else {
-            this.waitDialog = true;
-            await insertCocheNuevo(this.datosCoches, this.mediaTable);
-            this.newCar = false;
+            await this.reloadData();
+         } catch (error) {
+            console.error("Error al guardar:", error);
+         } finally {
+            this.dialogCoches = false;
+            this.datosCoches = {};
+            this.inputImagen = null;
+            this.waitDialog = false;
+            this.limpiarURLsTemporales();
          }
-         await this.reloadData();
-         this.dialogCoches = false;
-         this.datosCoches = {};
-         //  this.modelEtiqueta = "";
-         //  this.modelTipo = "";
-         //  this.modelPromotion = "";
-         this.inputImagen = null;
-         this.waitDialog = false;
       },
-      getBase64Image(image) {
-         if (image) return `data:image/jpeg;base64,${image}`;
-      },
+
       cancelInputCarDialog() {
          this.newCar = false;
          this.dialogCoches = false;
       },
+
       handleRowClick(evt, row) {
          this.dialogCoches = true;
-         // Handle row click event here
          console.log("Row clicked:", row);
          this.datosCoches.matricula = row.matricula;
          this.datosCoches.marca = row.marca;
@@ -990,57 +1004,52 @@ export default defineComponent({
          this.datosCoches.id = row.id;
          this.existPdf = row.pdf;
          this.extrerImagenes(row);
-         // You can perform actions such as opening a dialog, navigating to a detail page, etc.
       },
+
       modImg(item) {
          this.imagenParaCambiar = item;
          this.anadirImagenDialog = true;
       },
-      delImg(item) {
-         let indexOf = this.imagenesArray.findIndex((obj) => {
-            return obj.imagenNum == item.imagenNum;
-         });
-         console.log(indexOf);
-         this.imagenesArray.splice(indexOf, 1);
-         if (this.imagenesArray.length == 0) {
-            item.imagen = "";
-            this.imagenesArray.push(item);
-         }
-         // this.fixArrNum(this.imagenesArray);
-      },
+
       extrerImagenes(row) {
+         debugger;
          this.imagenesArray = [];
          for (let img = 1; img <= 8; img++) {
-            let imgObj = {};
             const propertyName = "imagen" + img;
             if (row[propertyName]) {
-               imgObj.imagen = row[propertyName];
-               imgObj.imagenNum = propertyName;
-               imgObj.id = row.id;
+               // Usa URL para evitar problemas con barras
+               const rutaCompleta = new URL(row[propertyName], this.link).href;
+
+               console.log("rutsaaa", rutaCompleta);
+               let imgObj = {
+                  imagen: row[propertyName],
+                  imagenNum: propertyName,
+                  id: row.media_files,
+                  esNueva: false,
+                  ruta: rutaCompleta, // ← URL correcta
+               };
+
                this.imagenesArray.push(imgObj);
             }
          }
       },
 
       handleDialogClose() {
-         this.showLoginUser = false; // Set showLoginUser to false when the dialog is closed
+         this.showLoginUser = false;
          this.showInputUser = false;
       },
+
       nuevoUsuario() {
          this.showInputUser = true;
-         //this.showLoginUser = false;
-      },
-      loginearUsuario() {
-         this.showLoginUser = true;
-         //this.showInputUser = false;
       },
 
-      async logOut() {
+      loginearUsuario() {
+         this.showLoginUser = true;
+      },
+
+      logOut() {
          store.dispatch("logout");
-         Notify.create({
-            type: "positive",
-            message: "Adios.",
-         });
+         Notify.create({ type: "positive", message: "Adios." });
          this.$router.push({ name: "principal-coches" });
       },
    },

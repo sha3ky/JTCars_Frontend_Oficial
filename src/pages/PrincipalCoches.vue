@@ -686,6 +686,7 @@ export default defineComponent({
          return etiquetaMap[etiqueta] || "/etiquetas/etiqueta0.png";
       },
       repartirData() {
+         debugger;
          this.allData.forEach((element) => {
             let imagen = this.firstImgNotNull(element);
             this.imagenPrincipal.push(imagen);
