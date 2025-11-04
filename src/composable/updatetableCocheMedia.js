@@ -3,18 +3,15 @@ import apiLink from "./apiLink";
 
 let link = apiLink;
 
-const updateTables = async (coches, media) => {
+const updateTables = async (coches, media, imagenesAEliminar = []) => {
    debugger;
-   console.log("URL completa:", `${link}api/updateMedia`);
    try {
-      // Send the coches data to the coches endpoint
       const cochesResponse = await axios.post(`${link}api/updateCoche`, coches);
 
-      // Crear FormData para los archivos
       const formData = new FormData();
       formData.append("id", media.id);
 
-      // Agregar todas las imágenes que existan
+      // Agregar imágenes
       if (media.imagen1) formData.append("imagen1", media.imagen1);
       if (media.imagen2) formData.append("imagen2", media.imagen2);
       if (media.imagen3) formData.append("imagen3", media.imagen3);
@@ -25,7 +22,20 @@ const updateTables = async (coches, media) => {
       if (media.imagen8) formData.append("imagen8", media.imagen8);
       if (media.pdf) formData.append("pdf", media.pdf);
 
-      // Send the media data as FormData
+      // ✅ CORREGIDO - Asegurar que imgNum sea número
+      imagenesAEliminar.forEach((imgNum) => {
+         debugger;
+         const numero = Number(imgNum.imagenNum.split("").at(-1)); // ← Convertir a número
+         formData.append(`imagen${numero}`, null);
+         console.log(`Marcando imagen${numero} para eliminar`);
+      });
+
+      // Verificar qué se está enviando
+      console.log("Campos en FormData:");
+      for (let pair of formData.entries()) {
+         console.log(pair[0] + ": " + pair[1]);
+      }
+
       const mediaResponse = await axios.post(
          `${link}api/updateMedia`,
          formData,
@@ -35,8 +45,7 @@ const updateTables = async (coches, media) => {
             },
          }
       );
-      console.log("URL completa:", `${link}api/updateMedia`);
-      // Debería mostrar: "http://127.0.0.1:8000/api/updateMedia"
+
       if (cochesResponse.status === 200 && mediaResponse.status === 200) {
          console.log("Data saved successfully");
          return true;

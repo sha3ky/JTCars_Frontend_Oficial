@@ -714,6 +714,7 @@ export default defineComponent({
          filterCoches: "",
          filterPersonas: "",
          waitDialog: false,
+         imagenesParaEliminar: [],
       };
    },
    computed: {
@@ -824,33 +825,32 @@ export default defineComponent({
 
       // ✅ Eliminar imagen liberando memoria
       eliminarImagen(imagen) {
+         debugger;
          const index = this.imagenesArray.findIndex(
-            (img) => img.id === imagen.id
+            (img) => img.imagenNum === imagen.imagenNum
          );
          if (index !== -1) {
-            if (imagen.imagen && imagen.imagen.startsWith("blob:")) {
-               URL.revokeObjectURL(imagen.imagen);
-            }
-            this.imagenesArray.splice(index, 1);
-            this.renumerarImagenes();
+            this.imagenesParaEliminar.push(
+               this.imagenesArray.splice(index, 1)[0]
+            );
          }
       },
 
-      // ✅ Renumerar imágenes después de eliminar
-      renumerarImagenes() {
+      // ✅ Reenumerar imágenes después de eliminar
+      /*  renumerarImagenes() {
          this.imagenesArray.forEach((imagen, index) => {
             imagen.imagenNum = `imagen${index + 1}`;
          });
-      },
+      }, */
 
       // ✅ Limpiar URLs temporales
-      limpiarURLsTemporales() {
+      /*   limpiarURLsTemporales() {
          this.imagenesArray.forEach((imagen) => {
             if (imagen.imagen && imagen.imagen.startsWith("blob:")) {
                URL.revokeObjectURL(imagen.imagen);
             }
          });
-      },
+      }, */
 
       // ✅ Confirmación para eliminar coche
       confirmDeleteCar() {
@@ -940,7 +940,6 @@ export default defineComponent({
       },
 
       async aceptarCambios() {
-         debugger;
          const colorEs_En = colorsEs_En(this.datosCoches.colorBanner);
          this.datosCoches.colorBanner = colorEs_En;
 
@@ -958,7 +957,11 @@ export default defineComponent({
          this.waitDialog = true;
          try {
             if (!this.newCar) {
-               let res = await updateTables(this.datosCoches, this.mediaTable);
+               let res = await updateTables(
+                  this.datosCoches,
+                  this.mediaTable,
+                  this.imagenesParaEliminar
+               );
                console.log(
                   res
                      ? "Datos subidos a la base"
@@ -976,7 +979,6 @@ export default defineComponent({
             this.datosCoches = {};
             this.inputImagen = null;
             this.waitDialog = false;
-            this.limpiarURLsTemporales();
          }
       },
 
@@ -1012,7 +1014,6 @@ export default defineComponent({
       },
 
       extrerImagenes(row) {
-         debugger;
          this.imagenesArray = [];
          for (let img = 1; img <= 8; img++) {
             const propertyName = "imagen" + img;
@@ -1020,7 +1021,6 @@ export default defineComponent({
                // Usa URL para evitar problemas con barras
                const rutaCompleta = new URL(row[propertyName], this.link).href;
 
-               console.log("rutsaaa", rutaCompleta);
                let imgObj = {
                   imagen: row[propertyName],
                   imagenNum: propertyName,
