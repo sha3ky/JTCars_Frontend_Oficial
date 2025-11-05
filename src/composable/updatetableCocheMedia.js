@@ -24,7 +24,6 @@ const updateTables = async (coches, media, imagenesAEliminar = []) => {
 
       // ✅ CORREGIDO - Asegurar que imgNum sea número
       imagenesAEliminar.forEach((imgNum) => {
-         debugger;
          const numero = Number(imgNum.imagenNum.split("").at(-1)); // ← Convertir a número
          formData.append(`imagen${numero}`, null);
          console.log(`Marcando imagen${numero} para eliminar`);

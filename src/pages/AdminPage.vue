@@ -169,6 +169,7 @@
                                  label="Matricula"
                                  dense
                                  type="text"
+                                 maxlength="10"
                               />
                            </div>
                            <div>
@@ -209,6 +210,7 @@
                                  type="number"
                                  label="KM "
                                  min="0"
+                                 max="1000000"
                                  step="1"
                                  dense
                                  @keypress="soloNumerosYPuntos"
@@ -784,13 +786,13 @@ export default defineComponent({
          }
 
          const urlTemporal = URL.createObjectURL(archivo);
+         /*  this.renumerarImagenes(); */
          this.agregarImagenAlArray(urlTemporal, archivo);
          this.nuevaImagen = null;
       },
 
       // ✅ Agregar imagen al array
       agregarImagenAlArray(urlImagen, archivo) {
-         debugger;
          if (this.imagenesArray.length >= 8) {
             this.$q.notify({
                type: "warning",
@@ -800,10 +802,31 @@ export default defineComponent({
             URL.revokeObjectURL(urlImagen);
             return;
          }
+         let numArray = [1, 2, 3, 4, 5, 6, 7, 8];
+         this.imagenesArray.forEach((item, index) => {
+            /*  const nombreEsperado = `imagen${index + 1}`; */
+            const numerosEncontrados = parseInt(
+               item.imagenNum.split("").at(-1)
+            );
+            numArray.forEach((item) => {
+               debugger;
+               if (item == numerosEncontrados) {
+                  const indice = numArray.indexOf(valorAEliminar);
+                  if (indice > -1) {
+                     // Verifica que el valor fue encontrado
+                     numArray.splice(indice, 1);
+                  }
+               }
+               console.log("numarray", numArray);
+            });
+            /*  if (item.imagenNum !== nombreEsperado) {
+               item.imagenNum = `imagen${index + 1}`;
+            } */
+         });
 
-         const nuevoNumero = this.imagenesArray.length + 1;
+         /* const nuevoNumero = this.imagenesArray.length + 1;
          const nuevoId = `imagen_${nuevoNumero}_${Date.now()}`;
-
+ */
          const nuevaImagen = {
             id: nuevoId,
             imagen: urlImagen, // URL temporal para previsualización
@@ -838,20 +861,28 @@ export default defineComponent({
 
       // ✅ Reenumerar imágenes después de eliminar
       /*  renumerarImagenes() {
-         this.imagenesArray.forEach((imagen, index) => {
-            imagen.imagenNum = `imagen${index + 1}`;
-         });
-      }, */
+         debugger;
 
-      // ✅ Limpiar URLs temporales
-      /*   limpiarURLsTemporales() {
-         this.imagenesArray.forEach((imagen) => {
-            if (imagen.imagen && imagen.imagen.startsWith("blob:")) {
-               URL.revokeObjectURL(imagen.imagen);
+         this.imagenesArray.forEach((item, index) => {
+            const nombreEsperado = `imagen${index + 1}`;
+            if (item.imagenNum !== nombreEsperado) {
+               item.imagenNum = `imagen${index + 1}`;
             }
          });
       }, */
 
+      limpiarURLsTemporales() {
+         debugger;
+         this.imagenesArray.forEach((imagen) => {
+            if (imagen.imagen && imagen.imagen.startsWith("blob:")) {
+               URL.revokeObjectURL(imagen.imagen); // ✅ Libera memoria
+            }
+            // OPCIONAL: También limpiar ruta si es blob
+            if (imagen.ruta && imagen.ruta.startsWith("blob:")) {
+               URL.revokeObjectURL(imagen.ruta); // ✅ Libera memoria
+            }
+         });
+      },
       // ✅ Confirmación para eliminar coche
       confirmDeleteCar() {
          this.$q
@@ -904,10 +935,28 @@ export default defineComponent({
       // ✅ Validación para solo números y puntos
       soloNumerosYPuntos(event) {
          const char = String.fromCharCode(event.which || event.keyCode);
+         const currentValue = event.target.value; // El valor actual del input
          if (!/[0-9.]/.test(char)) {
             event.preventDefault();
             return false;
          }
+         if (char !== ".") {
+            // a. Simular el nuevo valor
+            const newValue =
+               currentValue.slice(0, event.target.selectionStart) +
+               char +
+               currentValue.slice(event.target.selectionEnd);
+            const numericValue = parseFloat(newValue.replace(/,/g, "")); // Reemplazar comas si usas separador
+            if (numericValue > 1000000) {
+               event.preventDefault();
+               return false;
+            }
+            if (currentValue.length >= 7 && numericValue < 1000000) {
+               event.preventDefault();
+               return false;
+            }
+         }
+
          return true;
       },
 
@@ -922,8 +971,9 @@ export default defineComponent({
       async deleteCar() {
          let respuesta = await deleteCar(this.datosCoches.id);
          if (respuesta) console.log(respuesta);
-         this.reloadData();
          this.resetDataCar();
+         this.dialogCoches = false;
+         await this.reloadData();
       },
 
       deletePdf() {
@@ -940,9 +990,25 @@ export default defineComponent({
       },
 
       async aceptarCambios() {
+         debugger;
+
+         this.datosCoches.ano = 1991;
+         this.datosCoches.colorBanner = "Unknown Color"; // Recuerda, este valor es mejor si es manejado por el switch
+         this.datosCoches.combustible = "Diesel";
+         this.datosCoches.descripcion = "fdsfdsfsdfsdf";
+         this.datosCoches.etiqueta = "A";
+         this.datosCoches.km = 334433;
+         this.datosCoches.marca = "Ford";
+         this.datosCoches.matricula = "sdasdasd";
+         this.datosCoches.modelo = "Mondeo";
+         this.datosCoches.pdf = null;
+         this.datosCoches.precio = 3500;
+         this.datosCoches.promocion = "Recién revisado";
+         this.datosCoches.tipo = "Monovolumen";
+
          const colorEs_En = colorsEs_En(this.datosCoches.colorBanner);
          this.datosCoches.colorBanner = colorEs_En;
-
+         this.limpiarURLsTemporales();
          this.mediaTable = {};
          this.mediaTable = this.imagenesArray.reduce((result, item) => {
             return Object.assign(result, {
@@ -967,6 +1033,7 @@ export default defineComponent({
                      ? "Datos subidos a la base"
                      : "Error al subir datos en la base"
                );
+               this.imagenesParaEliminar = [];
             } else {
                await insertCocheNuevo(this.datosCoches, this.mediaTable);
             }

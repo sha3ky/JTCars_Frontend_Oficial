@@ -2,14 +2,15 @@ import axios from "axios";
 import apiLink from "./apiLink";
 
 let link = apiLink;
-let id_newCar;
+
 const insertCocheNuevo = async (coches, media) => {
+   debugger;
+   let cochesResponse;
    try {
       // Send the coches data to the coches endpoint
-      const cochesResponse = await axios.post(`${link}api/createcoche`, coches);
+      cochesResponse = await axios.post(`${link}api/createcoche`, coches);
 
       if (cochesResponse.status === 201) {
-         id_newCar = cochesResponse.data.id;
          console.log("Coche saved successfully");
       } else {
          console.log("Error: Coche not saved");
@@ -20,9 +21,66 @@ const insertCocheNuevo = async (coches, media) => {
    }
 
    try {
-      media.id = id_newCar;
-      // Send the media data to the media endpoint
-      const mediaResponse = await axios.post(`${link}api/updateMedia`, media);
+      debugger;
+      media.id = cochesResponse.data.id;
+
+      // ✅ CREAR FormData para TODAS las imágenes
+      const formData = new FormData();
+      formData.append("id", media.id);
+
+      // Procesar imágenes 1-8
+
+      /*   media.forEach((imagen, index) => {
+         if (imagen instanceof File) {
+            formData.append(`imagen${index + 1}`, imagen);
+         } else if (imagen === null) {
+            formData.append(`imagen${index + 1}`, "null");
+         }
+      }); */
+      // Asegúrate de que 'media' sea el objeto con las propiedades a enviar
+      Object.entries(media).forEach(([clave, valor], indice) => {
+         debugger;
+         // 1. Verificar si el 'valor' actual es una instancia de File
+         if (valor instanceof File) {
+            // Si es un archivo, añadimos el archivo real al FormData
+            // Opcional: Si quieres mantener el nombre original de la clave (imagen1, imagen2...)
+            // formData.append(clave, valor);
+
+            // Si quieres usar el índice (indice + 1) para nombrar las claves:
+            formData.append(`imagen${indice}`, valor);
+         } else if (valor instanceof File && valor === null) {
+            // Si no es un archivo (es null o una cadena), añadimos el string "null"
+            // Nota: Enviar "null" como string es una práctica común para indicar
+            // al backend que se debe eliminar o mantener la referencia a null.
+            formData.append(`imagen${indice}`, "null");
+         }
+      });
+
+      // Procesar PDF
+      if (media.pdf instanceof File) {
+         formData.append("pdf", media.pdf);
+         console.log("✅ Agregando PDF como archivo");
+      } else if (media.pdf === null) {
+         formData.append("pdf", "null");
+         console.log("✅ Marcando PDF para eliminar");
+      }
+
+      // Verificar qué se envía
+      console.log("FormData a enviar:");
+      for (let pair of formData.entries()) {
+         console.log(pair[0] + ":", pair[1]);
+      }
+
+      // Send the media data as FormData
+      const mediaResponse = await axios.post(
+         `${link}api/updateMedia`,
+         formData,
+         {
+            headers: {
+               "Content-Type": "multipart/form-data",
+            },
+         }
+      );
 
       if (mediaResponse.status === 200) {
          console.log("Media saved successfully");
@@ -34,9 +92,6 @@ const insertCocheNuevo = async (coches, media) => {
       console.error("Error saving Media:", mediaError);
       return false;
    }
-
-   // If no exceptions are thrown, return true by default
-   return true;
 };
 
 export default insertCocheNuevo;
