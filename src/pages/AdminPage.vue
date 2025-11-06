@@ -750,7 +750,6 @@ export default defineComponent({
       },
       // ✅ NUEVAS imágenes - usar archivo directamente
       nuevaImagen: function (archivo) {
-         debugger;
          if (archivo) {
             this.procesarNuevaImagen(archivo);
          }
@@ -765,7 +764,6 @@ export default defineComponent({
    methods: {
       // ✅ Procesar nueva imagen sin base64
       procesarNuevaImagen(archivo) {
-         debugger;
          if (!archivo.type.startsWith("image/")) {
             this.$q.notify({
                type: "negative",
@@ -794,7 +792,6 @@ export default defineComponent({
 
       // ✅ Agregar imagen al array
       agregarImagenAlArray(urlImagen, archivo) {
-         debugger;
          // 1. Verificar que no excedemos el límite de 8 imágenes
          if (this.imagenesArray.length >= 8) {
             this.$q.notify({
@@ -848,7 +845,6 @@ export default defineComponent({
 
       // ✅ Eliminar imagen liberando memoria
       eliminarImagen(imagen) {
-         debugger;
          const index = this.imagenesArray.findIndex(
             (img) => img.imagenNum === imagen.imagenNum
          );
@@ -861,7 +857,7 @@ export default defineComponent({
 
       // ✅ Reenumerar imágenes después de eliminar
       /*  renumerarImagenes() {
-         debugger;
+
 
          this.imagenesArray.forEach((item, index) => {
             const nombreEsperado = `imagen${index + 1}`;
@@ -872,7 +868,6 @@ export default defineComponent({
       }, */
 
       limpiarURLsTemporales() {
-         debugger;
          this.imagenesArray.forEach((imagen) => {
             if (imagen.imagen && imagen.imagen.startsWith("blob:")) {
                URL.revokeObjectURL(imagen.imagen); // ✅ Libera memoria
@@ -990,8 +985,6 @@ export default defineComponent({
       },
 
       async aceptarCambios() {
-         debugger;
-
          this.datosCoches.ano = 1991;
          this.datosCoches.colorBanner = "Unknown Color"; // Recuerda, este valor es mejor si es manejado por el switch
          this.datosCoches.combustible = "Diesel";

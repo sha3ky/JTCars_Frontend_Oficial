@@ -185,24 +185,13 @@
                Coches de segunda mano y vehículos de ocasión.
             </p>-->
             <div class="waviy">
-               <span style="--i: 1">Coches</span>
+               <span style="--i: 1">Grandes</span>
                <span style="">&nbsp; </span>
-               <span style="--i: 2">de</span>
+               <span style="--i: 2">oportunidades</span>
                <span style="">&nbsp; </span>
-               <span style="--i: 3">segunda</span>
+               <span style="--i: 3">sobre</span>
                <span style="">&nbsp; </span>
-               <span style="--i: 4">mano</span>
-               <span style="">&nbsp; </span>
-               <span style="--i: 5">y</span>
-               <span style="">&nbsp; </span>
-               <span style="--i: 6">vehículos</span>
-               <span style="">&nbsp; </span>
-               <span style="--i: 7">de</span>
-               <span style="">&nbsp; </span>
-               <span style="--i: 8">ocasión</span>
-               <span style="">&nbsp; </span>
-               <!-- <span style="--i: 9">MA</span>
-               <span style="--i: 10">NO</span> -->
+               <span style="--i: 4">ruedas</span>
             </div>
          </div>
          <!-- q-pa-md row items-start q-gutter-md -->
@@ -213,117 +202,111 @@
          <div class="cars-container">
             <div class="cars-grid">
                <q-card
-                  v-for="(item, index) in imagenPrincipal"
+                  v-for="(item, index) in datosCochesProcesados"
                   :key="index"
                   class="car-card"
                   bordered
                >
-                  <!-- IMAGEN DEL COCHE -->
                   <div class="image-container">
                      <q-img
-                        :src="getBase64Image(item)"
+                        :src="item.imagenPrincipal"
                         class="car-image"
                         ratio="1"
+                        fit="contain"
                      >
-                        <!-- Logo -->
-                        <div class="absolute-top-left q-pa-md">
-                           <q-img src="/logo.png" class="logo-image"></q-img>
-                        </div>
-
-                        <!-- Badge promoción -->
                         <div class="absolute-bottom row justify-center q-pb-md">
                            <q-badge
                               class="text-subtitle1 q-px-md q-py-xs"
-                              :color="colores[index]"
-                              :label="promocion[index]"
+                              :color="item.colorBanner"
+                              :label="item.promocion"
                            ></q-badge>
                         </div>
                      </q-img>
                   </div>
 
-                  <!-- INFORMACIÓN DEL COCHE -->
                   <q-card-section class="car-info">
-                     <div class="car-title text-primary">
-                        {{ marcas[index] }} {{ modelos[index] }}
-                     </div>
-
-                     <!--  <div class="price-label text-warning">
-                        <h6 class="q-pa-none q-ma-none">Precio</h6>
-                     </div> -->
-
-                     <div class="car-price" :class="`text-${colores[index]}`">
-                        {{ formatPrice(precios[index]) }}<span>€</span>
-                     </div>
-
                      <div class="car-details">
+                        <div
+                           class="car-price"
+                           :class="`text-${item.colorBanner}`"
+                        >
+                           {{ formatPrice(item.precio) }}<span>€</span>
+                        </div>
+                        <div class="car-detail">
+                           <span class="label text-grey"> Marca: </span>
+                           <span class="value text-grey">
+                              {{ item.marca }}
+                           </span>
+                        </div>
+                        <div class="car-detail">
+                           <span class="label text-grey"> Modelo: </span>
+                           <span class="value text-grey">
+                              {{ item.modelo }}
+                           </span>
+                        </div>
                         <div class="car-detail">
                            <span class="label text-grey"> Año: </span>
                            <span class="value text-grey">
-                              {{ formatPrice(anoCoche[index]) }}</span
-                           >
-                        </div>
-                        <div class="car-detail">
-                           <span class="label text-grey">Km:</span>
-                           <span class="value text-grey">{{
-                              kmCoche[index]
-                           }}</span>
+                              {{ formatPrice(item.ano) }}
+                           </span>
                         </div>
 
-                        <!--      <div class="car-detail">
-                           <span class="label text-grey">Etiqueta:</span>
-                           <div class="car-detail">
-                              <span
-                                 class="label text-grey-8 text-subtitle1 text-weight-bold"
-                              ></span>
-                              <img
-                                 :src="`/etiquetas/etiqueta${etiquetas[index]}.png`"
-                                 :alt="`${etiquetas[index]}`"
-                                 class="etiqueta-image"
-                              />
-                           </div>
-                        </div> -->
                         <div class="car-detail">
-                           <span class="label">Etiqueta:</span>
+                           <span class="label text-grey">Km:</span>
+                           <span class="value text-grey">{{ item.km }}</span>
+                        </div>
+
+                        <div class="car-detail">
+                           <span class="label flex items-center"
+                              >Etiqueta:</span
+                           >
                            <img
-                              v-if="
-                                 etiquetas[index] && etiquetas[index] !== 'sin'
-                              "
-                              :src="getEtiquetaImage(etiquetas[index])"
-                              :alt="`Etiqueta ${etiquetas[index]}`"
+                              v-if="item.etiqueta && item.etiqueta !== 'sin'"
+                              :src="getEtiquetaImage(item.etiqueta)"
+                              :alt="`Etiqueta ${item.etiqueta}`"
                               class="etiqueta-image"
                            />
                            <div v-else class="no-etiqueta">
                               <q-icon name="block" color="grey-6" size="24px" />
-                              <span class="text-caption text-grey-6 q-ml-xs"
+                              <span
+                                 class="text-caption text-grey-6 q-ml-xs flex items-center"
                                  >Sin etiqueta</span
                               >
                            </div>
                         </div>
+
                         <div class="car-detail">
-                           <span class="label text-grey">Combustible:</span>
+                           <span class="label text-grey flex items-center"
+                              >Combustible:</span
+                           >
                            <div>
                               <img
-                                 :src="getCombustibleImage(combustible[index])"
+                                 :src="getCombustibleImage(item.combustible)"
                                  class="combustible-image"
                               />
                            </div>
                         </div>
+                        <div class="car-detail">
+                           <span
+                              class="value text-grey text-center"
+                              style="display: block; width: 100%"
+                           >
+                              {{ item.descripcion }}
+                           </span>
+                        </div>
                      </div>
                   </q-card-section>
-
-                  <q-card-section class="car-description text-grey">
-                     {{ arrayDescripciones[index] }}
-                  </q-card-section>
-                  <!-- ACCIONES -->
                   <q-card-actions class="car-actions">
                      <q-btn
                         flat
                         color="primary"
                         label="Más Fotos"
                         @click="carouselFoto(index)"
+                        para
+                        acciones
                         class="action-btn"
                      />
-                     <template v-if="arrayPdf[index]">
+                     <template v-if="item.pdf">
                         <q-btn
                            flat
                            color="secondary"
@@ -333,8 +316,6 @@
                         ></q-btn>
                      </template>
                   </q-card-actions>
-
-                  <!-- DESCRIPCIÓN -->
                </q-card>
             </div>
          </div>
@@ -421,6 +402,7 @@
    grid-template-columns: repeat(3, 1fr);
    gap: 24px;
    width: 100%;
+   justify-content: center;
 }
 
 /* TARJETA DEL COCHE */
@@ -446,7 +428,6 @@
 .car-image {
    width: 100%;
    height: 250px;
-   object-fit: cover;
 }
 
 .logo-image {
@@ -481,10 +462,11 @@
    font-weight: 700;
    color: #e74c3c;
    margin-bottom: 16px;
+   background: #e0e5ec;
 }
 
 .car-details {
-   margin-bottom: 16px;
+   padding: 10px;
 }
 
 .car-detail {
@@ -497,6 +479,8 @@
 
 .car-detail:last-child {
    border-bottom: none;
+   font-size: 1.1rem;
+   max-height: 4.5em;
 }
 
 .car-detail .label {
@@ -572,7 +556,7 @@
 /* Escritorio grande - 4 columnas */
 @media (min-width: 1440px) {
    .cars-grid {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
    }
 }
 .waviy {
@@ -613,12 +597,14 @@ import HeaderLayout from "components/HeaderComponent.vue";
 import getAllData from "src/composable/loadAllData";
 import store from "../../src/store";
 import { authMixin } from "../mixins/authMixin";
-
+import apiLink from "../composable/apiLink";
 export default defineComponent({
    name: "PrincipalCoches",
    mixins: [authMixin],
    data() {
       return {
+         link: apiLink,
+         datosCochesProcesados: [],
          pdfDatos: "",
          allData: [],
          arrayDatos: [],
@@ -629,7 +615,7 @@ export default defineComponent({
          userId: null,
          toggleDark: false,
          modelSelectedMenu: ref("coches"),
-         imagenPrincipal: [],
+
          expandedArrow: false,
          arrayDescripciones: [],
          anoCoche: [],
@@ -638,7 +624,7 @@ export default defineComponent({
          combustible: [],
          promocion: [],
          precios: [],
-         marcas: [],
+
          modelos: [],
          colores: [],
          arrayPdf: [],
@@ -655,10 +641,8 @@ export default defineComponent({
 
    methods: {
       getCombustibleImage(combustible) {
-         debugger;
          console.log("combustible", combustible);
          if (!combustible) return "/etiquetas/gasolina.png";
-
          const combustibleMap = {
             Gasolina: "/etiquetas/gasolina.png",
             Diesel: "/etiquetas/diesel.png",
@@ -675,7 +659,6 @@ export default defineComponent({
          return isNaN(number) ? "0" : number.toLocaleString("es-ES");
       },
       getEtiquetaImage(etiqueta) {
-         debugger;
          const etiquetaMap = {
             B: "/etiquetas/etiquetaB.png",
             C: "/etiquetas/etiquetaC.png",
@@ -687,44 +670,73 @@ export default defineComponent({
          return etiquetaMap[etiqueta] || "/etiquetas/etiqueta0.png";
       },
       repartirData() {
-         debugger;
+         // Vacía el array para que no se dupliquen datos si se llama varias veces
+         this.datosCochesProcesados = [];
+
          this.allData.forEach((element) => {
-            let imagen = this.firstImgNotNull(element);
-            this.imagenPrincipal.push(imagen);
-            this.arrayDescripciones.push(element.descripcion);
-            this.anoCoche.push(element.ano);
-            this.kmCoche.push(element.km);
-            this.etiquetas.push(element.etiqueta);
-            this.promocion.push(element.promocion);
-            this.combustible.push(element.combustible);
-            this.precios.push(element.precio);
-            this.marcas.push(element.marca);
-            this.modelos.push(element.modelo);
-            this.colores.push(element.colorBanner);
-            this.arrayPdf.push(element.pdf); //guardamos todos los pdfs en un array
+            // 1. Encontrar la imagen principal
+            let imagenUrl = this.firstImgNotNull(element);
+
+            // 2. Crear un objeto limpio con solo la información necesaria
+            const cocheData = {
+               imagenPrincipal: imagenUrl,
+               descripcion: element.descripcion,
+               ano: element.ano,
+               km: element.km,
+               etiqueta: element.etiqueta,
+               promocion: element.promocion,
+               combustible: element.combustible,
+               precio: element.precio,
+               marca: element.marca,
+               modelo: element.modelo,
+               colorBanner: element.colorBanner,
+               pdf: element.pdf,
+               // (Opcional) Si necesitas todas las rutas de imagen para el carrusel:
+               imagenesSecundarias: [
+                  element.imagen1,
+                  element.imagen2,
+                  element.imagen3,
+                  element.imagen4,
+                  element.imagen5,
+                  element.imagen6,
+                  element.imagen7,
+                  element.imagen8,
+               ].filter((img) => img), // Filtra los nulls
+            };
+
+            // 3. Añadir el objeto al nuevo array
+            this.datosCochesProcesados.push(cocheData);
          });
       },
       firstImgNotNull(item) {
-         // devolver la primera imagen del objeto que no es null
-         const sliced = {};
-         const keys = Object.keys(item);
-         for (let i = 13; i <= 20; i++) {
-            sliced[keys[i]] = item[keys[i]];
-         }
-         let num = 1;
-         while (num != 8) {
-            const propertyName = `imagen${num}`;
-            if (sliced[propertyName] != null) {
-               return sliced[propertyName];
-            } else {
-               num++;
+         const baseUrl = this.link;
+         // Itera sobre los nombres de propiedad esperados (imagen1 hasta imagen8)
+         for (let i = 1; i <= 8; i++) {
+            const propertyName = `imagen${i}`;
+            const imageUrl = item[propertyName];
+            // 1. Verifica si la propiedad tiene un valor real (no es null, undefined, o string vacío)
+            // El valor de la URL relativa de la imagen debe existir.
+            if (imageUrl) {
+               // 2. Construye la URL absoluta de forma segura usando el constructor URL.
+               // Se puede usar 'new URL()' a partir de ES6 (2015), pero su soporte se popularizó después.
+               // Si 'new URL()' da problemas en algún navegador viejo, usar la concatenación (ver nota).
+               try {
+                  // new URL() es la forma más limpia y estándar.
+                  const rutaCompleta = new URL(imageUrl, baseUrl).href;
+                  // 3. Si la URL se construye sin errores, la devuelve.
+                  return rutaCompleta;
+               } catch (error) {
+                  // Esto maneja errores si la URL relativa es inválida,
+                  // aunque no debería suceder si imageUrl existe.
+                  console.error("Error al construir la URL:", error);
+               }
             }
          }
+         return null;
       },
-      getBase64Image(image) {
-         return `data:image/jpeg;base64,${image}`;
-      },
+
       carouselFoto(index) {
+         debugger;
          this.showCarousel = true;
          this.arrayDatos = this.allData[index];
       },

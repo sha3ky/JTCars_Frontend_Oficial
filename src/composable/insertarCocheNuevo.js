@@ -4,7 +4,6 @@ import apiLink from "./apiLink";
 let link = apiLink;
 
 const insertCocheNuevo = async (coches, media) => {
-   debugger;
    let cochesResponse;
    try {
       // Send the coches data to the coches endpoint
@@ -21,25 +20,14 @@ const insertCocheNuevo = async (coches, media) => {
    }
 
    try {
-      debugger;
       media.id = cochesResponse.data.id;
 
       // ✅ CREAR FormData para TODAS las imágenes
       const formData = new FormData();
       formData.append("id", media.id);
 
-      // Procesar imágenes 1-8
-
-      /*   media.forEach((imagen, index) => {
-         if (imagen instanceof File) {
-            formData.append(`imagen${index + 1}`, imagen);
-         } else if (imagen === null) {
-            formData.append(`imagen${index + 1}`, "null");
-         }
-      }); */
       // Asegúrate de que 'media' sea el objeto con las propiedades a enviar
       Object.entries(media).forEach(([clave, valor], indice) => {
-         debugger;
          // 1. Verificar si el 'valor' actual es una instancia de File
          if (valor instanceof File) {
             // Si es un archivo, añadimos el archivo real al FormData

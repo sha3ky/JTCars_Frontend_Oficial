@@ -4,7 +4,6 @@ import apiLink from "./apiLink";
 let link = apiLink;
 
 const updateTables = async (coches, media, imagenesAEliminar = []) => {
-   debugger;
    try {
       const cochesResponse = await axios.post(`${link}api/updateCoche`, coches);
 
