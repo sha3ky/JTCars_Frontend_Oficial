@@ -774,7 +774,6 @@ export default defineComponent({
       MyCarousel,
       MasInfoDatos,
       Footer_Layout,
-
       HeaderLayout,
    },
 

@@ -1,5 +1,5 @@
 <template>
-   <q-layout view="lHh Lpr lFf" v-if="isAuthenticated() && userIsAdmin">
+   <q-layout view="lHh Lpr lFf">
       <HeaderLayout
          :is-authenticated="isAuthenticated()"
          :user-is-admin="userIsAdmin"

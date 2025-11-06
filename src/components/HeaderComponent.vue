@@ -185,6 +185,7 @@
             <dark-mode-toggle />
          </div>
       </q-toolbar>
+      <router-view />
    </q-header>
 </template>
 
