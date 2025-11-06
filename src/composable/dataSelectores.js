@@ -1,4 +1,4 @@
-const etiquetaCoche = ["A", "B", "C", "Híbrido", "Eléctrico", "Sin Etiqueta"];
+const etiquetaCoche = ["B", "C", "Híbrido", "Eléctrico", "Sin Etiqueta"];
 const tipoCoche = [
    "Sedán",
    "Deportivo",

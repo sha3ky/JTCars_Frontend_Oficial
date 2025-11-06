@@ -535,6 +535,7 @@
 .card-container {
    display: flex;
    flex-wrap: wrap;
+   justify-content: center;
 }
 
 .card-item {
@@ -793,52 +794,51 @@ export default defineComponent({
 
       // ✅ Agregar imagen al array
       agregarImagenAlArray(urlImagen, archivo) {
+         debugger;
+         // 1. Verificar que no excedemos el límite de 8 imágenes
          if (this.imagenesArray.length >= 8) {
             this.$q.notify({
                type: "warning",
                message: "Máximo 8 imágenes permitidas",
                timeout: 3000,
             });
-            URL.revokeObjectURL(urlImagen);
-            return;
+            URL.revokeObjectURL(urlImagen); // Liberar memoria de la URL temporal
+            return; // Salir de la función
          }
-         let numArray = [1, 2, 3, 4, 5, 6, 7, 8];
-         this.imagenesArray.forEach((item, index) => {
-            /*  const nombreEsperado = `imagen${index + 1}`; */
-            const numerosEncontrados = parseInt(
-               item.imagenNum.split("").at(-1)
-            );
-            numArray.forEach((item) => {
-               debugger;
-               if (item == numerosEncontrados) {
-                  const indice = numArray.indexOf(valorAEliminar);
-                  if (indice > -1) {
-                     // Verifica que el valor fue encontrado
-                     numArray.splice(indice, 1);
-                  }
-               }
-               console.log("numarray", numArray);
-            });
-            /*  if (item.imagenNum !== nombreEsperado) {
-               item.imagenNum = `imagen${index + 1}`;
-            } */
-         });
 
-         /* const nuevoNumero = this.imagenesArray.length + 1;
+         // 2. Encontrar qué números de imagen (1-8) están ya en uso
+         // Mapeamos el array para extraer solo los números de cada imagenNum
+         // Ejemplo: ["imagen1", "imagen3"] → [1, 3]
+         const numerosUsados = this.imagenesArray.map(
+            (img) => parseInt(img.imagenNum.replace("imagen", "")) // Convierte "imagen2" → 2
+         );
+
+         // 3. Buscar el primer número disponible empezando desde 1
+         let nuevoNumero = 1;
+         // Mientras el número esté usado y no hayamos superado el límite de 8
+         while (numerosUsados.includes(nuevoNumero) && nuevoNumero <= 8) {
+            nuevoNumero++; // Probamos con el siguiente número
+         }
+
+         // 4. Crear un ID único para la nueva imagen
+         // Combina el número de imagen + timestamp para asegurar unicidad
          const nuevoId = `imagen_${nuevoNumero}_${Date.now()}`;
- */
+
+         // 5. Construir el objeto de la nueva imagen
          const nuevaImagen = {
-            id: nuevoId,
-            imagen: urlImagen, // URL temporal para previsualización
-            archivo: archivo, // Archivo original para subida
-            imagenNum: `imagen${nuevoNumero}`,
-            nombreArchivo: archivo.name,
-            esNueva: true,
-            ruta: urlImagen, // ← AGREGAR ESTA LÍNEA
+            id: nuevoId, // ID único para identificar esta imagen
+            imagen: urlImagen, // URL temporal blob para previsualización en el navegador
+            archivo: archivo, // Objeto File real que se enviará al backend
+            imagenNum: `imagen${nuevoNumero}`, // Campo que identifica la posición (imagen1, imagen2, etc.)
+            nombreArchivo: archivo.name, // Nombre original del archivo
+            esNueva: true, // Flag que indica que es una imagen nueva (no existente en BD)
+            ruta: urlImagen, // URL temporal para mostrar en la interfaz
          };
 
+         // 6. Agregar la nueva imagen al array
          this.imagenesArray.push(nuevaImagen);
 
+         // 7. Notificar al usuario que la imagen se agregó correctamente
          this.$q.notify({
             type: "positive",
             message: `Imagen ${nuevoNumero} agregada correctamente`,

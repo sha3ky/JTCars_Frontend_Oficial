@@ -655,6 +655,7 @@ export default defineComponent({
 
    methods: {
       getCombustibleImage(combustible) {
+         debugger;
          console.log("combustible", combustible);
          if (!combustible) return "/etiquetas/gasolina.png";
 
@@ -674,8 +675,8 @@ export default defineComponent({
          return isNaN(number) ? "0" : number.toLocaleString("es-ES");
       },
       getEtiquetaImage(etiqueta) {
+         debugger;
          const etiquetaMap = {
-            A: "/etiquetas/etiquetaA.png",
             B: "/etiquetas/etiquetaB.png",
             C: "/etiquetas/etiquetaC.png",
             Híbrido: "/etiquetas/etiquetaEco.png",
