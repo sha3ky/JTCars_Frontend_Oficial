@@ -67,7 +67,7 @@
                            :rows="rowsCoches"
                            :columns="columnsCoches"
                            row-key="matricula"
-                           @row-click="handleRowClick"
+                           @row-click="handleCarRowClick"
                            dense
                            :rows-per-page="25"
                            :filter="filterCoches"
@@ -98,6 +98,7 @@
                         dense
                         :rows-per-page="10"
                         :filter="filterPersonas"
+                        @row-click="handlePersonRowClick"
                      >
                         <template v-slot:top-right>
                            <q-input
@@ -449,6 +450,60 @@
                   </q-card-section>
                </q-card>
             </q-dialog>
+
+            <!--  dialogo email personas tabla -->
+
+            <q-dialog v-model="emailMensaje">
+               <!--
+        CLASES DE TAMAÑO EN Q-CARD:
+        - El 'style' define el ancho máximo (600px) y la altura máxima (500px).
+        - 'width: 90%' asegura que sea responsive en móviles.
+    -->
+               <q-card
+                  class="q-dialog-plugin q-pa-md"
+                  style="max-width: 600px; width: 90%; max-height: 500px"
+               >
+                  <q-card-section>
+                     <div class="text-h6">
+                        Enviar Email a {{ personaIndividual.username }}
+                     </div>
+                  </q-card-section>
+                  <q-card-section class="q-pt-none text-subtitle1 text-grey-8">
+                     <span class="text-bold">Mensaje recibido:</span>
+                     {{ personaIndividual.mensaje }}
+                  </q-card-section>
+                  <q-card-section
+                     class="q-pt-none overflow-auto"
+                     style="flex-grow: 1"
+                  >
+                     <q-input
+                        v-model="emailCliente"
+                        label="Tu Mensaje de Respuesta"
+                        filled
+                        type="textarea"
+                        rows="10"
+                        autogrow
+                        class="q-mb-md"
+                     />
+                  </q-card-section>
+
+                  <q-card-section class="q-pt-none text-caption text-grey-6">
+                     Dirección: {{ personaIndividual.email }}
+                  </q-card-section>
+
+                  <q-card-actions align="right">
+                     <q-btn flat label="Cancelar" color="grey" v-close-popup />
+                     <q-btn
+                        flat
+                        label="Enviar Email"
+                        color="primary"
+                        @click="enviarEmail"
+                        :loading="enviando"
+                        :disable="enviando"
+                     />
+                  </q-card-actions>
+               </q-card>
+            </q-dialog>
          </div>
       </q-page-container>
       <InputUser
@@ -702,6 +757,9 @@ export default defineComponent({
          filterPersonas: "",
          waitDialog: false,
          imagenesParaEliminar: [],
+         emailMensaje: false,
+         personaIndividual: {},
+         emailCliente: "",
       };
    },
    computed: {
@@ -778,7 +836,6 @@ export default defineComponent({
          this.agregarImagenAlArray(urlTemporal, archivo);
          this.nuevaImagen = null;
       },
-
       // ✅ Agregar imagen al array
       agregarImagenAlArray(urlImagen, archivo) {
          // 1. Verificar que no excedemos el límite de 8 imágenes
@@ -831,7 +888,6 @@ export default defineComponent({
             timeout: 2000,
          });
       },
-
       // ✅ Eliminar imagen liberando memoria
       eliminarImagen(imagen) {
          const index = this.imagenesArray.findIndex(
@@ -881,7 +937,6 @@ export default defineComponent({
                });
             });
       },
-
       // ✅ Confirmación para eliminar imagen
       deleteImage(image) {
          this.$q
@@ -902,7 +957,6 @@ export default defineComponent({
                console.log("Eliminación de imagen cancelada.");
             });
       },
-
       // ✅ Validación para solo números y puntos
       soloNumerosYPuntos(event) {
          const char = String.fromCharCode(event.which || event.keyCode);
@@ -930,7 +984,6 @@ export default defineComponent({
 
          return true;
       },
-
       // ✅ Recargar datos desde API
       async reloadData() {
          this.waitDialog = true;
@@ -1007,7 +1060,7 @@ export default defineComponent({
          this.dialogCoches = false;
       },
 
-      handleRowClick(evt, row) {
+      handleCarRowClick(evt, row) {
          this.dialogCoches = true;
          console.log("Row clicked:", row);
          this.datosCoches.matricula = row.matricula;
@@ -1027,7 +1080,49 @@ export default defineComponent({
          this.existPdf = row.pdf;
          this.extrerImagenes(row);
       },
+      handlePersonRowClick(evt, row) {
+         this.emailMensaje = true;
+         const { email, mensaje, username } = row;
+         this.personaIndividual = { email, mensaje, username };
+      },
+      // Necesitarás este método en tu sección 'methods'
+      async enviarEmail() {
+         debugger;
+         // 1. Deshabilitar el botón y mostrar loading (Mejora de UX)
+         this.enviando = true;
 
+         // 2. Preparar el cuerpo de la petición con los datos necesarios
+         const payload = {
+            to: this.personaIndividual.email, // Destino
+            subject: "Re: Tu consulta", // Asunto fijo o variable
+            body: this.emailCliente, // Contenido del textarea
+            fromUser: store.state.email, // ID del usuario que envía (para seguridad en el backend)
+         };
+
+         try {
+            // 3. Llamar a tu API. Usaremos axios, el estándar en Vue.
+            const response = await this.$axios.post("/api/send-email", payload);
+
+            // 4. Manejar el éxito
+            if (response.status === 200) {
+               this.$q.notify({
+                  type: "positive",
+                  message: "¡Email enviado con éxito!",
+               });
+               this.emailMensaje = false; // Cerrar el diálogo
+            }
+         } catch (error) {
+            // 5. Manejar el error
+            console.error("Error al enviar el email:", error);
+            this.$q.notify({
+               type: "negative",
+               message: "Error de conexión. Inténtalo de nuevo.",
+            });
+         } finally {
+            // 6. Restablecer el estado
+            this.enviando = false;
+         }
+      },
       modImg(item) {
          this.imagenParaCambiar = item;
          this.anadirImagenDialog = true;
