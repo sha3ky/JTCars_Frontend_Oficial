@@ -5,6 +5,7 @@ let link = apiLink;
 const accessToken = sessionStorage.getItem("access_token");
 
 const updatePasswordUser = async (oldPass, newPass) => {
+   debugger;
    try {
       const response = await axios.post(
          `${link}api/changePassword`,

@@ -2,17 +2,20 @@
    <q-footer elevated class="bg-blue-grey-9 text-white">
       <q-toolbar class="q-px-md">
          <q-toolbar-title class="text-center footer-content">
-            <div class="footer-text">
+            <div class="footer-text row items-center no-wrap q-gutter-x-sm">
                <span class="logo-wrapper">
                   <q-img
                      src="/logoEmpresa.png"
                      width="40px"
                      height="40px"
                      alt="BytePunk Studios"
-                     class="q-mx-xs"
                   />
                </span>
-               BytePunk Studios {{ currentYear }}
+
+               <!-- El texto de la empresa y el año -->
+               <span class="text-subtitle1 text-weight-medium">
+                  BytePunk Studios {{ currentYear }}
+               </span>
             </div>
          </q-toolbar-title>
       </q-toolbar>

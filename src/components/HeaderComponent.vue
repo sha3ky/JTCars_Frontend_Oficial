@@ -32,7 +32,11 @@
                   <template v-if="userIsAdmin">
                      <router-link to="/admin">
                         <q-item clickable>
-                           <q-item-section>Garaje</q-item-section>
+                           <q-item-section>
+                              <span style="color: rgba(244, 67, 54, 0.9)"
+                                 >Garaje</span
+                              ></q-item-section
+                           >
                         </q-item>
                      </router-link>
                   </template>
@@ -40,7 +44,11 @@
                   <template v-if="isAuthenticated">
                      <router-link to="/usuarioPage">
                         <q-item clickable>
-                           <q-item-section>Opciones</q-item-section>
+                           <q-item-section>
+                              <span style="color: rgba(255, 152, 0, 0.8)"
+                                 >Opciones</span
+                              ></q-item-section
+                           >
                         </q-item>
                      </router-link>
                   </template>

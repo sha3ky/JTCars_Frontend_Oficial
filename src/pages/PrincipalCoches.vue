@@ -143,9 +143,7 @@
          @login="loginearUsuario"
          @logout="logOut"
       />
-
       <Footer_Layout />
-
       <q-page-container style="min-height: 100vh; text-align: center">
          <div class="hero-container">
             <q-img
@@ -173,17 +171,6 @@
                align-items: center;
             "
          >
-            <!--<p
-               style="
-                  font-size: 2.7vw;
-                  text-align: center;
-                  text-align: center;
-                  color: white;
-                  margin: 0;
-               "
-            >
-               Coches de segunda mano y vehículos de ocasión.
-            </p>-->
             <div class="waviy">
                <span style="--i: 1">Grandes</span>
                <span style="">&nbsp; </span>
@@ -194,13 +181,11 @@
                <span style="--i: 4">ruedas</span>
             </div>
          </div>
-         <!-- q-pa-md row items-start q-gutter-md -->
-         <!-- [class="responsive-image",
-                class="cardImage"
-         ] -->
-
          <div class="cars-container">
-            <div class="cars-grid">
+            <div
+               class="cars-grid"
+               :class="{ garajeVacio: datosCochesProcesados.length === 0 }"
+            >
                <q-card
                   v-for="(item, index) in datosCochesProcesados"
                   :key="index"
@@ -223,7 +208,6 @@
                         </div>
                      </q-img>
                   </div>
-
                   <q-card-section class="car-info">
                      <div class="car-details">
                         <div
@@ -319,7 +303,6 @@
                </q-card>
             </div>
          </div>
-
          <MasInfoDatos
             :masInfoDialog="showMasInfo"
             @close-dialog-masinfo="handleDialogClose"
@@ -329,12 +312,10 @@
             :inputUserDialog="showInputUser"
             @close-dialog-newuser="handleDialogClose"
          />
-
          <loginUser
             :loginUserDialog="showLoginUser"
             @close-dialog-loginuser="handleDialogClose"
          />
-         <!--  @update-usuario-logineado="updateUsuarioLogineado" -->
          <MyCarousel
             :carouseloDialog="showCarousel"
             @close-dialog-carousel="handleDialogClose"
@@ -345,6 +326,30 @@
    </q-layout>
 </template>
 <style scoped>
+.garajeVacio {
+   /* 1. Define la imagen de fondo */
+   background-image: url("/garaje2.jpg");
+
+   /* 2. Asegúrate de que la imagen cubra todo el contenedor sin repetirse */
+   background-size: cover; /* Escala la imagen para cubrir todo el área */
+   background-position: center; /* Centra la imagen en el contenedor */
+   background-repeat: no-repeat; /* Evita que la imagen se repita */
+   background-attachment: fixed;
+   /* 3. (Opcional) Color de fondo de reserva si la imagen no carga */
+   background-color: #333; /* Un gris oscuro, por ejemplo */
+
+   /* 4. (Opcional) Asegura que el contenedor tenga una altura y ancho para que el fondo sea visible */
+   min-height: 300px; /* Dale una altura mínima para que se vea el fondo */
+   width: 100%; /* O el ancho que necesites */
+
+   /* 5. (Opcional) Otros estilos para el contenido dentro del garaje vacío */
+   display: flex; /* Si quieres centrar texto o un icono de "no hay coches" */
+   justify-content: center;
+   align-items: center;
+   color: white; /* Color de texto para el mensaje "garaje vacío" */
+   font-size: 1.5em;
+   text-align: center;
+}
 .combustible-image {
    width: 5vh;
 }
@@ -392,7 +397,7 @@
 }
 .cars-container {
    padding: 20px;
-   max-width: 1400px;
+
    margin: 0 auto;
 }
 
@@ -530,6 +535,9 @@
 
    .cars-container {
       padding: 16px;
+   }
+   .garajeVacio {
+      background-attachment: unset;
    }
 }
 
@@ -734,7 +742,6 @@ export default defineComponent({
          }
          return null;
       },
-
       carouselFoto(index) {
          debugger;
          this.showCarousel = true;
@@ -776,42 +783,5 @@ export default defineComponent({
       Footer_Layout,
       HeaderLayout,
    },
-
-   /*   setup() {
-      // dark mode
-      // const $q = useQuasar();
-      // $q.dark.set(true); // or false or "auto"
-      // $q.dark.toggle(); // toggle
-      return {};
-   }, */
 });
 </script>
-
-<!-- function para conseguir borrar el storage
-  //  deleteStorage() {
-  //   debugger
-  //    sessionStorage.removeItem("access_token");
-  //    sessionStorage.removeItem("refresh_token");
-  //    sessionStorage.removeItem("tokServ");
-  //    sessionStorage.removeItem("token");
-  // }, -->
-
-<!-- // onMounted(async () => {
-    //    // Use an async function to fetch data and assign it to allData
-    //    allData.value = await getAllData();
-    //    console.log(allData.value);
-    //    if (allData.value !== 0) {
-    //       repartirData(allData.value);
-    //    }
-    // });
-    // function repartirData() {
-    //
-    //    allData.value.forEach((element) => {
-    //       imagenPrincipal.value.push(element.imagen1);
-    //    });
-    // }
-    // function getBase64Image(image) {
-    //    return `data:image/jpeg;base64,${image}`;
-    // } -->
-<!-- ../stores
-../../../store -->
