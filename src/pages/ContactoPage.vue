@@ -2,7 +2,6 @@
    <q-layout view="lHh Lpr lFf">
       <HeaderLayout
          :is-authenticated="isAuthenticated()"
-         :user-is-admin="userIsAdmin"
          :usuario-logineado="usuarioLogineado"
          @login="loginearUsuario"
          @logout="logOut"

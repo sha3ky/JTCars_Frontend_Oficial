@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import axios, { AxiosHeaders } from "axios";
+import axios from "axios";
 import apiLink from "./composable/apiLink";
 const store = createStore({
    /*

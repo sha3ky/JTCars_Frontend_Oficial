@@ -22,14 +22,7 @@
                         <q-item-section>Contactar</q-item-section>
                      </q-item>
                   </router-link>
-                  <!--
-                  <router-link to="/noticias">
-                     <q-item clickable>
-                        <q-item-section>Noticias</q-item-section>
-                     </q-item>
-                  </router-link> -->
-
-                  <template v-if="userIsAdmin">
+                  <template v-if="isAuthenticated">
                      <router-link to="/admin">
                         <q-item clickable>
                            <q-item-section>
@@ -40,7 +33,6 @@
                         </q-item>
                      </router-link>
                   </template>
-
                   <template v-if="isAuthenticated">
                      <router-link to="/usuarioPage">
                         <q-item clickable>
@@ -56,10 +48,7 @@
                </q-list>
             </q-menu>
          </q-btn>
-
          <!-- LOGO -->
-
-         <!-- v-if="$q.screen.width > 599" -->
          <q-separator
             vertical
             inset
@@ -73,46 +62,6 @@
             src="/logo.png"
          />
          <q-space></q-space>
-
-         <!-- MENÚ ESCRITORIO -->
-         <!--   <template v-if="$q.screen.width > 599">
-            <div class="row items-center q-gutter-xs">
-               <router-link to="/home">
-                  <q-btn style="color: #bbdefb" clickable>
-                     <q-item-section>Inicio</q-item-section>
-                  </q-btn>
-               </router-link>
-
-               <router-link to="/contacto">
-                  <q-btn style="color: #bbdefb" clickable>
-                     <q-item-section>Contactar</q-item-section>
-                  </q-btn>
-               </router-link>
-
-                 <router-link to="/noticias">
-                  <q-btn style="color: #bbdefb" clickable>
-                     <q-item-section>Noticias</q-item-section>
-                  </q-btn>
-               </router-link>
-
-               <template v-if="isAuthenticated">
-                  <router-link to="/usuarioPage">
-                     <q-btn style="color: #ffab91" clickable>
-                        <q-item-section>Mis Datos</q-item-section>
-                     </q-btn>
-                  </router-link>
-               </template>
-
-               <template v-if="userIsAdmin">
-                  <router-link to="/admin">
-                     <q-btn style="color: #ffab91" clickable>
-                        <q-item-section>Admin</q-item-section>
-                     </q-btn>
-                  </router-link>
-               </template>
-            </div>
-         </template>
- -->
          <template v-if="$q.screen.width > 899">
             <div class="row items-center q-gutter-md">
                <router-link to="/home">
@@ -134,8 +83,7 @@
                      class="nav-btn"
                   />
                </router-link>
-
-               <template v-if="userIsAdmin">
+               <template v-if="isAuthenticated">
                   <router-link to="/admin">
                      <q-btn
                         color="red"
@@ -159,9 +107,7 @@
                </template>
             </div>
          </template>
-
          <q-space></q-space>
-
          <!-- SECCIÓN USUARIO -->
          <div class="row items-center q-gutter-sm">
             <template v-if="!isAuthenticated">
@@ -173,7 +119,6 @@
                   @click="$emit('login')"
                />
             </template>
-
             <template v-else>
                <div class="text-caption text-white">
                   {{ usuarioLogineado }}
@@ -189,14 +134,12 @@
                   <q-tooltip>Salir</q-tooltip>
                </q-btn>
             </template>
-
             <dark-mode-toggle />
          </div>
       </q-toolbar>
       <router-view />
    </q-header>
 </template>
-
 <script>
 import { defineComponent } from "vue";
 import DarkModeToggle from "./DarkModeToggle.vue";
@@ -208,10 +151,6 @@ export default defineComponent({
    },
    props: {
       isAuthenticated: {
-         type: Boolean,
-         default: false,
-      },
-      userIsAdmin: {
          type: Boolean,
          default: false,
       },

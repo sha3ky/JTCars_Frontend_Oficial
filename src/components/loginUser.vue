@@ -54,23 +54,18 @@
       </q-dialog>
    </div>
 </template>
-
 <script>
 import { defineComponent } from "vue";
-import apiLink from "../composable/apiLink";
+
 import login from "../composable/loginUser";
 import { Notify } from "quasar";
 
 export default defineComponent({
-   //  name: "loginUser",
    props: {
       loginUserDialog: Boolean, // Define a prop to receive showLogin from parent
-      //usuarioLogineado:String /// forma paleto de enviar el usuario logineado de uno a otro
-      // sessionData:String
    },
    data() {
       return {
-         api: apiLink,
          userName: "",
          contrasenaInput: "",
          users: [],
@@ -95,13 +90,13 @@ export default defineComponent({
             const password = this.contrasenaInput;
             // Call the login function
             const result = await login(username, password);
+            console.log("result login", result);
             if (result) {
                console.log("usuario logineado");
                Notify.create({
                   type: "positive",
                   message: "Usuario logineado correctamente.",
                });
-               /*  this.$emit("update-usuario-logineado", "true"); /// forma paleto de enviar el usuario logineado de uno a otro */
             } else {
                console.log("usuario no logineado");
                Notify.create({
@@ -126,43 +121,7 @@ export default defineComponent({
                });
             }
          }
-         // Assuming login function takes 'username' and 'password' as parameters
       },
-
-      //-----------------------------------------making calls to api
-
-      //       const token = sessionStorage.getItem('token');
-      // if (token) {
-      //     axios.defaults.headers.common['Authorization'] = `Token ${token}`;
-      // }
-
-      //------------------------------------------making calls to api
-      // comprobarUsuario() {
-      //    let contrasena, usuario;
-      //    usuario = this.users.filter(
-      //       (item) =>
-      //          item.correo.toLowerCase() === this.userName.toLowerCase()
-      //    )[0];
-      //    if (usuario) {
-      //       this.colorEmail = usuario ? "green" : "red";
-      //       contrasena =
-      //          usuario.password * 1 === this.contrasenaInput * 1 ? true : "";
-      //       this.colorPass = contrasena ? "green" : "red";
-      //    }
-      //    if (usuario && contrasena) {
-      //       console.log("id", usuario.id);
-      //       this.$emit("show-login-updated", false);
-      //       this.$emit("user-id-updated", usuario.id);
-      //       if (usuario.admin) {
-      //          this.$emit("user-admin", usuario.admin);
-      //          console.log("Administrador");
-      //       } else {
-      //          console.log("No es Administrador");
-      //       }
-      //    } else {
-      //       console.log("usuario no existente");
-      //    }
-      // },
    },
 });
 </script>

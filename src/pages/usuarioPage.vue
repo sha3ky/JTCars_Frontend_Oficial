@@ -4,7 +4,6 @@
       <!-- Se mantienen componentes de Layout necesarios -->
       <HeaderLayout
          :is-authenticated="isAuthenticated()"
-         :user-is-admin="userIsAdmin"
          :usuario-logineado="usuarioLogineado"
          @login="loginearUsuario"
          @logout="logOut"

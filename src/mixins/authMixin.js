@@ -5,9 +5,6 @@ export const authMixin = {
       usuarioLogineado() {
          return store.state.name;
       },
-      userIsAdmin() {
-         return store.state.isAdmin ?? false;
-      },
       // ✅ OPCIÓN: También puedes hacerlo como computed
       isAuthenticatedComputed() {
          return !!store.state.access_token;
