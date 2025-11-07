@@ -6,10 +6,7 @@
          @login="loginearUsuario"
          @logout="logOut"
       />
-
       <Footer_Layout />
-
-      <!--  -->
       <q-page-container>
          <div
             style="
@@ -165,10 +162,22 @@
                               <q-input
                                  filled
                                  v-model="datosCoches.matricula"
-                                 label="Matricula"
+                                 label="Matrícula"
                                  dense
                                  type="text"
                                  maxlength="10"
+                                 hint="Formatos válidos: 9245 NHG (moderno) o B-3456-HC (antiguo). Solo letras, números, guiones o espacios."
+                                 :rules="[
+                                    (val) =>
+                                       !!val || 'La matrícula es obligatoria',
+                                    // Expresión Regular para MATRÍCULA ESPAÑOLA
+                                    // ^[A-Z0-9\s-]{6,10}$/i: Permite Letras, Números, Espacio, Guion, con longitud entre 6 y 10.
+                                    (val) =>
+                                       /^[A-Z0-9\s-]{6,10}$/i.test(val) ||
+                                       'Formato inválido. Solo letras, números, guiones o espacios.',
+                                 ]"
+                                 hide-bottom-space
+                                 @input="limpiarYFormatearMatricula"
                               />
                            </div>
                            <div>
@@ -442,28 +451,6 @@
             </q-dialog>
          </div>
       </q-page-container>
-      <!-- Dialog de confirmación elimnar imagen-->
-      <!--  <q-dialog v-model="confirmDialog">
-         <q-card>
-            <q-card-section>
-               <div class="text-h6">Confirmar eliminación</div>
-            </q-card-section>
-
-            <q-card-section>
-               ¿Estás seguro de que quieres eliminar esta imagen?
-            </q-card-section>
-
-            <q-card-actions align="right">
-               <q-btn flat label="Cancelar" color="primary" v-close-popup />
-               <q-btn
-                  flat
-                  label="Eliminar"
-                  color="negative"
-                  @click="executeDelete"
-               />
-            </q-card-actions>
-         </q-card>
-      </q-dialog> -->
       <InputUser
          :inputUserDialog="showInputUser"
          @close-dialog-newuser="handleDialogClose"
@@ -472,7 +459,6 @@
          :loginUserDialog="showLoginUser"
          @close-dialog-loginuser="handleDialogClose"
       />
-      <!-- @update-usuario-logineado="updateUsuarioLogineado" -->
       <router-view />
    </q-layout>
    <q-layout v-else>
@@ -566,7 +552,6 @@ import {
    cocheAno,
 } from "src/composable/dataSelectores";
 import { authMixin } from "../mixins/authMixin";
-import axios from "axios";
 import apiLink from "../composable/apiLink";
 
 export default defineComponent({
@@ -761,6 +746,11 @@ export default defineComponent({
       this.waitDialog = false;
    },
    methods: {
+      limpiarYFormatearMatricula(value) {
+         let cleanValue = value ? value.toUpperCase() : "";
+         cleanValue = cleanValue.replace(/[^A-Z0-9\s-]/g, "");
+         this.datosCoches.matricula = cleanValue;
+      },
       // ✅ Procesar nueva imagen sin base64
       procesarNuevaImagen(archivo) {
          if (!archivo.type.startsWith("image/")) {
@@ -853,19 +843,6 @@ export default defineComponent({
             );
          }
       },
-
-      // ✅ Reenumerar imágenes después de eliminar
-      /*  renumerarImagenes() {
-
-
-         this.imagenesArray.forEach((item, index) => {
-            const nombreEsperado = `imagen${index + 1}`;
-            if (item.imagenNum !== nombreEsperado) {
-               item.imagenNum = `imagen${index + 1}`;
-            }
-         });
-      }, */
-
       limpiarURLsTemporales() {
          this.imagenesArray.forEach((imagen) => {
             if (imagen.imagen && imagen.imagen.startsWith("blob:")) {
@@ -984,20 +961,6 @@ export default defineComponent({
       },
 
       async aceptarCambios() {
-         this.datosCoches.ano = 1991;
-         this.datosCoches.colorBanner = "Unknown Color"; // Recuerda, este valor es mejor si es manejado por el switch
-         this.datosCoches.combustible = "Diesel";
-         this.datosCoches.descripcion = "fdsfdsfsdfsdf";
-         this.datosCoches.etiqueta = "A";
-         this.datosCoches.km = 334433;
-         this.datosCoches.marca = "Ford";
-         this.datosCoches.matricula = "sdasdasd";
-         this.datosCoches.modelo = "Mondeo";
-         this.datosCoches.pdf = null;
-         this.datosCoches.precio = 3500;
-         this.datosCoches.promocion = "Recién revisado";
-         this.datosCoches.tipo = "Monovolumen";
-
          const colorEs_En = colorsEs_En(this.datosCoches.colorBanner);
          this.datosCoches.colorBanner = colorEs_En;
          this.limpiarURLsTemporales();
@@ -1008,10 +971,8 @@ export default defineComponent({
                [item.imagenNum]: item.esNueva ? item.archivo : item.imagen,
             });
          }, this.mediaTable);
-
          this.mediaTable.pdf = this.existPdf;
          this.mediaTable.id = this.datosCoches.id;
-
          this.waitDialog = true;
          try {
             if (!this.newCar) {
@@ -1096,10 +1057,6 @@ export default defineComponent({
       handleDialogClose() {
          this.showLoginUser = false;
          this.showInputUser = false;
-      },
-
-      nuevoUsuario() {
-         this.showInputUser = true;
       },
 
       loginearUsuario() {
