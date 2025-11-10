@@ -453,57 +453,12 @@
 
             <!--  dialogo email personas tabla -->
 
-            <q-dialog v-model="emailMensaje">
-               <!--
-        CLASES DE TAMAÑO EN Q-CARD:
-        - El 'style' define el ancho máximo (600px) y la altura máxima (500px).
-        - 'width: 90%' asegura que sea responsive en móviles.
-    -->
-               <q-card
-                  class="q-dialog-plugin q-pa-md"
-                  style="max-width: 600px; width: 90%; max-height: 500px"
-               >
-                  <q-card-section>
-                     <div class="text-h6">
-                        Enviar Email a {{ personaIndividual.username }}
-                     </div>
-                  </q-card-section>
-                  <q-card-section class="q-pt-none text-subtitle1 text-grey-8">
-                     <span class="text-bold">Mensaje recibido:</span>
-                     {{ personaIndividual.mensaje }}
-                  </q-card-section>
-                  <q-card-section
-                     class="q-pt-none overflow-auto"
-                     style="flex-grow: 1"
-                  >
-                     <q-input
-                        v-model="emailCliente"
-                        label="Tu Mensaje de Respuesta"
-                        filled
-                        type="textarea"
-                        rows="10"
-                        autogrow
-                        class="q-mb-md"
-                     />
-                  </q-card-section>
-
-                  <q-card-section class="q-pt-none text-caption text-grey-6">
-                     Dirección: {{ personaIndividual.email }}
-                  </q-card-section>
-
-                  <q-card-actions align="right">
-                     <q-btn flat label="Cancelar" color="grey" v-close-popup />
-                     <q-btn
-                        flat
-                        label="Enviar Email"
-                        color="primary"
-                        @click="enviarEmail"
-                        :loading="enviando"
-                        :disable="enviando"
-                     />
-                  </q-card-actions>
-               </q-card>
-            </q-dialog>
+            <!-- El componente de diálogo autogestionado -->
+            <ContactoDirecto
+               :showContactDialog="showDialog"
+               :arrayDatos="personaIndividual"
+               @close-dialog-contact="showDialog = false"
+            />
          </div>
       </q-page-container>
       <InputUser
@@ -586,6 +541,7 @@
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref, computed } from "vue";
 import store from "../../src/store";
+import ContactoDirecto from "../components/ContactoDirecto.vue";
 import InputUser from "components/InputUser.vue";
 import loginUser from "src/components/loginUser.vue";
 import { Notify } from "quasar";
@@ -608,7 +564,7 @@ import {
 } from "src/composable/dataSelectores";
 import { authMixin } from "../mixins/authMixin";
 import apiLink from "../composable/apiLink";
-
+import axios from "axios";
 export default defineComponent({
    name: "AdminPage",
    mixins: [authMixin],
@@ -757,9 +713,10 @@ export default defineComponent({
          filterPersonas: "",
          waitDialog: false,
          imagenesParaEliminar: [],
-         emailMensaje: false,
+         showDialog: false,
          personaIndividual: {},
          emailCliente: "",
+         enviando: false,
       };
    },
    computed: {
@@ -1081,48 +1038,13 @@ export default defineComponent({
          this.extrerImagenes(row);
       },
       handlePersonRowClick(evt, row) {
-         this.emailMensaje = true;
-         const { email, mensaje, username } = row;
-         this.personaIndividual = { email, mensaje, username };
+         this.showDialog = true;
+         const { email, mensaje, username, telefono } = row;
+         this.personaIndividual = { email, mensaje, username, telefono };
       },
       // Necesitarás este método en tu sección 'methods'
-      async enviarEmail() {
-         debugger;
-         // 1. Deshabilitar el botón y mostrar loading (Mejora de UX)
-         this.enviando = true;
+      // En tu componente Vue/Quasar
 
-         // 2. Preparar el cuerpo de la petición con los datos necesarios
-         const payload = {
-            to: this.personaIndividual.email, // Destino
-            subject: "Re: Tu consulta", // Asunto fijo o variable
-            body: this.emailCliente, // Contenido del textarea
-            fromUser: store.state.email, // ID del usuario que envía (para seguridad en el backend)
-         };
-
-         try {
-            // 3. Llamar a tu API. Usaremos axios, el estándar en Vue.
-            const response = await this.$axios.post("/api/send-email", payload);
-
-            // 4. Manejar el éxito
-            if (response.status === 200) {
-               this.$q.notify({
-                  type: "positive",
-                  message: "¡Email enviado con éxito!",
-               });
-               this.emailMensaje = false; // Cerrar el diálogo
-            }
-         } catch (error) {
-            // 5. Manejar el error
-            console.error("Error al enviar el email:", error);
-            this.$q.notify({
-               type: "negative",
-               message: "Error de conexión. Inténtalo de nuevo.",
-            });
-         } finally {
-            // 6. Restablecer el estado
-            this.enviando = false;
-         }
-      },
       modImg(item) {
          this.imagenParaCambiar = item;
          this.anadirImagenDialog = true;
@@ -1170,6 +1092,7 @@ export default defineComponent({
       loginUser,
       Footer_Layout,
       HeaderLayout,
+      ContactoDirecto,
    },
 });
 </script>

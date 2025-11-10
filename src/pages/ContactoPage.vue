@@ -295,7 +295,6 @@ export default defineComponent({
       };
 
       const onSubmit = () => {
-         debugger;
          if (!toggleAcept.value) {
             mensaje("Debes aceptar los términos y condiciones", "red");
             return;
