@@ -237,4 +237,3 @@ export default defineComponent({
    },
 });
 </script>
-../composable/usersInput ../composable/loadAllData ../composable/dataSelectores

@@ -108,7 +108,10 @@
                               >Etiqueta:</span
                            >
                            <img
-                              v-if="item.etiqueta && item.etiqueta !== 'sin'"
+                              v-if="
+                                 item.etiqueta &&
+                                 item.etiqueta !== 'Sin Etiqueta'
+                              "
                               :src="getEtiquetaImage(item.etiqueta)"
                               :alt="`Etiqueta ${item.etiqueta}`"
                               class="etiqueta-image"
@@ -533,8 +536,8 @@ export default defineComponent({
             B: "/etiquetas/etiquetaB.png",
             C: "/etiquetas/etiquetaC.png",
             Híbrido: "/etiquetas/etiquetaEco.png",
-            Eléctrico: "/etiquetas/etiquetaEco.png",
-            "Sin Etiqueta": "/etiquetas/etiqueta0.png",
+            Eléctrico: "/etiquetas/etiqueta0.png",
+            "Sin Etiqueta": "Sin Etiqueta",
          };
 
          return etiquetaMap[etiqueta] || "/etiquetas/etiqueta0.png";
