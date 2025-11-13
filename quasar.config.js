@@ -10,7 +10,7 @@
 
 const { configure } = require("quasar/wrappers");
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   return {
     eslint: {
       // fix: true,
@@ -62,7 +62,6 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      env: { VITE_GA_ID: process.env.VITE_GA_ID },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -75,6 +74,9 @@ module.exports = configure(function (/* ctx */) {
       // vitePlugins: [
       //   [ 'package-name', { ..options.. } ]
       // ]
+      env: {
+        VITE_GA_ID: ctx.dev ? process.env.VITE_GA_ID : process.env.VITE_GA_ID,
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer

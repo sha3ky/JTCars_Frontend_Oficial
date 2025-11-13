@@ -1,12 +1,20 @@
-export default async () => {
+import { boot } from "quasar/wrappers";
+
+export default boot((/* { app, router, store } */) => {
    console.log("🎯 Boot analytics EJECUTÁNDOSE...");
 
-   // ✅ Usar process.env que Quasar inyecta
-   const gaId = import.meta.env.VITE_GA_ID;
+   // ✅ Forma correcta de acceder a variables de entorno en Quasar
+   const gaId = process.env.VITE_GA_ID;
 
-   console.log("🔍 process.env.VITE_GA_ID:", gaId);
+   console.log("🔍 VITE_GA_ID:", gaId);
    console.log("🔍 Tipo de dato:", typeof gaId);
    console.log("🔍 Longitud:", gaId ? gaId.length : 0);
+
+   // Verificar si estamos en el cliente (navegador)
+   if (typeof window === "undefined") {
+      console.log("📦 Entorno de build (Node.js), omitiendo GA");
+      return;
+   }
 
    if (gaId && gaId !== "undefined" && gaId.length > 10) {
       console.log("🚀 INICIALIZANDO Google Analytics... ID:", gaId);
@@ -37,4 +45,4 @@ export default async () => {
    } else {
       console.warn("❌ Google Analytics NO configurado - ID inválido:", gaId);
    }
-};
+});
