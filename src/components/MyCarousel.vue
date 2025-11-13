@@ -125,7 +125,6 @@ export default {
    },
    methods: {
       extrerImagenes(row) {
-         debugger;
          this.imagenes = [];
          this.marca = row.marca + " " + row.modelo;
          for (let img = 1; img <= 8; img++) {

@@ -610,7 +610,6 @@ export default defineComponent({
          return null;
       },
       carouselFoto(index) {
-         debugger;
          this.showCarousel = true;
          this.arrayDatos = this.allData[index];
       },

@@ -21,3 +21,6 @@
                 },
             },
 
+
+y el id de google en analytic hay que pedirlo al dueño...
+
