@@ -157,7 +157,7 @@ export default {
 
          let messageText = this.emailCliente.trim();
          if (messageText === "") {
-            messageText = `Hola ${this.arrayDatos.username}, te contacto respecto a tu mensaje en JTCars.`;
+            messageText = `Hola ${this.arrayDatos.username}, te contacto respecto a tu mensaje en Concesionario.`;
          }
 
          const encodedMessage = encodeURIComponent(messageText);

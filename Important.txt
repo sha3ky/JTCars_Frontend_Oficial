@@ -22,5 +22,6 @@
             },
 
 
-y el id de google en analytic hay que pedirlo al dueño...
+2  el id de google en analytic hay que pedirlo al dueño el id
 
+3 y el de telgram de django el numero
