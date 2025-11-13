@@ -17,7 +17,9 @@
             >
                <div class="absolute-full flex flex-center text-white">
                   <div class="text-center hero-text">
-                     <div class="text-h2 text-bold">Bienvenido a JTCars</div>
+                     <div class="text-h2 text-bold">
+                        Bienvenido a tu concesionario
+                     </div>
                      <div class="text-h6 q-mt-md" style="opacity: 0.9">
                         Tu concesionario de confianza
                      </div>

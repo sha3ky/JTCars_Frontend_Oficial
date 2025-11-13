@@ -48,7 +48,7 @@
                >
                   <q-tab name="coches" label="Garaje" />
                   <q-tab name="personas" label="Interesados" />
-                  <!-- <q-tab name="datos" label="Datos personales" /> -->
+                  <q-tab name="analytica" label="Analytica" />
                </q-tabs>
 
                <q-separator />
@@ -397,8 +397,6 @@
                      </div>
                   </q-card>
 
-                  <q-card-section class="q-pt-none"> </q-card-section>
-
                   <q-card-actions align="right" class="text-primary">
                      <div v-if="!newCar">
                         <q-btn
@@ -517,6 +515,29 @@
    </q-dialog>
 </template>
 <style>
+.message-truncate {
+   /* AJUSTE DE ANCHURA:
+        Este valor (200px) define el ancho máximo antes de que aparezcan los puntos.
+        Ajuste este número a la estética que desee.
+    */
+   max-width: 200px;
+   width: 200px; /* Ayuda a asegurar el ancho en la celda td */
+
+   /* Reglas OBLIGATORIAS para elipses: */
+   white-space: nowrap; /* 1. No permite saltos de línea */
+   overflow: hidden; /* 2. Oculta el texto excedente */
+   text-overflow: ellipsis; /* 3. Muestra los '...' */
+
+   /* Para debug, puede agregar un borde: border: 1px solid red; */
+}
+
+/* Importante: Si el DIV interno tiene un ancho fijo, el <td> principal
+    debe poder contenerlo. La 'q-table' maneja esto automáticamente,
+    pero a veces puede ser necesario forzar el alineamiento.
+*/
+.q-table td {
+   vertical-align: top;
+}
 .no-arrows::-webkit-outer-spin-button,
 .no-arrows::-webkit-inner-spin-button {
    -webkit-appearance: none;
@@ -674,6 +695,7 @@ export default defineComponent({
                label: "Mensaje",
                field: "mensaje",
                sortable: true,
+               classes: "message-truncate",
             },
             { name: "telefono", label: "Telefono", field: "telefono" },
             {
