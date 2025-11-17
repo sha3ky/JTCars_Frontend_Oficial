@@ -9,10 +9,9 @@ const generarContenidoIA = async (datos) => {
       // 1. Usar axios.post correctamente: URL, luego el objeto de datos (datos)
       //    Axios serializa 'datos' a JSON automáticamente y pone el Content-Type.
       const response = await axios.post(
-         `${link}api/generate_description_ai`, // <--- Quitamos la comilla extra
-         datos // <--- Pasamos el objeto de datos directamente
+         `${link}api/generate-description/`, // ← URL correcta con slash
+         datos
       );
-
       // 2. Axios ya parsea el JSON. El resultado está en response.data, NO en response.json()
       //    response.ok (fetch) no existe en axios. Se usa response.status para verificar el éxito.
 
