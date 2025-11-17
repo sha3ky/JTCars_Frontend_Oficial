@@ -6,15 +6,15 @@
                <span class="logo-wrapper">
                   <q-img
                      src="/logoEmpresa.png"
-                     width="40px"
-                     height="40px"
-                     alt="BytePunk Studios"
+                     width="50px"
+                     height="50px"
+                     alt="Cybernetic Solution"
                   />
                </span>
 
                <!-- El texto de la empresa y el año -->
                <span class="text-subtitle1 text-weight-medium">
-                  BytePunk Studios {{ currentYear }}
+                  Cybernetic Solutions {{ currentYear }}
                </span>
             </div>
          </q-toolbar-title>
