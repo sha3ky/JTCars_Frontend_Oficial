@@ -17,7 +17,7 @@
             >
                <div class="absolute-full flex flex-center text-white">
                   <div class="text-center hero-text">
-                     <div class="text-h2 text-bold">
+                     <div class="text-h3 text-bold">
                         Bienvenido a tu concesionario
                      </div>
                      <div class="text-h6 q-mt-md" style="opacity: 0.9">
@@ -407,6 +407,11 @@
    .garajeVacio {
       background-attachment: unset;
    }
+   .waviy {
+      position: relative !important;
+      font-size: 6vw !important;
+      /* Agregar más propiedades si es necesario */
+   }
 }
 
 /* Tablet - 2 columnas */
@@ -418,6 +423,10 @@
 
    .car-image {
       height: 220px;
+   }
+   .waviy {
+      position: relative;
+      font-size: 4vw;
    }
 }
 
