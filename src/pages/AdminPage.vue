@@ -227,29 +227,6 @@
                               />
                            </div>
                         </div>
-                        <div style="">
-                           <q-input
-                              filled
-                              v-model="datosCoches.descripcion"
-                              label="Descripción"
-                              dense
-                              type="textarea"
-                              maxlength="150"
-                              counter
-                              :rules="reglasDescripcion"
-                              autogrow
-                           >
-                              <template v-slot:counter>
-                                 <span :class="contadorClass">
-                                    {{
-                                       datosCoches.descripcion
-                                          ? datosCoches.descripcion.length
-                                          : 0
-                                    }}/150
-                                 </span>
-                              </template>
-                           </q-input>
-                        </div>
 
                         <div style="display: flex; padding: 5px">
                            <div style="width: 33vw">
@@ -324,9 +301,47 @@
                               />
                            </div>
                         </div>
+                        <div style="">
+                           <q-input
+                              filled
+                              v-model="datosCoches.descripcion"
+                              label="Descripción"
+                              dense
+                              type="textarea"
+                              maxlength="150"
+                              counter
+                              :rules="reglasDescripcion"
+                              autogrow
+                           >
+                              <template v-slot:append>
+                                 <q-icon
+                                    name="smart_toy"
+                                    class="cursor-pointer"
+                                    color="blue-8"
+                                    @click="generarDescripcionIA"
+                                 >
+                                    <q-tooltip
+                                       >Generar descripción profesional con
+                                       IA</q-tooltip
+                                    >
+                                 </q-icon>
+                              </template>
+
+                              <template v-slot:counter>
+                                 <span :class="contadorClass">
+                                    {{
+                                       datosCoches.descripcion
+                                          ? datosCoches.descripcion.length
+                                          : 0
+                                    }}/150
+                                 </span>
+                              </template>
+                           </q-input>
+                        </div>
                         <div>
                            <div style="display: flex; justify-content: center">
-                              <div v-if="existPdf">
+                              <!-- pdf de momento desactivado -->
+                              <!-- <div v-if="existPdf">
                                  <q-btn
                                     outline
                                     color="primary"
@@ -344,7 +359,7 @@
                                     label="PDF"
                                     dense
                                  />
-                              </div>
+                              </div> -->
                               <div style="">
                                  <q-file
                                     filled
@@ -356,7 +371,7 @@
                                  />
                               </div>
                            </div>
-
+                           <!-- array subida imagenes -->
                            <div style="display: flex">
                               <div class="card-container">
                                  <q-card
@@ -573,6 +588,7 @@ import HeaderLayout from "components/HeaderComponent.vue";
 import updateTables from "src/composable/updatetableCocheMedia";
 import convertFileToBase64 from "src/composable/convertirFileBase64";
 import insertCocheNuevo from "src/composable/insertarCocheNuevo";
+import generarContenidoIA from "src/composable/generarContenidoIA";
 import { colorsEn_Es } from "src/composable/translateColorEn_Es";
 import { colorsEs_En } from "src/composable/translateColorEs_En";
 import {
@@ -739,14 +755,17 @@ export default defineComponent({
          personaIndividual: {},
          emailCliente: "",
          enviando: false,
+         loadingAI: false,
       };
    },
    computed: {
       reglasDescripcion() {
          return [
-            (val) => (val && val.length > 0) || "La descripción es obligatoria",
+            (val) =>
+               (val && val.length > 0) ||
+               "La descripción ayuda a mejorar las ventas",
             (val) => val.length <= 150 || "Máximo 150 caracteres",
-            (val) => val.length >= 10 || "Mínimo 10 caracteres",
+            (val) => val.length >= 10 || "Minimo 10 caracteres",
          ];
       },
       contadorClass() {
@@ -783,6 +802,59 @@ export default defineComponent({
       this.waitDialog = false;
    },
    methods: {
+      async generarDescripcionIA() {
+         if (this.loadingAI) return;
+
+         // 1. Recoger datos clave del coche (AJUSTA ESTO a los datos que tengas disponibles)
+         const datosParaIA = {
+            marca: this.datosCoches.marca,
+            modelo: this.datosCoches.modelo,
+            ano: this.datosCoches.ano,
+            km: this.datosCoches.km,
+            combustible: this.datosCoches.combustible,
+            precio: this.datosCoches.precio,
+            promocion: this.datosCoches.promocion,
+            tipo: this.datosCoches.tipo,
+            etiqueta: this.datosCoches.etiqueta,
+         };
+
+         this.loadingAI = true;
+
+         try {
+            // 2. LLAMADA CORREGIDA: Llamamos a la función de servicio y esperamos el objeto de resultado
+            const result = await generarContenidoIA(datosParaIA); // <--- Corrección
+
+            if (result.success) {
+               // El servicio devuelve { success: true, data: {...} }
+               // 3. Éxito: Actualizar el campo de descripción
+               this.datosCoches.descripcion = result.data.description.substring(
+                  0,
+                  150
+               );
+               this.$q.notify({
+                  type: "positive",
+                  message: "Descripción generada con éxito por IA.",
+               });
+            } else {
+               // 4. Fallo: Mostrar error del servicio (result.error es el mensaje de error que definimos)
+               this.$q.notify({
+                  type: "negative",
+                  message: `Error IA: ${
+                     result.error || "No se pudo generar el texto."
+                  }`,
+               });
+            }
+         } catch (error) {
+            // Este catch solo atrapará fallos de ejecución, el manejo de error 400/500 ya está en el servicio.
+            this.$q.notify({
+               type: "negative",
+               message: "Fallo inesperado del sistema de IA.",
+            });
+            console.error("Error al llamar a la IA:", error);
+         } finally {
+            this.loadingAI = false;
+         }
+      },
       limpiarYFormatearMatricula(value) {
          let cleanValue = value ? value.toUpperCase() : "";
          cleanValue = cleanValue.replace(/[^A-Z0-9\s-]/g, "");
