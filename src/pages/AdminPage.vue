@@ -48,7 +48,7 @@
                >
                   <q-tab name="coches" label="Garaje" />
                   <q-tab name="personas" label="Interesados" />
-                  <q-tab name="analytica" label="Analytica" />
+                  <!--  <q-tab name="analytica" label="Analytica" /> -->
                </q-tabs>
 
                <q-separator />
