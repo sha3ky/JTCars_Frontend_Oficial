@@ -48,8 +48,7 @@
                      <span class="luxe-dot"></span>
                   </div>
                   <h2 class="luxe-title">
-                     En <em>[Tu nombre tienda]</em> nos tomamos en serio su
-                     satisfacción
+                     En <em>JTCars</em> nos tomamos en serio su satisfacción
                   </h2>
                   <p class="luxe-lead">
                      Estamos comprometidos a brindarle no solo un coche, sino
@@ -146,32 +145,35 @@
                   <li>
                      <q-icon name="place" size="16px" />
                      <span class="label">Dirección</span>
-                     <span class="value">[Aquí va tu ubicación...]</span>
+                     <span class="value"
+                        >Avinguda del Garraf &, Carrer Maresme, 08880,
+                        Barcelona</span
+                     >
                   </li>
                   <li>
                      <q-icon name="phone" size="16px" />
                      <span class="label">Teléfono</span>
-                     <span class="value">tu teléfono de contacto</span>
+                     <span class="value">+34 604172201 / +34 603119175</span>
                   </li>
                   <li>
                      <q-icon name="schedule" size="16px" />
                      <span class="label">Lunes – Viernes</span>
-                     <span class="value">8:30h – 19:30h</span>
+                     <span class="value">9:00h – 17:00h</span>
                   </li>
                   <li>
                      <q-icon name="schedule" size="16px" />
                      <span class="label">Sábado</span>
-                     <span class="value">9:00h – 13:30h</span>
+                     <span class="value">9:00h – 13:00h</span>
                   </li>
                </ul>
 
                <div class="luxe-map-wrapper">
                   <iframe
-                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.987654321098!2d55.30456787545768!3d25.098765477769126!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f432109876543%3A0x1c0bf6bce5f2f8b5!2sDowntown%20Dubai%2C%20Dubai!5e0!3m2!1ses!2ses!4v1690000000000!5m2!1ses!2ses"
+                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1299.1876119614958!2d1.6464529490969821!3d41.19912114857734!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a3892800bb5641%3A0x5a1d22864bae877b!2sCars%20barcelona!5e0!3m2!1ses!2ses!4v1789461256845!5m2!1ses!2ses"
                      class="luxe-map"
                      allowfullscreen=""
                      loading="lazy"
-                     referrerpolicy="no-referrer-when-downgrade"
+                     referrerpolicy="strict-origin-when-cross-origin"
                   ></iframe>
                </div>
             </section>
@@ -674,9 +676,9 @@
    font-weight: 500;
    letter-spacing: 0.3px;
 }
-
 .luxe-map-wrapper {
    position: relative;
+   width: 100%;
    border-radius: 10px;
    overflow: hidden;
    border: 1px solid rgba(212, 175, 55, 0.35);
@@ -685,15 +687,22 @@
 
 .luxe-map {
    display: block;
+   width: 100% !important; /* Fuerza el ancho completo del contenedor */
+   height: 350px; /* Ajusta esta altura a tu gusto */
    border: 0;
-   width: 100%;
-   height: 400px;
    filter: grayscale(0.35) contrast(1.05);
    transition: filter 0.5s ease;
 }
 
 .luxe-map-wrapper:hover .luxe-map {
    filter: grayscale(0) contrast(1);
+}
+
+/* Ajuste móvil */
+@media (max-width: 768px) {
+   .luxe-map {
+      height: 300px; /* Reduce la altura en móviles */
+   }
 }
 
 /* ============================================================
