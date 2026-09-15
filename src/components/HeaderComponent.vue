@@ -573,7 +573,7 @@ a {
 }
 
 .menu-item {
-   color: #cfd8dc;
+   color: #646f77;
    border-radius: 8px;
    margin: 2px 6px;
    transition: all 0.25s ease;
