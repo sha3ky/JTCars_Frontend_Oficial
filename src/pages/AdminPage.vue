@@ -925,7 +925,6 @@ body.body--dark {
 }
 
 .luxe-dialog__body {
-   padding: 12px 30px 20px !important;
    overflow-y: auto;
    flex-grow: 1;
 }
