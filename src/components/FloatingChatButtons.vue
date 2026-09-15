@@ -87,12 +87,12 @@ export default defineComponent({
 .floating-chat-buttons {
    position: fixed;
    bottom: 18px;
-   left: 18px;
+   right: 18px;
+   float: left;
    z-index: 1000;
    display: flex;
    flex-direction: row;
    gap: 10px;
-   /* Evita que bloquee clics fuera de los botones */
    pointer-events: none;
 }
 
