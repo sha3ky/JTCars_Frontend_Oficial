@@ -78,7 +78,7 @@
             v-if="$q.screen.width < 599"
          />
 
-         <router-link to="/home" class="logo-wrapper">
+         <router-link to="/home" class="logo-wrapper" v-if="!isAuthenticated">
             <q-img
                height="70px"
                width="108px"
