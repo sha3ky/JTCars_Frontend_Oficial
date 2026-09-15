@@ -260,7 +260,6 @@
    CONTENEDOR DE PÁGINA
    ============================================================ */
 .page-container {
-   background: #f5f7fa;
    overflow-x: hidden;
    padding-top: 0 !important;
 }
@@ -683,7 +682,7 @@
    height: 100%;
    border-radius: 16px !important;
    overflow: hidden;
-   background: #ffffff;
+
    border: 1px solid rgba(0, 0, 0, 0.05) !important;
    box-shadow: 0 4px 18px rgba(15, 23, 32, 0.08);
    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -778,7 +777,7 @@
    font-weight: 800;
    margin-bottom: 14px;
    padding: 10px 14px;
-   background: linear-gradient(135deg, #f1f4f9, #e0e5ec);
+
    border-radius: 12px;
    text-align: center;
    letter-spacing: -0.5px;
