@@ -1,7 +1,7 @@
 <template>
    <q-toggle
       v-model="darkMode"
-      size="xl"
+      size="lg"
       @update:model-value="handleToggle"
       :color="darkMode ? 'grey-9' : 'orange'"
       keep-color
@@ -9,7 +9,7 @@
       :icon="darkMode ? 'dark_mode' : 'light_mode'"
    >
       <template v-slot:label>
-         <div class="q-ml-sm" style="font-size: 20px">
+         <div class="q-ml-sm" style="font-size: 10px">
             {{ darkMode ? "🌙" : "☀️" }}
          </div>
       </template>

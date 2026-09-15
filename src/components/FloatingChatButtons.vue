@@ -3,28 +3,38 @@
    <div class="floating-chat-buttons">
       <q-btn
          round
-         size="lg"
-         class="whatsapp-btn"
-         icon="message"
-         :href="`https://wa.me/${number}`"
-         target="_blank"
-      >
-         <q-tooltip>WhatsApp</q-tooltip>
-      </q-btn>
-      <!-- Telegram -->
-      <!--  <q-btn
-         round
+         dense
          size="md"
-         class="telegram-btn shadow-4"
-         icon="telegram"
          type="a"
+         class="whatsapp-btn"
+         icon="chat"
+         :href="whatsappUrl"
+         target="_blank"
+         rel="noopener noreferrer"
+      >
+         <q-tooltip anchor="top middle" self="bottom middle" class="bg-green-9">
+            Contactar por WhatsApp
+         </q-tooltip>
+      </q-btn>
+
+      <!-- Telegram (opcional) -->
+      <!--
+      <q-btn
+         round
+         dense
+         size="md"
+         type="a"
+         class="telegram-btn"
+         icon="telegram"
          :href="telegramUrl"
          target="_blank"
+         rel="noopener noreferrer"
       >
-         <q-tooltip anchor="top middle" self="bottom middle">
+         <q-tooltip anchor="top middle" self="bottom middle" class="bg-blue-9">
             Contactar por Telegram
          </q-tooltip>
-      </q-btn> -->
+      </q-btn>
+      -->
    </div>
 </template>
 
@@ -35,14 +45,13 @@ export default defineComponent({
    name: "FloatingChatButtons",
 
    props: {
-      // Puedes personalizar desde el padre si quieres
       phoneNumber: {
          type: String,
-         default: "34722411324", // Tu número por defecto
+         default: "34722411324",
       },
       telegramUser: {
          type: String,
-         default: "JTCars", // Tu usuario de Telegram
+         default: "JTCars",
       },
       whatsappMessage: {
          type: String,
@@ -52,7 +61,7 @@ export default defineComponent({
 
    setup(props) {
       const number = props.phoneNumber;
-      // URLs computadas
+
       const whatsappUrl = computed(() => {
          const encodedMessage = encodeURIComponent(props.whatsappMessage);
          return `https://wa.me/${props.phoneNumber}?text=${encodedMessage}`;
@@ -72,76 +81,140 @@ export default defineComponent({
 </script>
 
 <style scoped>
+/* ============================================================
+   CONTENEDOR — COMPACTO, CON COHERENCIA AL LAYOUT
+   ============================================================ */
 .floating-chat-buttons {
    position: fixed;
-   bottom: 30px;
-   right: 30px;
+   bottom: 18px;
+   left: 18px;
    z-index: 1000;
    display: flex;
    flex-direction: row;
-   gap: 15px;
+   gap: 10px;
+   /* Evita que bloquee clics fuera de los botones */
+   pointer-events: none;
 }
 
+.floating-chat-buttons > * {
+   pointer-events: auto;
+}
+
+/* ============================================================
+   BOTÓN WHATSAPP — TAMAÑO REDUCIDO, EFECTO PREMIUM
+   ============================================================ */
 .whatsapp-btn {
-   background: #25d366;
-   color: white;
-   animation: pulse-green 2s infinite;
+   width: 48px;
+   height: 48px;
+   min-width: 48px;
+   min-height: 48px;
+   background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+   color: #ffffff;
+   border: 1px solid rgba(255, 255, 255, 0.15);
+   box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+   animation: pulse-green 2.4s infinite;
 }
 
+.whatsapp-btn:hover {
+   transform: translateY(-3px) scale(1.08);
+   box-shadow: 0 10px 25px rgba(37, 211, 102, 0.55);
+   animation-play-state: paused;
+}
+
+.whatsapp-btn :deep(.q-icon) {
+   font-size: 22px;
+}
+
+/* ============================================================
+   BOTÓN TELEGRAM (opcional)
+   ============================================================ */
 .telegram-btn {
-   background: #0088cc;
-   color: white;
-   animation: pulse-blue 2s infinite;
+   width: 48px;
+   height: 48px;
+   min-width: 48px;
+   min-height: 48px;
+   background: linear-gradient(135deg, #29b6f6 0%, #0088cc 100%);
+   color: #ffffff;
+   border: 1px solid rgba(255, 255, 255, 0.15);
+   box-shadow: 0 6px 18px rgba(0, 136, 204, 0.35);
+   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+   animation: pulse-blue 2.4s infinite;
 }
 
-/* Efectos hover */
-.whatsapp-btn:hover,
 .telegram-btn:hover {
-   transform: scale(1.1);
-   transition: transform 0.3s ease;
+   transform: translateY(-3px) scale(1.08);
+   box-shadow: 0 10px 25px rgba(0, 136, 204, 0.55);
+   animation-play-state: paused;
 }
 
-/* Animaciones de pulso */
+.telegram-btn :deep(.q-icon) {
+   font-size: 22px;
+}
+
+/* ============================================================
+   ANIMACIONES DE PULSO (MÁS SUTILES)
+   ============================================================ */
 @keyframes pulse-green {
    0% {
-      box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35),
+         0 0 0 0 rgba(37, 211, 102, 0.55);
    }
    70% {
-      box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35),
+         0 0 0 12px rgba(37, 211, 102, 0);
    }
    100% {
-      box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35),
+         0 0 0 0 rgba(37, 211, 102, 0);
    }
 }
 
 @keyframes pulse-blue {
    0% {
-      box-shadow: 0 0 0 0 rgba(0, 136, 204, 0.7);
+      box-shadow: 0 6px 18px rgba(0, 136, 204, 0.35),
+         0 0 0 0 rgba(0, 136, 204, 0.55);
    }
    70% {
-      box-shadow: 0 0 0 10px rgba(0, 136, 204, 0);
+      box-shadow: 0 6px 18px rgba(0, 136, 204, 0.35),
+         0 0 0 12px rgba(0, 136, 204, 0);
    }
    100% {
-      box-shadow: 0 0 0 0 rgba(0, 136, 204, 0);
+      box-shadow: 0 6px 18px rgba(0, 136, 204, 0.35),
+         0 0 0 0 rgba(0, 136, 204, 0);
    }
 }
 
-/* Responsive */
+/* ============================================================
+   RESPONSIVE — AÚN MÁS COMPACTO EN MÓVIL
+   ============================================================ */
 @media (max-width: 600px) {
    .floating-chat-buttons {
-      bottom: 20px;
-      right: 20px;
+      bottom: 12px;
+      right: 12px;
+      gap: 8px;
    }
 
    .whatsapp-btn,
    .telegram-btn {
-      width: 50px;
-      height: 50px;
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      min-height: 42px;
    }
 
    .whatsapp-btn :deep(.q-icon),
    .telegram-btn :deep(.q-icon) {
-      font-size: 20px;
+      font-size: 18px;
+   }
+}
+
+/* ♿ Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+   .whatsapp-btn,
+   .telegram-btn {
+      animation: none !important;
+      transition: none !important;
    }
 }
 </style>
