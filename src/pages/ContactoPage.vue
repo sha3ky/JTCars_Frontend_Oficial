@@ -191,18 +191,12 @@
       </q-page-container>
    </q-layout>
 </template>
-<style>
-body.body--dark {
-   background: #0c0c0c;
-}
-</style>
 
 <style scoped>
 /* ============================================================
    PÁGINA
    ============================================================ */
 .contacto-page {
-   background: #f5f7fa;
    overflow-x: hidden;
 }
 

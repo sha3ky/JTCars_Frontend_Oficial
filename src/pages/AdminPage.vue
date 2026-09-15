@@ -7,61 +7,59 @@
          @logout="logOut"
       />
       <Footer_Layout />
-      <q-page-container>
-         <div
-            style="
-               width: 100vw;
-               height: 100vh;
-               display: flex; /* 1. Activa Flexbox */
-               flex-direction: column; /* 2. Pone los hijos en columna (uno debajo del otro) */
-               align-items: center; /* 3. Centra horizontalmente todos los hijos */
-               background-image: url('/gemConcesWaterPx.webp'); /* La ruta desde la carpeta 'public' */
-               background-size: cover; /* Asegura que la imagen cubra toda el área */
-               background-position: center center; /* Centra la imagen para que se vea bien en diferentes tamaños */
-            "
-         >
-            <div
-               style="
-                  background-color: rgb(244, 67, 54, 0.5);
-                  width: 50vh;
-                  text-align: center; /* Centrado horizontal del texto (funciona para líneas simples) */
-                  margin-top: 3%;
-                  height: 6%;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  border-radius: 5px;
-               "
-            >
-               <h4>Mi Garaje</h4>
-            </div>
 
-            <q-card style="margin-top: 10%; width: 100%">
+      <q-page-container>
+         <div class="admin-page">
+            <!-- ✨ Glow radial superior -->
+            <div class="admin-page__glow" aria-hidden="true"></div>
+
+            <!-- CABECERA -->
+            <header class="admin-hero">
+               <div class="admin-hero__eyebrow">
+                  <span class="luxe-dot"></span>
+                  <span>Panel de administración</span>
+                  <span class="luxe-dot"></span>
+               </div>
+               <h1 class="admin-hero__title">Mi <em>Garaje</em></h1>
+            </header>
+
+            <!-- TARJETA PRINCIPAL -->
+            <section class="luxe-card admin-card">
+               <div class="luxe-card__glow" aria-hidden="true"></div>
+               <div class="luxe-card__top-line" aria-hidden="true"></div>
+
                <q-tabs
                   v-model="tab"
                   dense
-                  class="text-grey"
+                  class="luxe-tabs"
                   active-color="primary"
                   indicator-color="primary"
                   align="justify"
                   narrow-indicator
                >
-                  <q-tab name="coches" label="Garaje" />
-                  <q-tab name="personas" label="Interesados" />
-                  <!--  <q-tab name="analytica" label="Analytica" /> -->
+                  <q-tab name="coches" label="Garaje" class="luxe-tab" />
+                  <q-tab name="personas" label="Interesados" class="luxe-tab" />
                </q-tabs>
 
-               <q-separator />
+               <div class="luxe-tab-separator" aria-hidden="true"></div>
 
-               <q-tab-panels v-model="tab" animated>
-                  <q-tab-panel name="coches">
-                     <div>
-                        <q-btn color="teal" @click="resetDataCar">
-                           <q-icon left size="1em" name="add" />
-                           <div>Añadir Coche</div>
-                        </q-btn>
+               <q-tab-panels v-model="tab" animated class="luxe-panels">
+                  <!-- ============================================================
+                       PANEL: COCHES
+                       ============================================================ -->
+                  <q-tab-panel name="coches" class="luxe-panel">
+                     <div class="luxe-panel__actions">
+                        <q-btn
+                           @click="resetDataCar"
+                           no-caps
+                           unelevated
+                           class="luxe-btn luxe-btn--primary"
+                           icon="add"
+                           label="Añadir Coche"
+                        />
                      </div>
-                     <div class="q-pa-md">
+
+                     <div class="luxe-table-wrapper">
                         <q-table
                            title="Garaje"
                            :rows="rowsCoches"
@@ -71,6 +69,9 @@
                            dense
                            :rows-per-page="25"
                            :filter="filterCoches"
+                           class="luxe-table"
+                           flat
+                           bordered
                         >
                            <template v-slot:top-right>
                               <q-input
@@ -79,6 +80,7 @@
                                  debounce="300"
                                  v-model="filterCoches"
                                  placeholder="Buscar coche"
+                                 class="luxe-search"
                               >
                                  <template v-slot:append>
                                     <q-icon name="search" />
@@ -88,385 +90,367 @@
                         </q-table>
                      </div>
                   </q-tab-panel>
-                  <q-tab-panel name="personas">
-                     <div class="text-h6">Interesados</div>
-                     <q-table
-                        title="Personas"
-                        :rows="rowsPersonas"
-                        :columns="columnsPersonas"
-                        row-key="email"
-                        dense
-                        :rows-per-page="10"
-                        :filter="filterPersonas"
-                        @row-click="handlePersonRowClick"
-                     >
-                        <template v-slot:top-right>
-                           <q-input
-                              borderless
-                              dense
-                              debounce="300"
-                              v-model="filterPersonas"
-                              placeholder="Search"
-                           >
-                              <template v-slot:append>
-                                 <q-icon name="search" />
-                              </template>
-                           </q-input> </template
-                     ></q-table>
-                  </q-tab-panel>
-                  <!-- <q-tab-panel name="datos">
-                     <div class="text-h6">Usuario</div>
-                     <div style="display: flex; justify-content: center">
-                        <div>
-                           <q-input
-                              filled
-                              v-model="nombreUsuario"
-                              label="Nombre"
-                              dense
-                           />
-                           <q-input
-                              filled
-                              v-model="nombreUsuario"
-                              label="Apellido"
-                              dense
-                           />
-                        </div>
-                        <div>
-                           <q-input
-                              filled
-                              v-model="nombreUsuario"
-                              label="Correo"
-                              dense
-                           /><q-input
-                              filled
-                              v-model="nombreUsuario"
-                              label="Contraseña"
-                              dense
-                           />
-                        </div>
-                     </div>
-                  </q-tab-panel> -->
-               </q-tab-panels>
-            </q-card>
 
+                  <!-- ============================================================
+                       PANEL: PERSONAS
+                       ============================================================ -->
+                  <q-tab-panel name="personas" class="luxe-panel">
+                     <div class="luxe-panel__actions">
+                        <h3 class="luxe-subtitle">Interesados</h3>
+                     </div>
+
+                     <div class="luxe-table-wrapper">
+                        <q-table
+                           title="Personas"
+                           :rows="rowsPersonas"
+                           :columns="columnsPersonas"
+                           row-key="email"
+                           dense
+                           :rows-per-page="10"
+                           :filter="filterPersonas"
+                           @row-click="handlePersonRowClick"
+                           class="luxe-table"
+                           flat
+                           bordered
+                        >
+                           <template v-slot:top-right>
+                              <q-input
+                                 borderless
+                                 dense
+                                 debounce="300"
+                                 v-model="filterPersonas"
+                                 placeholder="Buscar"
+                                 class="luxe-search"
+                              >
+                                 <template v-slot:append>
+                                    <q-icon name="search" />
+                                 </template>
+                              </q-input>
+                           </template>
+                        </q-table>
+                     </div>
+                  </q-tab-panel>
+               </q-tab-panels>
+            </section>
+
+            <!-- ============================================================
+                 DIÁLOGO COCHES
+                 ============================================================ -->
             <q-dialog v-model="dialogCoches" persistent>
-               <q-card style="max-width: 538px">
-                  <q-card-section style="padding: 0">
-                     <div class="text-h6" style="text-align: center">
-                        Cambiar configuracion coche
+               <q-card class="luxe-dialog">
+                  <div class="luxe-dialog__top-line" aria-hidden="true"></div>
+                  <div class="luxe-dialog__glow" aria-hidden="true"></div>
+
+                  <header class="luxe-dialog__header">
+                     <div class="luxe-eyebrow">
+                        <span class="luxe-dot"></span>
+                        <span>Configuración</span>
+                        <span class="luxe-dot"></span>
+                     </div>
+                     <h2 class="luxe-dialog__title">
+                        {{ newCar ? "Añadir coche" : "Editar coche" }}
+                     </h2>
+                  </header>
+
+                  <q-card-section class="luxe-dialog__body">
+                     <!-- Fila 1 -->
+                     <div class="luxe-row luxe-row--3">
+                        <q-input
+                           v-model="datosCoches.matricula"
+                           label="Matrícula"
+                           dense
+                           type="text"
+                           maxlength="10"
+                           hint="9245 NHG o B-3456-HC"
+                           :rules="[
+                              (val) => !!val || 'La matrícula es obligatoria',
+                              (val) =>
+                                 /^[A-Z0-9\s-]{6,10}$/i.test(val) ||
+                                 'Formato inválido',
+                           ]"
+                           hide-bottom-space
+                           @input="limpiarYFormatearMatricula"
+                           class="luxe-input"
+                           filled
+                           borderless
+                        />
+                        <q-input
+                           v-model="datosCoches.marca"
+                           label="Marca"
+                           dense
+                           type="text"
+                           class="luxe-input"
+                           filled
+                           borderless
+                        />
+                        <q-input
+                           v-model="datosCoches.modelo"
+                           label="Modelo"
+                           dense
+                           type="text"
+                           class="luxe-input"
+                           filled
+                           borderless
+                        />
+                     </div>
+
+                     <!-- Fila 2 -->
+                     <div class="luxe-row luxe-row--2">
+                        <q-select
+                           v-model="datosCoches.ano"
+                           :options="optionsAno"
+                           label="Año"
+                           dense
+                           class="luxe-input"
+                           filled
+                           borderless
+                           behavior="menu"
+                        />
+                        <q-input
+                           v-model="datosCoches.km"
+                           type="number"
+                           label="KM"
+                           min="0"
+                           max="1000000"
+                           step="1"
+                           dense
+                           @keypress="soloNumerosYPuntos"
+                           input-class="no-arrows"
+                           class="luxe-input"
+                           filled
+                           borderless
+                        />
+                     </div>
+
+                     <!-- Fila 3 -->
+                     <div class="luxe-row luxe-row--3">
+                        <q-select
+                           v-model="datosCoches.etiqueta"
+                           :options="optionsEtiqueta"
+                           label="Etiqueta"
+                           dense
+                           class="luxe-input"
+                           filled
+                           borderless
+                           behavior="menu"
+                        />
+                        <q-select
+                           v-model="datosCoches.tipo"
+                           :options="optionsTipo"
+                           label="Tipo"
+                           dense
+                           class="luxe-input"
+                           filled
+                           borderless
+                           behavior="menu"
+                        />
+                        <q-select
+                           v-model="datosCoches.promocion"
+                           :options="optionsPromotion"
+                           label="Promoción"
+                           dense
+                           class="luxe-input"
+                           filled
+                           borderless
+                           behavior="menu"
+                        />
+                     </div>
+
+                     <!-- Fila 4 -->
+                     <div class="luxe-row luxe-row--3">
+                        <q-select
+                           v-model="datosCoches.combustible"
+                           :options="optionsCombustible"
+                           label="Combustible"
+                           dense
+                           class="luxe-input"
+                           filled
+                           borderless
+                           behavior="menu"
+                        />
+                        <q-input
+                           dense
+                           v-model.number="datosCoches.precio"
+                           type="number"
+                           label="Precio"
+                           @keypress="soloNumerosYPuntos"
+                           input-class="no-arrows"
+                           class="luxe-input"
+                           filled
+                           borderless
+                        />
+                        <q-select
+                           v-model="datosCoches.colorBanner"
+                           :options="coloresBanners"
+                           label="Color Banner"
+                           dense
+                           class="luxe-input"
+                           filled
+                           borderless
+                           behavior="menu"
+                        />
+                     </div>
+
+                     <!-- Descripción -->
+                     <div class="luxe-row">
+                        <q-input
+                           v-model="datosCoches.descripcion"
+                           label="Descripción"
+                           dense
+                           type="textarea"
+                           maxlength="150"
+                           counter
+                           :rules="reglasDescripcion"
+                           autogrow
+                           class="luxe-input"
+                           filled
+                           borderless
+                        >
+                           <template v-slot:append>
+                              <q-icon
+                                 name="smart_toy"
+                                 class="cursor-pointer luxe-ai-icon"
+                                 @click="generarDescripcionIA"
+                              >
+                                 <q-tooltip class="tooltip-luxe">
+                                    Generar descripción con IA
+                                 </q-tooltip>
+                              </q-icon>
+                           </template>
+
+                           <template v-slot:counter>
+                              <span :class="contadorClass">
+                                 {{
+                                    datosCoches.descripcion
+                                       ? datosCoches.descripcion.length
+                                       : 0
+                                 }}/150
+                              </span>
+                           </template>
+                        </q-input>
+                     </div>
+
+                     <!-- Imágenes -->
+                     <div class="luxe-row">
+                        <q-file
+                           v-model="nuevaImagen"
+                           label="Añadir imagen"
+                           dense
+                           accept="image/*"
+                           max-files="1"
+                           class="luxe-input luxe-file"
+                           filled
+                           borderless
+                        >
+                           <template v-slot:prepend>
+                              <q-icon name="image" class="luxe-file-icon" />
+                           </template>
+                        </q-file>
+                     </div>
+
+                     <div class="luxe-images-grid">
+                        <div
+                           v-for="(image, index) in imagenesArray"
+                           :key="index"
+                           class="luxe-image-card"
+                        >
+                           <q-img
+                              :src="image.ruta"
+                              class="luxe-image-preview"
+                              fit="cover"
+                           />
+                           <div class="luxe-image-actions">
+                              <q-btn
+                                 flat
+                                 round
+                                 dense
+                                 @click="modImg(image)"
+                                 icon="edit"
+                                 class="luxe-icon-btn"
+                              />
+                              <q-btn
+                                 flat
+                                 round
+                                 dense
+                                 @click="deleteImage(image)"
+                                 icon="delete"
+                                 class="luxe-icon-btn luxe-icon-btn--danger"
+                              />
+                           </div>
+                        </div>
                      </div>
                   </q-card-section>
-                  <q-card>
-                     <div>
-                        <div style="display: flex; padding: 5px">
-                           <div>
-                              <q-input
-                                 filled
-                                 v-model="datosCoches.matricula"
-                                 label="Matrícula"
-                                 dense
-                                 type="text"
-                                 maxlength="10"
-                                 hint="Formatos válidos: 9245 NHG (moderno) o B-3456-HC (antiguo). Solo letras, números, guiones o espacios."
-                                 :rules="[
-                                    (val) =>
-                                       !!val || 'La matrícula es obligatoria',
-                                    // Expresión Regular para MATRÍCULA ESPAÑOLA
-                                    // ^[A-Z0-9\s-]{6,10}$/i: Permite Letras, Números, Espacio, Guion, con longitud entre 6 y 10.
-                                    (val) =>
-                                       /^[A-Z0-9\s-]{6,10}$/i.test(val) ||
-                                       'Formato inválido. Solo letras, números, guiones o espacios.',
-                                 ]"
-                                 hide-bottom-space
-                                 @input="limpiarYFormatearMatricula"
-                              />
-                           </div>
-                           <div>
-                              <q-input
-                                 filled
-                                 v-model="datosCoches.marca"
-                                 label="Marca"
-                                 dense
-                                 type="text"
-                              />
-                           </div>
-                           <div>
-                              <q-input
-                                 filled
-                                 v-model="datosCoches.modelo"
-                                 label="Modelo"
-                                 dense
-                                 type="text"
-                              />
-                           </div>
-                        </div>
 
-                        <div style="display: flex; padding: 5px">
-                           <div style="width: 50vw">
-                              <q-select
-                                 filled
-                                 v-model="datosCoches.ano"
-                                 :options="optionsAno"
-                                 label="Selecionar Año"
-                                 dense
-                                 style="max-width: 100%"
-                              />
-                           </div>
-                           <div style="width: 50vw">
-                              <q-input
-                                 filled
-                                 v-model="datosCoches.km"
-                                 type="number"
-                                 label="KM "
-                                 min="0"
-                                 max="1000000"
-                                 step="1"
-                                 dense
-                                 @keypress="soloNumerosYPuntos"
-                                 input-class="no-arrows"
-                              />
-                           </div>
-                        </div>
-
-                        <div style="display: flex; padding: 5px">
-                           <div style="width: 33vw">
-                              <div>
-                                 <q-select
-                                    filled
-                                    v-model="datosCoches.etiqueta"
-                                    :options="optionsEtiqueta"
-                                    label="Selecionar Etiqueta"
-                                    dense
-                                    style="max-width: 100%"
-                                 />
-                              </div>
-                           </div>
-                           <!-- tipoCoches -->
-                           <div style="width: 33vw">
-                              <div>
-                                 <q-select
-                                    filled
-                                    v-model="datosCoches.tipo"
-                                    :options="optionsTipo"
-                                    label="Selecionar Tipo"
-                                    dense
-                                    style="max-width: 100%"
-                                 />
-                              </div>
-                           </div>
-                           <!-- promotions -->
-                           <div style="width: 33vw">
-                              <div style="">
-                                 <q-select
-                                    filled
-                                    v-model="datosCoches.promocion"
-                                    :options="optionsPromotion"
-                                    label="Selecionar Promocion"
-                                    dense
-                                    style="max-width: 100%"
-                                 />
-                              </div>
-                           </div>
-                        </div>
-                        <div style="display: flex; padding: 5px">
-                           <div style="width: 33vw">
-                              <q-select
-                                 filled
-                                 v-model="datosCoches.combustible"
-                                 :options="optionsCombustible"
-                                 label="Selecionar Combustible"
-                                 dense
-                                 style="max-width: 100%"
-                              />
-                           </div>
-                           <div style="width: 33vw">
-                              <q-input
-                                 dense
-                                 filled
-                                 v-model.number="datosCoches.precio"
-                                 type="number"
-                                 label="Precio"
-                                 @keypress="soloNumerosYPuntos"
-                                 input-class="no-arrows"
-                              />
-                           </div>
-                           <div style="width: 33vw">
-                              <q-select
-                                 filled
-                                 v-model="datosCoches.colorBanner"
-                                 :options="coloresBanners"
-                                 label="Color Banner"
-                                 dense
-                                 style="max-width: 100%"
-                              />
-                           </div>
-                        </div>
-                        <div style="">
-                           <q-input
-                              filled
-                              v-model="datosCoches.descripcion"
-                              label="Descripción"
-                              dense
-                              type="textarea"
-                              maxlength="150"
-                              counter
-                              :rules="reglasDescripcion"
-                              autogrow
-                           >
-                              <template v-slot:append>
-                                 <q-icon
-                                    name="smart_toy"
-                                    class="cursor-pointer"
-                                    color="blue-8"
-                                    @click="generarDescripcionIA"
-                                 >
-                                    <q-tooltip
-                                       >Generar descripción profesional con
-                                       IA</q-tooltip
-                                    >
-                                 </q-icon>
-                              </template>
-
-                              <template v-slot:counter>
-                                 <span :class="contadorClass">
-                                    {{
-                                       datosCoches.descripcion
-                                          ? datosCoches.descripcion.length
-                                          : 0
-                                    }}/150
-                                 </span>
-                              </template>
-                           </q-input>
-                        </div>
-                        <div>
-                           <div style="display: flex; justify-content: center">
-                              <!-- pdf de momento desactivado -->
-                              <!-- <div v-if="existPdf">
-                                 <q-btn
-                                    outline
-                                    color="primary"
-                                    label="Eliminar Pdf"
-                                    @click="deletePdf"
-                                 />
-                              </div>
-                              <div v-if="!existPdf">
-                                 <span style="padding: 5px"> sin pdf</span>
-                              </div>
-                              <div style="">
-                                 <q-file
-                                    filled
-                                    v-model="inputPdf"
-                                    label="PDF"
-                                    dense
-                                 />
-                              </div> -->
-                              <div style="">
-                                 <q-file
-                                    filled
-                                    v-model="nuevaImagen"
-                                    label="Añadir imagen"
-                                    dense
-                                    accept="image/*"
-                                    max-files="1"
-                                 />
-                              </div>
-                           </div>
-                           <!-- array subida imagenes -->
-                           <div style="display: flex">
-                              <div class="card-container">
-                                 <q-card
-                                    v-for="(image, index) in imagenesArray"
-                                    :key="index"
-                                    :name="index"
-                                    class="card-container"
-                                    style="
-                                       display: flex;
-                                       justify-content: center;
-                                       max-width: 130px;
-                                    "
-                                 >
-                                    <q-img
-                                       :src="image.ruta"
-                                       class="responsive-image"
-                                       style="max-width: 180px; height: 60px"
-                                    />
-                                    <q-separator />
-                                    <q-card-actions align="center">
-                                       <q-btn
-                                          flat
-                                          @click="modImg(image)"
-                                          icon="edit"
-                                          class="q-mr-sm"
-                                       />
-                                       <q-btn
-                                          flat
-                                          @click="deleteImage(image)"
-                                          icon="delete"
-                                          color="negative"
-                                       />
-                                    </q-card-actions>
-                                 </q-card>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </q-card>
-
-                  <q-card-actions align="right" class="text-primary">
-                     <div v-if="!newCar">
-                        <q-btn
-                           color="red"
-                           text-color="white"
-                           label="Eliminar"
-                           @click="confirmDeleteCar"
-                        />
-                     </div>
-                     <div style="padding: 3px">
-                        <q-btn
-                           color="orange"
-                           text-color="black"
-                           label="Cancel"
-                           @click="cancelInputCarDialog"
-                        />
-                     </div>
-                     <div>
-                        <q-btn
-                           label="Aceptar"
-                           @click="aceptarCambios"
-                           color="green"
-                           text-color="black"
-                        />
-                     </div>
+                  <q-card-actions class="luxe-dialog__actions">
+                     <q-btn
+                        v-if="!newCar"
+                        label="Eliminar"
+                        icon="delete_outline"
+                        @click="confirmDeleteCar"
+                        no-caps
+                        flat
+                        class="luxe-btn luxe-btn--danger"
+                     />
+                     <q-space />
+                     <q-btn
+                        label="Cancelar"
+                        @click="cancelInputCarDialog"
+                        no-caps
+                        flat
+                        class="luxe-btn luxe-btn--ghost"
+                     />
+                     <q-btn
+                        label="Aceptar"
+                        @click="aceptarCambios"
+                        no-caps
+                        unelevated
+                        class="luxe-btn luxe-btn--primary"
+                     />
                   </q-card-actions>
                </q-card>
             </q-dialog>
+
+            <!-- ============================================================
+                 DIÁLOGO CAMBIAR IMAGEN
+                 ============================================================ -->
             <q-dialog v-model="anadirImagenDialog">
-               <q-card>
-                  <q-card-section class="row items-center q-pb-none">
-                     <h4>Cambiar imagen</h4>
+               <q-card class="luxe-dialog luxe-dialog--small">
+                  <div class="luxe-dialog__top-line" aria-hidden="true"></div>
+
+                  <q-card-section class="luxe-dialog__header-row">
+                     <div class="luxe-eyebrow">
+                        <span class="luxe-dot"></span>
+                        <span>Cambiar imagen</span>
+                        <span class="luxe-dot"></span>
+                     </div>
                      <q-space />
-                     <q-btn icon="close" flat round dense v-close-popup />
+                     <q-btn
+                        icon="close"
+                        flat
+                        round
+                        dense
+                        v-close-popup
+                        class="luxe-icon-btn"
+                     />
                   </q-card-section>
 
-                  <q-card-section>
-                     <q-file filled v-model="inputImagen" label="Filled" />
-                     <!-- <q-input
-                     @update:model-value="
-                        (val) => {
-                           file = val[0];
-                        }
-                     "
-                     filled
-                     type="file"
-                     hint="Native file"
-                  /> -->
+                  <q-card-section class="luxe-dialog__body">
+                     <q-file
+                        v-model="inputImagen"
+                        label="Seleccionar imagen"
+                        filled
+                        borderless
+                        class="luxe-input luxe-file"
+                     >
+                        <template v-slot:prepend>
+                           <q-icon name="image" class="luxe-file-icon" />
+                        </template>
+                     </q-file>
                   </q-card-section>
                </q-card>
             </q-dialog>
 
-            <!--  dialogo email personas tabla -->
-
-            <!-- El componente de diálogo autogestionado -->
+            <!-- CONTACTO DIRECTO -->
             <ContactoDirecto
                :showContactDialog="showDialog"
                :arrayDatos="personaIndividual"
@@ -474,6 +458,7 @@
             />
          </div>
       </q-page-container>
+
       <InputUser
          :inputUserDialog="showInputUser"
          @close-dialog-newuser="handleDialogClose"
@@ -484,95 +469,673 @@
       />
       <router-view />
    </q-layout>
-   <q-layout v-else>
-      <div
-         class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center"
-      >
-         <div>
-            <div style="font-size: 30vh">404</div>
 
-            <div class="text-h2" style="opacity: 0.4">
-               Oops. No hay nada que ver aqui...
-            </div>
+   <!-- ============================================================
+        SIN AUTENTICACIÓN
+        ============================================================ -->
+   <q-layout v-else>
+      <div class="luxe-404">
+         <div class="luxe-404__bg" aria-hidden="true"></div>
+         <div class="luxe-404__content">
+            <div class="luxe-404__code">404</div>
+            <div class="luxe-404__msg">Oops. No hay nada que ver aquí...</div>
             <q-btn
-               class="q-mt-xl"
-               color="white"
-               text-color="blue"
-               unelevated
                to="/"
-               label="Primera página"
                no-caps
+               unelevated
+               label="Primera página"
+               class="luxe-btn luxe-btn--primary q-mt-xl"
             />
          </div>
       </div>
    </q-layout>
+
+   <!-- ============================================================
+        WAIT DIALOG
+        ============================================================ -->
    <q-dialog v-model="waitDialog" persistent>
-      <q-card
-         style="
-            background: cadetblue;
-            height: 56px;
-            align-items: flex-end;
-            display: flex;
-         "
-      >
-         <q-card-section class="q-pt-none" style="display: contents">
-            <p style="font-size: medium">Espere por favor ...</p>
-            <q-circular-progress
-               indeterminate
-               size="28px"
-               :thickness="1"
-               color="grey-8"
-               track-color="lime"
-               class="q-ma-md"
-            />
-         </q-card-section>
+      <q-card class="luxe-wait">
+         <div class="luxe-wait__bar" aria-hidden="true"></div>
+         <p class="luxe-wait__text">Espere por favor...</p>
+         <q-circular-progress
+            indeterminate
+            size="28px"
+            :thickness="1"
+            color="primary"
+            track-color="grey-8"
+            class="q-ml-md"
+         />
       </q-card>
    </q-dialog>
 </template>
+
 <style>
-.message-truncate {
-   /* AJUSTE DE ANCHURA:
-        Este valor (200px) define el ancho máximo antes de que aparezcan los puntos.
-        Ajuste este número a la estética que desee.
-    */
-   max-width: 200px;
-   width: 200px; /* Ayuda a asegurar el ancho en la celda td */
+body.body--dark {
+   background: #0c0c0c;
+}
+</style>
 
-   /* Reglas OBLIGATORIAS para elipses: */
-   white-space: nowrap; /* 1. No permite saltos de línea */
-   overflow: hidden; /* 2. Oculta el texto excedente */
-   text-overflow: ellipsis; /* 3. Muestra los '...' */
-
-   /* Para debug, puede agregar un borde: border: 1px solid red; */
+<!-- Estilos del componente -->
+<style scoped>
+/* ============================================================
+   PÁGINA ADMIN
+   ============================================================ */
+.admin-page {
+   position: relative;
+   min-height: 100vh;
+   padding: 40px 20px 80px;
+   background: linear-gradient(160deg, #0a0f16 0%, #0f1720 50%, #0a0f16 100%);
+   overflow: hidden;
 }
 
-/* Importante: Si el DIV interno tiene un ancho fijo, el <td> principal
-    debe poder contenerlo. La 'q-table' maneja esto automáticamente,
-    pero a veces puede ser necesario forzar el alineamiento.
-*/
-.q-table td {
-   vertical-align: top;
+.admin-page__glow {
+   position: absolute;
+   inset: 0;
+   background: radial-gradient(
+      ellipse at top center,
+      rgba(212, 175, 55, 0.09),
+      transparent 55%
+   );
+   pointer-events: none;
+   z-index: 0;
 }
-.no-arrows::-webkit-outer-spin-button,
-.no-arrows::-webkit-inner-spin-button {
-   -webkit-appearance: none;
+
+.admin-page > *:not(.admin-page__glow) {
+   position: relative;
+   z-index: 1;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.admin-hero {
+   text-align: center;
+   margin-bottom: 36px;
+}
+
+.admin-hero__eyebrow {
+   display: inline-flex;
+   align-items: center;
+   gap: 10px;
+   color: #d4af37;
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: 4px;
+   text-transform: uppercase;
+   margin-bottom: 14px;
+   opacity: 0.9;
+}
+
+.luxe-dot {
+   width: 4px;
+   height: 4px;
+   border-radius: 50%;
+   background: #d4af37;
+   box-shadow: 0 0 10px #d4af37;
+}
+
+.admin-hero__title {
+   margin: 0;
+   font-family: "Playfair Display", "Times New Roman", serif;
+   font-style: italic;
+   font-weight: 500;
+   font-size: clamp(28px, 4vw, 46px);
+   line-height: 1.1;
+   color: #f5e6a8;
+   letter-spacing: -0.5px;
+   text-shadow: 0 4px 30px rgba(212, 175, 55, 0.35);
+}
+
+.admin-hero__title em {
+   background: linear-gradient(90deg, #d4af37 0%, #f5e6a8 50%, #d4af37 100%);
+   background-size: 200% auto;
+   -webkit-background-clip: text;
+   background-clip: text;
+   -webkit-text-fill-color: transparent;
+   animation: goldShimmer 5s linear infinite;
+}
+
+@keyframes goldShimmer {
+   0% {
+      background-position: 0% center;
+   }
+   100% {
+      background-position: 200% center;
+   }
+}
+
+/* ============================================================
+   TARJETA LUXE
+   ============================================================ */
+.luxe-card {
+   position: relative;
+   max-width: 1400px;
+   margin: 0 auto;
+   background: linear-gradient(160deg, #0f1720 0%, #1a2332 100%);
+   border: 1px solid rgba(212, 175, 55, 0.35);
+   border-radius: 14px;
+   padding: 8px 0 20px;
+   color: #e0e6ed;
+   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6),
+      inset 0 0 0 1px rgba(212, 175, 55, 0.08);
+   overflow: hidden;
+}
+
+.luxe-card__glow {
+   position: absolute;
+   inset: 0;
+   background: radial-gradient(
+      ellipse at top center,
+      rgba(212, 175, 55, 0.08),
+      transparent 55%
+   );
+   pointer-events: none;
+   z-index: 0;
+}
+
+.luxe-card__top-line {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 2px;
+   background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 175, 55, 0.7),
+      rgba(245, 230, 168, 1),
+      rgba(212, 175, 55, 0.7),
+      transparent
+   );
+   background-size: 200% 100%;
+   animation: goldFlow 6s ease-in-out infinite;
+   z-index: 3;
+   pointer-events: none;
+}
+
+@keyframes goldFlow {
+   0%,
+   100% {
+      background-position: 0% 50%;
+   }
+   50% {
+      background-position: 100% 50%;
+   }
+}
+
+.luxe-card > *:not(.luxe-card__glow):not(.luxe-card__top-line) {
+   position: relative;
+   z-index: 2;
+}
+
+/* ============================================================
+   TABS LUXE
+   ============================================================ */
+.luxe-tabs {
+   color: rgba(207, 216, 220, 0.6) !important;
+}
+
+:deep(.luxe-tab) {
+   font-family: inherit;
+   font-weight: 600;
+   letter-spacing: 3px;
+   text-transform: uppercase;
+   font-size: 11px;
+   color: rgba(207, 216, 220, 0.6) !important;
+   transition: all 0.35s ease;
+}
+
+:deep(.luxe-tab.q-tab--active) {
+   color: #d4af37 !important;
+}
+
+:deep(.luxe-tab:hover) {
+   color: #f5e6a8 !important;
+}
+
+:deep(.luxe-tabs .q-tab__indicator) {
+   background: linear-gradient(
+      90deg,
+      transparent,
+      #d4af37,
+      transparent
+   ) !important;
+   height: 2px;
+}
+
+.luxe-tab-separator {
+   height: 1px;
+   background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 175, 55, 0.35),
+      transparent
+   );
    margin: 0;
 }
 
-.no-arrows {
-   -moz-appearance: textfield;
+/* ============================================================
+   PANELES
+   ============================================================ */
+.luxe-panels {
+   background: transparent !important;
 }
 
-.card-container {
+.luxe-panel {
+   padding: 26px 28px !important;
+}
+
+.luxe-panel__actions {
    display: flex;
+   align-items: center;
+   justify-content: space-between;
+   margin-bottom: 20px;
+   gap: 12px;
    flex-wrap: wrap;
-   justify-content: center;
 }
 
-.card-item {
-   flex: 0 0 calc(33.33% - 1rem); /* Three columns with 1rem spacing between cards */
+.luxe-subtitle {
+   margin: 0;
+   font-family: "Playfair Display", "Times New Roman", serif;
+   font-style: italic;
+   font-weight: 500;
+   font-size: 22px;
+   color: #f5e6a8;
+   letter-spacing: -0.3px;
+}
+
+/* ============================================================
+   TABLA LUXE
+   ============================================================ */
+.luxe-table-wrapper {
+   border-radius: 10px;
+   overflow: hidden;
+   border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+:deep(.luxe-table) {
+   background: transparent !important;
+   color: #e0e6ed !important;
+}
+
+:deep(.luxe-table .q-table__title) {
+   font-family: "Playfair Display", "Times New Roman", serif;
+   font-style: italic;
+   color: #f5e6a8 !important;
+   font-weight: 500;
+   font-size: 20px;
+   letter-spacing: 0.3px;
+}
+
+:deep(.luxe-table thead tr) {
+   background: rgba(212, 175, 55, 0.08) !important;
+}
+
+:deep(.luxe-table thead th) {
+   color: #d4af37 !important;
+   font-weight: 600 !important;
+   letter-spacing: 2px;
+   text-transform: uppercase;
+   font-size: 10px !important;
+   border-bottom: 1px solid rgba(212, 175, 55, 0.25) !important;
+}
+
+:deep(.luxe-table tbody tr) {
+   transition: all 0.25s ease;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+:deep(.luxe-table tbody tr:hover) {
+   background: rgba(212, 175, 55, 0.07) !important;
+   cursor: pointer;
+   transform: scale(1.001);
+}
+
+:deep(.luxe-table tbody td) {
+   color: #cfd8dc !important;
+   font-size: 13px !important;
+   border-bottom: none !important;
+}
+
+:deep(.luxe-table .q-table__bottom) {
+   background: rgba(0, 0, 0, 0.15) !important;
+   color: rgba(212, 175, 55, 0.7) !important;
+   border-top: 1px solid rgba(212, 175, 55, 0.15) !important;
+}
+
+:deep(.luxe-table .q-table__bottom .q-btn) {
+   color: #d4af37 !important;
+}
+
+/* Búsqueda luxe */
+:deep(.luxe-search .q-field__control) {
+   background: rgba(255, 255, 255, 0.03) !important;
+   border: 1px solid rgba(212, 175, 55, 0.25) !important;
+   border-radius: 6px !important;
+   padding: 0 10px;
+   min-height: 34px;
+}
+
+:deep(.luxe-search .q-field__native),
+:deep(.luxe-search input) {
+   color: #e0e6ed !important;
+   font-size: 12px;
+}
+
+:deep(.luxe-search input::placeholder) {
+   color: rgba(207, 216, 220, 0.4) !important;
+}
+
+:deep(.luxe-search .q-icon) {
+   color: #d4af37 !important;
+}
+
+/* ============================================================
+   DIÁLOGOS
+   ============================================================ */
+.luxe-dialog {
+   position: relative;
+   width: 92vw;
+   max-width: 900px;
+   max-height: 90vh;
+   display: flex;
+   flex-direction: column;
+   background: linear-gradient(160deg, #0f1720 0%, #1a2332 100%);
+   border: 1px solid rgba(212, 175, 55, 0.35);
+   border-radius: 14px;
+   color: #e0e6ed;
+   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75),
+      inset 0 0 0 1px rgba(212, 175, 55, 0.08);
+   overflow: hidden;
+}
+
+.luxe-dialog--small {
+   max-width: 480px;
+}
+
+.luxe-dialog__top-line {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 2px;
+   background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 175, 55, 0.7),
+      rgba(245, 230, 168, 1),
+      rgba(212, 175, 55, 0.7),
+      transparent
+   );
+   background-size: 200% 100%;
+   animation: goldFlow 6s ease-in-out infinite;
+   z-index: 3;
+   pointer-events: none;
+}
+
+.luxe-dialog__glow {
+   position: absolute;
+   inset: 0;
+   background: radial-gradient(
+      ellipse at top center,
+      rgba(212, 175, 55, 0.09),
+      transparent 55%
+   );
+   pointer-events: none;
+   z-index: 0;
+}
+
+.luxe-dialog > *:not(.luxe-dialog__top-line):not(.luxe-dialog__glow) {
+   position: relative;
+   z-index: 2;
+}
+
+.luxe-dialog__header {
+   padding: 26px 30px 12px;
+   text-align: center;
+}
+
+.luxe-dialog__header-row {
+   display: flex;
+   align-items: center;
+   padding: 20px 24px 10px;
+}
+
+.luxe-eyebrow {
+   display: inline-flex;
+   align-items: center;
+   gap: 10px;
+   color: #d4af37;
+   font-size: 10px;
+   font-weight: 600;
+   letter-spacing: 4px;
+   text-transform: uppercase;
+   opacity: 0.9;
+}
+
+.luxe-dialog__title {
+   margin: 8px 0 0;
+   font-family: "Playfair Display", "Times New Roman", serif;
+   font-style: italic;
+   font-weight: 500;
+   font-size: clamp(20px, 2.5vw, 28px);
+   color: #f5e6a8;
+   letter-spacing: -0.3px;
+   text-shadow: 0 2px 20px rgba(212, 175, 55, 0.25);
+}
+
+.luxe-dialog__body {
+   padding: 12px 30px 20px !important;
+   overflow-y: auto;
+   flex-grow: 1;
+}
+
+.luxe-dialog__body::-webkit-scrollbar {
+   width: 6px;
+}
+.luxe-dialog__body::-webkit-scrollbar-thumb {
+   background: rgba(212, 175, 55, 0.3);
+   border-radius: 3px;
+}
+
+/* ============================================================
+   FILAS Y INPUTS LUXE
+   ============================================================ */
+.luxe-row {
+   margin-bottom: 14px;
+}
+
+.luxe-row--2,
+.luxe-row--3 {
+   display: grid;
+   gap: 12px;
+}
+
+.luxe-row--2 {
+   grid-template-columns: 1fr 1fr;
+}
+
+.luxe-row--3 {
+   grid-template-columns: repeat(3, 1fr);
+}
+
+/* Inputs */
+:deep(.luxe-input .q-field__control) {
+   background: rgba(255, 255, 255, 0.03) !important;
+   border: 1px solid rgba(212, 175, 55, 0.25) !important;
+   border-radius: 8px !important;
+   color: #e0e6ed !important;
+   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+   padding: 0 14px;
+   min-height: 38px;
+}
+
+:deep(.luxe-input .q-field__control:hover) {
+   border-color: rgba(212, 175, 55, 0.5) !important;
+}
+
+:deep(.luxe-input.q-field--focused .q-field__control) {
+   border-color: #d4af37 !important;
+   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15),
+      inset 0 0 12px rgba(212, 175, 55, 0.05);
+}
+
+:deep(.luxe-input .q-field__native),
+:deep(.luxe-input .q-field__input),
+:deep(.luxe-input textarea) {
+   color: #e0e6ed !important;
+   font-size: 13px;
+}
+
+:deep(.luxe-input .q-field__label) {
+   color: rgba(212, 175, 55, 0.75) !important;
+   font-size: 10px;
+   font-weight: 600;
+   letter-spacing: 2px;
+   text-transform: uppercase;
+}
+
+:deep(.luxe-input.q-field--focused .q-field__label) {
+   color: #d4af37 !important;
+}
+
+:deep(.luxe-input .q-field__native::placeholder),
+:deep(.luxe-input textarea::placeholder) {
+   color: rgba(207, 216, 220, 0.35) !important;
+   font-style: italic;
+}
+
+:deep(.luxe-input .q-field__bottom) {
+   color: rgba(212, 175, 55, 0.6) !important;
+   font-size: 10px;
+   letter-spacing: 1.5px;
+   text-transform: uppercase;
+   padding-top: 4px;
+}
+
+:deep(.luxe-input .q-field__append .q-icon),
+:deep(.luxe-input .q-field__control .q-icon) {
+   color: #d4af37 !important;
+}
+
+:deep(.luxe-input .q-field__counter) {
+   color: rgba(212, 175, 55, 0.7) !important;
+   font-size: 10px;
+   letter-spacing: 1.5px;
+}
+
+:deep(.luxe-input .q-field__messages) {
+   color: #e57373 !important;
+   font-size: 11px;
+}
+
+.luxe-ai-icon {
+   color: #d4af37 !important;
+   transition: transform 0.3s ease;
+}
+
+.luxe-ai-icon:hover {
+   transform: scale(1.15) rotate(-8deg);
+   color: #f5e6a8 !important;
+}
+
+/* File input */
+:deep(.luxe-file .q-field__control) {
+   padding: 0 14px;
+}
+
+.luxe-file-icon {
+   color: #d4af37 !important;
+}
+
+/* Select dropdown luxe */
+:deep(.q-menu .q-item--active),
+:deep(.q-item.q-item--active) {
+   color: #d4af37 !important;
+}
+
+/* ============================================================
+   IMÁGENES
+   ============================================================ */
+.luxe-images-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+   gap: 12px;
+   margin-top: 8px;
+}
+
+.luxe-image-card {
+   position: relative;
+   border-radius: 8px;
+   overflow: hidden;
+   border: 1px solid rgba(212, 175, 55, 0.3);
+   background: rgba(0, 0, 0, 0.3);
+   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxe-image-card:hover {
+   border-color: #d4af37;
+   transform: translateY(-2px);
+   box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+}
+
+.luxe-image-preview {
+   width: 100%;
+   height: 80px;
+   display: block;
+}
+
+.luxe-image-actions {
+   display: flex;
+   justify-content: center;
+   gap: 4px;
+   padding: 4px;
+   background: rgba(0, 0, 0, 0.4);
+}
+
+.luxe-icon-btn {
+   color: #d4af37 !important;
+   transition: all 0.3s ease;
+}
+
+.luxe-icon-btn:hover {
+   background: rgba(212, 175, 55, 0.15) !important;
+   transform: scale(1.1);
+}
+
+.luxe-icon-btn--danger {
+   color: #e57373 !important;
+}
+
+.luxe-icon-btn--danger:hover {
+   background: rgba(229, 115, 115, 0.15) !important;
+}
+
+/* ============================================================
+   BOTONES LUXE
+   ============================================================ */
+:deep(.luxe-btn) {
+   position: relative;
+   border-radius: 6px;
+   font-weight: 600;
+   letter-spacing: 2px;
+   text-transform: uppercase;
+   font-size: 11px;
+   padding: 8px 22px;
+   min-height: 40px;
+   overflow: hidden;
+   transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:deep(.luxe-btn::before) {
+   content: "";
+   position: absolute;
+   inset: 0;
+   transform: translateY(101%);
+   transition: transform 0;
 }
 </style>
+
 <script>
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref, computed } from "vue";
