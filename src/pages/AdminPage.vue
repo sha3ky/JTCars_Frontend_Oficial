@@ -1330,6 +1330,7 @@ export default defineComponent({
             (val) => val.length >= 10 || "Minimo 10 caracteres",
          ];
       },
+
       contadorClass() {
          const length = this.datosCoches.descripcion
             ? this.datosCoches.descripcion.length
@@ -1357,13 +1358,16 @@ export default defineComponent({
          }
       },
    },
+
    async mounted() {
       this.waitDialog = true;
       this.rowsCoches = await getAllData();
       this.rowsPersonas = await getAllusers();
       this.waitDialog = false;
    },
+
    methods: {
+      //  !!!atencion
       async generarDescripcionIA() {
          if (this.loadingAI) return;
 
@@ -1417,11 +1421,13 @@ export default defineComponent({
             this.loadingAI = false;
          }
       },
+
       limpiarYFormatearMatricula(value) {
          let cleanValue = value ? value.toUpperCase() : "";
          cleanValue = cleanValue.replace(/[^A-Z0-9\s-]/g, "");
          this.datosCoches.matricula = cleanValue;
       },
+
       // ✅ Procesar nueva imagen sin base64
       procesarNuevaImagen(archivo) {
          if (!archivo.type.startsWith("image/")) {
@@ -1449,6 +1455,7 @@ export default defineComponent({
          this.agregarImagenAlArray(urlTemporal, archivo);
          this.nuevaImagen = null;
       },
+
       // ✅ Agregar imagen al array
       agregarImagenAlArray(urlImagen, archivo) {
          // 1. Verificar que no excedemos el límite de 8 imágenes
@@ -1501,6 +1508,7 @@ export default defineComponent({
             timeout: 2000,
          });
       },
+
       // ✅ Eliminar imagen liberando memoria
       eliminarImagen(imagen) {
          const index = this.imagenesArray.findIndex(
@@ -1512,6 +1520,7 @@ export default defineComponent({
             );
          }
       },
+
       limpiarURLsTemporales() {
          this.imagenesArray.forEach((imagen) => {
             if (imagen.imagen && imagen.imagen.startsWith("blob:")) {
@@ -1523,6 +1532,7 @@ export default defineComponent({
             }
          });
       },
+
       // ✅ Confirmación para eliminar coche
       confirmDeleteCar() {
          this.$q
@@ -1550,6 +1560,7 @@ export default defineComponent({
                });
             });
       },
+
       // ✅ Confirmación para eliminar imagen
       deleteImage(image) {
          this.$q
@@ -1570,6 +1581,7 @@ export default defineComponent({
                console.log("Eliminación de imagen cancelada.");
             });
       },
+
       // ✅ Validación para solo números y puntos
       soloNumerosYPuntos(event) {
          const char = String.fromCharCode(event.which || event.keyCode);
@@ -1597,6 +1609,7 @@ export default defineComponent({
 
          return true;
       },
+
       // ✅ Recargar datos desde API
       async reloadData() {
          this.waitDialog = true;
@@ -1693,6 +1706,7 @@ export default defineComponent({
          this.existPdf = row.pdf;
          this.extrerImagenes(row);
       },
+
       handlePersonRowClick(evt, row) {
          this.showDialog = true;
          const { email, mensaje, username, telefono } = row;
