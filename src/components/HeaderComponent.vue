@@ -188,7 +188,7 @@
 <script>
 import { defineComponent } from "vue";
 import DarkModeToggle from "./DarkModeToggle.vue";
-import { RouterView, RouterLink } from "vue-router";
+
 
 export default defineComponent({
    name: "HeaderLayout",
@@ -460,26 +460,34 @@ a {
 }
 
 :deep(.nav-btn--contact) {
-   background: linear-gradient(135deg, #0277bd, #01579b) !important;
+   /*background: linear-gradient(135deg, #0277bd, #01579b) !important;*/
+   background: linear-gradient(135deg, #37474f, #263238) !important;
+
 }
 :deep(.nav-btn--contact:hover) {
-   background: linear-gradient(135deg, #0288d1, #0277bd) !important;
+      background: linear-gradient(135deg, #455a64, #37474f) !important;
+
+   /*background: linear-gradient(135deg, #0288d1, #0277bd) !important;*/
 }
 
 :deep(.nav-btn--garage) {
-   background: linear-gradient(135deg, #c62828, #8e0000) !important;
+   background: linear-gradient(135deg, #1a1a1a 0%, #2b0a0a 100%) !important;
+   border: 1px solid rgba(180, 30, 30, 0.4);
 }
 :deep(.nav-btn--garage:hover) {
-   background: linear-gradient(135deg, #e53935, #c62828) !important;
-   box-shadow: 0 10px 25px rgba(229, 57, 53, 0.5);
+   background: linear-gradient(135deg, #8b1a1a 0%, #1a1a1a 100%) !important;
+   border-color: rgba(220, 40, 40, 0.8);
+   box-shadow: 0 10px 25px rgba(139, 26, 26, 0.5);
 }
 
 :deep(.nav-btn--options) {
-   background: linear-gradient(135deg, #ef6c00, #e65100) !important;
+   background: linear-gradient(135deg, #1a1a1a 0%, #0d1a26 100%) !important;
+   border: 1px solid rgba(80, 140, 200, 0.4);
 }
 :deep(.nav-btn--options:hover) {
-   background: linear-gradient(135deg, #fb8c00, #ef6c00) !important;
-   box-shadow: 0 10px 25px rgba(251, 140, 0, 0.5);
+   background: linear-gradient(135deg, #1e4a7a 0%, #1a1a1a 100%) !important;
+   border-color: rgba(120, 180, 240, 0.8);
+   box-shadow: 0 10px 25px rgba(30, 74, 122, 0.5);
 }
 
 /* ============================================================
