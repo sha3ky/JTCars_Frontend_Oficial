@@ -10,17 +10,13 @@ const updateTables = async (coches, media, imagenesAEliminar = []) => {
       const formData = new FormData();
       formData.append("id", media.id);
 
-      // ✅ Helper: solo añade al FormData si es un File (archivo real)
+      // ✅ Helper: solo añade si es un File real
       const addIfFile = (key, value) => {
          if (value instanceof File) {
             formData.append(key, value);
             console.log(`✅ ${key} añadido como File:`, value.name);
          } else if (value) {
-            console.log(
-               `⏭️ ${key} ignorado (no es File):`,
-               typeof value,
-               value
-            );
+            console.log(`⏭️ ${key} ignorado (no es File):`, typeof value);
          }
       };
 
@@ -34,10 +30,10 @@ const updateTables = async (coches, media, imagenesAEliminar = []) => {
       addIfFile("imagen8", media.imagen8);
       addIfFile("pdf", media.pdf);
 
-      // ✅ Marcar para eliminar (esto se queda igual)
+      // Marcar para eliminar
       imagenesAEliminar.forEach((imgNum) => {
          const numero = Number(imgNum.imagenNum.split("").at(-1));
-         formData.append(`imagen${numero}`, "null"); // ← string "null"
+         formData.append(`imagen${numero}`, "null");
          console.log(`🗑️ Marcando imagen${numero} para eliminar`);
       });
 
@@ -49,11 +45,7 @@ const updateTables = async (coches, media, imagenesAEliminar = []) => {
       const mediaResponse = await axios.post(
          `${link}api/updateMedia`,
          formData,
-         {
-            headers: {
-               "Content-Type": "multipart/form-data",
-            },
-         }
+         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       if (cochesResponse.status === 200 && mediaResponse.status === 200) {
@@ -68,4 +60,5 @@ const updateTables = async (coches, media, imagenesAEliminar = []) => {
       return false;
    }
 };
+
 export default updateTables;
