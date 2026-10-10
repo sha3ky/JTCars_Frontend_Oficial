@@ -1701,6 +1701,7 @@ export default defineComponent({
          this.datosCoches.promocion = row.promocion;
          this.datosCoches.combustible = row.combustible;
          this.datosCoches.precio = row.precio;
+         this.datosCoches.media_files = row.media_files;
          const color = colorsEn_Es(row.colorBanner);
          this.datosCoches.colorBanner = color;
          this.datosCoches.id = row.id;

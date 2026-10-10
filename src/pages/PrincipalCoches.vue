@@ -1090,7 +1090,9 @@ export default defineComponent({
                   element.imagen6,
                   element.imagen7,
                   element.imagen8,
-               ].filter((img) => img), // Filtra los nulls
+               ]
+                  .filter((img) => img)
+                  .map((img) => new URL(img, this.link).href), // Filtra los nulls
             };
 
             // 3. Añadir el objeto al nuevo array
