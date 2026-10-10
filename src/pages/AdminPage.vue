@@ -1651,7 +1651,8 @@ export default defineComponent({
             });
          }, this.mediaTable);
          this.mediaTable.pdf = this.existPdf;
-         this.mediaTable.id = this.datosCoches.id;
+         //this.mediaTable.id = this.datosCoches.id;
+         this.mediaTable.id = this.datosCoches.media_files;
          this.waitDialog = true;
          try {
             if (!this.newCar) {
