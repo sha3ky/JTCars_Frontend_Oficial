@@ -1094,32 +1094,17 @@ export default defineComponent({
             this.datosCochesProcesados.push(cocheData);
          });
       },
+
       firstImgNotNull(item) {
-         const baseUrl = this.link;
-         // Itera sobre los nombres de propiedad esperados (imagen1 hasta imagen8)
          for (let i = 1; i <= 8; i++) {
-            const propertyName = `imagen${i}`;
-            const imageUrl = item[propertyName];
-            // 1. Verifica si la propiedad tiene un valor real (no es null, undefined, o string vacío)
-            // El valor de la URL relativa de la imagen debe existir.
+            const imageUrl = item[`imagen${i}_url`]; // ← usar _url
             if (imageUrl) {
-               // 2. Construye la URL absoluta de forma segura usando el constructor URL.
-               // Se puede usar 'new URL()' a partir de ES6 (2015), pero su soporte se popularizó después.
-               // Si 'new URL()' da problemas en algún navegador viejo, usar la concatenación (ver nota).
-               try {
-                  // new URL() es la forma más limpia y estándar.
-                  const rutaCompleta = new URL(imageUrl, baseUrl).href;
-                  // 3. Si la URL se construye sin errores, la devuelve.
-                  return rutaCompleta;
-               } catch (error) {
-                  // Esto maneja errores si la URL relativa es inválida,
-                  // aunque no debería suceder si imageUrl existe.
-                  console.error("Error al construir la URL:", error);
-               }
+               return imageUrl; // ← ya es absoluta
             }
          }
          return null;
       },
+
       carouselFoto(index) {
          this.showCarousel = true;
          this.arrayDatos = this.allData[index];
