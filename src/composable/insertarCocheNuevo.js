@@ -20,7 +20,8 @@ const insertCocheNuevo = async (coches, media) => {
 
    try {
       // ✅ Usar el ID del MediaFiles, NO del Coche
-      media.id = cochesResponse.data.media_files;
+      //media.id = cochesResponse.data.media_files;
+      media.id = cochesResponse.data.data.media_files;
 
       const formData = new FormData();
       formData.append("id", media.id);
