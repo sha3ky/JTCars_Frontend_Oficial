@@ -971,7 +971,6 @@
 import Footer_Layout from "src/layouts/Footer_Layout.vue";
 import { defineComponent, ref } from "vue";
 import { useQuasar, Notify } from "quasar";
-import { RouterView, RouterLink } from "vue-router";
 import InputUser from "components/InputUser.vue"; //
 import loginUser from "src/components/loginUser.vue";
 import MyCarousel from "src/components//MyCarousel.vue";
@@ -1026,6 +1025,7 @@ export default defineComponent({
          const el = document.querySelector(".cars-container");
          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       },
+
       getCombustibleImage(combustible) {
          console.log("combustible", combustible);
          if (!combustible) return "/etiquetas/gasolina.png";
@@ -1039,11 +1039,13 @@ export default defineComponent({
 
          return combustibleMap[combustible] || "/etiquetas/gasolina.png";
       },
+
       formatPrice(price) {
          if (!price && price !== 0) return "0";
          const number = Number(price);
          return isNaN(number) ? "0" : number.toLocaleString("es-ES");
       },
+
       getEtiquetaImage(etiqueta) {
          const etiquetaMap = {
             B: "/etiquetas/etiquetaB.png",
@@ -1055,6 +1057,7 @@ export default defineComponent({
 
          return etiquetaMap[etiqueta] || "/etiquetas/etiqueta0.png";
       },
+
       repartirData() {
          // Vacía el array para que no se dupliquen datos si se llama varias veces
          this.datosCochesProcesados = [];
@@ -1095,11 +1098,23 @@ export default defineComponent({
          });
       },
 
+      // firstImgNotNull(item) {
+      //    debugger;
+      //    for (let i = 1; i <= 8; i++) {
+      //       const imageUrl = item[`imagen${i}`]; // ← usar _url
+      //       if (imageUrl) {
+      //          return imageUrl; // ← ya es absoluta
+      //       }
+      //    }
+      //    return null;
+      // },
+
       firstImgNotNull(item) {
+         const baseUrl = this.link; // ← el link del backend (http://127.0.0.1:8000/ o el que sea)
          for (let i = 1; i <= 8; i++) {
-            const imageUrl = item[`imagen${i}_url`]; // ← usar _url
+            const imageUrl = item[`imagen${i}`];
             if (imageUrl) {
-               return imageUrl; // ← ya es absoluta
+               return new URL(imageUrl, baseUrl).href; // ← construye URL absoluta
             }
          }
          return null;
