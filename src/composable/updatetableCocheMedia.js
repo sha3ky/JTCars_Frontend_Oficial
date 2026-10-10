@@ -10,7 +10,7 @@ const updateTables = async (coches, media, imagenesAEliminar = []) => {
       const formData = new FormData();
       formData.append("id", media.id);
 
-      // ✅ Helper: solo añade si es un File real
+      // ✅ Solo envía archivos reales (File), ignora strings (URLs viejas)
       const addIfFile = (key, value) => {
          if (value instanceof File) {
             formData.append(key, value);
@@ -30,7 +30,6 @@ const updateTables = async (coches, media, imagenesAEliminar = []) => {
       addIfFile("imagen8", media.imagen8);
       addIfFile("pdf", media.pdf);
 
-      // Marcar para eliminar
       imagenesAEliminar.forEach((imgNum) => {
          const numero = Number(imgNum.imagenNum.split("").at(-1));
          formData.append(`imagen${numero}`, "null");
