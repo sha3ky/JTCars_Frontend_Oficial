@@ -20,7 +20,8 @@ const insertCocheNuevo = async (coches, media) => {
    }
 
    try {
-      media.id = cochesResponse.data.id;
+      //media.id = cochesResponse.data.id;
+      media.id = cochesResponse.data.media_files; // ✅ ID del MediaFiles
 
       // ✅ CREAR FormData para TODAS las imágenes
       const formData = new FormData();
