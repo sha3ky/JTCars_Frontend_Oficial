@@ -79,7 +79,7 @@
                   <span class="luxe-word">Grandes</span>
                   <span class="luxe-word">oportunidades</span>
                   <span class="luxe-word">sobre</span>
-                  <span class="luxe-word luxe-word--accent">ruedas</span>
+                  <span class="luxe-word luxe-word--accent">Ruedas</span>
                </h2>
 
                <div class="luxe-banner__divider" aria-hidden="true">
