@@ -139,8 +139,10 @@
                            <span class="luxe-dot"></span>
                         </div>
                         <h2 class="luxe-section-title">
-                           Resumen de <em>actividad</em>
+                           Resumen de
+                           <em>actividad</em>
                         </h2>
+                        <h3> FASE en DESAROLLO</h3>
                      </header>
 
                      <!-- KPIs -->

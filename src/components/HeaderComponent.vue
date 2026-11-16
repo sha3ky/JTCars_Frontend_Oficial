@@ -65,6 +65,24 @@
                      </router-link>
                   </template>
 
+                  <template v-if="isAuthenticated">
+                     <!-- Usamos la etiqueta <a> estándar con el enlace externo -->
+                     <a
+                        href="https://frontend-subastas.onrender.com/#/"
+                        target="_blank"
+                        style="text-decoration: none; color: inherit"
+                     >
+                        <q-item clickable v-ripple class="menu-item">
+                           <q-item-section avatar>
+                              <q-icon name="tune" class="menu-icon" />
+                           </q-item-section>
+                           <q-item-section>
+                              <span class="menu-text">AuctionSniper</span>
+                           </q-item-section>
+                        </q-item>
+                     </a>
+                  </template>
+
                   <q-separator class="q-my-sm mobile-separator" />
                </q-list>
             </q-menu>
@@ -135,6 +153,21 @@
                      />
                   </router-link>
                </template>
+               <template v-if="isAuthenticated">
+                  <a
+                     href="https://frontend-subastas.onrender.com/#/"
+                     target="_blank"
+                     style="text-decoration: none; color: inherit"
+                  >
+                     <q-btn
+                        unelevated
+                        no-caps
+                        icon="gavel"
+                        label="AuctionSniper"
+                        class="nav-btn nav-btn--options"
+                     />
+                  </a>
+               </template>
             </div>
          </template>
 
@@ -188,7 +221,6 @@
 <script>
 import { defineComponent } from "vue";
 import DarkModeToggle from "./DarkModeToggle.vue";
-
 
 export default defineComponent({
    name: "HeaderLayout",
@@ -462,10 +494,9 @@ a {
 :deep(.nav-btn--contact) {
    /*background: linear-gradient(135deg, #0277bd, #01579b) !important;*/
    background: linear-gradient(135deg, #37474f, #263238) !important;
-
 }
 :deep(.nav-btn--contact:hover) {
-      background: linear-gradient(135deg, #455a64, #37474f) !important;
+   background: linear-gradient(135deg, #455a64, #37474f) !important;
 
    /*background: linear-gradient(135deg, #0288d1, #0277bd) !important;*/
 }
