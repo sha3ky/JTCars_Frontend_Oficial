@@ -739,7 +739,7 @@
    position: relative;
    width: 100%;
    overflow: hidden;
-   background: linear-gradient(180deg, #f8fafc, #eef2f7);
+   /*background: linear-gradient(180deg, #f8fafc, #eef2f7);*/
 }
 
 .car-image {
